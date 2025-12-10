@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     if (chrome.sidePanel && chrome.sidePanel.open) {
                         chrome.sidePanel.open({ windowId: windowId })
                             .catch((error) => console.error("Erro ao abrir painel:", error));
-                        // Opcional: fechar o popup? window.close();
+                        window.close();
                     } else {
                         alert("Seu navegador não suporta abrir o Painel Lateral automaticamente. Por favor, abra-o manualmente pelo menu do navegador.");
                     }
