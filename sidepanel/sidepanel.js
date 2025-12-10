@@ -1,5 +1,6 @@
 import { DOM_extractWeeks, scrapeWeeksFromTab } from './logic/scraper.js';
 import { loadItems, addItem, deleteItem } from './logic/storage.js';
+import { openOrSwitchToTab } from './logic/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Referências da UI - Views
@@ -7,12 +8,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const viewDetails = document.getElementById('view-details');
 
     // Home Elements
-    constitemList = document.getElementById('itemList');
+    const itemList = document.getElementById('itemList');
     const nameInput = document.getElementById('nameInput');
     const urlInput = document.getElementById('urlInput');
     const addBtn = document.getElementById('addBtn');
     const addCurrentBtn = document.getElementById('addCurrentBtn');
-    const itemList = document.getElementById('itemList');
 
     // Details Elements
     const backBtn = document.getElementById('backBtn');
@@ -44,7 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Setup Main Button
         openCourseBtn.onclick = () => {
-            chrome.tabs.create({ url: course.url });
+            openOrSwitchToTab(course.url);
         };
 
         // Render Weeks
@@ -58,7 +58,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     <span class="week-arrow">›</span>
                 `;
                 wDiv.onclick = () => {
-                    chrome.tabs.create({ url: week.url });
+                    openOrSwitchToTab(week.url);
                 };
                 weeksList.appendChild(wDiv);
             });
