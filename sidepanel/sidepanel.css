@@ -23,16 +23,25 @@ h2 {
     background: white;
     border: 1px solid #ddd;
     margin-bottom: 8px;
-    padding: 10px;
     border-radius: 6px;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    flex-direction: column;
+    /* Alterado para suportar lista interna */
     transition: box-shadow 0.2s;
+    overflow: hidden;
 }
 
 .item:hover {
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.item-header {
+    padding: 10px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .item-info {
@@ -121,4 +130,53 @@ h2 {
 
 .btn-current:hover {
     background-color: #003366;
+}
+
+/* WEEKS LIST STYLES */
+.week-list {
+    background-color: #fcfcfc;
+    border-top: 1px solid #eee;
+    padding: 5px 0;
+    display: none;
+    /* Escondido por padrão */
+}
+
+.week-list.open {
+    display: block;
+}
+
+.week-item {
+    padding: 6px 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.week-item:last-child {
+    border-bottom: none;
+}
+
+.week-link {
+    color: #555;
+    text-decoration: none;
+    font-size: 13px;
+    display: block;
+    cursor: pointer;
+}
+
+.week-link:hover {
+    color: #004b8d;
+    background-color: #f0f4f8;
+}
+
+.toggle-icon {
+    font-size: 12px;
+    color: #888;
+    margin-right: 8px;
+    cursor: pointer;
+    display: inline-block;
+    width: 12px;
+    transition: transform 0.2s;
+}
+
+.toggle-icon.expanded {
+    transform: rotate(90deg);
 }

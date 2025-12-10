@@ -5,7 +5,8 @@
   "description": "Preenche automaticamente o email institucional no SEI Univesp com o valor configurado.",
   "permissions": [
     "storage",
-    "sidePanel"
+    "sidePanel",
+    "scripting"
   ],
   "side_panel": {
     "default_path": "sidepanel/sidepanel.html"
