@@ -1,0 +1,28 @@
+{
+  "manifest_version": 3,
+  "name": "AutoPreencher UNIVESP",
+  "version": "2.0",
+  "description": "Preenche automaticamente o email institucional no SEI Univesp com o valor configurado.",
+  "permissions": [
+    "storage",
+    "sidePanel"
+  ],
+  "side_panel": {
+    "default_path": "sidepanel.html"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icon.png",
+      "48": "icon.png",
+      "128": "icon.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://sei.univesp.br/*"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
