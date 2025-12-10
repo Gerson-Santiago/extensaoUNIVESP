@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="sidepanel.css">
+</head>
+
+<body>
+
+    <h2>Minhas Matérias</h2>
+
+    <ul id="itemList" class="item-list">
+        <!-- Itens serão inseridos via JS -->
+    </ul>
+
+    <div class="add-form">
+        <button id="addCurrentBtn" class="btn-current">Adicionar Página Atual</button>
+        <div style="text-align: center; margin-bottom: 8px; font-size: 12px; color: #666;">ou adicione manualmente:
+        </div>
+        <input type="text" id="nameInput" class="input-field" placeholder="Nome da Matéria">
+        <input type="text" id="urlInput" class="input-field" placeholder="https://...">
+        <button id="addBtn" class="btn-add">Adicionar</button>
+    </div>
+
+    <script src="sidepanel.js"></script>
+</body>
+
+</html>

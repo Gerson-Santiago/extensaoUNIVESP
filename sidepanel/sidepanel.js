@@ -37,6 +37,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 nameInput.value = name;
                 urlInput.value = tab.url;
+
+                // Opcional: já salvar direto? Ou deixar o usuário confirmar?
+                // Vamos deixar ele confirmar clicando em Adicionar, mas preenchemos os campos authomaticamente
+                // Se quiser salvar direto:
+                // addItem(name, tab.url);
             }
         });
     });
