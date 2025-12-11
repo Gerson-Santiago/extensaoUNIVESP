@@ -16,7 +16,7 @@ export class BatchImportModal extends Modal {
 
             <div style="margin-bottom: 15px;">
                 <label for="batchCount" style="font-size: 12px;">Importar os primeiros:</label>
-                <input type="number" id="batchCount" value="6" min="1" max="20" style="width: 60px; padding: 5px;">
+                <input type="number" id="batchCount" value="3" min="1" max="20" style="width: 60px; padding: 5px;">
                 <span style="font-size: 12px;">cursos</span>
             </div>
 
@@ -41,16 +41,23 @@ export class BatchImportModal extends Modal {
             status.style.color = '#333';
             btnRun.disabled = true;
 
-            const max = parseInt(countInput.value) || 6;
+            const max = parseInt(countInput.value) || 3;
 
             chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
                 if (tabs && tabs[0]) {
                     const tab = tabs[0];
 
                     if (!tab.url.includes('/ultra/course')) {
-                        status.textContent = 'Erro: Você deve estar na página "Cursos" do AVA.';
-                        status.style.color = 'red';
-                        btnRun.disabled = false;
+                        status.textContent = 'Abrindo Cursos...';
+                        status.style.color = '#0056b3';
+                        chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
+
+                        // Re-enable after a short delay so user can click again after load
+                        setTimeout(() => {
+                            status.textContent = 'Assim que carregar, clique novamente em Iniciar.';
+                            status.style.color = '#333';
+                            btnRun.disabled = false;
+                        }, 2500);
                         return;
                     }
 
