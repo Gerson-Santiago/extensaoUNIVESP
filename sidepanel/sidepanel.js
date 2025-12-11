@@ -56,7 +56,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                     addItem(name, tab.url, weeks, () => {
                         // Após adicionar, redireciona para lista de cursos
-                        layout.bottomNav.setActive('courses');
+                        layout.topNav.setActive('courses');
                         layout.navigateTo('courses');
                     });
                 }
@@ -66,7 +66,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const courseDetailsView = new CourseDetailsView({
         onBack: () => {
-            layout.bottomNav.setActive('courses');
+            layout.topNav.setActive('courses');
             layout.navigateTo('courses');
         },
         onOpenCourse: (url) => openOrSwitchToTab(url)

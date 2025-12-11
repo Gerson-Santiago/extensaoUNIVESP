@@ -1,4 +1,4 @@
-export class BottomNav {
+export class TopNav {
     constructor(onNavigate) {
         this.onNavigate = onNavigate;
         this.activeTab = 'home';
@@ -6,7 +6,7 @@ export class BottomNav {
 
     render() {
         const nav = document.createElement('nav');
-        nav.className = 'bottom-nav';
+        nav.className = 'top-nav';
 
         const tabs = [
             { id: 'home', icon: '🏠', label: 'Home' },
@@ -33,12 +33,6 @@ export class BottomNav {
 
     setActive(tabId) {
         this.activeTab = tabId;
-        const buttons = document.querySelectorAll('.nav-item');
-        // Re-render ou update classes seria ideal, mas num DOM simples:
-        // Apenas atualiza a classe visualmente se o elemento já estiver no DOM
-        // Se formos re-renderizar tudo, o MainLayout cuidará disso.
-        // Mas para manter performance, podemos manipular classes aqui se tivermos referência.
-
         // Simples manipulação de DOM se já renderizado:
         document.querySelectorAll('.nav-item').forEach((btn, index) => {
             const tabs = ['home', 'courses', 'settings'];

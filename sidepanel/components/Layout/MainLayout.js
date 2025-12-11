@@ -1,10 +1,10 @@
-import { BottomNav } from './BottomNav.js';
+import { TopNav } from './TopNav.js';
 
 export class MainLayout {
     constructor(views) {
         this.views = views; // Objeto { home: viewInstance, courses: viewInstance, ... }
         this.currentViewId = 'home';
-        this.bottomNav = new BottomNav((viewId) => this.navigateTo(viewId));
+        this.topNav = new TopNav((viewId) => this.navigateTo(viewId));
         this.appContainer = document.getElementById('app');
     }
 
@@ -16,14 +16,14 @@ export class MainLayout {
     render() {
         this.appContainer.innerHTML = '';
 
+        // Barra de Navegação (Fixa no topo)
+        const navElement = this.topNav.render();
+        this.appContainer.appendChild(navElement);
+
         // Container de Conteúdo (Scrollável)
         const content = document.createElement('main');
         content.id = 'main-content';
         this.appContainer.appendChild(content);
-
-        // Barra de Navegação (Fixa no rodapé)
-        const navElement = this.bottomNav.render();
-        this.appContainer.appendChild(navElement);
     }
 
     navigateTo(viewId) {
