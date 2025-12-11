@@ -61,7 +61,7 @@ main#main-content {
 /* Home Dashboard Styles */
 .view-home-dashboard {
   text-align: center;
-  padding-top: 20px;
+  padding-top: 10px;
 }
 
 .dashboard-header h2 {
@@ -69,9 +69,70 @@ main#main-content {
   margin-bottom: 5px;
 }
 
-.dashboard-actions {
+/* Quick Access Section */
+.quick-access-section {
+  margin-bottom: 20px;
+}
+
+.quick-access-section h3 {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 10px;
+  text-align: left;
+  margin-left: 5px;
+}
+
+.quick-links-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.link-card {
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 12px;
+  text-decoration: none;
+  color: #004b8d;
+  font-weight: 500;
+  font-size: 13px;
   display: flex;
+  flex-direction: column;
+  align-items: center;
   justify-content: center;
+  transition: all 0.2s;
+  height: 60px;
+  /* Fixed height for consistency */
+  text-align: center;
+}
+
+.link-card:hover {
+  background-color: #f0f4f8;
+  border-color: #004b8d;
+  transform: translateY(-2px);
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.blackboard-card {
+  /* Destaque para o AVA */
+  border-color: #004b8d;
+  background-color: #fcfcfc;
+}
+
+.bb-icon {
+  width: 24px;
+  height: 24px;
+  display: block;
+  margin-bottom: 5px;
+}
+
+/* Action Button in Home */
+.small-action {
+  max-width: 100%;
+  margin: 0;
+  padding: 10px;
 }
 
 .action-card {
@@ -80,8 +141,7 @@ main#main-content {
   border-radius: 8px;
   padding: 15px;
   width: 100%;
-  max-width: 200px;
-  margin: 10px;
+  margin: 10px 0;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -91,12 +151,134 @@ main#main-content {
   color: #004b8d;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
   transition: transform 0.1s, box-shadow 0.1s;
+  box-sizing: border-box;
 }
 
 .action-card:hover {
   background: #fdfdfd;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
+}
+
+
+/* Config Section */
+.divider {
+  border: 0;
+  border-top: 1px solid #eee;
+  margin: 20px 0;
+}
+
+.config-section {
+  background: #fff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 15px;
+  text-align: left;
+}
+
+.config-section h3 {
+  font-size: 14px;
+  color: #333;
+  margin: 0 0 5px 0;
+}
+
+.config-desc {
+  font-size: 11px;
+  color: #777;
+  margin: 0 0 15px 0;
+}
+
+.input-group-row {
+  display: flex;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.input-field {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 13px;
+  box-sizing: border-box;
+  margin-bottom: 8px;
+}
+
+#raInput {
+  width: 80px;
+  flex-shrink: 0;
+  margin-bottom: 0;
+}
+
+.domain-wrapper {
+  position: relative;
+  flex-grow: 1;
+  display: flex;
+}
+
+#domainInput {
+  width: 100%;
+  padding-right: 30px;
+  /* space for reset button */
+  margin-bottom: 0;
+}
+
+.btn-reset {
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: #999;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.btn-reset:hover {
+  color: #333;
+}
+
+.btn-save {
+  width: 100%;
+  padding: 8px;
+  background-color: #004b8d;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.btn-save:hover {
+  background-color: #00376b;
+}
+
+.status-msg {
+  margin-top: 10px;
+  font-size: 12px;
+  text-align: center;
+  color: #28a745;
+  display: none;
+}
+
+/* Footer Info */
+.footer-info {
+  margin-top: 20px;
+  text-align: center;
+  font-size: 11px;
+  color: #999;
+  margin-bottom: 20px;
+}
+
+.github-link {
+  color: #666;
+  text-decoration: none;
+  margin-left: 5px;
+}
+
+.github-link:hover {
+  text-decoration: underline;
 }
 
 /* Shared / Legacy Styles */
@@ -175,15 +357,6 @@ h2 {
   border-radius: 6px;
 }
 
-.input-field {
-  width: 100%;
-  padding: 8px;
-  margin-bottom: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  box-sizing: border-box;
-}
-
 .btn-add {
   /* Botão verde */
   width: 100%;
@@ -200,7 +373,7 @@ h2 {
   background-color: #218838;
 }
 
-/* DETAILS VIEW STYLES */
+/* DETAILS VIEW STYLES - kept consistent */
 .details-header {
   display: flex;
   align-items: center;
@@ -313,12 +486,4 @@ h2 {
   padding: 15px;
   border-radius: 6px;
   border: 1px solid #ddd;
-}
-
-.form-group {
-  margin: 15px 0;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  font-size: 14px;
 }
