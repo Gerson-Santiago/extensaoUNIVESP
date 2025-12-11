@@ -38,13 +38,9 @@ export class SettingsView {
                 <h3>Comportamento ao Clicar</h3>
                 <p class="config-desc">Escolha o que acontece ao clicar no ícone da extensão.</p>
                 <div style="margin-bottom: 20px;">
-                    <label style="display: flex; align-items: center; margin-bottom: 8px; font-size: 13px;">
-                        <input type="radio" name="clickBehavior" value="popup" checked style="margin-right: 8px;">
-                        Abrir Popup (Padrão)
-                    </label>
-                    <label style="display: flex; align-items: center; font-size: 13px;">
-                        <input type="radio" name="clickBehavior" value="sidepanel" style="margin-right: 8px;">
-                        Abrir Painel Lateral
+                    <label style="display: flex; align-items: center; font-size: 13px; cursor: pointer;">
+                        <input type="checkbox" id="popupToggle" style="margin-right: 8px;">
+                        <span>Ativar Popup (Desativado por padrão)</span>
                     </label>
                 </div>
 
@@ -125,7 +121,7 @@ export class SettingsView {
         const resetDomainBtn = document.getElementById('resetDomainBtn');
         const saveConfigBtn = document.getElementById('saveConfigBtn');
 
-        const behaviorRadios = document.getElementsByName('clickBehavior');
+        const popupToggle = document.getElementById('popupToggle');
 
         // Carregar dados salvos
         chrome.storage.sync.get(['userEmail', 'customDomain', 'clickBehavior'], (result) => {
@@ -136,20 +132,19 @@ export class SettingsView {
                 raInput.value = extractRa(result.userEmail);
             }
 
-            // Load Behavior
-            const savedBehavior = result.clickBehavior || 'popup';
-            for (const radio of behaviorRadios) {
-                if (radio.value === savedBehavior) {
-                    radio.checked = true;
-                }
+            // Load Behavior (Default is sidepanel, so popup is unchecked)
+            const savedBehavior = result.clickBehavior || 'sidepanel';
+            if (popupToggle) {
+                popupToggle.checked = (savedBehavior === 'popup');
             }
         });
 
         // Listen for Behavior Change
-        for (const radio of behaviorRadios) {
-            radio.addEventListener('change', (e) => {
-                chrome.storage.sync.set({ clickBehavior: e.target.value }, () => {
-                    // Automatically saved
+        if (popupToggle) {
+            popupToggle.addEventListener('change', (e) => {
+                const behavior = e.target.checked ? 'popup' : 'sidepanel';
+                chrome.storage.sync.set({ clickBehavior: behavior }, () => {
+                    // Saved
                 });
             });
         }

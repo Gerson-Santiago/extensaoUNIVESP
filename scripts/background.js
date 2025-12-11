@@ -15,16 +15,18 @@ function updatePanelBehavior(behavior) {
     }
 }
 
-// Inicialização
+// Initial
 chrome.runtime.onInstalled.addListener(() => {
     chrome.storage.sync.get(['clickBehavior'], (result) => {
-        updatePanelBehavior(result.clickBehavior || 'popup');
+        // Padrão agora é 'sidepanel'
+        updatePanelBehavior(result.clickBehavior || 'sidepanel');
     });
 });
 
 chrome.runtime.onStartup.addListener(() => {
     chrome.storage.sync.get(['clickBehavior'], (result) => {
-        updatePanelBehavior(result.clickBehavior || 'popup');
+        // Padrão agora é 'sidepanel'
+        updatePanelBehavior(result.clickBehavior || 'sidepanel');
     });
 });
 
