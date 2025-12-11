@@ -11,6 +11,15 @@ export class CoursesView {
         div.className = 'view-courses';
         div.innerHTML = `
             <h2>Minhas Matérias</h2>
+            
+            <div class="course-legend">
+                <span class="legend-left">Matéria</span>
+                <div class="legend-right">
+                    <span>Ver semana</span>
+                    <span>Remover</span>
+                </div>
+            </div>
+
             <ul id="itemList" class="item-list"></ul>
         `;
         return div;

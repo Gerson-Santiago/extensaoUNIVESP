@@ -97,7 +97,8 @@ main#main-content {
   background: white;
   border: 1px solid #ddd;
   border-radius: 6px;
-  padding: 8px; /* Reduced from 12px */
+  padding: 8px;
+  /* Reduced from 12px */
   text-decoration: none;
   color: #004b8d;
   font-weight: 500;
@@ -107,7 +108,8 @@ main#main-content {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  height: 50px; /* Reduced from 60px */
+  height: 50px;
+  /* Reduced from 60px */
   text-align: center;
 }
 
@@ -291,6 +293,30 @@ h2 {
   color: #333;
   font-size: 18px;
   margin-top: 0;
+}
+
+/* Legend Styles */
+.course-legend {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 10px;
+  /* Matches item padding */
+  margin-bottom: 5px;
+  font-size: 11px;
+  color: #999;
+}
+
+.legend-left {
+  flex-grow: 1;
+}
+
+.legend-right {
+  display: flex;
+  gap: 10px;
+  /* Adjust based on button spacing */
+  margin-right: 5px;
+  /* Align slightly with buttons */
 }
 
 .item-list {
