@@ -1,113 +1,130 @@
 /**
- * Scraper para importação em lote de matérias.
- * Foca na página de cursos do AVA (/ultra/course).
+ * Lógica para scraping em lote de cursos na página /ultra/course
  */
 
-// Função injetada na página para ler o DOM
-function DOM_scanTerms_Injected() {
-    // 1. Validação simples de URL (embora o sidepanel já deva ter verificado)
-    if (!window.location.href.includes('ultra/course')) {
-        return { error: 'Você precisa estar na página de Cursos do AVA.' };
+// Função injetável que roda no contexto da página
+function DOM_extractCourses_Injected(maxCourses) {
+    const results = {
+        success: false,
+        courses: [],
+        message: ""
+    };
+
+    // 1. Verifica se estamos na URL correta
+    if (!window.location.href.includes('/ultra/course')) {
+        results.message = "Por favor, acesse a página de Cursos do AVA (Menu Lateral > Cursos).";
+        return results;
     }
 
-    // 2. Verificação do Filtro "Cursos abertos"
-    // O elemento pode variar, tentamos detectar pelo input hidden ou pelo texto visual
-    const filterInput = document.querySelector('input[value="filter-open-courses"]');
-    const filterTextDiv = document.getElementById('courses-overview-filter-filters');
+    // 2. Verifica Filtro "Cursos Abertos"
+    // O input hidden que guarda o valor do filtro
+    const filterInput = document.querySelector('input[data-analytics-id="course.overview.filter"]');
+    if (!filterInput || filterInput.value !== 'filter-open-courses') {
+        const currentFilterName = document.getElementById('courses-overview-filter-filters');
+        const filterName = currentFilterName ? currentFilterName.innerText : "Desconhecido";
 
-    let isFilterCorrect = false;
-    if (filterInput) isFilterCorrect = true;
-    if (filterTextDiv && filterTextDiv.innerText.toLowerCase().includes('abertos')) isFilterCorrect = true;
-
-    if (!isFilterCorrect) {
-        return { error: 'Por favor, selecione o filtro "Cursos abertos" na página.' };
+        if (filterName !== "Cursos abertos") {
+            results.message = `O filtro atual é "${filterName}". Por favor, mude para "Cursos abertos" na página antes de importar.`;
+            return results;
+        }
     }
 
-    // 3. Mapeamento de Termos e Matérias
-    // A estrutura do AVA geralmente agrupa cursos por Termos (h3 headers)
-    const termsFound = [];
+    // 3. Localiza o Bimestre Atual
+    // Procura headers de agrupamento (ex: "2025/2 - 4º Bimestre")
+    // A estrutura é complexa, baseada em ng-switch-when
+    const termHeaders = Array.from(document.querySelectorAll('h3[ng-switch-when="REGULAR_TERM"]'));
+    let targetContainer = null;
 
-    // Seleciona todos os headers de termo
-    const termHeaders = document.querySelectorAll('h3[ng-switch-when="REGULAR_TERM"]');
+    // Tenta achar o termo atual (isCurrentTerm) ou assume o primeiro da lista
+    // O Angular remove as classes do DOM às vezes, então buscamos pelo texto ou estrutura
 
-    termHeaders.forEach(header => {
-        const termName = header.innerText.trim();
-        const courses = [];
+    // Se houver headers, pegamos o primeiro visible (que geralmente é o atual/mais recente)
+    // Ou tentamos lógica de "Bimestre" no texto
+    let termHeader = null;
 
-        // O container de cursos geralmente é o próximo irmão ou pai próximo. 
-        // No Ultra, a estrutura é complexa. Geralmente o h3 está dentro de um container de termo.
-        // Vamos tentar achar o container pai que engloba a lista de cursos deste termo.
-        // Estrutura comum: div.term-group > h3 + ul.course-list
-        // Ou o h3 está solto e os cursos vêm e seguida.
+    if (termHeaders.length > 0) {
+        // Pega o primeiro termo listado (que costuma ser o atual na ordenação padrão)
+        termHeader = termHeaders[0];
+    }
 
-        // Estratégia: Pegar o elemento pai do h3 e buscar cursos dentro dele? 
-        // Não, as vezes o pai é só um wrapper do título.
-        // Vamos buscar o container 'group-courses-term-*' ou similar que siga este header.
+    if (!termHeader) {
+        // Fallback: se não achar header de termo, tenta pegar a lista geral (pode não estar agrupada)
+        // Mas a UI do Ultra geralmente agrupa.
+        results.message = "Não foi possível identificar o grupo de bimestres. Verifique se há cursos listados.";
+        return results;
+    }
 
-        // Tentativa de navegação DOM: Subir até achar o bloco do termo
-        let termBlock = header.closest('.term-group') || header.closest('section') || header.parentElement;
+    // O container de cursos geralmente é o próximo irmão ou pai próximo.
+    // Na estrutura do Ultra, o h3 está dentro de um div que é irmão de uma <ul class="course-list"> ou similar.
+    // Estrutura observada no request: 
+    // div > h3 (termo)
+    // logo depois tem uma lista de cards.
 
-        if (termBlock) {
-            // Busca cursos dentro deste bloco
-            const courseLinks = termBlock.querySelectorAll('a.course-title');
+    // Vamos buscar os elementos de titulo de curso que estão VISÍVEIS
+    const courseTitles = Array.from(document.querySelectorAll('h4.js-course-title-element'));
 
-            courseLinks.forEach(link => {
-                const h4 = link.querySelector('h4.js-course-title-element');
-                if (h4) {
-                    const cName = h4.innerText.trim();
-                    let cUrl = link.href;
+    let count = 0;
 
-                    // Limpeza de URL (algumas vêm como javascript: ou relativas)
-                    if (cUrl && cUrl.includes('javascript:')) {
-                        // Tenta pegar id do curso no onclick se não tiver href limpo, 
-                        // mas geralmente o href é javascript:void(0) e o click é angular.
-                        // Mas o AVA costuma ter o ID no id do elemento: course-link-_12345_1
-                        // E a URL real é /ultra/courses/_12345_1/cl/outline ??
-                        // NÃO, o link direto para o curso clássico é:
-                        // /webapps/blackboard/execute/launcher?type=Course&id=_12345_1&url=
+    for (const titleEl of courseTitles) {
+        if (count >= maxCourses) break;
 
-                        // Vamos tentar extrair o ID do curso do atributo id="course-link-_15307_1"
-                        const idAttr = link.id; // ex: course-link-_15307_1
-                        if (idAttr && idAttr.startsWith('course-link-')) {
-                            const courseId = idAttr.replace('course-link-', '');
-                            // Monta URL padrão de acesso ao curso
-                            cUrl = `https://ava.univesp.br/webapps/blackboard/execute/launcher?type=Course&id=${courseId}&url=`;
-                        }
-                    }
+        // Verifica se o elemento está visível
+        if (titleEl.offsetParent === null) continue;
 
-                    if (cName && cUrl && !cUrl.includes('javascript:')) {
-                        courses.push({ name: cName, url: cUrl });
-                    }
-                }
-            });
+        const linkEl = titleEl.closest('a');
+        if (!linkEl) continue;
+
+        const name = titleEl.innerText.trim();
+        let url = linkEl.href;
+
+        // Se for javascript:void(0), tenta extrair ID do ID do elemento e montar URL
+        // id="course-link-_15307_1" -> CourseUUID = _15307_1
+        if (url.startsWith('javascript') || !url.includes('http')) {
+            const idAttr = linkEl.id; // course-link-_XXXXX_1
+            if (idAttr && idAttr.startsWith('course-link-')) {
+                const courseId = idAttr.replace('course-link-', '');
+                // URL padrão do curso clássico/ultra
+                url = window.location.origin + `/webapps/blackboard/execute/launcher?type=Course&id=${courseId}&url=`;
+            }
         }
 
-        if (courses.length > 0) {
-            termsFound.push({
-                termName: termName,
-                courses: courses
-            });
+        if (name && url && !coursesExists(results.courses, url)) {
+            // Limpeza do nome (remove código da turma se desejar, mas o usuário pediu para identificar materia)
+            // Ex: "Inglês - LET100 - Turma 006" -> Mantemos full por enquanto para diferenciar
+            results.courses.push({ name: name, url: url });
+            count++;
         }
-    });
+    }
 
-    return { terms: termsFound };
+    if (results.courses.length === 0) {
+        results.message = "Nenhum curso encontrado visível. Verifique se os cursos carregaram.";
+    } else {
+        results.success = true;
+        results.message = `Encontrados ${results.courses.length} cursos.`;
+    }
+
+    return results;
+
+    function coursesExists(list, url) {
+        return list.some(c => c.url === url);
+    }
 }
 
-
-export async function scanAvailableTerms(tabId) {
+export async function scrapeCourseList(tabId, maxCourses = 6) {
     try {
         const results = await chrome.scripting.executeScript({
             target: { tabId: tabId },
-            func: DOM_scanTerms_Injected
+            func: DOM_extractCourses_Injected,
+            args: [maxCourses]
         });
 
         if (results && results[0] && results[0].result) {
             return results[0].result;
         }
-        return { error: 'Falha ao comunicar com a página.' };
+        return { success: false, message: "Falha na comunicação com a página." };
 
     } catch (error) {
         console.error(error);
-        return { error: 'Erro interno ao executar script: ' + error.message };
+        return { success: false, message: "Erro ao executar script: " + error.message };
     }
 }

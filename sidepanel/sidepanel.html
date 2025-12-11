@@ -10,19 +10,26 @@
 
     <!-- VIEW HOME: Lista de Matérias -->
     <div id="view-home">
-        <h2>Minhas Matérias</h2>
+        <div class="home-header">
+            <h2>Minhas Matérias</h2>
+            <button id="settingsBtn" class="btn-icon" title="Configurações">⚙️</button>
+        </div>
 
         <ul id="itemList" class="item-list">
             <!-- Itens serão inseridos via JS -->
         </ul>
 
-        <ul id="itemList" class="item-list">
-            <!-- Itens serão inseridos via JS -->
-        </ul>
-        <!-- Add Form removido daqui. Agora acessível via Menu de Configurações. -->
-    </div>
+        <div class="add-form">
+            <button id="addCurrentBtn" class="btn-current">Adicionar Página Atual</button>
+            <div style="text-align: center; margin-bottom: 8px; font-size: 12px; color: #666;">ou adicione manualmente:
+            </div>
+            <input type="text" id="nameInput" class="input-field" placeholder="Nome da Matéria">
+            <input type="text" id="urlInput" class="input-field" placeholder="https://...">
+            <button id="addBtn" class="btn-add">Adicionar</button>
+        </div>
     </div>
 
+    <!-- VIEW DETAILS: Detalhes da Matéria (Semanas) -->
     <div id="view-details" style="display: none;">
         <div class="details-header">
             <button id="backBtn" class="btn-back">← Voltar</button>
@@ -41,75 +48,30 @@
         </div>
     </div>
 
-    <!-- Settings / Batch Import Modal -->
-    <div id="modal-settings" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Importação em Lote</h3>
-                <button id="closeSettingsBtn" class="btn-close">×</button>
-            </div>
-
-            <div class="modal-body">
-                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">
-                    Acesse a página "Cursos" do AVA, selecione filtrar por "Abertos" e clique abaixo.
-                </p>
-
-                <!-- Step 1: Scan -->
-                <button id="btnScanTerms" class="btn-add" style="background-color: #004b8d; margin-bottom: 15px;">
-                    1. Escanear Matérias
-                </button>
-
-                <!-- Step 2: Configure (Hidden initially) -->
-                <div id="batchConfigStep" style="display: none;">
-
-                    <label class="input-label">Bimestre / Termo:</label>
-                    <select id="termSelect" class="input-field"></select>
-
-                    <label class="input-label">Quantidade de Matérias:</label>
-                    <input type="number" id="courseLimitInput" class="input-field" value="3" min="1" max="20">
-
-                    <div class="preview-box">
-                        <strong>Pré-visualização:</strong>
-                        <ul id="previewList" class="preview-list"></ul>
-                    </div>
-
-                    <button id="btnConfirmImport" class="btn-add" style="margin-top: 10px;">
-                        Confirmar Importação
-                    </button>
-                </div>
-
-                <div id="scanStatus" style="margin-top:10px; font-size:12px; color:#d9534f;"></div>
-            </div>
+    <div id="view-settings" style="display: none;">
+        <div class="details-header">
+            <button id="closeSettingsBtn" class="btn-back">← Voltar</button>
+            <h2>Configurações</h2>
         </div>
-    </div>
 
-    <!-- Modal: Manual Add -->
-    <div id="modal-manual-add" class="modal-overlay" style="display: none;">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>Adicionar Manualmente</h3>
-                <button id="closeManualBtn" class="btn-close">×</button>
+        <div class="settings-content">
+            <h3>Importação em Lote</h3>
+            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
+                Acesse a página de cursos do AVA e importe automaticamente suas matérias do bimestre atual.
+            </p>
+
+            <div class="form-group">
+                <label for="batchCount">Importar os primeiros:</label>
+                <input type="number" id="batchCount" value="6" min="1" max="20" style="width: 50px; padding: 5px;">
+                <span style="font-size: 12px;">cursos</span>
             </div>
-            <div class="modal-body">
-                <label class="input-label">Nome da Matéria:</label>
-                <input type="text" id="manualNameInput" class="input-field" placeholder="Ex: Engenharia de Software">
 
-                <label class="input-label">URL do AVA:</label>
-                <input type="text" id="manualUrlInput" class="input-field" placeholder="https://ava.univesp.br/...">
+            <button id="btnImportBatch" class="btn-add" style="width: 100%; margin-top: 10px;">
+                Importar Cursos do Bimestre
+            </button>
 
-                <button id="btnConfirmManualAdd" class="btn-add">Adicionar</button>
-            </div>
+            <div id="batchStatus" style="margin-top: 10px; font-size: 12px; color: #333;"></div>
         </div>
-    </div>
-
-    <!-- Settings Icon (Floating Top Right) -->
-    <div id="settingsIcon" class="settings-icon" title="Configurações">⚙️</div>
-
-    <!-- Dropdown Menu -->
-    <div id="settingsMenu" class="settings-menu" style="display: none;">
-        <div class="menu-item" id="menuAddManual">Adicionar Manualmente</div>
-        <div class="menu-item" id="menuAddCurrent">Adicionar Página Atual</div>
-        <div class="menu-item" id="menuAddBatch">Importação em Lote</div>
     </div>
 
     <script type="module" src="sidepanel.js"></script>
