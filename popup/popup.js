@@ -98,4 +98,43 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
     }
+
+    // 6. ABRIR SIDE PANEL (alternativo, se houver um botão com id 'openSidePanel')
+    // Este bloco foi adicionado com base na sua instrução, mas pode ser redundante ou precisar de um botão específico no HTML.
+    // Se 'openSidePanelBtn' e 'openSidePanel' se referem ao mesmo elemento, este bloco pode ser mesclado ou removido.
+    const openSidePanelById = document.getElementById('openSidePanel');
+    if (openSidePanelById) {
+        openSidePanelById.addEventListener('click', () => {
+            // Tenta abrir o sidepanel programaticamente (requer permissão e user gesture)
+            // Como fallback, o manifesto define o comportamento padrão do ícone se action não tivesse popup.
+            // Mas como temos popup, usamos:
+            chrome.sidePanel.setOptions({ path: 'sidepanel/sidepanel.html', enabled: true });
+            chrome.sidePanel.open({ windowId: chrome.windows.WINDOW_ID_CURRENT }).catch(err => {
+                console.error('Erro ao abrir sidepanel:', err);
+                // Fallback: orientar usuário
+                alert('Clique no ícone da extensão na barra de ferramentas e selecione "Abrir Painel Lateral" se disponível, ou fixe a extensão.');
+            });
+        });
+    }
+
+    // 7. VISUALIZAR LOGS
+    const viewLogsBtn = document.getElementById('viewLogs');
+    if (viewLogsBtn) {
+        viewLogsBtn.addEventListener('click', () => {
+            chrome.storage.local.get(['lastDebugLog'], (result) => {
+                const logs = result.lastDebugLog;
+                if (logs && logs.length > 0) {
+                    const logText = logs.join('\n');
+                    // Copia para clipboard e avisa
+                    navigator.clipboard.writeText(logText).then(() => {
+                        alert('Logs copiados para a área de transferência:\n\n' + logText);
+                    }).catch(err => {
+                        alert('Logs (erro ao copiar):\n' + logText);
+                    });
+                } else {
+                    alert('Nenhum log registrado ainda.\nTente usar "Atualizar Semanas" no Painel Lateral primeiro.');
+                }
+            });
+        });
+    }
 });

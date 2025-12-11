@@ -9,6 +9,10 @@
     "scripting",
     "tabs"
   ],
+  "host_permissions": [
+    "https://sei.univesp.br/*",
+    "https://ava.univesp.br/*"
+  ],
   "side_panel": {
     "default_path": "sidepanel/sidepanel.html"
   },

@@ -56,17 +56,26 @@ document.addEventListener('DOMContentLoaded', () => {
             // Identifica a aba atual para tentar fazer scrape
             chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
                 if (tabs && tabs[0]) {
-                    // Verifica se a URL atual "bate" com a do curso (opcional refinar essa lógica)
-                    // Por enquanto, vamos confiar que o usuário está na página certa se clicou em Refresh,
-                    // mas idealmente avisamos se não estiver.
-                    // Vamos tentar rodar o scrapper de qualquer forma.
+                    // Tenta executar o scraper na aba identificada.
+                    // O scraper retorna um objeto { weeks, logs } ou um array direto (compatibilidade).
 
-                    const newWeeks = await scrapeWeeksFromTab(tabs[0].id);
+                    const result = await scrapeWeeksFromTab(tabs[0].id);
+                    let newWeeks = [];
+
+                    if (result.weeks) {
+                        newWeeks = result.weeks;
+                        if (result.logs) {
+                            chrome.storage.local.set({ lastDebugLog: result.logs });
+                        }
+                    } else {
+                        newWeeks = result;
+                    }
+
                     if (newWeeks && newWeeks.length > 0) {
                         // Atualiza no storage
                         updateItem(course.id, { weeks: newWeeks }, () => {
-                            // Atualiza a view atual (recursivo, mas seguro pois currentCourse vai mudar ref mas id é mesmo)
-                            // Preciso atualizar o obj currentCourse em memória também ou recarregar
+                            // Atualiza a visualização atual (recursivo).
+                            // Atualizamos também o objeto em memória para refletir a mudança imediata.
                             course.weeks = newWeeks;
                             showDetails(course);
                             alert('Semanas atualizadas!');
@@ -131,7 +140,17 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let weeks = [];
                 if (tab.url.startsWith('http')) {
-                    weeks = await scrapeWeeksFromTab(tab.id);
+                    const result = await scrapeWeeksFromTab(tab.id);
+                    // Suporte para retorno { weeks, logs }
+                    if (result.weeks) {
+                        weeks = result.weeks;
+                        if (result.logs) {
+                            chrome.storage.local.set({ lastDebugLog: result.logs });
+                        }
+                    } else {
+                        // Fallback para retorno antigo (array direto)
+                        weeks = result;
+                    }
                 }
 
                 addItem(name, tab.url, weeks, () => renderHome());
