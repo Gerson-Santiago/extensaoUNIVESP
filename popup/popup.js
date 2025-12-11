@@ -48,24 +48,24 @@ document.addEventListener('DOMContentLoaded', () => {
         domainInput.value = CONSTANTS.DEFAULT_DOMAIN;
     });
 
-    // 4. LINK GITHUB
-    if (githubLink) {
-        githubLink.addEventListener('click', (e) => {
-            e.preventDefault();
-            chrome.tabs.create({ url: githubLink.href });
-        });
-    }
+    // 4. LINK GITHUB (Rodapé tratado abaixo/unificado)
 
     // 5. ABRIR SIDE PANEL
     if (openSidePanelBtn) {
         openSidePanelBtn.addEventListener('click', () => {
-            chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
+            chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
                 if (tabs.length > 0) {
                     const windowId = tabs[0].windowId;
                     if (chrome.sidePanel && chrome.sidePanel.open) {
-                        chrome.sidePanel.open({ windowId: windowId })
-                            .catch((error) => console.error("Erro ao abrir painel:", error));
-                        window.close();
+                        try {
+                            // Tenta abrir o painel
+                            await chrome.sidePanel.open({ windowId: windowId });
+                            // Se der certo, fecha o popup (opcional, mas comum para "transferir" o foco)
+                            window.close();
+                        } catch (error) {
+                            console.error("Erro ao abrir painel:", error);
+                            alert("Não foi possível abrir o Painel Lateral. Verifique se você está em uma página permitida.");
+                        }
                     } else {
                         alert("Seu navegador não suporta abrir o Painel Lateral automaticamente. Por favor, abra-o manualmente pelo menu do navegador.");
                     }
@@ -74,18 +74,21 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. ABRIR SIDE PANEL (alternativo)
-    const openSidePanelById = document.getElementById('openSidePanel');
-    if (openSidePanelById) {
-        openSidePanelById.addEventListener('click', () => {
-            // Fallback usando setOptions se necessário, embora open() seja preferido onde suportado
-            if (chrome.sidePanel && chrome.sidePanel.open) {
-                chrome.sidePanel.open({ windowId: chrome.windows.WINDOW_ID_CURRENT }).catch(err => {
-                    console.error('Erro ao abrir sidepanel:', err);
-                });
-            } else {
-                chrome.sidePanel.setOptions({ path: 'sidepanel/sidepanel.html', enabled: true });
-            }
-        });
+    // 6. LINKS DE RODAPÉ
+    const devLink = document.getElementById('devLink');
+    const githubIconLink = document.getElementById('githubIconLink');
+
+    function openInNewTab(e) {
+        e.preventDefault();
+        chrome.tabs.create({ url: this.href });
+    }
+
+    if (devLink) {
+        devLink.addEventListener('click', openInNewTab);
+    }
+
+    // Mantendo consistência para o ícone, caso ele não tivesse ID antes ou para garantir o uso de chrome.tabs.create
+    if (githubIconLink) {
+        githubIconLink.addEventListener('click', openInNewTab);
     }
 });
