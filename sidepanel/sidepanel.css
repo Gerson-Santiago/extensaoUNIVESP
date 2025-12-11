@@ -97,7 +97,7 @@ main#main-content {
   background: white;
   border: 1px solid #ddd;
   border-radius: 6px;
-  padding: 12px;
+  padding: 8px; /* Reduced from 12px */
   text-decoration: none;
   color: #004b8d;
   font-weight: 500;
@@ -107,8 +107,7 @@ main#main-content {
   align-items: center;
   justify-content: center;
   transition: all 0.2s;
-  height: 60px;
-  /* Fixed height for consistency */
+  height: 50px; /* Reduced from 60px */
   text-align: center;
 }
 
@@ -120,8 +119,7 @@ main#main-content {
 }
 
 .blackboard-card {
-  /* Destaque para o AVA */
-  border-color: #004b8d;
+  /* Destaque para o AVA (apenas fundo) */
   background-color: #fcfcfc;
 }
 
