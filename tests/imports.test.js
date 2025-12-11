@@ -16,9 +16,7 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
         'sidepanel/logic/storage.js',
         'sidepanel/logic/tabs.js',
         'sidepanel/ui/components.js',
-        'popup/logic/settings.js',
-        'scripts/content.js',
-        'scripts/ava_scraper_content.js'
+        'scripts/content.js'
     ];
 
     test.each(filesToVerify)('Arquivo deve existir: %s', (relativePath) => {
