@@ -24,3 +24,16 @@ export function deleteItem(id, callback) {
         saveItems(newCourses, callback);
     });
 }
+
+export function updateItem(id, updates, callback) {
+    loadItems((courses) => {
+        const index = courses.findIndex(c => c.id === id);
+        if (index !== -1) {
+            courses[index] = { ...courses[index], ...updates };
+            saveItems(courses, callback);
+        } else {
+            console.warn(`Item com id ${id} não encontrado para atualização.`);
+            if (callback) callback();
+        }
+    });
+}

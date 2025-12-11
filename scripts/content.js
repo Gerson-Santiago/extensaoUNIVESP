@@ -10,21 +10,21 @@ function preencherEmail() {
         }
 
         const campoEmail = document.getElementById('form:email');
-        
+
         // Verifica se o campo existe e está vazio
         if (campoEmail && campoEmail.value === "") {
-            
+
             // Preenche com o valor recuperado da memória
             campoEmail.value = emailSalvo;
-            
+
             // Eventos para validar no sistema Java/JSF
             campoEmail.dispatchEvent(new Event('input', { bubbles: true }));
             campoEmail.dispatchEvent(new Event('change', { bubbles: true }));
             campoEmail.dispatchEvent(new Event('blur', { bubbles: true }));
-            
+
             // Pinta de amarelo suave para confirmar
-            campoEmail.style.backgroundColor = "#fffham"; 
-            
+            campoEmail.style.backgroundColor = "#ffffd0";
+
             console.log("Extensão UNIVESP: Email preenchido automaticamente.");
         }
     });

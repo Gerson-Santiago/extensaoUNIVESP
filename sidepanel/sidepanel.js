@@ -1,5 +1,5 @@
 import { DOM_extractWeeks, scrapeWeeksFromTab } from './logic/scraper.js';
-import { loadItems, addItem, deleteItem } from './logic/storage.js';
+import { loadItems, addItem, deleteItem, updateItem } from './logic/storage.js';
 import { openOrSwitchToTab } from './logic/tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -18,6 +18,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const backBtn = document.getElementById('backBtn');
     const detailsTitle = document.getElementById('detailsTitle');
     const openCourseBtn = document.getElementById('openCourseBtn');
+    const refreshWeeksBtn = document.getElementById('refreshWeeksBtn');
     const weeksList = document.getElementById('weeksList');
 
     let currentCourse = null; // Armazena o curso selecionado atualmente
@@ -45,6 +46,38 @@ document.addEventListener('DOMContentLoaded', () => {
         // Setup Main Button
         openCourseBtn.onclick = () => {
             openOrSwitchToTab(course.url);
+        };
+
+        // Setup Refresh Button
+        refreshWeeksBtn.onclick = async () => {
+            refreshWeeksBtn.disabled = true;
+            refreshWeeksBtn.textContent = '...';
+
+            // Identifica a aba atual para tentar fazer scrape
+            chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+                if (tabs && tabs[0]) {
+                    // Verifica se a URL atual "bate" com a do curso (opcional refinar essa lógica)
+                    // Por enquanto, vamos confiar que o usuário está na página certa se clicou em Refresh,
+                    // mas idealmente avisamos se não estiver.
+                    // Vamos tentar rodar o scrapper de qualquer forma.
+
+                    const newWeeks = await scrapeWeeksFromTab(tabs[0].id);
+                    if (newWeeks && newWeeks.length > 0) {
+                        // Atualiza no storage
+                        updateItem(course.id, { weeks: newWeeks }, () => {
+                            // Atualiza a view atual (recursivo, mas seguro pois currentCourse vai mudar ref mas id é mesmo)
+                            // Preciso atualizar o obj currentCourse em memória também ou recarregar
+                            course.weeks = newWeeks;
+                            showDetails(course);
+                            alert('Semanas atualizadas!');
+                        });
+                    } else {
+                        alert('Nenhuma semana encontrada nesta página. \nCertifique-se de estar na página da matéria.');
+                    }
+                }
+                refreshWeeksBtn.disabled = false;
+                refreshWeeksBtn.textContent = '↻';
+            });
         };
 
         // Render Weeks
@@ -125,9 +158,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 const infoDiv = document.createElement('div');
                 infoDiv.className = 'item-info';
                 infoDiv.onclick = () => {
-                    // Ao clicar na matéria: Abre nova aba E navega para detalhes
-                    // A pedido do usuário: "Quando eu clicar numa materia vai no navegador abrir a materia então o sidepanel... abrir as opções"
-                    chrome.tabs.create({ url: course.url });
+                    // Ao clicar na matéria: Abre nova aba (ou foca) E navega para detalhes
+                    openOrSwitchToTab(course.url);
                     showDetails(course);
                 };
 

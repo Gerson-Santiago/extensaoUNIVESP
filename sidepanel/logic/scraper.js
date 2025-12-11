@@ -12,9 +12,23 @@ export function DOM_extractWeeks() {
         const title = (a.title || "").trim();
         const href = a.href;
 
-        // Verifica se tem "Semana" no texto ou título
-        if ((text.includes('Semana') || title.includes('Semana')) && href) {
-            let name = text || title;
+        // Lógica de Detecção refinada:
+        // 1. Verifica Texto direto
+        // 2. Verifica Title do link
+        // 3. Verifica Title de spans filhas (estrutura Blackboard)
+        let foundTitle = title;
+        if (!foundTitle && a.querySelector('span[title]')) {
+            foundTitle = a.querySelector('span[title]').title;
+        }
+
+        const cleanText = (text || "").trim();
+        const cleanTitle = (foundTitle || "").trim();
+
+        if ((cleanText.includes('Semana') || cleanTitle.includes('Semana')) && href) {
+            let name = cleanText;
+            if (cleanTitle.includes('Semana')) {
+                name = cleanTitle;
+            }
             weeks.push({ name: name, url: href });
         }
     });
