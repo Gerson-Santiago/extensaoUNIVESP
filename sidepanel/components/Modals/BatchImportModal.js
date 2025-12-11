@@ -102,9 +102,21 @@ export class BatchImportModal extends Modal {
                                 });
                             });
                         } else {
-                            status.textContent = `Erro na leitura: ${result.message}`;
-                            status.style.color = 'red';
-                            btnRun.disabled = false;
+                            // Se o scraper disser que estamos na página errada ou filtro errado, tentamos ajustar/redirecionar
+                            if (result.message.includes('acesse a página de Cursos') || result.message.includes('filtro atual')) {
+                                status.textContent = 'Ajustando página/filtro...';
+                                status.style.color = '#0056b3';
+                                chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
+                                setTimeout(() => {
+                                    status.textContent = 'Página recarregada. Tente novamente.';
+                                    status.style.color = '#333';
+                                    btnRun.disabled = false;
+                                }, 3000);
+                            } else {
+                                status.textContent = `Erro na leitura: ${result.message}`;
+                                status.style.color = 'red';
+                                btnRun.disabled = false;
+                            }
                         }
                     } catch (e) {
                         status.textContent = `Erro inesperado: ${e.message}`;
