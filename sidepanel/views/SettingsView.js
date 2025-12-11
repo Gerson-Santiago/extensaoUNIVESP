@@ -35,6 +35,21 @@ export class SettingsView {
 
                 <hr class="divider">
 
+                <h3>Comportamento ao Clicar</h3>
+                <p class="config-desc">Escolha o que acontece ao clicar no ícone da extensão.</p>
+                <div style="margin-bottom: 20px;">
+                    <label style="display: flex; align-items: center; margin-bottom: 8px; font-size: 13px;">
+                        <input type="radio" name="clickBehavior" value="popup" checked style="margin-right: 8px;">
+                        Abrir Popup (Padrão)
+                    </label>
+                    <label style="display: flex; align-items: center; font-size: 13px;">
+                        <input type="radio" name="clickBehavior" value="sidepanel" style="margin-right: 8px;">
+                        Abrir Painel Lateral
+                    </label>
+                </div>
+
+                <hr class="divider">
+
                 <h3>Gerenciar Matérias</h3>
                 <p class="config-desc">Opções para adicionar ou remover cursos.</p>
 
@@ -66,7 +81,7 @@ export class SettingsView {
             </div>
             
             <div class="footer-info">
-                <span>Versão 2.1.1</span>
+                <!-- Version removed -->
             </div>
         `;
         return div;
@@ -110,17 +125,36 @@ export class SettingsView {
         const resetDomainBtn = document.getElementById('resetDomainBtn');
         const saveConfigBtn = document.getElementById('saveConfigBtn');
 
+        const behaviorRadios = document.getElementsByName('clickBehavior');
+
         // Carregar dados salvos
-        chrome.storage.sync.get(['userEmail', 'customDomain'], (result) => {
+        chrome.storage.sync.get(['userEmail', 'customDomain', 'clickBehavior'], (result) => {
             const domain = resolveDomain(result.userEmail, result.customDomain);
             if (domainInput) domainInput.value = domain;
 
             if (result.userEmail && raInput) {
                 raInput.value = extractRa(result.userEmail);
             }
+
+            // Load Behavior
+            const savedBehavior = result.clickBehavior || 'popup';
+            for (const radio of behaviorRadios) {
+                if (radio.value === savedBehavior) {
+                    radio.checked = true;
+                }
+            }
         });
 
-        // Salvar
+        // Listen for Behavior Change
+        for (const radio of behaviorRadios) {
+            radio.addEventListener('change', (e) => {
+                chrome.storage.sync.set({ clickBehavior: e.target.value }, () => {
+                    // Automatically saved
+                });
+            });
+        }
+
+        // Salvar Credenciais
         if (saveConfigBtn) {
             saveConfigBtn.addEventListener('click', () => {
                 const ra = raInput.value;
