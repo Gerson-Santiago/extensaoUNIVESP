@@ -9,31 +9,29 @@ Isso causava dois problemas:
 1.  **Bloqueio de CORS**: O navegador impedia que a extensão fizesse pedidos de rede para `ava.univesp.br` porque a "origem" do pedido era diferente.
 2.  **Permissão de Script**: O Chrome bloqueia injeções de script a menos que o usuário aprove explicitamente a permissão "Ler e alterar dados".
 
-## 2. A Solução: Padrão de Mensageria (Messaging Pattern)
+## 2. A Solução: Injeção Segura (Injection Pattern)
 
-Na versão 2.1, alteramos a arquitetura para o **Padrão de Mensageria**.
+Na versão final 2.1, refinamos a técnica de injeção de scripts para ser segura e robusta.
 
 ### Como Funciona:
-1.  **Content Script Persistente** (`scripts/ava_scraper_content.js`):
-    *   Este script é declarado no `manifest.json` com `all_frames: true`.
-    *   Ele é carregado automaticamente pelo navegador assim que você entra no Blackboard.
-    *   Ele "mora" na página, então tem acesso nativo ao DOM e à sessão do usuário (cookies), sem precisar de "injeção" forçada.
+1.  **Permissão `activeTab`**:
+    *   No lugar de pedir permissão para "ler tudo", usamos a permissão `activeTab`.
+    *   Isso significa que a extensão só ganha acesso à página quando você CLICA explicitamente no botão. É mais seguro e o Chrome não bloqueia.
 
-2.  **Comunicação (Side Panel)**:
-    *   Quando você clica em "Atualizar", o painel lateral não tenta mais invadir a página.
-    *   Ele apenas envia uma mensagem (`sendMessage`) dizendo: *"Quem estiver aí, me mande as semanas"*.
-    *   O Content Script ouve, coleta os links e responde.
+2.  **Execução Direta (`scripting`)**:
+    *   Quando você clica em "Atualizar", a extensão injeta temporariamente o código de extração (`executeScript`) em todos os frames da página.
+    *   O código roda, coleta os links e retorna para o painel.
+    *   Não deixamos scripts rodando "para sempre" na página (como no padrão de mensageria), o que economiza memória.
 
 ### Por que funcionou agora?
-A correção definitiva envolveu duas etapas:
-1.  **Aprovação de Permissões**: Quando você recarregou a extensão e aprovou as novas permissões (ícone de exclamação no Chrome), liberou o acesso ao site `ava.univesp.br`.
-2.  **Arquitetura Robusta**: O novo método de mensagens é mais seguro e menos propenso a falhas intermitentes, pois não depende de injetar código complexo em tempo real.
+A correção envolveu:
+1.  **Correção de Importação**: Havia um erro de código no `sidepanel.js` que impedia o funcionamento dos botões. Isso foi corrigido.
+2.  **Uso de `activeTab`**: Garante que o Chrome permita a injeção do script exatamente no momento que você precisa.
 
 ## 3. Estrutura de Arquivos
 
-*   `sidepanel/logic/scraper.js`: Agora é apenas um "carteiro". Ele envia a mensagem e recebe a resposta.
-*   `scripts/ava_scraper_content.js`: O "operário". Fica na página, extrai os links e trata URLs relativas.
-*   `manifest.json`: Declara o content script e as permissões mínimas necessárias (`activeTab`).
+*   `sidepanel/logic/scraper.js`: Contém a lógica de extração e a injeta na página sob demanda.
+*   `manifest.json`: Declara a permissão `activeTab` vital para o funcionamento.
 
 ---
 **Desenvolvido por Gerson Santiago**

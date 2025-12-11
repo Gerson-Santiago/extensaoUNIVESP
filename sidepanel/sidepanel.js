@@ -1,4 +1,4 @@
-import { DOM_extractWeeks, scrapeWeeksFromTab } from './logic/scraper.js';
+import { scrapeWeeksFromTab } from './logic/scraper.js';
 import { loadItems, addItem, deleteItem, updateItem } from './logic/storage.js';
 import { openOrSwitchToTab } from './logic/tabs.js';
 
