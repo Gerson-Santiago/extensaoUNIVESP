@@ -65,7 +65,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
 
                     try {
-                        const weeks = await scrapeWeeksFromTab(activeTab.id);
+                        const result = await scrapeWeeksFromTab(activeTab.id);
+                        const weeks = result.weeks || [];
 
                         if (weeks && weeks.length > 0) {
                             updateItem(course.id, { weeks: weeks }, () => {
@@ -77,11 +78,13 @@ document.addEventListener('DOMContentLoaded', () => {
                             alert('Nenhuma semana encontrada nesta página.');
                         }
                     } catch (error) {
+                        console.error(error);
                         alert('Erro ao buscar semanas.');
-                    };
+                    } finally {
+                        refreshWeeksBtn.disabled = false;
+                        refreshWeeksBtn.textContent = '↻';
+                    }
                 }
-                refreshWeeksBtn.disabled = false;
-                refreshWeeksBtn.textContent = '↻';
             });
         };
 
@@ -135,8 +138,17 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
 
                 let weeks = [];
+                let detectedName = null;
+
                 if (tab.url.startsWith('http')) {
-                    weeks = await scrapeWeeksFromTab(tab.id);
+                    const result = await scrapeWeeksFromTab(tab.id);
+                    weeks = result.weeks || [];
+                    detectedName = result.title;
+                }
+
+                // Se o scraper achou um título melhor (h1.panel-title), usa ele.
+                if (detectedName) {
+                    name = detectedName;
                 }
 
                 addItem(name, tab.url, weeks, () => renderHome());

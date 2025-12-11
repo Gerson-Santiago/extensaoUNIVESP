@@ -45,50 +45,65 @@ function DOM_extractWeeks_Injected() {
         }
     });
 
-    return weeks;
-}
+    // Tenta extrair o título da matéria
+        let pageTitle = null;
+        const h1 = document.querySelector('h1.panel-title');
+        if (h1) {
+            pageTitle = h1.innerText.trim();
+        }
+
+        return { weeks: weeks, title: pageTitle };
+    }
 
 export async function scrapeWeeksFromTab(tabId) {
-    try {
-        let allWeeks = [];
+        try {
+            let allWeeks = [];
+            let detectedTitle = null;
 
-        // Injeta a função em TODOS os frames usando scripting (requer activeTab ou host permission, que já temos)
-        const results = await chrome.scripting.executeScript({
-            target: { tabId: tabId, allFrames: true },
-            func: DOM_extractWeeks_Injected
-        });
-
-        if (results && results.length > 0) {
-            results.forEach((frameResult) => {
-                if (frameResult.result && Array.isArray(frameResult.result) && frameResult.result.length > 0) {
-                    allWeeks = allWeeks.concat(frameResult.result);
-                }
+            // Injeta a função em TODOS os frames usando scripting
+            const results = await chrome.scripting.executeScript({
+                target: { tabId: tabId, allFrames: true },
+                func: DOM_extractWeeks_Injected
             });
-        }
 
-        // Remove duplicatas (URL como chave)
-        const uniqueWeeks = [];
-        const map = new Map();
-        for (const item of allWeeks) {
-            if (!item.url) continue;
-            if (!map.has(item.url)) {
-                map.set(item.url, true);
-                uniqueWeeks.push(item);
+            if (results && results.length > 0) {
+                results.forEach((frameResult) => {
+                    if (frameResult.result) {
+                        const res = frameResult.result;
+                        // Suporte para novas e antigas estruturas se algo falhar, mas aqui garantimos o objeto
+                        if (res && Array.isArray(res.weeks)) {
+                            allWeeks = allWeeks.concat(res.weeks);
+                        }
+                        if (res && res.title && !detectedTitle) {
+                            detectedTitle = res.title;
+                        }
+                    }
+                });
             }
+
+            // Remove duplicatas (URL como chave)
+            const uniqueWeeks = [];
+            const map = new Map();
+            for (const item of allWeeks) {
+                if (!item.url) continue;
+                if (!map.has(item.url)) {
+                    map.set(item.url, true);
+                    uniqueWeeks.push(item);
+                }
+            }
+
+            // Ordena por número da semana
+            uniqueWeeks.sort((a, b) => {
+                const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
+                const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
+                return numA - numB;
+            });
+
+            return { weeks: uniqueWeeks, title: detectedTitle };
+
+        } catch (error) {
+            return { weeks: [], title: null };
         }
-
-        // Ordena por número da semana
-        uniqueWeeks.sort((a, b) => {
-            const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
-            const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
-            return numA - numB;
-        });
-
-        return uniqueWeeks;
-
-    } catch (error) {
-        return [];
     }
-}
 
 // A função DOM_extractWeeks não é mais usada aqui, pois foi movida para o content script.
