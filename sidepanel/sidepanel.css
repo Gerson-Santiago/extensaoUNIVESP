@@ -308,9 +308,7 @@ h2 {
   align-items: center;
 }
 
-.legend-left {
-  /* Ocupa 1fr automaticamente */
-}
+
 
 .legend-right {
   display: contents;
