@@ -12,36 +12,12 @@ export class CoursesView {
         div.innerHTML = `
             <h2>Minhas Matérias</h2>
             <ul id="itemList" class="item-list"></ul>
-            
-            <div class="add-form">
-                <div style="text-align: center; margin-bottom: 8px; font-size: 12px; color: #666;">Adicionar manualmente:</div>
-                <input type="text" id="nameInput" class="input-field" placeholder="Nome da Matéria">
-                <input type="text" id="urlInput" class="input-field" placeholder="https://...">
-                <button id="addBtn" class="btn-add">Adicionar</button>
-            </div>
         `;
         return div;
     }
 
     afterRender() {
         this.loadCourses();
-
-        // Setup manual add event
-        const addBtn = document.getElementById('addBtn');
-        if (addBtn) {
-            addBtn.onclick = () => {
-                const nameInput = document.getElementById('nameInput');
-                const urlInput = document.getElementById('urlInput');
-                if (this.callbacks.onManualAdd) {
-                    this.callbacks.onManualAdd(nameInput.value, urlInput.value, () => {
-                        // Refresh after add
-                        nameInput.value = '';
-                        urlInput.value = '';
-                        this.loadCourses();
-                    });
-                }
-            };
-        }
     }
 
     loadCourses() {

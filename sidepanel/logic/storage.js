@@ -22,16 +22,36 @@ export function saveItems(courses, callback) {
 
 /**
  * Adiciona uma nova matéria à lista.
+ * Evita duplicação verificando a URL.
  * @param {string} name - Nome da matéria.
  * @param {string} url - URL da matéria.
  * @param {Array} [weeks=[]] - Lista inicial de semanas.
- * @param {Function} [callback] - Função de retorno após salvar.
+ * @param {Function} [callback] - Função de retorno. Ex: (success, message) => {}
  */
 export function addItem(name, url, weeks = [], callback) {
     loadItems((courses) => {
+        // Normaliza a URL para comparação (opcional: remover query params se necessário, mas por enquanto exata)
+        const exists = courses.some(c => c.url === url);
+
+        if (exists) {
+            console.warn(`Curso com URL já existe: ${url}`);
+            if (callback) callback(false, 'Matéria já adicionada anteriormente.');
+            return;
+        }
+
         courses.push({ id: Date.now(), name, url, weeks });
-        saveItems(courses, callback);
+        saveItems(courses, () => {
+            if (callback) callback(true, 'Matéria adicionada com sucesso!');
+        });
     });
+}
+
+/**
+ * Remove todas as matérias salvas.
+ * @param {Function} [callback] - Função de retorno após limpar.
+ */
+export function clearItems(callback) {
+    saveItems([], callback);
 }
 
 /**

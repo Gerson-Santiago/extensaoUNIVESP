@@ -1,7 +1,16 @@
-import { scrapeCourseList } from '../logic/batchScraper.js';
-import { addItem } from '../logic/storage.js';
+import { AddManualModal } from '../components/Modals/AddManualModal.js';
+import { BatchImportModal } from '../components/Modals/BatchImportModal.js';
+import { addItem, clearItems } from '../logic/storage.js';
+import { scrapeWeeksFromTab } from '../logic/scraper.js';
+import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../utils/settings.js';
 
 export class SettingsView {
+    constructor() {
+        // Inicializa os modais
+        this.addManualModal = new AddManualModal(() => this.showFeedback('Matéria adicionada com sucesso!', 'success'));
+        this.batchImportModal = new BatchImportModal(() => this.showFeedback('Importação concluída!', 'success'));
+    }
+
     render() {
         const div = document.createElement('div');
         div.className = 'view-settings';
@@ -9,76 +18,189 @@ export class SettingsView {
             <h2>Configurações</h2>
             
             <div class="settings-content">
-                <h3>Importação em Lote</h3>
-                <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
-                    Acesse a página de cursos do AVA e importe automaticamente suas matérias do bimestre atual.
-                </p>
-
-                <div class="form-group">
-                    <label for="batchCount">Importar os primeiros:</label>
-                    <input type="number" id="batchCount" value="6" min="1" max="20" style="width: 50px; padding: 5px;">
-                    <span style="font-size: 12px;">cursos</span>
+                <h3>Configurar Acesso</h3>
+                <p class="config-desc">Configuração para preenchimento automático (Login).</p>
+                
+                <div class="input-group-row">
+                    <input type="text" id="raInput" class="input-field" placeholder="RA">
+                    <div class="domain-wrapper">
+                        <input type="text" id="domainInput" class="input-field" placeholder="@dominio.com">
+                        <button id="resetDomainBtn" class="btn-reset" title="Restaurar Padrão">↺</button>
+                    </div>
                 </div>
 
-                <button id="btnImportBatch" class="btn-add" style="width: 100%; margin-top: 10px;">
-                    Importar Cursos do Bimestre
-                </button>
-                
-                <div id="batchStatus" style="margin-top: 10px; font-size: 12px; color: #333;"></div>
+                <div style="margin-bottom: 20px;">
+                    <button id="saveConfigBtn" class="btn-save">Salvar Credenciais</button>
+                </div>
+
+                <hr class="divider">
+
+                <h3>Gerenciar Matérias</h3>
+                <p class="config-desc">Opções para adicionar ou remover cursos.</p>
+
+                <div class="action-list">
+                    <button id="btnManualAdd" class="action-card small-action">
+                        <span class="icon">✏️</span>
+                        <span class="label">Adicionar Manualmente</span>
+                    </button>
+
+                    <button id="btnAddCurrent" class="action-card small-action">
+                        <span class="icon">➕</span>
+                        <span class="label">Adicionar Página Atual</span>
+                    </button>
+
+                    <button id="btnBatchImport" class="action-card small-action">
+                        <span class="icon">📦</span>
+                        <span class="label">Importar em Lote (AVA)</span>
+                    </button>
+                    
+                    <hr class="divider">
+
+                    <button id="btnClearAll" class="action-card small-action" style="border-color: #ffcccc; color: #d9534f;">
+                        <span class="icon">🗑️</span>
+                        <span class="label">Remover Todas as Matérias</span>
+                    </button>
+                </div>
+
+                <div id="settingsFeedback" class="status-msg"></div>
+            </div>
+            
+            <div class="footer-info">
+                <span>Versão 2.1.1</span>
             </div>
         `;
         return div;
     }
 
     afterRender() {
-        const btnImportBatch = document.getElementById('btnImportBatch');
-        const batchCountInput = document.getElementById('batchCount');
-        const batchStatus = document.getElementById('batchStatus');
+        const btnManual = document.getElementById('btnManualAdd');
+        const btnCurrent = document.getElementById('btnAddCurrent');
+        const btnBatch = document.getElementById('btnBatchImport');
+        const btnClear = document.getElementById('btnClearAll');
 
-        if (btnImportBatch) {
-            btnImportBatch.onclick = async () => {
-                batchStatus.textContent = 'Iniciando...';
-                btnImportBatch.disabled = true;
+        // Config Logic
+        this.setupConfigLogic();
 
-                const max = parseInt(batchCountInput.value) || 6;
+        if (btnManual) {
+            btnManual.onclick = () => this.addManualModal.open();
+        }
 
-                chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-                    if (tabs && tabs[0]) {
-                        const tab = tabs[0];
+        if (btnBatch) {
+            btnBatch.onclick = () => this.batchImportModal.open();
+        }
 
-                        if (!tab.url.includes('/ultra/course')) {
-                            batchStatus.textContent = 'Erro: Você não está na página de Cursos do AVA.';
-                            btnImportBatch.disabled = false;
-                            return;
-                        }
+        if (btnCurrent) {
+            btnCurrent.onclick = () => this.handleAddCurrent();
+        }
 
-                        batchStatus.textContent = 'Analisando página...';
+        if (btnClear) {
+            btnClear.onclick = () => {
+                if (confirm('Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.')) {
+                    clearItems(() => {
+                        this.showFeedback('Todas as matérias foram removidas.', 'success');
+                    });
+                }
+            };
+        }
+    }
 
-                        const result = await scrapeCourseList(tab.id, max);
+    setupConfigLogic() {
+        const raInput = document.getElementById('raInput');
+        const domainInput = document.getElementById('domainInput');
+        const resetDomainBtn = document.getElementById('resetDomainBtn');
+        const saveConfigBtn = document.getElementById('saveConfigBtn');
 
-                        if (result.success) {
-                            batchStatus.textContent = `Sucesso! Adicionando ${result.courses.length} cursos...`;
+        // Carregar dados salvos
+        chrome.storage.sync.get(['userEmail', 'customDomain'], (result) => {
+            const domain = resolveDomain(result.userEmail, result.customDomain);
+            if (domainInput) domainInput.value = domain;
 
-                            let count = 0;
-                            for (const course of result.courses) {
-                                if (course.url) {
-                                    addItem(course.name, course.url, [], () => { });
-                                    count++;
-                                }
-                            }
+            if (result.userEmail && raInput) {
+                raInput.value = extractRa(result.userEmail);
+            }
+        });
 
-                            setTimeout(() => {
-                                batchStatus.textContent = `Concluído: ${count} cursos importados.`;
-                                btnImportBatch.disabled = false;
-                            }, 1000);
+        // Salvar
+        if (saveConfigBtn) {
+            saveConfigBtn.addEventListener('click', () => {
+                const ra = raInput.value;
+                const domain = domainInput.value;
 
-                        } else {
-                            batchStatus.textContent = `Erro: ${result.message}`;
-                            btnImportBatch.disabled = false;
-                        }
+                if (ra.trim()) {
+                    const { fullEmail, cleanDomain } = formatEmail(ra, domain);
+
+                    chrome.storage.sync.set({
+                        userEmail: fullEmail,
+                        customDomain: cleanDomain
+                    }, () => {
+                        this.showFeedback('Configuração salva com sucesso!', 'success');
+                    });
+                } else {
+                    alert("Por favor, digite o seu RA.");
+                }
+            });
+        }
+
+        // Reset Domain
+        if (resetDomainBtn) {
+            resetDomainBtn.addEventListener('click', () => {
+                domainInput.value = CONSTANTS.DEFAULT_DOMAIN;
+            });
+        }
+    }
+
+    handleAddCurrent() {
+        const feedback = document.getElementById('settingsFeedback');
+        feedback.textContent = 'Analisando página...';
+        feedback.style.display = 'block';
+        feedback.className = 'status-msg';
+
+        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+            if (tabs && tabs[0]) {
+                const tab = tabs[0];
+                let name = tab.title || "Nova Matéria";
+
+                // Tenta extrair nome limpo se for padrão "Nome - UNIVESP"
+                if (name.includes('-')) {
+                    name = name.split('-')[0].trim();
+                }
+
+                let weeks = [];
+                let detectedName = null;
+
+                // Tenta fazer scrape se for página web
+                if (tab.url.startsWith('http')) {
+                    const result = await scrapeWeeksFromTab(tab.id);
+                    weeks = result.weeks || [];
+                    detectedName = result.title;
+                }
+
+                if (detectedName) {
+                    name = detectedName;
+                }
+
+                addItem(name, tab.url, weeks, (success, msg) => {
+                    if (success) {
+                        this.showFeedback('Página atual adicionada com sucesso!', 'success');
+                    } else {
+                        this.showFeedback(`Erro: ${msg}`, 'error');
                     }
                 });
-            };
+            }
+        });
+    }
+
+    showFeedback(message, type = 'success') {
+        const el = document.getElementById('settingsFeedback');
+        if (el) {
+            el.textContent = message;
+            el.style.display = 'block';
+            el.className = `status-msg ${type}`;
+            el.style.color = type === 'success' ? 'green' : 'red';
+
+            setTimeout(() => {
+                el.style.display = 'none';
+            }, 3000);
         }
     }
 }
