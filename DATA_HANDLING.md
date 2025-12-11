@@ -14,7 +14,13 @@ Esta extensão interage com os portais da UNIVESP para oferecer funcionalidades 
 - **URLs Alvo**: Páginas de cursos no Blackboard (ex: `https://ava.univesp.br/...` ou domínios relacionados).
 - **Funcionalidade**:
   - **Leitura (Scraping)**: Quando o usuário clica em "Adicionar Página Atual" ou "Atualizar" no Painel Lateral, a extensão lê o DOM (estrutura HTML) da aba ativa.
-  - **Extração**: Ela busca por links (`<a>`) que contenham a palavra "Semana" (no texto ou no atributo `title`), inclusive em estruturas aninhadas (`span[title]`).
+  - **Extração Avançada**: 
+    - Busca por links (`<a>`) que contenham a palavra "Semana".
+    - Suporta links tradicionais (`href`) e links baseados em JavaScript (Blackboard Ultra/Classic) através da análise de atributos `onclick`.
+    - Resolve URLs relativas automaticamente.
+  - **Detecção Inteligente de Título**: 
+    - Prioriza o título interno da página (ex: `h1`, `.panel-title`) em vez do título da aba.
+    - Remove sufixos redundantes como "- UNIVESP" para manter a lista limpa.
   - **Armazenamento**: O nome da semana e o link direto são salvos localmente no navegador do usuário (`chrome.storage.sync`) para criar um menu de navegação rápida.
   - **Privacidade**: Os dados do curso ficam salvos apenas no navegador do usuário. Nada é enviado para servidores externos.
 

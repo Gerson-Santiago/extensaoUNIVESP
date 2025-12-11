@@ -1,9 +1,10 @@
 # Changelog - Versão Beta
 
 ## [2.1.1] - 2025-12-11
-### Corrigido
+### Corrigido e Melhorado
 - **Erro de Sintaxe:** Corrigido bloco `try-catch` malformado em `sidepanel.js`.
-- **Detecção de Título:** Melhorada a extração do nome da matéria diretamente do DOM.
+- **Detecção de Título Aprimorada:** O extrator agora remove sufixos irrelevantes (ex: "- UNIVESP") e prioriza o título real do conteúdo (`h1`) sobre o título da aba.
+- **Extração de Links Complexos:** Adicionado suporte para links do Blackboard que usam JavaScript/onclick (iframes ocultos), garantindo que todas as semanas sejam listadas mesmo em cursos antigos.
 
 ## [2.1] - 2025-12-10
 ### Added

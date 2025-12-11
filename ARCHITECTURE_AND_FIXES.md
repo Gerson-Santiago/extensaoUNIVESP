@@ -1,4 +1,4 @@
-# Arquitetura e Correções Técnicas (v2.1)
+# Arquitetura e Correções Técnicas (v2.1.1)
 
 Este documento detalha as mudanças arquiteturais realizadas para garantir a estabilidade da extensão e explicar por que as correções funcionaram.
 
