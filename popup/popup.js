@@ -1,3 +1,5 @@
+import { formatEmail, extractRa, resolveDomain, CONSTANTS } from './logic/settings.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     const raInput = document.getElementById('raInput');
     const domainInput = document.getElementById('domainInput');
@@ -7,52 +9,29 @@ document.addEventListener('DOMContentLoaded', () => {
     const githubLink = document.getElementById('githubLink');
     const openSidePanelBtn = document.getElementById('openSidePanelBtn');
 
-    const DEFAULT_DOMAIN = "@aluno.univesp.br";
-
     // 1. CARREGAR: Recupera o que estava salvo
     chrome.storage.sync.get(['userEmail', 'customDomain'], (result) => {
-        // Carrega o domínio
-        if (result.customDomain) {
-            domainInput.value = result.customDomain;
-        } else if (result.userEmail && result.userEmail.includes('@')) {
-            // Fallback
-            const parts = result.userEmail.split('@');
-            if (parts.length > 1) {
-                domainInput.value = '@' + parts.slice(1).join('@');
-            } else {
-                domainInput.value = DEFAULT_DOMAIN;
-            }
-        } else {
-            domainInput.value = DEFAULT_DOMAIN;
-        }
+        // Resolve e preenche o domínio
+        const domain = resolveDomain(result.userEmail, result.customDomain);
+        domainInput.value = domain;
 
-        // Carrega o RA
+        // Extrai e preenche o RA
         if (result.userEmail) {
-            const parts = result.userEmail.split('@');
-            raInput.value = parts[0];
+            raInput.value = extractRa(result.userEmail);
         }
     });
 
     // 2. SALVAR
     saveBtn.addEventListener('click', () => {
-        let ra = raInput.value.trim();
-        let domain = domainInput.value.trim();
+        const ra = raInput.value;
+        const domain = domainInput.value;
 
-        if (ra.includes('@')) {
-            const parts = ra.split('@');
-            ra = parts[0];
-        }
-
-        if (ra) {
-            if (!domain.startsWith('@')) {
-                domain = '@' + domain;
-            }
-
-            const fullEmail = ra + domain;
+        if (ra.trim()) {
+            const { fullEmail, cleanDomain } = formatEmail(ra, domain);
 
             chrome.storage.sync.set({
                 userEmail: fullEmail,
-                customDomain: domain
+                customDomain: cleanDomain
             }, () => {
                 status.style.display = 'block';
                 setTimeout(() => {
@@ -66,7 +45,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. RESTAURAR DOMÍNIO
     resetDomainBtn.addEventListener('click', () => {
-        domainInput.value = DEFAULT_DOMAIN;
+        domainInput.value = CONSTANTS.DEFAULT_DOMAIN;
     });
 
     // 4. LINK GITHUB
@@ -80,13 +59,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 5. ABRIR SIDE PANEL
     if (openSidePanelBtn) {
         openSidePanelBtn.addEventListener('click', () => {
-            // Tenta abrir o Side Panel na janela atual
-            // Requer Chrome 116+ e permissão adequada
             chrome.tabs.query({ active: true, currentWindow: true }, (tabs) => {
                 if (tabs.length > 0) {
                     const windowId = tabs[0].windowId;
-                    // O método sidePanel.openOptions não existe, usamos sidePanel.open
-                    // Atenção: Isto requer interação do usuário, que temos aqui (click).
                     if (chrome.sidePanel && chrome.sidePanel.open) {
                         chrome.sidePanel.open({ windowId: windowId })
                             .catch((error) => console.error("Erro ao abrir painel:", error));
@@ -99,22 +74,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 6. ABRIR SIDE PANEL (alternativo, se houver um botão com id 'openSidePanel')
-    // Este bloco foi adicionado com base na sua instrução, mas pode ser redundante ou precisar de um botão específico no HTML.
-    // Se 'openSidePanelBtn' e 'openSidePanel' se referem ao mesmo elemento, este bloco pode ser mesclado ou removido.
+    // 6. ABRIR SIDE PANEL (alternativo)
     const openSidePanelById = document.getElementById('openSidePanel');
     if (openSidePanelById) {
         openSidePanelById.addEventListener('click', () => {
-            // Tenta abrir o sidepanel programaticamente (requer permissão e user gesture)
-            // Como fallback, o manifesto define o comportamento padrão do ícone se action não tivesse popup.
-            // Mas como temos popup, usamos:
-            chrome.sidePanel.setOptions({ path: 'sidepanel/sidepanel.html', enabled: true });
-            chrome.sidePanel.open({ windowId: chrome.windows.WINDOW_ID_CURRENT }).catch(err => {
-                console.error('Erro ao abrir sidepanel:', err);
-                // Fallback: orientar usuário
-                alert('Clique no ícone da extensão na barra de ferramentas e selecione "Abrir Painel Lateral" se disponível, ou fixe a extensão.');
-            });
+            // Fallback usando setOptions se necessário, embora open() seja preferido onde suportado
+            if (chrome.sidePanel && chrome.sidePanel.open) {
+                chrome.sidePanel.open({ windowId: chrome.windows.WINDOW_ID_CURRENT }).catch(err => {
+                    console.error('Erro ao abrir sidepanel:', err);
+                });
+            } else {
+                chrome.sidePanel.setOptions({ path: 'sidepanel/sidepanel.html', enabled: true });
+            }
         });
     }
-
 });

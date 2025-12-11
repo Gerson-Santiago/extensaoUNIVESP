@@ -1,6 +1,7 @@
 import { scrapeWeeksFromTab } from './logic/scraper.js';
 import { loadItems, addItem, deleteItem, updateItem } from './logic/storage.js';
 import { openOrSwitchToTab } from './logic/tabs.js';
+import { createCourseElement, createWeekElement } from './ui/components.js';
 
 document.addEventListener('DOMContentLoaded', () => {
     // Referências da UI - Views
@@ -41,7 +42,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Setup Header
         detailsTitle.textContent = course.name;
-        detailsTitle.title = course.name; // Tooltip para nomes longos
+        detailsTitle.title = course.name;
 
         // Setup Main Button
         openCourseBtn.onclick = () => {
@@ -92,15 +93,9 @@ document.addEventListener('DOMContentLoaded', () => {
         weeksList.innerHTML = '';
         if (course.weeks && course.weeks.length > 0) {
             course.weeks.forEach(week => {
-                const wDiv = document.createElement('div');
-                wDiv.className = 'week-item';
-                wDiv.innerHTML = `
-                    <span class="week-name">${week.name}</span>
-                    <span class="week-arrow">›</span>
-                `;
-                wDiv.onclick = () => {
-                    openOrSwitchToTab(week.url);
-                };
+                const wDiv = createWeekElement(week, {
+                    onClick: (url) => openOrSwitchToTab(url)
+                });
                 weeksList.appendChild(wDiv);
             });
         } else {
@@ -168,43 +163,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             courses.forEach(course => {
-                const li = document.createElement('li');
-                li.className = 'item';
-
-                // Info Container (Clicável para ir aos Detalhes)
-                const infoDiv = document.createElement('div');
-                infoDiv.className = 'item-info';
-                infoDiv.onclick = () => {
-                    // Ao clicar na matéria: Abre nova aba (ou foca) E navega para detalhes
-                    openOrSwitchToTab(course.url);
-                    showDetails(course);
-                };
-
-                const nameSpan = document.createElement('span');
-                nameSpan.className = 'item-name';
-                nameSpan.textContent = course.name;
-
-                const urlSpan = document.createElement('div');
-                urlSpan.className = 'item-url';
-                urlSpan.textContent = course.url;
-
-                infoDiv.appendChild(nameSpan);
-                infoDiv.appendChild(urlSpan);
-
-                // Botão Remover (Não triggera onClick do pai)
-                const delBtn = document.createElement('button');
-                delBtn.className = 'btn-delete';
-                delBtn.innerHTML = '&times;';
-                delBtn.title = 'Remover';
-                delBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    if (confirm('Remover esta matéria?')) {
-                        deleteItem(course.id, () => renderHome());
-                    }
-                };
-
-                li.appendChild(infoDiv);
-                li.appendChild(delBtn);
+                const li = createCourseElement(course, {
+                    onDelete: (id) => deleteItem(id, () => renderHome()),
+                    onClick: (url) => openOrSwitchToTab(url),
+                    onViewDetails: (c) => showDetails(c)
+                });
                 itemList.appendChild(li);
             });
         });

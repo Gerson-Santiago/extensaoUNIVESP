@@ -33,5 +33,18 @@ A correção envolveu:
 *   `sidepanel/logic/scraper.js`: Contém a lógica de extração e a injeta na página sob demanda.
 *   `manifest.json`: Declara a permissão `activeTab` vital para o funcionamento.
 
+## 4. Testes e Segurança
+
+Implementamos uma camada de segurança baseada em testes automatizados (Jest):
+1.  **Integridade de Imports**: `tests/imports.test.js` verifica se todos os arquivos críticos da extensão existem e se seus módulos podem ser importados sem erros. Isso previne que refatorações quebrem referências de arquivos.
+2.  **Testes Unitários**: `tests/logic.test.js` a lógica de negócios isolada da UI (ex: scraper) para garantir robustez.
+
+## 5. Estrutura Modular (Refatoração v2.2)
+
+Para facilitar a manutenção e leitura, adotamos o padrão de separação de responsabilidades:
+*   **UI Components (`sidepanel/ui/components.js`)**: Funções puras que apenas retornam elementos HTML. O `sidepanel.js` não cria mais HTML "na mão", apenas gerencia dados e eventos.
+*   **Settings Logic (`popup/logic/settings.js`)**: Funções puras para validar e formatar dados (Emails, RAs). O `popup.js` apenas conecta a tela ao armazenamento.
+
+
 ---
 **Desenvolvido por Gerson Santiago**

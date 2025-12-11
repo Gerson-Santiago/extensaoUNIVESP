@@ -1,5 +1,13 @@
 # Changelog - Versão Beta
 
+## [2.2.0] - 2025-12-11
+### Segurança e Arquitetura
+- **Testes Automatizados:** Implementação de suíte de testes com Jest para garantir integridade de imports e lógica.
+- **Refatoração Modular:** 
+    - Extração de componentes de UI do `sidepanel.js` para `sidepanel/ui/components.js`.
+    - Centralização de lógica de configurações do `popup.js` para `popup/logic/settings.js`.
+- **Limpeza:** Consolidação de configurações de teste no `package.json`, removendo arquivos da raiz.
+
 ## [2.1.1] - 2025-12-11
 ### Corrigido e Melhorado
 - **Erro de Sintaxe:** Corrigido bloco `try-catch` malformado em `sidepanel.js`.
