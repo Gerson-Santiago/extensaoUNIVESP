@@ -1,6 +1,17 @@
 # Changelog - Versão Beta
 
-## [2.1.0-beta] - 2025-12-10
+## [2.1] - 2025-12-10
+### Added
+- **Arquitetura de Mensageria:** Novo sistema de comunicação entre Side Panel e Content Script para contornar problemas de CORS e injeção de scripts.
+- **Permissão `activeTab`:** Adicionada para garantir acesso confiável à aba atual sob demanda.
+- **Content Script Persistente:** `ava_scraper_content.js` agora roda nativamente nas páginas do AVA para extração rápida de dados.
+- **Créditos:** Adicionado "Desenvolvido por Gerson Santiago" no rodapé do popup.
+
+### Fixed
+- **Semana não aparecia:** Resolvido problema de permissão que impedia o scraper de ler o DOM do Blackboard.
+- **Logs:** Removido sistema de logs de debug (não mais necessário após correção arquitetural).
+
+## [2.0 Beta] - 2025-12-0910
 
 ### Adicionado
 - **Painel Lateral (Side Panel)**: Nova interface para gerenciar matérias e navegar rapidamente entre semanas de aula.

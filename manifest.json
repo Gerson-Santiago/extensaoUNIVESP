@@ -1,13 +1,15 @@
 {
   "manifest_version": 3,
   "name": "AutoPreencher UNIVESP",
-  "version": "2.0",
+  "version": "2.1",
   "description": "Preenche automaticamente o email institucional no SEI Univesp com o valor configurado.",
   "permissions": [
     "storage",
     "sidePanel",
     "scripting",
-    "tabs"
+    "scripting",
+    "tabs",
+    "activeTab"
   ],
   "host_permissions": [
     "https://sei.univesp.br/*",
@@ -32,6 +34,16 @@
       "js": [
         "scripts/content.js"
       ],
+      "run_at": "document_idle"
+    },
+    {
+      "matches": [
+        "https://ava.univesp.br/*"
+      ],
+      "js": [
+        "scripts/ava_scraper_content.js"
+      ],
+      "all_frames": true,
       "run_at": "document_idle"
     }
   ]

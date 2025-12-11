@@ -53,36 +53,32 @@ document.addEventListener('DOMContentLoaded', () => {
             refreshWeeksBtn.disabled = true;
             refreshWeeksBtn.textContent = '...';
 
-            // Identifica a aba atual para tentar fazer scrape
             chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
                 if (tabs && tabs[0]) {
-                    // Tenta executar o scraper na aba identificada.
-                    // O scraper retorna um objeto { weeks, logs } ou um array direto (compatibilidade).
+                    const activeTab = tabs[0];
 
-                    const result = await scrapeWeeksFromTab(tabs[0].id);
-                    let newWeeks = [];
+                    if (!activeTab.url || (!activeTab.url.includes('univesp.br') && !activeTab.url.includes('blackboard'))) {
+                        alert('Por favor, acesse a página da matéria no Blackboard.');
+                        refreshWeeksBtn.disabled = false;
+                        refreshWeeksBtn.textContent = '↻';
+                        return;
+                    }
 
-                    if (result.weeks) {
-                        newWeeks = result.weeks;
-                        if (result.logs) {
-                            chrome.storage.local.set({ lastDebugLog: result.logs });
+                    try {
+                        const weeks = await scrapeWeeksFromTab(activeTab.id);
+
+                        if (weeks && weeks.length > 0) {
+                            updateItem(course.id, { weeks: weeks }, () => {
+                                course.weeks = weeks;
+                                showDetails(course);
+                                alert(`${weeks.length} semanas atualizadas!`);
+                            });
+                        } else {
+                            alert('Nenhuma semana encontrada nesta página.');
                         }
-                    } else {
-                        newWeeks = result;
-                    }
-
-                    if (newWeeks && newWeeks.length > 0) {
-                        // Atualiza no storage
-                        updateItem(course.id, { weeks: newWeeks }, () => {
-                            // Atualiza a visualização atual (recursivo).
-                            // Atualizamos também o objeto em memória para refletir a mudança imediata.
-                            course.weeks = newWeeks;
-                            showDetails(course);
-                            alert('Semanas atualizadas!');
-                        });
-                    } else {
-                        alert('Nenhuma semana encontrada nesta página. \nCertifique-se de estar na página da matéria.');
-                    }
+                    } catch (error) {
+                        alert('Erro ao buscar semanas.');
+                    };
                 }
                 refreshWeeksBtn.disabled = false;
                 refreshWeeksBtn.textContent = '↻';
@@ -140,17 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
                 let weeks = [];
                 if (tab.url.startsWith('http')) {
-                    const result = await scrapeWeeksFromTab(tab.id);
-                    // Suporte para retorno { weeks, logs }
-                    if (result.weeks) {
-                        weeks = result.weeks;
-                        if (result.logs) {
-                            chrome.storage.local.set({ lastDebugLog: result.logs });
-                        }
-                    } else {
-                        // Fallback para retorno antigo (array direto)
-                        weeks = result;
-                    }
+                    weeks = await scrapeWeeksFromTab(tab.id);
                 }
 
                 addItem(name, tab.url, weeks, () => renderHome());

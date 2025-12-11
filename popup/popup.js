@@ -117,24 +117,4 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 7. VISUALIZAR LOGS
-    const viewLogsBtn = document.getElementById('viewLogs');
-    if (viewLogsBtn) {
-        viewLogsBtn.addEventListener('click', () => {
-            chrome.storage.local.get(['lastDebugLog'], (result) => {
-                const logs = result.lastDebugLog;
-                if (logs && logs.length > 0) {
-                    const logText = logs.join('\n');
-                    // Copia para clipboard e avisa
-                    navigator.clipboard.writeText(logText).then(() => {
-                        alert('Logs copiados para a área de transferência:\n\n' + logText);
-                    }).catch(err => {
-                        alert('Logs (erro ao copiar):\n' + logText);
-                    });
-                } else {
-                    alert('Nenhum log registrado ainda.\nTente usar "Atualizar Semanas" no Painel Lateral primeiro.');
-                }
-            });
-        });
-    }
 });
