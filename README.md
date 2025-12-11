@@ -6,9 +6,12 @@ Extensão para facilitar a vida do aluno UNIVESP, automatizando o preenchimento 
 
 - **Autopreenchimento no SEI**: Detecta campos de login e preenche seu email institucional automaticamente.
 - **Painel Lateral (Side Panel)**:
-    - Lista suas matérias.
-    - **Scraper Inteligente**: Detecta automaticamente as semanas de aula no Blackboard.
-    - Navegação rápida para cada semana.
+    - **Importação em Lote**: Importe todas as suas matérias do bimestre com um clique.
+    - **Links Diretos**: Cria atalhos diretos para a "Página Inicial" e Semanas do curso.
+    - **Navegação Inteligente**: Ao clicar em uma matéria, a extensão foca na aba já aberta em vez de criar duplicatas.
+- **Scraper Inteligente**:
+    - *Deep Scraping*: Visita a página do curso em segundo plano para garantir links precisos.
+    - *Detecção de Semanas*: Lista automaticamente as semanas de aula.
 - **Configurações**: Personalize seu RA e domínio de email.
 
 ## Instalação (Desenvolvimento)
@@ -27,23 +30,23 @@ O projeto utiliza **Node.js** e **Jest** para garantir a qualidade do código.
 - Node.js instalado.
 
 ### Configuração
-Instale as dependências:
 ```bash
 npm install
 ```
 
 ### Rodando Testes
-Para verificar a integridade dos arquivos e lógica:
+Para verificar a integridade, importação e lógica dos scripts (incluindo Scrapers e Abas):
 ```bash
 npm test
 ```
 
-## Estrutura do Projeto
+## Arquitetura Técnica
 
-- `manifest.json`: Configuração principal da extensão (Manifest V3).
-- `popup/`: Interface e lógica do popup principal.
-- `sidepanel/`: Lógica e UI do painel lateral.
-    - `logic/`: Lógica de negócios (scraper, storage, tabs).
-    - `ui/`: Componentes visuais.
-- `scripts/`: Content scripts injetados nas páginas.
-- `tests/`: Testes automatizados.
+- **Manifest V3**: Base segura e moderna para extensões Chrome.
+- **Estrutura Modular**:
+    - `sidepanel/`: Lógica principal.
+        - `batchScraper.js`: Realiza a varredura em massa e "Deep Scraping" para obter metadados do curso.
+        - `tabs.js`: Gerenciador de abas inteligente (evita duplicidade).
+    - `scripts/`: Scripts injetados (Content Scripts).
+- **Testes**: Cobertura unitária para lógica de negócios crítica (`tests/`).
+

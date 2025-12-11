@@ -1,5 +1,15 @@
 # Changelog - Versão Beta
 
+## [2.3.0] - 2025-12-11
+### Novas Funcionalidades
+- **Importação em Lote Inteligente:** Importa cursos diretamente da lista do AVA, acessando em background ("Deep Scraping") para garantir links diretos para a "Página Inicial" do conteúdo.
+- **Gerenciamento de Abas:** Lógica aprimorada que identifica abas abertas pelo ID do curso (`course_id`), prevenindo duplicidade mesmo navegando dentro do curso.
+- **Redirecionamento Automático:** Modal de importação agora detecta erros de contexto e redireciona automaticamente para a página correta.
+
+### Qualidade e Documentação
+- **Refatoração de Testes:** Expansão profissional da suíte de testes (100% passing), incluindo testes para scrapers e lógica de abas.
+- **Limpeza de Documentação:** Remoção de arquivos obsoletos e centralização da documentação técnica no README.
+
 ## [2.2.0] - 2025-12-11
 ### Segurança e Arquitetura
 - **Testes Automatizados:** Implementação de suíte de testes com Jest para garantir integridade de imports e lógica.
