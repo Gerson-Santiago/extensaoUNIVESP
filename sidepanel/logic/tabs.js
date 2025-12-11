@@ -6,20 +6,11 @@ export async function openOrSwitchToTab(url) {
     if (!url) return;
 
     try {
-        // Normaliza a URL para comparação (remove hash/query se necessário? 
-        // Por enquanto vamos tentar match exato ou startsWith para ser útil)
-        // O ideal é remover o hash para comparação se for âncora, mas o usuário pode querer especificamente a âncora.
-        // Vamos buscar exatamente a URL primeiro.
-
-        // chrome.tabs.query requer permissão "tabs" ou host permissions para ver a URL
+        // Tenta encontrar uma aba ativa que corresponda à URL.
+        // Utiliza uma verificação flexível para pegar possíveis redirecionamentos ou variações de protocolo.
         const tabs = await chrome.tabs.query({});
-
-        // Procura aba com URL igual ou contendo
-        // Como a URL salva pode ser curta ou redirecionada, vamos fazer uma comparação permissiva mas segura
         const existingTab = tabs.find(tab => {
             return tab.url === url || (tab.url && tab.url.startsWith(url)) || (url.includes(tab.url));
-            // Cuidado com contains reverso, pode ser perigoso (ex: url "google.com" matchar "google.com.br")
-            // Vamos testar: tab.url === url
         });
 
         // Tentar encontrar match exato primeiro
@@ -31,8 +22,7 @@ export async function openOrSwitchToTab(url) {
             return;
         }
 
-        // Se não achou exato, tenta ignorar trailing slash ou hash
-        // Ex: "site.com/page" vs "site.com/page/"
+        // Se não houver correspondência exata, tenta encontrar ignorando a barra final.
         const looseMatch = tabs.find(tab => {
             const tUrl = tab.url.replace(/\/$/, "");
             const sUrl = url.replace(/\/$/, "");
