@@ -14,10 +14,8 @@ export class CoursesView {
             
             <div class="course-legend">
                 <span class="legend-left">Matéria</span>
-                <div class="legend-right">
-                    <span>Ver semana</span>
-                    <span>Remover</span>
-                </div>
+                <span style="text-align: center;">Ver semana</span>
+                <span style="text-align: center;">Remover</span>
             </div>
 
             <ul id="itemList" class="item-list"></ul>

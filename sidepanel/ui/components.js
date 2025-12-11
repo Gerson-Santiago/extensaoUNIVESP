@@ -25,31 +25,27 @@ export function createCourseElement(course, callbacks) {
     info.appendChild(nameSpan);
     info.appendChild(urlSpan);
 
-    // Actions Container
-    const actions = document.createElement('div');
-    actions.style.display = 'flex';
-    actions.style.alignItems = 'center';
+    li.appendChild(info);
 
-    // Botão Detalhes (Semanas)
-    // Se não existir callback de detalhes, não mostra.
+    // Botão Detalhes (Semanas) - Coluna 2
     if (callbacks.onViewDetails) {
         const btnDetails = document.createElement('button');
-        btnDetails.textContent = '📄'; // Ícone de documento/lista
+        btnDetails.textContent = 'Ver Semanas'; // Texto explícito
         btnDetails.title = "Ver Semanas";
-        btnDetails.style.background = 'none';
-        btnDetails.style.border = 'none';
-        btnDetails.style.cursor = 'pointer';
-        btnDetails.style.fontSize = '16px';
-        btnDetails.style.marginRight = '5px';
+        btnDetails.className = 'btn-grid-action'; // Nova classe para estilizar
 
         btnDetails.onclick = (e) => {
             e.stopPropagation();
             callbacks.onViewDetails(course);
         };
-        actions.appendChild(btnDetails);
+        li.appendChild(btnDetails);
+    } else {
+        // Placeholder vazio se não houver botão, para manter grid
+        const placeholder = document.createElement('div');
+        li.appendChild(placeholder);
     }
 
-    // Botão Excluir
+    // Botão Excluir - Coluna 3
     const btnDel = document.createElement('button');
     btnDel.className = 'btn-delete';
     btnDel.innerHTML = '&times;';
@@ -60,10 +56,7 @@ export function createCourseElement(course, callbacks) {
             if (callbacks.onDelete) callbacks.onDelete(course.id);
         }
     };
-    actions.appendChild(btnDel);
-
-    li.appendChild(info);
-    li.appendChild(actions);
+    li.appendChild(btnDel);
 
     return li;
 }
