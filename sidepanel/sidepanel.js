@@ -11,7 +11,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Inicialização das Views e Callbacks
 
-    const settingsView = new SettingsView();
+    const settingsView = new SettingsView({
+        onNavigate: (viewId) => {
+            layout.topNav.setActive(viewId);
+            layout.navigateTo(viewId);
+        }
+    });
 
     // Callbacks para CoursesView
     const coursesView = new CoursesView({

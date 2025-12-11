@@ -73,23 +73,27 @@ export class BatchImportModal extends Modal {
                                 return;
                             }
 
-                            for (const course of result.courses) {
-                                if (course.url) {
-                                    addItem(course.name, course.url, [], (success) => {
-                                        itemsProcessed++;
-                                        if (success) addedCount++;
+                            // Replace loop with batch add
+                            const itemsToAdd = result.courses
+                                .filter(c => c.url)
+                                .map(c => ({
+                                    name: c.name,
+                                    url: c.url,
+                                    weeks: []
+                                }));
 
-                                        if (itemsProcessed === total) {
-                                            this.finish(addedCount, total, status, btnRun);
-                                        }
-                                    });
-                                } else {
-                                    itemsProcessed++;
-                                    if (itemsProcessed === total) {
-                                        this.finish(addedCount, total, status, btnRun);
-                                    }
-                                }
+                            if (itemsToAdd.length === 0) {
+                                status.textContent = 'Nenhum curso válido encontrado.';
+                                btnRun.disabled = false;
+                                return;
                             }
+
+                            // Import updated function
+                            import('../../logic/storage.js').then(({ addItemsBatch }) => {
+                                addItemsBatch(itemsToAdd, (added, ignored) => {
+                                    this.finish(added, itemsToAdd.length, status, btnRun);
+                                });
+                            });
                         } else {
                             status.textContent = `Erro na leitura: ${result.message}`;
                             status.style.color = 'red';

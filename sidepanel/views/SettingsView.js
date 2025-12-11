@@ -5,10 +5,20 @@ import { scrapeWeeksFromTab } from '../logic/scraper.js';
 import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../utils/settings.js';
 
 export class SettingsView {
-    constructor() {
+    constructor(callbacks = {}) {
+        this.onNavigate = callbacks.onNavigate;
+
         // Inicializa os modais
         this.addManualModal = new AddManualModal(() => this.showFeedback('Matéria adicionada com sucesso!', 'success'));
-        this.batchImportModal = new BatchImportModal(() => this.showFeedback('Importação concluída!', 'success'));
+        this.batchImportModal = new BatchImportModal(() => {
+            this.showFeedback('Importação concluída!', 'success');
+            // Redireciona para CoursesView após importação
+            if (this.onNavigate) {
+                setTimeout(() => {
+                    this.onNavigate('courses');
+                }, 1500); // Pequeno delay para ler o feedback
+            }
+        });
     }
 
     render() {

@@ -47,6 +47,41 @@ export function addItem(name, url, weeks = [], callback) {
 }
 
 /**
+ * Adiciona múltiplas matérias de uma vez.
+ * @param {Array} newItems - Lista de objetos {name, url, weeks}.
+ * @param {Function} callback - Retorna (addedCount, totalIgnored).
+ */
+export function addItemsBatch(newItems, callback) {
+    loadItems((courses) => {
+        let addedCount = 0;
+        let ignoredCount = 0;
+
+        newItems.forEach(item => {
+            const exists = courses.some(c => c.url === item.url);
+            if (!exists) {
+                courses.push({
+                    id: Date.now() + Math.random(), // Ensure unique ID even in batch
+                    name: item.name,
+                    url: item.url,
+                    weeks: item.weeks || []
+                });
+                addedCount++;
+            } else {
+                ignoredCount++;
+            }
+        });
+
+        if (addedCount > 0) {
+            saveItems(courses, () => {
+                if (callback) callback(addedCount, ignoredCount);
+            });
+        } else {
+            if (callback) callback(0, ignoredCount);
+        }
+    });
+}
+
+/**
  * Remove todas as matérias salvas.
  * @param {Function} [callback] - Função de retorno após limpar.
  */
