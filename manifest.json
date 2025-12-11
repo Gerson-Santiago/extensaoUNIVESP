@@ -35,16 +35,6 @@
         "scripts/content.js"
       ],
       "run_at": "document_idle"
-    },
-    {
-      "matches": [
-        "https://ava.univesp.br/*"
-      ],
-      "js": [
-        "scripts/ava_scraper_content.js"
-      ],
-      "all_frames": true,
-      "run_at": "document_idle"
     }
   ]
 }
