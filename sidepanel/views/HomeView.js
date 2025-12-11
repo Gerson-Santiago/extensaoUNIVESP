@@ -28,8 +28,7 @@ export class HomeView {
             </div>
 
             <div class="footer-info">
-                <span>Versão 2.1.1</span>
-                <a href="https://github.com/Gerson-Santiago/extensaoUNIVESP" target="_blank" class="github-link">GitHub</a>
+                <span>Desenvolvido por <a href="https://github.com/Gerson-Santiago/extensaoUNIVESP?tab=readme-ov-file#autopreencher-univesp" target="_blank" class="github-link">Gerson Santiago</a></span>
             </div>
         `;
         return div;
