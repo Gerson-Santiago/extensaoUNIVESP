@@ -1,46 +1,118 @@
 <!DOCTYPE html>
 <html>
+
 <head>
-  <meta charset="UTF-8">
-  <link rel="stylesheet" href="sidepanel.css">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="sidepanel.css">
 </head>
+
 <body>
 
-  <!-- VIEW HOME: Lista de Matérias -->
-  <div id="view-home">
-      <h2>Minhas Matérias</h2>
+    <!-- VIEW HOME: Lista de Matérias -->
+    <div id="view-home">
+        <h2>Minhas Matérias</h2>
 
-      <ul id="itemList" class="item-list">
-        <!-- Itens serão inseridos via JS -->
-      </ul>
+        <ul id="itemList" class="item-list">
+            <!-- Itens serão inseridos via JS -->
+        </ul>
 
-      <div class="add-form">
-        <button id="addCurrentBtn" class="btn-current">Adicionar Página Atual</button>
-        <div style="text-align: center; margin-bottom: 8px; font-size: 12px; color: #666;">ou adicione manualmente:</div>
-        <input type="text" id="nameInput" class="input-field" placeholder="Nome da Matéria">
-        <input type="text" id="urlInput" class="input-field" placeholder="https://...">
-        <button id="addBtn" class="btn-add">Adicionar</button>
-      </div>
-  </div>
+        <ul id="itemList" class="item-list">
+            <!-- Itens serão inseridos via JS -->
+        </ul>
+        <!-- Add Form removido daqui. Agora acessível via Menu de Configurações. -->
+    </div>
+    </div>
 
-  <!-- VIEW DETAILS: Detalhes da Matéria (Semanas) -->
-  <div id="view-details" style="display: none;">
-      <div class="details-header">
-          <button id="backBtn" class="btn-back">← Voltar</button>
-          <h2 id="detailsTitle" class="details-title">Nome da Matéria</h2>
-      </div>
-      
-   <div id="detailsActions" style="margin-bottom: 15px; display: flex; gap: 5px;">
-           <button id="openCourseBtn" class="btn-open-course" style="flex: 1;">Abrir Matéria</button>
-           <button id="refreshWeeksBtn" class="btn-refresh" title="Atualizar Semanas" style="width: 40px; cursor: pointer;">↻</button>
-      </div>
+    <div id="view-details" style="display: none;">
+        <div class="details-header">
+            <button id="backBtn" class="btn-back">← Voltar</button>
+            <h2 id="detailsTitle" class="details-title">Nome da Matéria</h2>
+        </div>
 
-      <h3 style="font-size: 14px; color: #555; margin-bottom: 10px;">Semanas Disponíveis:</h3>
-      <div id="weeksList" class="weeks-container">
-          <!-- Lista de semanas aqui -->
-      </div>
-  </div>
+        <div id="detailsActions" style="margin-bottom: 15px; display: flex; gap: 5px;">
+            <button id="openCourseBtn" class="btn-open-course" style="flex: 1;">Abrir Matéria</button>
+            <button id="refreshWeeksBtn" class="btn-refresh" title="Atualizar Semanas"
+                style="width: 40px; cursor: pointer;">↻</button>
+        </div>
 
-  <script type="module" src="sidepanel.js"></script>
+        <h3 style="font-size: 14px; color: #555; margin-bottom: 10px;">Semanas Disponíveis:</h3>
+        <div id="weeksList" class="weeks-container">
+            <!-- Lista de semanas aqui -->
+        </div>
+    </div>
+
+    <!-- Settings / Batch Import Modal -->
+    <div id="modal-settings" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Importação em Lote</h3>
+                <button id="closeSettingsBtn" class="btn-close">×</button>
+            </div>
+
+            <div class="modal-body">
+                <p style="font-size: 13px; color: #666; margin-bottom: 15px;">
+                    Acesse a página "Cursos" do AVA, selecione filtrar por "Abertos" e clique abaixo.
+                </p>
+
+                <!-- Step 1: Scan -->
+                <button id="btnScanTerms" class="btn-add" style="background-color: #004b8d; margin-bottom: 15px;">
+                    1. Escanear Matérias
+                </button>
+
+                <!-- Step 2: Configure (Hidden initially) -->
+                <div id="batchConfigStep" style="display: none;">
+
+                    <label class="input-label">Bimestre / Termo:</label>
+                    <select id="termSelect" class="input-field"></select>
+
+                    <label class="input-label">Quantidade de Matérias:</label>
+                    <input type="number" id="courseLimitInput" class="input-field" value="3" min="1" max="20">
+
+                    <div class="preview-box">
+                        <strong>Pré-visualização:</strong>
+                        <ul id="previewList" class="preview-list"></ul>
+                    </div>
+
+                    <button id="btnConfirmImport" class="btn-add" style="margin-top: 10px;">
+                        Confirmar Importação
+                    </button>
+                </div>
+
+                <div id="scanStatus" style="margin-top:10px; font-size:12px; color:#d9534f;"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal: Manual Add -->
+    <div id="modal-manual-add" class="modal-overlay" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>Adicionar Manualmente</h3>
+                <button id="closeManualBtn" class="btn-close">×</button>
+            </div>
+            <div class="modal-body">
+                <label class="input-label">Nome da Matéria:</label>
+                <input type="text" id="manualNameInput" class="input-field" placeholder="Ex: Engenharia de Software">
+
+                <label class="input-label">URL do AVA:</label>
+                <input type="text" id="manualUrlInput" class="input-field" placeholder="https://ava.univesp.br/...">
+
+                <button id="btnConfirmManualAdd" class="btn-add">Adicionar</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Settings Icon (Floating Top Right) -->
+    <div id="settingsIcon" class="settings-icon" title="Configurações">⚙️</div>
+
+    <!-- Dropdown Menu -->
+    <div id="settingsMenu" class="settings-menu" style="display: none;">
+        <div class="menu-item" id="menuAddManual">Adicionar Manualmente</div>
+        <div class="menu-item" id="menuAddCurrent">Adicionar Página Atual</div>
+        <div class="menu-item" id="menuAddBatch">Importação em Lote</div>
+    </div>
+
+    <script type="module" src="sidepanel.js"></script>
 </body>
+
 </html>

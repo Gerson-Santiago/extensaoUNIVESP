@@ -3,17 +3,16 @@ import { loadItems, addItem, deleteItem, updateItem } from './logic/storage.js';
 import { openOrSwitchToTab } from './logic/tabs.js';
 import { createCourseElement, createWeekElement } from './ui/components.js';
 
+// UI Components
+import { initMenu } from './ui/menu.js';
+import { initManualForm } from './ui/forms/manualForm.js';
+import { initBatchForm } from './ui/forms/batchForm.js';
+
 document.addEventListener('DOMContentLoaded', () => {
     // Referências da UI - Views
     const viewHome = document.getElementById('view-home');
     const viewDetails = document.getElementById('view-details');
-
-    // Home Elements
     const itemList = document.getElementById('itemList');
-    const nameInput = document.getElementById('nameInput');
-    const urlInput = document.getElementById('urlInput');
-    const addBtn = document.getElementById('addBtn');
-    const addCurrentBtn = document.getElementById('addCurrentBtn');
 
     // Details Elements
     const backBtn = document.getElementById('backBtn');
@@ -22,9 +21,66 @@ document.addEventListener('DOMContentLoaded', () => {
     const refreshWeeksBtn = document.getElementById('refreshWeeksBtn');
     const weeksList = document.getElementById('weeksList');
 
-    let currentCourse = null; // Armazena o curso selecionado atualmente
+    let currentCourse = null;
 
-    // --- INICIALIZAÇÃO ---
+    // --- INICIALIZAÇÃO DE COMPONENTES ---
+
+    // 1. Manual Form
+    const manualForm = initManualForm((name, url) => {
+        addItem(name, url, [], () => renderHome());
+    });
+
+    // 2. Batch Form
+    const batchForm = initBatchForm(
+        (name, url, doneCallback) => {
+            addItem(name, url, [], doneCallback);
+        },
+        (totalCount) => {
+            renderHome();
+            alert(`${totalCount} matérias importadas com sucesso!`);
+        }
+    );
+
+    // 3. Helper: Add Current Page Logic
+    async function handleAddCurrent() {
+        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+            if (tabs && tabs[0]) {
+                const tab = tabs[0];
+                const confirmMsg = `Deseja adicionar a página atual?\n\n${tab.title}\n${tab.url}`;
+
+                if (confirm(confirmMsg)) {
+                    let name = tab.title || "Nova Matéria";
+                    if (name.includes('-')) name = name.split('-')[0].trim();
+
+                    let weeks = [];
+                    let detectedName = null;
+
+                    if (tab.url.startsWith('http')) {
+                        const result = await scrapeWeeksFromTab(tab.id);
+                        weeks = result.weeks || [];
+                        detectedName = result.title;
+                    }
+
+                    if (detectedName) name = detectedName;
+
+                    addItem(name, tab.url, weeks, () => {
+                        renderHome();
+                        alert('Página adicionada!');
+                    });
+                }
+            }
+        });
+    }
+
+    // 4. Menu Settings
+    initMenu({
+        onAddManual: () => manualForm.open(),
+        onAddCurrent: () => handleAddCurrent(),
+        onAddBatch: () => batchForm.open()
+    });
+
+
+    // --- INICIALIZAÇÃO VIEW ---
     renderHome();
 
     // --- VIEW NAVIGATION ---
@@ -103,53 +159,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- EVENT LISTENERS ---
-
-    // Back Button
+    // --- BUTTON LISTENERS ---
     backBtn.addEventListener('click', showHome);
-
-    // Botão Adicionar Manual
-    addBtn.addEventListener('click', () => {
-        const name = nameInput.value.trim();
-        const url = urlInput.value.trim();
-
-        if (name && url) {
-            addItem(name, url, [], () => renderHome());
-            nameInput.value = '';
-            urlInput.value = '';
-        } else {
-            alert('Preencha nome e URL.');
-        }
-    });
-
-    // Botão Adicionar Página Atual
-    addCurrentBtn.addEventListener('click', () => {
-        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-            if (tabs && tabs[0]) {
-                const tab = tabs[0];
-                let name = tab.title || "Nova Matéria";
-                if (name.includes('-')) {
-                    name = name.split('-')[0].trim();
-                }
-
-                let weeks = [];
-                let detectedName = null;
-
-                if (tab.url.startsWith('http')) {
-                    const result = await scrapeWeeksFromTab(tab.id);
-                    weeks = result.weeks || [];
-                    detectedName = result.title;
-                }
-
-                // Se o scraper achou um título melhor (h1.panel-title), usa ele.
-                if (detectedName) {
-                    name = detectedName;
-                }
-
-                addItem(name, tab.url, weeks, () => renderHome());
-            }
-        });
-    });
 
     // --- RENDER FUNCTIONS ---
 
@@ -158,7 +169,7 @@ document.addEventListener('DOMContentLoaded', () => {
             itemList.innerHTML = '';
 
             if (courses.length === 0) {
-                itemList.innerHTML = '<li style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</li>';
+                itemList.innerHTML = '<li style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.<br><span style="font-size:11px">Use a engrenagem para adicionar.</span></li>';
                 return;
             }
 

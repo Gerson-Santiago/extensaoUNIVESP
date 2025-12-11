@@ -13,6 +13,7 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
         'sidepanel/sidepanel.js',
         'sidepanel/sidepanel.css',
         'sidepanel/logic/scraper.js',
+        'sidepanel/logic/batchScraper.js',
         'sidepanel/logic/storage.js',
         'sidepanel/logic/tabs.js',
         'sidepanel/ui/components.js',
@@ -30,6 +31,7 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
     test('Deve conseguir importar módulos JS sem erro de sintaxe', async () => {
         const modulesToImport = [
             '../sidepanel/logic/scraper.js',
+            '../sidepanel/logic/batchScraper.js',
             '../sidepanel/logic/storage.js',
             '../sidepanel/logic/tabs.js',
             '../sidepanel/ui/components.js',
