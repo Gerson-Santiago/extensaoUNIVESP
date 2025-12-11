@@ -7,73 +7,7 @@
 </head>
 
 <body>
-
-    <!-- VIEW HOME: Lista de Matérias -->
-    <div id="view-home">
-        <div class="home-header">
-            <h2>Minhas Matérias</h2>
-            <button id="settingsBtn" class="btn-icon" title="Configurações">⚙️</button>
-        </div>
-
-        <ul id="itemList" class="item-list">
-            <!-- Itens serão inseridos via JS -->
-        </ul>
-
-        <div class="add-form">
-            <button id="addCurrentBtn" class="btn-current">Adicionar Página Atual</button>
-            <div style="text-align: center; margin-bottom: 8px; font-size: 12px; color: #666;">ou adicione manualmente:
-            </div>
-            <input type="text" id="nameInput" class="input-field" placeholder="Nome da Matéria">
-            <input type="text" id="urlInput" class="input-field" placeholder="https://...">
-            <button id="addBtn" class="btn-add">Adicionar</button>
-        </div>
-    </div>
-
-    <!-- VIEW DETAILS: Detalhes da Matéria (Semanas) -->
-    <div id="view-details" style="display: none;">
-        <div class="details-header">
-            <button id="backBtn" class="btn-back">← Voltar</button>
-            <h2 id="detailsTitle" class="details-title">Nome da Matéria</h2>
-        </div>
-
-        <div id="detailsActions" style="margin-bottom: 15px; display: flex; gap: 5px;">
-            <button id="openCourseBtn" class="btn-open-course" style="flex: 1;">Abrir Matéria</button>
-            <button id="refreshWeeksBtn" class="btn-refresh" title="Atualizar Semanas"
-                style="width: 40px; cursor: pointer;">↻</button>
-        </div>
-
-        <h3 style="font-size: 14px; color: #555; margin-bottom: 10px;">Semanas Disponíveis:</h3>
-        <div id="weeksList" class="weeks-container">
-            <!-- Lista de semanas aqui -->
-        </div>
-    </div>
-
-    <div id="view-settings" style="display: none;">
-        <div class="details-header">
-            <button id="closeSettingsBtn" class="btn-back">← Voltar</button>
-            <h2>Configurações</h2>
-        </div>
-
-        <div class="settings-content">
-            <h3>Importação em Lote</h3>
-            <p style="font-size: 12px; color: #666; margin-bottom: 10px;">
-                Acesse a página de cursos do AVA e importe automaticamente suas matérias do bimestre atual.
-            </p>
-
-            <div class="form-group">
-                <label for="batchCount">Importar os primeiros:</label>
-                <input type="number" id="batchCount" value="6" min="1" max="20" style="width: 50px; padding: 5px;">
-                <span style="font-size: 12px;">cursos</span>
-            </div>
-
-            <button id="btnImportBatch" class="btn-add" style="width: 100%; margin-top: 10px;">
-                Importar Cursos do Bimestre
-            </button>
-
-            <div id="batchStatus" style="margin-top: 10px; font-size: 12px; color: #333;"></div>
-        </div>
-    </div>
-
+    <div id="app"></div>
     <script type="module" src="sidepanel.js"></script>
 </body>
 
