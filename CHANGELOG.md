@@ -1,6 +1,20 @@
 # Changelog - Versão Beta
 
 ## [2.3.1] - 2025-12-12
+### Refatoração
+- **SettingsView.js**: Modularização completa do código settings para melhorar manutenção e testes.
+  - Extraído `RaManager` e `DomainManager` para lógica de negócios.
+  - Criado `ConfigForm` para interface de configurações.
+  - Implementado `FeedbackManager` para mensagens visuais.
+- **Tipagem**: Correções de tipagem e JSDoc em todos os novos módulos.
+
+### Infraestrutura & Testes
+- **Jest Upgrade**: Atualizado para Jest v30.2.0.
+  - Removido `jest-chrome` em favor de `jest-webextension-mock` para melhor compatibilidade.
+  - Ativado provider de cobertura V8 (mais rápido e preciso).
+  - Limpeza de configurações depreciadas no `jest.config.js`.
+- **Cobertura**: Adicionados testes unitários completos para o novo módulo de configurações e armazenamento.
+
 ### Validado
 - **Issue #2 - Consolidação de Código:** Confirmada consolidação de `settings.js` em `shared/utils/` como única fonte de verdade
 - **Eliminação de Duplicação:** Verificada ausência de código duplicado entre popup e sidepanel
