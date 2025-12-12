@@ -1,5 +1,7 @@
 # AutoPreencher UNIVESP
 
+**Ferramentas de produtividade para alunos UNIVESP: Autopreenchimento SEI, Gestão de Cursos e Navegação Inteligente no AVA.**
+
 Extensão para facilitar a vida do aluno UNIVESP, automatizando o preenchimento de emails institucionais no SEI e melhorando a navegação no Blackboard (AVA).
 
 ## Funcionalidades

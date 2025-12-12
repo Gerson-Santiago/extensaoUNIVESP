@@ -1,7 +1,7 @@
 {
   "name": "univesp-extension",
   "version": "2.3.0",
-  "description": "Extensão para automação Univesp",
+  "description": "Ferramentas de produtividade para alunos UNIVESP: Autopreenchimento SEI, Gestão de Cursos e Navegação Inteligente no AVA.",
   "main": "popup/popup.js",
   "scripts": {
     "test": "jest"
