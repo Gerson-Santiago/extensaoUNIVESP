@@ -8,15 +8,7 @@ import {
     clearItems,
 } from '../sidepanel/logic/storage.js';
 
-// Mock global do chrome.storage.sync
-global.chrome = {
-    storage: {
-        sync: {
-            get: jest.fn(),
-            set: jest.fn(),
-        },
-    },
-};
+
 
 describe('Storage - CRUD de Cursos', () => {
     beforeEach(() => {
