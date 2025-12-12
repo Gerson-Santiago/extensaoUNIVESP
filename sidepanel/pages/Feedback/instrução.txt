@@ -1,0 +1,8 @@
+
+Feedback
+https://forms.gle/UPXVYbYrmN7wuDDw8
+
+
+a ideia geral é usar como iframe e que o linnk para abrir o iframe esteja na page/viwer de configurações
+
+<iframe src="https://docs.google.com/forms/d/e/1FAIpQLSekIKxMxYynkHBAJqYN_A1pe5_3_fwC6T4s7CX6z9tSkfEXtA/viewform?embedded=true" width="640" height="1747" frameborder="0" marginheight="0" marginwidth="0">Carregando…</iframe>
