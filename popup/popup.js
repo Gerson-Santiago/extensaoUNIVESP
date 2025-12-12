@@ -1,4 +1,4 @@
-import { formatEmail, extractRa, resolveDomain, CONSTANTS } from './logic/settings.js';
+import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../shared/utils/settings.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const raInput = document.getElementById('raInput');

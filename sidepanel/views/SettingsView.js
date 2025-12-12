@@ -2,7 +2,7 @@ import { AddManualModal } from '../components/Modals/AddManualModal.js';
 import { BatchImportModal } from '../components/Modals/BatchImportModal.js';
 import { addItem, clearItems } from '../logic/storage.js';
 import { scrapeWeeksFromTab } from '../logic/scraper.js';
-import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../utils/settings.js';
+import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../../shared/utils/settings.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {

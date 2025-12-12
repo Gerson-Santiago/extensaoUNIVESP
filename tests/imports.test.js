@@ -31,7 +31,7 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
       '../sidepanel/logic/storage.js',
       '../sidepanel/logic/tabs.js',
       '../sidepanel/ui/components.js',
-      '../popup/logic/settings.js',
+      '../shared/utils/settings.js',
     ];
 
     for (const modulePath of modulesToImport) {
