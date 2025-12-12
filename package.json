@@ -1,6 +1,6 @@
 {
   "name": "univesp-extension",
-  "version": "1.0.0",
+  "version": "2.3.0",
   "description": "Extensão para automação Univesp",
   "main": "popup/popup.js",
   "scripts": {

@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "AutoPreencher UNIVESP",
-  "version": "2.1.1",
+  "version": "2.3.0",
   "description": "Preenche automaticamente o email institucional no SEI Univesp com o valor configurado.",
   "permissions": [
     "storage",
