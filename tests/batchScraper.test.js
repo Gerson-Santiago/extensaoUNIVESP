@@ -1,31 +1,26 @@
 import { scrapeCourseList } from '../sidepanel/logic/batchScraper.js';
 
-// Mock global chrome
-global.chrome = {
-  scripting: {
-    executeScript: jest.fn(),
-  },
-};
 
-describe('Logic - Batch Scraper', () => {
+
+describe('Lógica - Batch Scraper', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('Should handle correct course list extraction', async () => {
+  test('Deve realizar a extração correta da lista de cursos', async () => {
     // Mock the return value of the injected script
-    chrome.scripting.executeScript.mockResolvedValue([
-      {
-        result: {
-          success: true,
-          courses: [
-            { name: 'Curso 1', url: 'https://ava.univesp.br/ultra/course/_123_1' },
-            { name: 'Curso 2', url: 'https://ava.univesp.br/ultra/course/_456_1' },
-          ],
-          message: 'Encontrados 2 cursos.',
-        },
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
+    {
+      result: {
+        success: true,
+        courses: [
+          { name: 'Curso 1', url: 'https://ava.univesp.br/ultra/course/_123_1' },
+          { name: 'Curso 2', url: 'https://ava.univesp.br/ultra/course/_456_1' },
+        ],
+        message: 'Encontrados 2 cursos.',
       },
-    ]);
+    },
+  ]);
 
     const result = await scrapeCourseList(101, 3);
 
@@ -40,8 +35,8 @@ describe('Logic - Batch Scraper', () => {
     expect(result.courses[0].name).toBe('Curso 1');
   });
 
-  test('Should handle script execution failure', async () => {
-    chrome.scripting.executeScript.mockRejectedValue(new Error('Injection failed'));
+  test('Deve lidar com falha na execução do script', async () => {
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(new Error('Injection failed'));
 
     const result = await scrapeCourseList(101);
 
@@ -49,8 +44,8 @@ describe('Logic - Batch Scraper', () => {
     expect(result.message).toContain('Erro ao executar script');
   });
 
-  test('Should handle empty or invalid result from script', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([]); // Empty array
+  test('Deve lidar com resultado vazio ou inválido do script', async () => {
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([]); // Empty array
 
     const result = await scrapeCourseList(101);
 

@@ -1,11 +1,6 @@
 import { scrapeWeeksFromTab } from '../sidepanel/logic/scraper.js';
 
-// Mock de chrome global
-global.chrome = {
-  scripting: {
-    executeScript: jest.fn(),
-  },
-};
+
 
 describe('Testes de Lógica - Scraper', () => {
   beforeEach(() => {
@@ -14,7 +9,7 @@ describe('Testes de Lógica - Scraper', () => {
 
   test('scrapeWeeksFromTab deve chamar executeScript corretamente', async () => {
     // Mock do retorno do script injetado
-    chrome.scripting.executeScript.mockResolvedValue([
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
           weeks: [{ name: 'Semana 1', url: 'http://test.com/s1' }],
@@ -37,7 +32,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve lidar com retorno vazio', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([]); // Retorno vazio/falha
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([]); // Retorno vazio/falha
 
     const result = await scrapeWeeksFromTab(123);
 
@@ -45,7 +40,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve mesclar resultados de múltiplos frames', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
           weeks: [{ name: 'Semana 1', url: 'http://test.com/s1' }],
@@ -69,7 +64,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve remover duplicatas baseado em URL', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
           weeks: [
@@ -90,7 +85,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve ordenar semanas por número', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
           weeks: [
@@ -111,7 +106,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve ignorar semanas sem URL', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
           weeks: [
@@ -131,7 +126,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve lidar com erro no executeScript', async () => {
-    chrome.scripting.executeScript.mockRejectedValue(new Error('Falha na injeção'));
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(new Error('Falha na injeção'));
 
     const result = await scrapeWeeksFromTab(123);
 
@@ -139,7 +134,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve lidar com result undefined', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       { result: undefined },
       { result: null },
     ]);
@@ -150,7 +145,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve lidar com weeks não sendo array', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
           weeks: 'não é um array',
@@ -166,7 +161,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve usar primeiro título não-null encontrado', async () => {
-    chrome.scripting.executeScript.mockResolvedValue([
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
           weeks: [],
