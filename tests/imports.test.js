@@ -15,7 +15,13 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
     'sidepanel/logic/scraper.js',
     'sidepanel/logic/storage.js',
     'sidepanel/logic/tabs.js',
+    'sidepanel/logic/batchScraper.js', // 🆕
     'sidepanel/ui/components.js',
+    'sidepanel/views/HomeView.js', // 🆕
+    'sidepanel/views/CoursesView.js', // 🆕
+    'sidepanel/views/CourseDetailsView.js', // 🆕
+    'sidepanel/views/SettingsView.js', // 🆕
+    'shared/utils/settings.js', // 🆕
     'scripts/content.js',
   ];
 
@@ -42,5 +48,29 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
         throw new Error(`Erro ao importar ${modulePath}: ${e.message}`);
       }
     }
+  });
+
+  // Testes de estrutura do manifest
+  test('manifest.json deve ter estrutura válida', () => {
+    const manifestPath = path.join(projectRoot, 'manifest.json');
+    const manifestContent = fs.readFileSync(manifestPath, 'utf8');
+    const manifest = JSON.parse(manifestContent);
+
+    expect(manifest).toHaveProperty('name');
+    expect(manifest).toHaveProperty('version');
+    expect(manifest).toHaveProperty('manifest_version');
+    expect(manifest).toHaveProperty('permissions');
+  });
+
+  test('manifest.json deve ter permissões mínimas necessárias', () => {
+    const manifestPath = path.join(projectRoot, 'manifest.json');
+    const manifestContent = fs.readFileSync(manifestPath, 'utf8');
+    const manifest = JSON.parse(manifestContent);
+
+    const requiredPermissions = ['storage', 'scripting', 'tabs', 'sidePanel'];
+
+    requiredPermissions.forEach((permission) => {
+      expect(manifest.permissions).toContain(permission);
+    });
   });
 });

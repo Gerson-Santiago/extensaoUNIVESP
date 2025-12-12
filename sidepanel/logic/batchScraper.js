@@ -2,6 +2,9 @@
  * Lógica para scraping em lote de cursos na página /ultra/course
  */
 
+// Variável para controlar logs de debug (desativar em produção)
+const DEBUG = false;
+
 // Função injetável que roda no contexto da página
 async function DOM_extractCourses_Injected(maxCourses) {
   const results = {
@@ -173,7 +176,7 @@ export async function scrapeCourseList(tabId, maxCourses = 6) {
     }
     return { success: false, message: 'Falha na comunicação com a página.' };
   } catch (error) {
-    console.error(error);
+    if (DEBUG) console.error(error);
     return { success: false, message: 'Erro ao executar script: ' + error.message };
   }
 }
