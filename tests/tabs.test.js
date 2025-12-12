@@ -1,16 +1,6 @@
 import { openOrSwitchToTab } from '../sidepanel/logic/tabs.js';
 
-// Mock chrome global
-global.chrome = {
-  tabs: {
-    query: jest.fn(),
-    update: jest.fn(),
-    create: jest.fn(),
-  },
-  windows: {
-    update: jest.fn(),
-  },
-};
+
 
 describe('Logic - Tabs Switching', () => {
   beforeEach(() => {
