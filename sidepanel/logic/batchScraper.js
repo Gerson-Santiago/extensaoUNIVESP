@@ -136,8 +136,7 @@ async function DOM_extractCourses_Injected(maxCourses) {
           // Fallback para Launcher simples (Avisos) se não achar a página inicial
           return { name: c.name, url: c.url };
         }
-      } catch (err) {
-        console.error(`Erro ao processar curso ${c.name}:`, err);
+      } catch {
         return { name: c.name, url: c.url };
       }
     })
@@ -158,9 +157,7 @@ async function DOM_extractCourses_Injected(maxCourses) {
 
   return results;
 
-  function coursesExists(list, url) {
-    return list.some((c) => c.url === url);
-  }
+
 }
 
 export async function scrapeCourseList(tabId, maxCourses = 6) {

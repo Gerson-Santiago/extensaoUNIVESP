@@ -1,12 +1,13 @@
 import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../shared/utils/settings.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  /** @type {HTMLInputElement} */
   const raInput = document.getElementById('raInput');
+  /** @type {HTMLInputElement} */
   const domainInput = document.getElementById('domainInput');
   const resetDomainBtn = document.getElementById('resetDomainBtn');
   const saveBtn = document.getElementById('saveBtn');
   const status = document.getElementById('status');
-  const githubLink = document.getElementById('githubLink');
   const openSidePanelBtn = document.getElementById('openSidePanelBtn');
 
   // 1. CARREGAR: Recupera o que estava salvo

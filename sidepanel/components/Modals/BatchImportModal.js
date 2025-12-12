@@ -1,6 +1,6 @@
 import { Modal } from './Modal.js';
 import { scrapeCourseList } from '../../logic/batchScraper.js';
-import { addItem } from '../../logic/storage.js';
+import { addItemsBatch } from '../../logic/storage.js';
 
 export class BatchImportModal extends Modal {
   constructor(onSuccess) {
@@ -41,6 +41,7 @@ export class BatchImportModal extends Modal {
       status.style.color = '#333';
       btnRun.disabled = true;
 
+      // console.debug('Autopreenchimento UNIVESP Injetado.');
       const max = parseInt(countInput.value) || 3;
 
       chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
@@ -69,8 +70,8 @@ export class BatchImportModal extends Modal {
             if (result.success) {
               status.textContent = `Encontrados ${result.courses.length} cursos. Salvando...`;
 
-              let addedCount = 0;
-              let itemsProcessed = 0;
+              // console.warn('Campo não encontrado:', selector); // This line was malformed in the diff, assuming it was meant to be commented out.
+
               const total = result.courses.length;
 
               if (total === 0) {
@@ -96,10 +97,9 @@ export class BatchImportModal extends Modal {
               }
 
               // Import updated function
-              import('../../logic/storage.js').then(({ addItemsBatch }) => {
-                addItemsBatch(itemsToAdd, (added, ignored) => {
-                  this.finish(added, itemsToAdd.length, status, btnRun);
-                });
+              // Import updated function
+              addItemsBatch(itemsToAdd, (added, _ignored) => {
+                this.finish(added, itemsToAdd.length, status);
               });
             } else {
               // Se o scraper disser que estamos na página errada ou filtro errado, tentamos ajustar/redirecionar
@@ -121,7 +121,7 @@ export class BatchImportModal extends Modal {
                 btnRun.disabled = false;
               }
             }
-          } catch (e) {
+          } catch (/* _error */ e) {
             status.textContent = `Erro inesperado: ${e.message}`;
             status.style.color = 'red';
             btnRun.disabled = false;
@@ -134,7 +134,7 @@ export class BatchImportModal extends Modal {
     };
   }
 
-  finish(added, total, statusElement, btnElement) {
+  finish(added, total, statusElement) {
     let msg = `Concluído! ${added} novos cursos adicionados.`;
     if (added < total) {
       msg += ` (${total - added} duplicados ignorados)`;

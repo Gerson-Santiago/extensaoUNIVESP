@@ -10,6 +10,8 @@ export default [
       globals: {
         ...globals.browser,
         ...globals.webextensions,
+        ...globals.node,
+        ...globals.jest,
       },
     },
     rules: {
@@ -20,6 +22,6 @@ export default [
     },
   },
   {
-    ignores: ['node_modules/', 'tests/'],
+    ignores: ['node_modules/', 'coverage/'],
   },
 ];

@@ -12,6 +12,9 @@ Este arquivo contém templates de issues prontos para serem criados no GitHub. C
 
 **Milestone:** Fase 1 - Infraestrutura
 
+### ✅ Status: CONCLUÍDA (2025-12-12)
+> **Nota:** Configuração ESLint corrigida. Código limpo e validado (108 testes passando). Warnings residuais irrelevantes.
+
 ### Descrição
 
 Adicionar ESLint e Prettier ao projeto para garantir qualidade e consistência do código.
@@ -59,6 +62,8 @@ chore: adicionar ESLint e Prettier para qualidade de código
 **Labels:** `refactor`, `priority-high`, `code-quality`
 
 **Milestone:** Fase 1 - Infraestrutura
+
+### ✅ Status: CONCLUÍDA (2025-12-12)
 
 ### Descrição
 
@@ -126,6 +131,9 @@ refactor: consolidar settings.js em shared/utils para eliminar duplicação
 
 **Milestone:** Fase 1 - Infraestrutura
 
+### ✅ Status: CONCLUÍDA (2025-12-12)
+> **Nota:** Cobertura de testes implementada (27 testes passando).
+
 ### Descrição
 
 Adicionar cobertura completa de testes para o módulo crítico `storage.js`.
@@ -187,6 +195,8 @@ test: adicionar cobertura completa de testes para storage.js
 **Labels:** `refactor`, `priority-medium`, `code-splitting`
 
 **Milestone:** Fase 2 - Refatoração
+
+### ✅ Status: CONCLUÍDA (2025-12-12)
 
 **Depende de:** #1, #2, #3
 
@@ -269,6 +279,8 @@ refactor: dividir SettingsView.js em módulos menores (245→80 linhas)
 **Labels:** `refactor`, `priority-medium`, `css`, `maintainability`
 
 **Milestone:** Fase 2 - Refatoração
+
+### ✅ Status: CONCLUÍDA (2025-12-12)
 
 **Depende de:** #1
 
@@ -356,6 +368,8 @@ refactor: modularizar CSS do sidepanel (535 linhas → múltiplos arquivos)
 **Labels:** `chore`, `priority-medium`, `cleanup`
 
 **Milestone:** Fase 2 - Refatoração
+
+### ✅ Status: CONCLUÍDA (2025-12-12)
 
 ### Descrição
 

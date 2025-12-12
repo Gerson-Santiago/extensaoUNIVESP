@@ -6,7 +6,7 @@
 function DOM_extractWeeks_Injected() {
   const weeks = [];
   const links = document.querySelectorAll('a');
-  let foundTitle = null;
+  // fountTitle removido
 
   links.forEach((a) => {
     const text = (a.innerText || '').trim();
@@ -63,12 +63,12 @@ function DOM_extractWeeks_Injected() {
 
   // Prioridade: p.discipline-title (conforme relato do usuário)
   const pDisc = document.querySelector('p.discipline-title');
-  if (pDisc) {
+  if (pDisc instanceof HTMLElement) {
     pageTitle = pDisc.innerText.trim();
   } else {
     // Fallback: h1.panel-title
     const h1 = document.querySelector('h1.panel-title');
-    if (h1) {
+    if (h1 instanceof HTMLElement) {
       pageTitle = h1.innerText.trim();
     }
   }
@@ -121,7 +121,7 @@ export async function scrapeWeeksFromTab(tabId) {
     });
 
     return { weeks: uniqueWeeks, title: detectedTitle };
-  } catch (error) {
+  } catch {
     return { weeks: [], title: null };
   }
 }

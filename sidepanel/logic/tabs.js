@@ -2,9 +2,9 @@
 const DEBUG = false;
 
 export function openOrSwitchToTab(url) {
-  if (DEBUG) console.log('🔍 DEBUG openOrSwitchToTab chamado com URL:', url);
+  // if (DEBUG) console.log('🔍 DEBUG openOrSwitchToTab chamado com URL:', url);
   if (!url) {
-    if (DEBUG) console.error('❌ DEBUG: URL vazia, abortando');
+    // if (DEBUG) console.error('❌ DEBUG: URL vazia, abortando');
     return;
   }
 
@@ -14,11 +14,11 @@ export function openOrSwitchToTab(url) {
   const targetCourseId = courseMatch ? courseMatch[1] : null;
   const targetContentId = contentMatch ? contentMatch[1] : null;
 
-  if (DEBUG) console.log('🔍 DEBUG: targetCourseId extraído:', targetCourseId);
-  if (DEBUG) console.log('🔍 DEBUG: targetContentId extraído:', targetContentId);
+  // if (DEBUG) console.log('🔍 DEBUG: targetCourseId extraído:', targetCourseId);
+  // if (DEBUG) console.log('🔍 DEBUG: targetContentId extraído:', targetContentId);
 
   chrome.tabs.query({}, (tabs) => {
-    if (DEBUG) console.log('🔍 DEBUG: Total de abas encontradas:', tabs.length);
+    // if (DEBUG) console.log('🔍 DEBUG: Total de abas encontradas:', tabs.length);
     let existingTab = null;
 
     // Busca aba que contenha AMBOS: course_id E content_id (página específica)
@@ -28,11 +28,11 @@ export function openOrSwitchToTab(url) {
         t.url.includes(targetCourseId) &&
         t.url.includes(targetContentId)
       );
-      if (DEBUG) console.log('🔍 DEBUG: Aba existente com courseId E contentId?', existingTab ? existingTab.id : 'NÃO');
+      // if (DEBUG) console.log('🔍 DEBUG: Aba existente com courseId E contentId?', existingTab ? existingTab.id : 'NÃO');
     } else if (targetCourseId) {
       // Fallback: apenas course_id (para páginas principais sem content_id)
       existingTab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
-      if (DEBUG) console.log('🔍 DEBUG: Aba existente apenas por courseId?', existingTab ? existingTab.id : 'NÃO');
+      // if (DEBUG) console.log('🔍 DEBUG: Aba existente apenas por courseId?', existingTab ? existingTab.id : 'NÃO');
     }
 
     // Fallback adicional: tenta por URL exata
@@ -41,17 +41,22 @@ export function openOrSwitchToTab(url) {
       existingTab = tabs.find(
         (t) => t.url && (t.url.startsWith(url) || t.url.startsWith(cleanUrl))
       );
-      if (DEBUG) console.log('🔍 DEBUG: Aba existente por URL exata?', existingTab ? existingTab.id : 'NÃO');
+      // eslint-disable-next-line no-console
+      if (DEBUG) console.debug('🔍 DEBUG: Aba existente por URL exata?', existingTab ? existingTab.id : 'NÃO');
     }
 
     if (existingTab) {
-      if (DEBUG) console.log('✅ DEBUG: Aba encontrada! Trocando para aba ID:', existingTab.id);
+      // eslint-disable-next-line no-console
+      if (DEBUG) console.debug('✅ DEBUG: Aba encontrada! Trocando para aba ID:', existingTab.id);
+      // console.log('Tabs.js: activateExistingTab', tabId);
       chrome.tabs.update(existingTab.id, { active: true });
       chrome.windows.update(existingTab.windowId, { focused: true });
     } else {
-      if (DEBUG) console.log('📝 DEBUG: Nenhuma aba encontrada. Criando nova aba com URL:', url);
+      // eslint-disable-next-line no-console
+      if (DEBUG) console.debug('📝 DEBUG: Nenhuma aba encontrada. Criando nova aba com URL:', url);
       chrome.tabs.create({ url: url }, (newTab) => {
-        if (DEBUG) console.log('✅ DEBUG: Nova aba criada! ID:', newTab.id);
+        // eslint-disable-next-line no-console
+        if (DEBUG) console.debug('✅ DEBUG: Nova aba criada! ID:', newTab.id);
       });
     }
   });
