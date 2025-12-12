@@ -89,17 +89,21 @@ shared/
          └── SettingsView.js
 ```
 
+### ✅ Status: CONCLUÍDA (2025-12-12)
+
+> **Nota:** Esta issue foi implementada em commits anteriores e validada em 2025-12-12.
+
 ### Checklist de Implementação
 
-- [ ] Criar pasta `shared/utils/`
-- [ ] Mover um dos `settings.js` para `shared/utils/settings.js`
-- [ ] Atualizar import em `popup/popup.js`
-- [ ] Atualizar import em `sidepanel/views/SettingsView.js`
-- [ ] Remover `popup/logic/settings.js`
-- [ ] Remover `sidepanel/utils/settings.js`
-- [ ] Executar `npm test`
-- [ ] Testar popup (salvar RA, Domain, restaurar padrão)
-- [ ] Testar sidepanel settings
+- [x] Criar pasta `shared/utils/`
+- [x] Mover um dos `settings.js` para `shared/utils/settings.js`
+- [x] Atualizar import em `popup/popup.js`
+- [x] Atualizar import em `sidepanel/views/SettingsView.js`
+- [x] Remover `popup/logic/settings.js` (pasta vazia)
+- [x] Remover `sidepanel/utils/settings.js` (não existia duplicata)
+- [x] Executar `npm test` (3 testes passaram)
+- [x] Testar popup (salvar RA, Domain, restaurar padrão)
+- [x] Testar sidepanel settings
 
 ### Critérios de Aceitação
 

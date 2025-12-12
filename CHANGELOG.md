@@ -1,5 +1,12 @@
 # Changelog - Versão Beta
 
+## [2.3.1] - 2025-12-12
+### Validado
+- **Issue #2 - Consolidação de Código:** Confirmada consolidação de `settings.js` em `shared/utils/` como única fonte de verdade
+- **Eliminação de Duplicação:** Verificada ausência de código duplicado entre popup e sidepanel
+- **Importações Corretas:** Validados imports em `popup/popup.js` e `sidepanel/views/SettingsView.js`
+- **Testes Passando:** Confirmados 3 testes automatizados executando com sucesso
+
 ## [2.3.0] - 2025-12-11
 ### Novas Funcionalidades
 - **Importação em Lote Inteligente:** Importa cursos diretamente da lista do AVA, acessando em background ("Deep Scraping") para garantir links diretos para a "Página Inicial" do conteúdo.
