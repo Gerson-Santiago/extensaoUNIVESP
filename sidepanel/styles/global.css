@@ -1,0 +1,29 @@
+/* Variáveis e Reset */
+:root {
+    --primary-color: #004b8d;
+    --primary-hover: #00376b;
+    --text-color: #333;
+    --text-secondary: #666;
+    --text-light: #999;
+    --bg-color: #f9f9f9;
+    --bg-white: #ffffff;
+    --border-color: #ddd;
+    --border-light: #eee;
+    --success-color: #28a745;
+    --success-hover: #218838;
+    --danger-color: #d9534f;
+    --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
+    --shadow-md: 0 2px 5px rgba(0, 0, 0, 0.1);
+    --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+body {
+    padding: 0;
+    margin: 0;
+    font-family: var(--font-family);
+    background-color: var(--bg-color);
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    color: var(--text-color);
+}

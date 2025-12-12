@@ -1,0 +1,44 @@
+/* View: Home Dashboard */
+.view-home-dashboard {
+    text-align: center;
+    padding-top: 10px;
+    display: flex;
+    flex-direction: column;
+    min-height: calc(100vh - 80px);
+}
+
+.dashboard-header h2 {
+    color: var(--primary-color);
+    margin-bottom: 5px;
+    border-bottom: 2px solid var(--primary-color);
+    padding-bottom: 5px;
+    font-size: 18px;
+    margin-top: 0;
+}
+
+/* Seção de Acesso Rápido */
+.quick-access-section {
+    margin-bottom: 20px;
+}
+
+.quick-access-section h3 {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 10px;
+    text-align: left;
+    margin-left: 5px;
+}
+
+.quick-links-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 15px;
+}
+
+.bb-icon {
+    width: 24px;
+    height: 24px;
+    display: block;
+    margin-bottom: 5px;
+}
