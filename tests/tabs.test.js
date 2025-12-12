@@ -19,23 +19,26 @@ describe('Logic - Tabs Switching', () => {
 
   test('Should switch to tab matching course_id exactly', () => {
     const targetUrl =
-      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_98765_1';
+      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1';
 
-    // Mock existing tabs - One has the same course_id but different page (e.g. forum)
-    const mockTabs = [
-      { id: 101, windowId: 999, url: 'https://ava.univesp.br/other' },
-      {
-        id: 102,
-        windowId: 999,
-        url: 'https://ava.univesp.br/webapps/discussionboard?course_id=_12345_1',
-      }, // Matches ID!
-    ];
-
-    chrome.tabs.query.mockImplementation((_, callback) => callback(mockTabs));
+    chrome.tabs.query.mockImplementation((query, callback) => {
+      callback([
+        {
+          id: 101,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_99999_1&content_id=_11111_1',
+          windowId: 888,
+        },
+        {
+          id: 102,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1',
+          windowId: 999,
+        },
+      ]);
+    });
 
     openOrSwitchToTab(targetUrl);
 
-    // Should update tab 102
+    // Should update tab 102 (possui AMBOS course_id E content_id)
     expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true });
     expect(chrome.windows.update).toHaveBeenCalledWith(999, { focused: true });
     expect(chrome.tabs.create).not.toHaveBeenCalled();
@@ -59,11 +62,19 @@ describe('Logic - Tabs Switching', () => {
   test('Should create new tab if no match found at all', () => {
     const targetUrl = 'https://example.com';
 
-    chrome.tabs.query.mockImplementation((_, callback) => callback([]));
+    chrome.tabs.query.mockImplementation((query, callback) => {
+      callback([
+        {
+          id: 101,
+          url: 'https://ava.univesp.br/other',
+          windowId: 888,
+        },
+      ]);
+    });
 
     openOrSwitchToTab(targetUrl);
 
-    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl });
+    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl }, expect.any(Function));
     expect(chrome.tabs.update).not.toHaveBeenCalled();
   });
 });
