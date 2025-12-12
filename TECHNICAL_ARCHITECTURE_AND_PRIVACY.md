@@ -15,10 +15,12 @@ Esta extensão opera sob uma arquitetura estrita de **"First-Party / Local-Only"
 *   **Zero Telemetria:** Nenhuma informação de uso, cliques ou navegação é enviada para terceiros.
 
 ### 2. Armazenamento Local (Client-Side Storage)
-Todos os dados persistidos pela extensão residem **exclusivamente no dispositivo do usuário**, utilizando a [Chrome Storage API](https://developer.chrome.com/docs/extensions/reference/api/storage).
+Todos os dados persistidos pela extensão residem **exclusivamente no dispositivo do usuário**,
+└─ 💾 DATA LAYER
+   └─ Chrome Storage (Sync/Local) (utilizando a [Chrome Storage API](https://developer.chrome.com/docs/extensions/reference/api/storage)).
 *   **Dados Salvos:** IDs de cursos, links de favoritos e configurações do usuário (ex: RA).
-*   **Localização:** Sandbox segura do navegador Chrome no computador do usuário.
-*   **Controle:** Se o usuário desinstalar a extensão, todos os dados são apagados imediatamente e irrecuperavelmente, pois não existe cópia remota.
+*   **Localização:** `chrome.storage.sync` (Sincronização criptografada via conta Google do usuário) ou `chrome.storage.local` (Sandbox local).
+*   **Controle:** Se o usuário desinstalar a extensão, os dados locais são apagados. Dados sincronizados permanecem na conta Google do usuário até serem limpos manualmente, mas inacessíveis a terceiros.
 
 ---
 
@@ -84,7 +86,7 @@ O motor principal da extensão (`batchScraper.js` e `scraper.js`) atua como um *
 
 | Quesito | Status | Detalhe Técnico |
 | :--- | :--- | :--- |
-| **Banco de Dados Externo** | ❌ NÃO POSSUI | Dados vivem apenas em `chrome.storage.local`. |
+| **Banco de Dados Externo** | ❌ NÃO POSSUI | Dados em `chrome.storage.sync` (Nuvem pessoal Google) ou `local`. |
 | **Envio de Dados (Upload)** | ❌ NÃO REALIZA | Nenhuma requisição `POST`/`PUT` para fora do domínio UNIVESP. |
 | **Coleta de Senhas** | ❌ NÃO REALIZA | Utiliza cookies de sessão existentes do browser. |
 | **Rastreamento (Tracking)** | ❌ NÃO POSSUI | Sem Google Analytics, Mixpanel ou similares. |

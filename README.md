@@ -52,3 +52,7 @@ npm test
     - `scripts/`: Scripts injetados (Content Scripts).
 - **Testes**: Cobertura unitária para lógica de negócios crítica (`tests/`).
 
+## 🛡️ Privacidade e Arquitetura
+
+Para detalhes técnicos sobre como seus dados são manuseados (Local-First / No-Database), consulte o protocolo oficial:
+📄 [**Protocolo de Arquitetura Técnica & Privacidade**](./TECHNICAL_ARCHITECTURE_AND_PRIVACY.md)

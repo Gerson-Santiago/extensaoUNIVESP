@@ -8,7 +8,7 @@
 
 ### Qualidade e Documentação
 - **Refatoração de Testes:** Expansão profissional da suíte de testes (100% passing), incluindo testes para scrapers e lógica de abas.
-- **Limpeza de Documentação:** Remoção de arquivos obsoletos e centralização da documentação técnica no README.
+- **Documentação Profissional:** Criação do `TECHNICAL_ARCHITECTURE_AND_PRIVACY.md` detalhando o protocolo de privacidade "No-Database" e a arquitetura técnica local.
 
 ## [2.2.0] - 2025-12-11
 ### Segurança e Arquitetura
