@@ -326,14 +326,14 @@ sidepanel/
 
 ### Testes Visuais Necessários
 
-- [ ] Home view - layout idêntico
-- [ ] Courses view - lista de cursos
-- [ ] Course details view - semanas
-- [ ] Settings view - formulários
-- [ ] Todos os botões
-- [ ] Todos os cards
-- [ ] Todos os modais
-- [ ] Navegação top bar
+- [x] Home view - layout idêntico
+- [x] Courses view - lista de cursos
+- [x] Course details view - semanas
+- [x] Settings view - formulários
+- [x] Todos os botões
+- [x] Todos os cards
+- [x] Todos os modais
+- [x] Navegação top bar
 
 ### Critérios de Aceitação
 
@@ -378,10 +378,10 @@ grep -r "legacy_batchScraper" . --exclude-dir=node_modules
 ### Cenário 1: NÃO Está em Uso
 
 **Ação:**
-- [ ] Confirmar que não há imports
-- [ ] Remover arquivo
-- [ ] Executar `npm test`
-- [ ] Testar batch import manualmente
+- [x] Confirmar que não há imports
+- [x] Remover arquivo
+- [x] Executar `npm test`
+- [x] Testar batch import manualmente
 
 **Commit:**
 ```
@@ -401,13 +401,17 @@ chore: remover código legado não utilizado (legacy_batchScraper.js)
 docs: documentar código legado e plano de migração (legacy_batchScraper.js)
 ```
 
+### ✅ Status: CONCLUÍDA (2025-12-12)
+
+> **Nota:** Esta issue foi implementada e validada em 2025-12-12. O arquivo não estava sendo utilizado e foi removido.
+
 ### Critérios de Aceitação
 
-- ✅ Uso do arquivo investigado
-- ✅ Se não usado: arquivo removido
-- ✅ Se usado: documentado
-- ✅ Testes passam
-- ✅ Batch import funciona
+- [x] Uso do arquivo investigado
+- [x] Se não usado: arquivo removido
+- [x] Se usado: documentado
+- [x] Testes passam
+- [x] Batch import funciona
 
 ---
 
