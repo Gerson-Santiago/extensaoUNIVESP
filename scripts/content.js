@@ -1,33 +1,32 @@
 function preencherEmail() {
-    // 1. Busca o email salvo nas configurações da extensão
-    chrome.storage.sync.get(['userEmail'], (result) => {
-        const emailSalvo = result.userEmail;
+  // 1. Busca o email salvo nas configurações da extensão
+  chrome.storage.sync.get(['userEmail'], (result) => {
+    const emailSalvo = result.userEmail;
 
-        // Só executa se o usuário tiver configurado um email
-        if (!emailSalvo) {
-            console.log("Extensão UNIVESP: Nenhum e-mail configurado na extensão.");
-            return;
-        }
+    // Só executa se o usuário tiver configurado um email
+    if (!emailSalvo) {
+      console.log('Extensão UNIVESP: Nenhum e-mail configurado na extensão.');
+      return;
+    }
 
-        const campoEmail = document.getElementById('form:email');
+    const campoEmail = document.getElementById('form:email');
 
-        // Verifica se o campo existe e está vazio
-        if (campoEmail && campoEmail.value === "") {
+    // Verifica se o campo existe e está vazio
+    if (campoEmail && campoEmail.value === '') {
+      // Preenche com o valor recuperado da memória
+      campoEmail.value = emailSalvo;
 
-            // Preenche com o valor recuperado da memória
-            campoEmail.value = emailSalvo;
+      // Eventos para validar no sistema Java/JSF
+      campoEmail.dispatchEvent(new Event('input', { bubbles: true }));
+      campoEmail.dispatchEvent(new Event('change', { bubbles: true }));
+      campoEmail.dispatchEvent(new Event('blur', { bubbles: true }));
 
-            // Eventos para validar no sistema Java/JSF
-            campoEmail.dispatchEvent(new Event('input', { bubbles: true }));
-            campoEmail.dispatchEvent(new Event('change', { bubbles: true }));
-            campoEmail.dispatchEvent(new Event('blur', { bubbles: true }));
+      // Pinta de amarelo suave para confirmar
+      campoEmail.style.backgroundColor = '#ffffd0';
 
-            // Pinta de amarelo suave para confirmar
-            campoEmail.style.backgroundColor = "#ffffd0";
-
-            console.log("Extensão UNIVESP: Email preenchido automaticamente.");
-        }
-    });
+      console.log('Extensão UNIVESP: Email preenchido automaticamente.');
+    }
+  });
 }
 
 // Executa ao carregar

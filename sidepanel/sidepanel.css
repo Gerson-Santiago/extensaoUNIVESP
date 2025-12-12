@@ -154,7 +154,9 @@ main#main-content {
   font-weight: bold;
   color: #004b8d;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
-  transition: transform 0.1s, box-shadow 0.1s;
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
   box-sizing: border-box;
 }
 
@@ -163,7 +165,6 @@ main#main-content {
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   transform: translateY(-2px);
 }
-
 
 /* Config Section */
 .divider {
@@ -307,8 +308,6 @@ h2 {
   color: #999;
   align-items: center;
 }
-
-
 
 .legend-right {
   display: contents;

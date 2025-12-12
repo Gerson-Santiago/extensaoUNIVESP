@@ -4,15 +4,25 @@
   "description": "Ferramentas de produtividade para alunos UNIVESP: Autopreenchimento SEI, Gestão de Cursos e Navegação Inteligente no AVA.",
   "main": "popup/popup.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:coverage": "jest --coverage",
+    "test:watch": "jest --watch",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
+    "@eslint/js": "^9.39.1",
     "babel-jest": "^29.7.0",
+    "eslint": "^9.39.1",
+    "globals": "^16.5.0",
     "jest": "^29.7.0",
-    "jest-environment-jsdom": "^29.7.0"
+    "jest-environment-jsdom": "^29.7.0",
+    "prettier": "^3.7.4"
   },
   "babel": {
     "presets": [

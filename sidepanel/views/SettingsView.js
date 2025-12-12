@@ -5,26 +5,28 @@ import { scrapeWeeksFromTab } from '../logic/scraper.js';
 import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../utils/settings.js';
 
 export class SettingsView {
-    constructor(callbacks = {}) {
-        this.onNavigate = callbacks.onNavigate;
+  constructor(callbacks = {}) {
+    this.onNavigate = callbacks.onNavigate;
 
-        // Inicializa os modais
-        this.addManualModal = new AddManualModal(() => this.showFeedback('Matéria adicionada com sucesso!', 'success'));
-        this.batchImportModal = new BatchImportModal(() => {
-            this.showFeedback('Importação concluída!', 'success');
-            // Redireciona para CoursesView após importação
-            if (this.onNavigate) {
-                setTimeout(() => {
-                    this.onNavigate('courses');
-                }, 1500); // Pequeno delay para ler o feedback
-            }
-        });
-    }
+    // Inicializa os modais
+    this.addManualModal = new AddManualModal(() =>
+      this.showFeedback('Matéria adicionada com sucesso!', 'success')
+    );
+    this.batchImportModal = new BatchImportModal(() => {
+      this.showFeedback('Importação concluída!', 'success');
+      // Redireciona para CoursesView após importação
+      if (this.onNavigate) {
+        setTimeout(() => {
+          this.onNavigate('courses');
+        }, 1500); // Pequeno delay para ler o feedback
+      }
+    });
+  }
 
-    render() {
-        const div = document.createElement('div');
-        div.className = 'view-settings';
-        div.innerHTML = `
+  render() {
+    const div = document.createElement('div');
+    div.className = 'view-settings';
+    div.innerHTML = `
             <h2>Configurações</h2>
             
             <div class="settings-content">
@@ -90,156 +92,163 @@ export class SettingsView {
                 <!-- Version removed -->
             </div>
         `;
-        return div;
+    return div;
+  }
+
+  afterRender() {
+    const btnManual = document.getElementById('btnManualAdd');
+    const btnCurrent = document.getElementById('btnAddCurrent');
+    const btnBatch = document.getElementById('btnBatchImport');
+    const btnClear = document.getElementById('btnClearAll');
+
+    // Config Logic
+    this.setupConfigLogic();
+
+    if (btnManual) {
+      btnManual.onclick = () => this.addManualModal.open();
     }
 
-    afterRender() {
-        const btnManual = document.getElementById('btnManualAdd');
-        const btnCurrent = document.getElementById('btnAddCurrent');
-        const btnBatch = document.getElementById('btnBatchImport');
-        const btnClear = document.getElementById('btnClearAll');
-
-        // Config Logic
-        this.setupConfigLogic();
-
-        if (btnManual) {
-            btnManual.onclick = () => this.addManualModal.open();
-        }
-
-        if (btnBatch) {
-            btnBatch.onclick = () => this.batchImportModal.open();
-        }
-
-        if (btnCurrent) {
-            btnCurrent.onclick = () => this.handleAddCurrent();
-        }
-
-        if (btnClear) {
-            btnClear.onclick = () => {
-                if (confirm('Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.')) {
-                    clearItems(() => {
-                        this.showFeedback('Todas as matérias foram removidas.', 'success');
-                    });
-                }
-            };
-        }
+    if (btnBatch) {
+      btnBatch.onclick = () => this.batchImportModal.open();
     }
 
-    setupConfigLogic() {
-        const raInput = document.getElementById('raInput');
-        const domainInput = document.getElementById('domainInput');
-        const resetDomainBtn = document.getElementById('resetDomainBtn');
-        const saveConfigBtn = document.getElementById('saveConfigBtn');
+    if (btnCurrent) {
+      btnCurrent.onclick = () => this.handleAddCurrent();
+    }
 
-        const popupToggle = document.getElementById('popupToggle');
+    if (btnClear) {
+      btnClear.onclick = () => {
+        if (
+          confirm(
+            'Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.'
+          )
+        ) {
+          clearItems(() => {
+            this.showFeedback('Todas as matérias foram removidas.', 'success');
+          });
+        }
+      };
+    }
+  }
 
-        // Carregar dados salvos
-        chrome.storage.sync.get(['userEmail', 'customDomain', 'clickBehavior'], (result) => {
-            const domain = resolveDomain(result.userEmail, result.customDomain);
-            if (domainInput) domainInput.value = domain;
+  setupConfigLogic() {
+    const raInput = document.getElementById('raInput');
+    const domainInput = document.getElementById('domainInput');
+    const resetDomainBtn = document.getElementById('resetDomainBtn');
+    const saveConfigBtn = document.getElementById('saveConfigBtn');
 
-            if (result.userEmail && raInput) {
-                raInput.value = extractRa(result.userEmail);
-            }
+    const popupToggle = document.getElementById('popupToggle');
 
-            // Load Behavior (Default is sidepanel, so popup is unchecked)
-            const savedBehavior = result.clickBehavior || 'sidepanel';
-            if (popupToggle) {
-                popupToggle.checked = (savedBehavior === 'popup');
-            }
+    // Carregar dados salvos
+    chrome.storage.sync.get(['userEmail', 'customDomain', 'clickBehavior'], (result) => {
+      const domain = resolveDomain(result.userEmail, result.customDomain);
+      if (domainInput) domainInput.value = domain;
+
+      if (result.userEmail && raInput) {
+        raInput.value = extractRa(result.userEmail);
+      }
+
+      // Load Behavior (Default is sidepanel, so popup is unchecked)
+      const savedBehavior = result.clickBehavior || 'sidepanel';
+      if (popupToggle) {
+        popupToggle.checked = savedBehavior === 'popup';
+      }
+    });
+
+    // Listen for Behavior Change
+    if (popupToggle) {
+      popupToggle.addEventListener('change', (e) => {
+        const behavior = e.target.checked ? 'popup' : 'sidepanel';
+        chrome.storage.sync.set({ clickBehavior: behavior }, () => {
+          // Saved
         });
-
-        // Listen for Behavior Change
-        if (popupToggle) {
-            popupToggle.addEventListener('change', (e) => {
-                const behavior = e.target.checked ? 'popup' : 'sidepanel';
-                chrome.storage.sync.set({ clickBehavior: behavior }, () => {
-                    // Saved
-                });
-            });
-        }
-
-        // Salvar Credenciais
-        if (saveConfigBtn) {
-            saveConfigBtn.addEventListener('click', () => {
-                const ra = raInput.value;
-                const domain = domainInput.value;
-
-                if (ra.trim()) {
-                    const { fullEmail, cleanDomain } = formatEmail(ra, domain);
-
-                    chrome.storage.sync.set({
-                        userEmail: fullEmail,
-                        customDomain: cleanDomain
-                    }, () => {
-                        this.showFeedback('Configuração salva com sucesso!', 'success');
-                    });
-                } else {
-                    alert("Por favor, digite o seu RA.");
-                }
-            });
-        }
-
-        // Reset Domain
-        if (resetDomainBtn) {
-            resetDomainBtn.addEventListener('click', () => {
-                domainInput.value = CONSTANTS.DEFAULT_DOMAIN;
-            });
-        }
+      });
     }
 
-    handleAddCurrent() {
-        const feedback = document.getElementById('settingsFeedback');
-        feedback.textContent = 'Analisando página...';
-        feedback.style.display = 'block';
-        feedback.className = 'status-msg';
+    // Salvar Credenciais
+    if (saveConfigBtn) {
+      saveConfigBtn.addEventListener('click', () => {
+        const ra = raInput.value;
+        const domain = domainInput.value;
 
-        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-            if (tabs && tabs[0]) {
-                const tab = tabs[0];
-                let name = tab.title || "Nova Matéria";
+        if (ra.trim()) {
+          const { fullEmail, cleanDomain } = formatEmail(ra, domain);
 
-                // Tenta extrair nome limpo se for padrão "Nome - UNIVESP"
-                if (name.includes('-')) {
-                    name = name.split('-')[0].trim();
-                }
-
-                let weeks = [];
-                let detectedName = null;
-
-                // Tenta fazer scrape se for página web
-                if (tab.url.startsWith('http')) {
-                    const result = await scrapeWeeksFromTab(tab.id);
-                    weeks = result.weeks || [];
-                    detectedName = result.title;
-                }
-
-                if (detectedName) {
-                    name = detectedName;
-                }
-
-                addItem(name, tab.url, weeks, (success, msg) => {
-                    if (success) {
-                        this.showFeedback('Página atual adicionada com sucesso!', 'success');
-                    } else {
-                        this.showFeedback(`Erro: ${msg}`, 'error');
-                    }
-                });
+          chrome.storage.sync.set(
+            {
+              userEmail: fullEmail,
+              customDomain: cleanDomain,
+            },
+            () => {
+              this.showFeedback('Configuração salva com sucesso!', 'success');
             }
-        });
-    }
-
-    showFeedback(message, type = 'success') {
-        const el = document.getElementById('settingsFeedback');
-        if (el) {
-            el.textContent = message;
-            el.style.display = 'block';
-            el.className = `status-msg ${type}`;
-            el.style.color = type === 'success' ? 'green' : 'red';
-
-            setTimeout(() => {
-                el.style.display = 'none';
-            }, 3000);
+          );
+        } else {
+          alert('Por favor, digite o seu RA.');
         }
+      });
     }
+
+    // Reset Domain
+    if (resetDomainBtn) {
+      resetDomainBtn.addEventListener('click', () => {
+        domainInput.value = CONSTANTS.DEFAULT_DOMAIN;
+      });
+    }
+  }
+
+  handleAddCurrent() {
+    const feedback = document.getElementById('settingsFeedback');
+    feedback.textContent = 'Analisando página...';
+    feedback.style.display = 'block';
+    feedback.className = 'status-msg';
+
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      if (tabs && tabs[0]) {
+        const tab = tabs[0];
+        let name = tab.title || 'Nova Matéria';
+
+        // Tenta extrair nome limpo se for padrão "Nome - UNIVESP"
+        if (name.includes('-')) {
+          name = name.split('-')[0].trim();
+        }
+
+        let weeks = [];
+        let detectedName = null;
+
+        // Tenta fazer scrape se for página web
+        if (tab.url.startsWith('http')) {
+          const result = await scrapeWeeksFromTab(tab.id);
+          weeks = result.weeks || [];
+          detectedName = result.title;
+        }
+
+        if (detectedName) {
+          name = detectedName;
+        }
+
+        addItem(name, tab.url, weeks, (success, msg) => {
+          if (success) {
+            this.showFeedback('Página atual adicionada com sucesso!', 'success');
+          } else {
+            this.showFeedback(`Erro: ${msg}`, 'error');
+          }
+        });
+      }
+    });
+  }
+
+  showFeedback(message, type = 'success') {
+    const el = document.getElementById('settingsFeedback');
+    if (el) {
+      el.textContent = message;
+      el.style.display = 'block';
+      el.className = `status-msg ${type}`;
+      el.style.color = type === 'success' ? 'green' : 'red';
+
+      setTimeout(() => {
+        el.style.display = 'none';
+      }, 3000);
+    }
+  }
 }

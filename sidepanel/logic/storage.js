@@ -3,10 +3,10 @@
  * @param {Function} callback - Função de retorno com a lista de cursos.
  */
 export function loadItems(callback) {
-    chrome.storage.sync.get(['savedCourses'], (result) => {
-        const courses = result.savedCourses || [];
-        callback(courses);
-    });
+  chrome.storage.sync.get(['savedCourses'], (result) => {
+    const courses = result.savedCourses || [];
+    callback(courses);
+  });
 }
 
 /**
@@ -15,9 +15,9 @@ export function loadItems(callback) {
  * @param {Function} [callback] - Função opcional a ser chamada após salvar.
  */
 export function saveItems(courses, callback) {
-    chrome.storage.sync.set({ savedCourses: courses }, () => {
-        if (callback) callback();
-    });
+  chrome.storage.sync.set({ savedCourses: courses }, () => {
+    if (callback) callback();
+  });
 }
 
 /**
@@ -29,21 +29,21 @@ export function saveItems(courses, callback) {
  * @param {Function} [callback] - Função de retorno. Ex: (success, message) => {}
  */
 export function addItem(name, url, weeks = [], callback) {
-    loadItems((courses) => {
-        // Normaliza a URL para comparação (opcional: remover query params se necessário, mas por enquanto exata)
-        const exists = courses.some(c => c.url === url);
+  loadItems((courses) => {
+    // Normaliza a URL para comparação (opcional: remover query params se necessário, mas por enquanto exata)
+    const exists = courses.some((c) => c.url === url);
 
-        if (exists) {
-            console.warn(`Curso com URL já existe: ${url}`);
-            if (callback) callback(false, 'Matéria já adicionada anteriormente.');
-            return;
-        }
+    if (exists) {
+      console.warn(`Curso com URL já existe: ${url}`);
+      if (callback) callback(false, 'Matéria já adicionada anteriormente.');
+      return;
+    }
 
-        courses.push({ id: Date.now(), name, url, weeks });
-        saveItems(courses, () => {
-            if (callback) callback(true, 'Matéria adicionada com sucesso!');
-        });
+    courses.push({ id: Date.now(), name, url, weeks });
+    saveItems(courses, () => {
+      if (callback) callback(true, 'Matéria adicionada com sucesso!');
     });
+  });
 }
 
 /**
@@ -52,33 +52,33 @@ export function addItem(name, url, weeks = [], callback) {
  * @param {Function} callback - Retorna (addedCount, totalIgnored).
  */
 export function addItemsBatch(newItems, callback) {
-    loadItems((courses) => {
-        let addedCount = 0;
-        let ignoredCount = 0;
+  loadItems((courses) => {
+    let addedCount = 0;
+    let ignoredCount = 0;
 
-        newItems.forEach(item => {
-            const exists = courses.some(c => c.url === item.url);
-            if (!exists) {
-                courses.push({
-                    id: Date.now() + Math.random(), // Ensure unique ID even in batch
-                    name: item.name,
-                    url: item.url,
-                    weeks: item.weeks || []
-                });
-                addedCount++;
-            } else {
-                ignoredCount++;
-            }
+    newItems.forEach((item) => {
+      const exists = courses.some((c) => c.url === item.url);
+      if (!exists) {
+        courses.push({
+          id: Date.now() + Math.random(), // Ensure unique ID even in batch
+          name: item.name,
+          url: item.url,
+          weeks: item.weeks || [],
         });
-
-        if (addedCount > 0) {
-            saveItems(courses, () => {
-                if (callback) callback(addedCount, ignoredCount);
-            });
-        } else {
-            if (callback) callback(0, ignoredCount);
-        }
+        addedCount++;
+      } else {
+        ignoredCount++;
+      }
     });
+
+    if (addedCount > 0) {
+      saveItems(courses, () => {
+        if (callback) callback(addedCount, ignoredCount);
+      });
+    } else {
+      if (callback) callback(0, ignoredCount);
+    }
+  });
 }
 
 /**
@@ -86,7 +86,7 @@ export function addItemsBatch(newItems, callback) {
  * @param {Function} [callback] - Função de retorno após limpar.
  */
 export function clearItems(callback) {
-    saveItems([], callback);
+  saveItems([], callback);
 }
 
 /**
@@ -95,10 +95,10 @@ export function clearItems(callback) {
  * @param {Function} [callback] - Função de retorno após remover.
  */
 export function deleteItem(id, callback) {
-    loadItems((courses) => {
-        const newCourses = courses.filter(item => item.id !== id);
-        saveItems(newCourses, callback);
-    });
+  loadItems((courses) => {
+    const newCourses = courses.filter((item) => item.id !== id);
+    saveItems(newCourses, callback);
+  });
 }
 
 /**
@@ -108,14 +108,14 @@ export function deleteItem(id, callback) {
  * @param {Function} [callback] - Função de retorno após atualizar.
  */
 export function updateItem(id, updates, callback) {
-    loadItems((courses) => {
-        const index = courses.findIndex(c => c.id === id);
-        if (index !== -1) {
-            courses[index] = { ...courses[index], ...updates };
-            saveItems(courses, callback);
-        } else {
-            console.warn(`Item com id ${id} não encontrado para atualização.`);
-            if (callback) callback();
-        }
-    });
+  loadItems((courses) => {
+    const index = courses.findIndex((c) => c.id === id);
+    if (index !== -1) {
+      courses[index] = { ...courses[index], ...updates };
+      saveItems(courses, callback);
+    } else {
+      console.warn(`Item com id ${id} não encontrado para atualização.`);
+      if (callback) callback();
+    }
+  });
 }

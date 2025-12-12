@@ -1,47 +1,70 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="popup.css" />
+  </head>
 
-<head>
-    <meta charset="UTF-8">
-    <link rel="stylesheet" href="popup.css">
-</head>
-
-<body>
-
+  <body>
     <h3>Configurar Acesso</h3>
 
     <div class="input-group">
-        <input type="text" id="raInput" placeholder="RA" style="width: 40%;">
-        <input type="text" id="domainInput" value="@aluno.univesp.br" placeholder="@dominio.com"
-            style="width: 50%; border-left: 1px solid #ccc;">
-        <button id="resetDomainBtn" title="Restaurar Padrão"
-            style="border: none; background: #fff; cursor: pointer; color: #666;">&#x21ba;</button>
+      <input type="text" id="raInput" placeholder="RA" style="width: 40%" />
+      <input
+        type="text"
+        id="domainInput"
+        value="@aluno.univesp.br"
+        placeholder="@dominio.com"
+        style="width: 50%; border-left: 1px solid #ccc"
+      />
+      <button
+        id="resetDomainBtn"
+        title="Restaurar Padrão"
+        style="border: none; background: #fff; cursor: pointer; color: #666"
+      >
+        &#x21ba;
+      </button>
     </div>
 
     <button id="saveBtn" class="btn-save">Salvar Configuração</button>
     <div id="status" class="status">Salvo com sucesso!</div>
 
-    <hr>
+    <hr />
     <h3>Acesso Rápido</h3>
 
     <!-- Novo botão para abrir o Side Panel -->
-    <button id="openSidePanelBtn" class="link-btn btn-sidepanel">Abrir Painel Lateral (Matérias)</button>
+    <button id="openSidePanelBtn" class="link-btn btn-sidepanel">
+      Abrir Painel Lateral (Matérias)
+    </button>
 
     <a href="https://sei.univesp.br/index.xhtml" target="_blank" class="link-btn">Portal SEI</a>
     <a href="https://ava.univesp.br/ultra/course" target="_blank" class="link-btn">AVA (Cursos)</a>
-    <a href="https://univesp.br/acesso_aluno.html" target="_blank" class="link-btn">Área do Aluno</a>
-    <a href="https://prova.univesp.br/" target="_blank" class="link-btn link-prova">Sistema de Provas</a>
+    <a href="https://univesp.br/acesso_aluno.html" target="_blank" class="link-btn"
+      >Área do Aluno</a
+    >
+    <a href="https://prova.univesp.br/" target="_blank" class="link-btn link-prova"
+      >Sistema de Provas</a
+    >
 
     <div class="footer">
-        <span>Desenvolvido por <a
-                href="https://github.com/Gerson-Santiago/extensaoUNIVESP?tab=readme-ov-file#autopreencher-univesp"
-                id="devLink" style="text-decoration: none; color: #666;">Gerson Santiago</a></span>
-        <a href="https://github.com/Gerson-Santiago/extensaoUNIVESP" target="_blank" id="githubIconLink"
-            style="text-decoration: none; color: #666; margin-left: 5px;">
-            <i class="fab fa-github"></i>
-        </a>
+      <span
+        >Desenvolvido por
+        <a
+          href="https://github.com/Gerson-Santiago/extensaoUNIVESP?tab=readme-ov-file#autopreencher-univesp"
+          id="devLink"
+          style="text-decoration: none; color: #666"
+          >Gerson Santiago</a
+        ></span
+      >
+      <a
+        href="https://github.com/Gerson-Santiago/extensaoUNIVESP"
+        target="_blank"
+        id="githubIconLink"
+        style="text-decoration: none; color: #666; margin-left: 5px"
+      >
+        <i class="fab fa-github"></i>
+      </a>
     </div>
     <script type="module" src="popup.js"></script>
-</body>
-
+  </body>
 </html>

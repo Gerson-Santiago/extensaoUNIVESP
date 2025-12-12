@@ -3,22 +3,22 @@ import { scrapeWeeksFromTab } from '../logic/scraper.js';
 import { updateItem } from '../logic/storage.js';
 
 export class CourseDetailsView {
-    constructor(callbacks) {
-        // callbacks: { onBack, onOpenCourse }
-        this.callbacks = callbacks;
-        this.course = null;
-    }
+  constructor(callbacks) {
+    // callbacks: { onBack, onOpenCourse }
+    this.callbacks = callbacks;
+    this.course = null;
+  }
 
-    setCourse(course) {
-        this.course = course;
-    }
+  setCourse(course) {
+    this.course = course;
+  }
 
-    render() {
-        if (!this.course) return document.createElement('div');
+  render() {
+    if (!this.course) return document.createElement('div');
 
-        const div = document.createElement('div');
-        div.className = 'view-details';
-        div.innerHTML = `
+    const div = document.createElement('div');
+    div.className = 'view-details';
+    div.innerHTML = `
             <div class="details-header">
                 <button id="backBtn" class="btn-back">← Voltar</button>
                 <h2 id="detailsTitle" class="details-title">${this.course.name}</h2>
@@ -34,91 +34,95 @@ export class CourseDetailsView {
                 <!-- Lista de semanas aqui -->
             </div>
         `;
-        return div;
+    return div;
+  }
+
+  afterRender() {
+    if (!this.course) return;
+
+    // Setup Buttons
+    const backBtn = document.getElementById('backBtn');
+    const openCourseBtn = document.getElementById('openCourseBtn');
+    const refreshWeeksBtn = document.getElementById('refreshWeeksBtn');
+    const weeksList = document.getElementById('weeksList');
+
+    if (backBtn) {
+      backBtn.onclick = () => this.callbacks.onBack();
     }
 
-    afterRender() {
-        if (!this.course) return;
-
-        // Setup Buttons
-        const backBtn = document.getElementById('backBtn');
-        const openCourseBtn = document.getElementById('openCourseBtn');
-        const refreshWeeksBtn = document.getElementById('refreshWeeksBtn');
-        const weeksList = document.getElementById('weeksList');
-
-        if (backBtn) {
-            backBtn.onclick = () => this.callbacks.onBack();
-        }
-
-        if (openCourseBtn) {
-            openCourseBtn.onclick = () => this.callbacks.onOpenCourse(this.course.url);
-        }
-
-        if (refreshWeeksBtn) {
-            refreshWeeksBtn.onclick = async () => {
-                refreshWeeksBtn.disabled = true;
-                refreshWeeksBtn.textContent = '...';
-                await this.handleRefresh(refreshWeeksBtn);
-            };
-        }
-
-        // Render Weeks
-        this.renderWeeksList(weeksList);
+    if (openCourseBtn) {
+      openCourseBtn.onclick = () => this.callbacks.onOpenCourse(this.course.url);
     }
 
-    renderWeeksList(weeksList) {
-        if (!weeksList) return;
-        weeksList.innerHTML = '';
-        if (this.course.weeks && this.course.weeks.length > 0) {
-            this.course.weeks.forEach(week => {
-                const wDiv = createWeekElement(week, {
-                    onClick: (url) => this.callbacks.onOpenCourse(url)
-                });
-                weeksList.appendChild(wDiv);
-            });
-        } else {
-            weeksList.innerHTML = '<div style="padding:15px; text-align:center; color:#999;">Nenhuma semana detectada.</div>';
-        }
+    if (refreshWeeksBtn) {
+      refreshWeeksBtn.onclick = async () => {
+        refreshWeeksBtn.disabled = true;
+        refreshWeeksBtn.textContent = '...';
+        await this.handleRefresh(refreshWeeksBtn);
+      };
     }
 
-    async handleRefresh(btn) {
-        chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-            if (tabs && tabs[0]) {
-                const activeTab = tabs[0];
-                if (!activeTab.url || (!activeTab.url.includes('univesp.br') && !activeTab.url.includes('blackboard'))) {
-                    alert('Por favor, acesse a página da matéria no Blackboard.');
-                    if (btn) {
-                        btn.disabled = false;
-                        btn.textContent = '↻';
-                    }
-                    return;
-                }
+    // Render Weeks
+    this.renderWeeksList(weeksList);
+  }
 
-                try {
-                    const result = await scrapeWeeksFromTab(activeTab.id);
-                    const weeks = result.weeks || [];
-
-                    if (weeks && weeks.length > 0) {
-                        updateItem(this.course.id, { weeks: weeks }, () => {
-                            this.course.weeks = weeks;
-                            alert(`${weeks.length} semanas atualizadas!`);
-                            // Re-render only list
-                            const weeksList = document.getElementById('weeksList');
-                            this.renderWeeksList(weeksList);
-                        });
-                    } else {
-                        alert('Nenhuma semana encontrada nesta página.');
-                    }
-                } catch (error) {
-                    console.error(error);
-                    alert('Erro ao buscar semanas.');
-                } finally {
-                    if (btn) {
-                        btn.disabled = false;
-                        btn.textContent = '↻';
-                    }
-                }
-            }
+  renderWeeksList(weeksList) {
+    if (!weeksList) return;
+    weeksList.innerHTML = '';
+    if (this.course.weeks && this.course.weeks.length > 0) {
+      this.course.weeks.forEach((week) => {
+        const wDiv = createWeekElement(week, {
+          onClick: (url) => this.callbacks.onOpenCourse(url),
         });
+        weeksList.appendChild(wDiv);
+      });
+    } else {
+      weeksList.innerHTML =
+        '<div style="padding:15px; text-align:center; color:#999;">Nenhuma semana detectada.</div>';
     }
+  }
+
+  async handleRefresh(btn) {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      if (tabs && tabs[0]) {
+        const activeTab = tabs[0];
+        if (
+          !activeTab.url ||
+          (!activeTab.url.includes('univesp.br') && !activeTab.url.includes('blackboard'))
+        ) {
+          alert('Por favor, acesse a página da matéria no Blackboard.');
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = '↻';
+          }
+          return;
+        }
+
+        try {
+          const result = await scrapeWeeksFromTab(activeTab.id);
+          const weeks = result.weeks || [];
+
+          if (weeks && weeks.length > 0) {
+            updateItem(this.course.id, { weeks: weeks }, () => {
+              this.course.weeks = weeks;
+              alert(`${weeks.length} semanas atualizadas!`);
+              // Re-render only list
+              const weeksList = document.getElementById('weeksList');
+              this.renderWeeksList(weeksList);
+            });
+          } else {
+            alert('Nenhuma semana encontrada nesta página.');
+          }
+        } catch (error) {
+          console.error(error);
+          alert('Erro ao buscar semanas.');
+        } finally {
+          if (btn) {
+            btn.disabled = false;
+            btn.textContent = '↻';
+          }
+        }
+      }
+    });
+  }
 }

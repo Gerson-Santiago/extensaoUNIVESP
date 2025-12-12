@@ -3,13 +3,13 @@ import { scrapeCourseList } from '../../logic/batchScraper.js';
 import { addItem } from '../../logic/storage.js';
 
 export class BatchImportModal extends Modal {
-    constructor(onSuccess) {
-        super('batch-import-modal', 'Importação em Lote');
-        this.onSuccess = onSuccess;
-    }
+  constructor(onSuccess) {
+    super('batch-import-modal', 'Importação em Lote');
+    this.onSuccess = onSuccess;
+  }
 
-    open() {
-        const content = `
+  open() {
+    const content = `
             <p style="font-size: 13px; color: #666; margin-bottom: 15px;">
                 Acesse a página de cursos do AVA e importe automaticamente suas matérias do bimestre atual.
             </p>
@@ -27,121 +27,124 @@ export class BatchImportModal extends Modal {
             <div id="batchStatus" style="margin-top: 15px; font-size: 12px; color: #333; min-height: 20px;"></div>
         `;
 
-        const overlay = this.render(content);
-        this.setupLogic(overlay);
-    }
+    const overlay = this.render(content);
+    this.setupLogic(overlay);
+  }
 
-    setupLogic(overlay) {
-        const btnRun = overlay.querySelector('#btnRunBatch');
-        const countInput = overlay.querySelector('#batchCount');
-        const status = overlay.querySelector('#batchStatus');
+  setupLogic(overlay) {
+    const btnRun = overlay.querySelector('#btnRunBatch');
+    const countInput = overlay.querySelector('#batchCount');
+    const status = overlay.querySelector('#batchStatus');
 
-        btnRun.onclick = async () => {
-            status.textContent = 'Verificando aba ativa...';
-            status.style.color = '#333';
-            btnRun.disabled = true;
+    btnRun.onclick = async () => {
+      status.textContent = 'Verificando aba ativa...';
+      status.style.color = '#333';
+      btnRun.disabled = true;
 
-            const max = parseInt(countInput.value) || 3;
+      const max = parseInt(countInput.value) || 3;
 
-            chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-                if (tabs && tabs[0]) {
-                    const tab = tabs[0];
+      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+        if (tabs && tabs[0]) {
+          const tab = tabs[0];
 
-                    if (!tab.url.includes('/ultra/course')) {
-                        status.textContent = 'Abrindo Cursos...';
-                        status.style.color = '#0056b3';
-                        chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
+          if (!tab.url.includes('/ultra/course')) {
+            status.textContent = 'Abrindo Cursos...';
+            status.style.color = '#0056b3';
+            chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
 
-                        // Re-enable after a short delay so user can click again after load
-                        setTimeout(() => {
-                            status.textContent = 'Assim que carregar, clique novamente em Iniciar.';
-                            status.style.color = '#333';
-                            btnRun.disabled = false;
-                        }, 2500);
-                        return;
-                    }
+            // Re-enable after a short delay so user can click again after load
+            setTimeout(() => {
+              status.textContent = 'Assim que carregar, clique novamente em Iniciar.';
+              status.style.color = '#333';
+              btnRun.disabled = false;
+            }, 2500);
+            return;
+          }
 
-                    status.textContent = 'Lendo página do AVA...';
+          status.textContent = 'Lendo página do AVA...';
 
-                    try {
-                        const result = await scrapeCourseList(tab.id, max);
+          try {
+            const result = await scrapeCourseList(tab.id, max);
 
-                        if (result.success) {
-                            status.textContent = `Encontrados ${result.courses.length} cursos. Salvando...`;
+            if (result.success) {
+              status.textContent = `Encontrados ${result.courses.length} cursos. Salvando...`;
 
-                            let addedCount = 0;
-                            let itemsProcessed = 0;
-                            const total = result.courses.length;
+              let addedCount = 0;
+              let itemsProcessed = 0;
+              const total = result.courses.length;
 
-                            if (total === 0) {
-                                status.textContent = 'Nenhum curso encontrado na página.';
-                                status.style.color = 'orange';
-                                btnRun.disabled = false;
-                                return;
-                            }
+              if (total === 0) {
+                status.textContent = 'Nenhum curso encontrado na página.';
+                status.style.color = 'orange';
+                btnRun.disabled = false;
+                return;
+              }
 
-                            // Replace loop with batch add
-                            const itemsToAdd = result.courses
-                                .filter(c => c.url)
-                                .map(c => ({
-                                    name: c.name,
-                                    url: c.url,
-                                    weeks: []
-                                }));
+              // Replace loop with batch add
+              const itemsToAdd = result.courses
+                .filter((c) => c.url)
+                .map((c) => ({
+                  name: c.name,
+                  url: c.url,
+                  weeks: [],
+                }));
 
-                            if (itemsToAdd.length === 0) {
-                                status.textContent = 'Nenhum curso válido encontrado.';
-                                btnRun.disabled = false;
-                                return;
-                            }
+              if (itemsToAdd.length === 0) {
+                status.textContent = 'Nenhum curso válido encontrado.';
+                btnRun.disabled = false;
+                return;
+              }
 
-                            // Import updated function
-                            import('../../logic/storage.js').then(({ addItemsBatch }) => {
-                                addItemsBatch(itemsToAdd, (added, ignored) => {
-                                    this.finish(added, itemsToAdd.length, status, btnRun);
-                                });
-                            });
-                        } else {
-                            // Se o scraper disser que estamos na página errada ou filtro errado, tentamos ajustar/redirecionar
-                            if (result.message.includes('acesse a página de Cursos') || result.message.includes('filtro atual')) {
-                                status.textContent = 'Ajustando página/filtro...';
-                                status.style.color = '#0056b3';
-                                chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
-                                setTimeout(() => {
-                                    status.textContent = 'Página recarregada. Tente novamente.';
-                                    status.style.color = '#333';
-                                    btnRun.disabled = false;
-                                }, 3000);
-                            } else {
-                                status.textContent = `Erro na leitura: ${result.message}`;
-                                status.style.color = 'red';
-                                btnRun.disabled = false;
-                            }
-                        }
-                    } catch (e) {
-                        status.textContent = `Erro inesperado: ${e.message}`;
-                        status.style.color = 'red';
-                        btnRun.disabled = false;
-                    }
-                } else {
-                    status.textContent = 'Não foi possível acessar a aba.';
-                    btnRun.disabled = false;
-                }
-            });
-        };
-    }
-
-    finish(added, total, statusElement, btnElement) {
-        let msg = `Concluído! ${added} novos cursos adicionados.`;
-        if (added < total) {
-            msg += ` (${total - added} duplicados ignorados)`;
+              // Import updated function
+              import('../../logic/storage.js').then(({ addItemsBatch }) => {
+                addItemsBatch(itemsToAdd, (added, ignored) => {
+                  this.finish(added, itemsToAdd.length, status, btnRun);
+                });
+              });
+            } else {
+              // Se o scraper disser que estamos na página errada ou filtro errado, tentamos ajustar/redirecionar
+              if (
+                result.message.includes('acesse a página de Cursos') ||
+                result.message.includes('filtro atual')
+              ) {
+                status.textContent = 'Ajustando página/filtro...';
+                status.style.color = '#0056b3';
+                chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
+                setTimeout(() => {
+                  status.textContent = 'Página recarregada. Tente novamente.';
+                  status.style.color = '#333';
+                  btnRun.disabled = false;
+                }, 3000);
+              } else {
+                status.textContent = `Erro na leitura: ${result.message}`;
+                status.style.color = 'red';
+                btnRun.disabled = false;
+              }
+            }
+          } catch (e) {
+            status.textContent = `Erro inesperado: ${e.message}`;
+            status.style.color = 'red';
+            btnRun.disabled = false;
+          }
+        } else {
+          status.textContent = 'Não foi possível acessar a aba.';
+          btnRun.disabled = false;
         }
-        statusElement.textContent = msg;
-        statusElement.style.color = 'green';
+      });
+    };
+  }
 
-        setTimeout(() => {
-            this.close();
-            if (this.onSuccess) this.onSuccess();
-        }, 2000);
+  finish(added, total, statusElement, btnElement) {
+    let msg = `Concluído! ${added} novos cursos adicionados.`;
+    if (added < total) {
+      msg += ` (${total - added} duplicados ignorados)`;
     }
+    statusElement.textContent = msg;
+    statusElement.style.color = 'green';
+
+    setTimeout(() => {
+      this.close();
+      if (this.onSuccess) this.onSuccess();
+    }, 2000);
+  }
 }

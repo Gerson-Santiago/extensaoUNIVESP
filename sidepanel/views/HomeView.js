@@ -1,12 +1,12 @@
 export class HomeView {
-    constructor(callbacks) {
-        this.addCurrentPageCallback = callbacks.onAddCurrentInfo;
-    }
+  constructor(callbacks) {
+    this.addCurrentPageCallback = callbacks.onAddCurrentInfo;
+  }
 
-    render() {
-        const div = document.createElement('div');
-        div.className = 'view-home-dashboard';
-        div.innerHTML = `
+  render() {
+    const div = document.createElement('div');
+    div.className = 'view-home-dashboard';
+    div.innerHTML = `
             <!-- Seção de Acesso Rápido (Links) - Topo -->
             <div class="quick-access-section">
                 <h3>Acesso Rápido</h3>
@@ -31,10 +31,10 @@ export class HomeView {
                 <span>Desenvolvido por <a href="https://github.com/Gerson-Santiago/extensaoUNIVESP?tab=readme-ov-file#autopreencher-univesp" target="_blank" class="github-link">Gerson Santiago</a></span>
             </div>
         `;
-        return div;
-    }
+    return div;
+  }
 
-    afterRender() {
-        // Nada específico por enquanto na Home
-    }
+  afterRender() {
+    // Nada específico por enquanto na Home
+  }
 }
