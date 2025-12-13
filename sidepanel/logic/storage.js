@@ -39,7 +39,7 @@ export function addItem(name, url, weeks = [], callback) {
       return;
     }
 
-    courses.push({ id: Date.now(), name, url, weeks });
+    courses.push({ id: Date.now(), name, url, weeks, termName: '' });
     saveItems(courses, () => {
       if (callback) callback(true, 'Matéria adicionada com sucesso!');
     });
@@ -64,6 +64,7 @@ export function addItemsBatch(newItems, callback) {
           name: item.name,
           url: item.url,
           weeks: item.weeks || [],
+          termName: item.termName || '', // Persist term name for grouping
         });
         addedCount++;
       } else {
