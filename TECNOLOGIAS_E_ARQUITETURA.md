@@ -97,4 +97,4 @@ Este projeto segue estritamente a filosofia **Local-First**.
 └── tests/           # Testes automatizados (Jest)
 ```
 
-> *Documento atualizado em: Dezembro 2025 (v2.3).*
+> *Documento atualizado em: Dezembro 2025 (v2.3.2).*
