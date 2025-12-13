@@ -1,5 +1,5 @@
 import { loadItems, deleteItem } from '../logic/storage.js';
-import { createCourseElement } from '../ui/components.js';
+import { createCourseElement } from '../components/Items/CourseItem.js';
 
 export class CoursesView {
   constructor(callbacks) {

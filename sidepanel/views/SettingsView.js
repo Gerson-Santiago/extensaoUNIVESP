@@ -49,6 +49,16 @@ export class SettingsView {
                 </button>
             </div>
 
+            <hr class="divider">
+
+            <h3>Ajuda e Feedback</h3>
+            <p class="config-desc">Encontrou um problema ou tem uma sugestão?</p>
+            <div class="action-list">
+                <button id="btnFeedback" class="action-card small-action">
+                    <span class="icon">📢</span><span class="label">Enviar Feedback</span>
+                </button>
+            </div>
+
             <div id="settingsFeedback" class="status-msg"></div>
             <div class="footer-info"></div>
         `;
@@ -63,10 +73,14 @@ export class SettingsView {
     const btnManual = document.getElementById('btnManualAdd');
     const btnCurrent = document.getElementById('btnAddCurrent');
     const btnBatch = document.getElementById('btnBatchImport');
+    const btnFeedback = document.getElementById('btnFeedback');
     const btnClear = document.getElementById('btnClearAll');
 
     if (btnManual) btnManual.onclick = () => this.addManualModal.open();
     if (btnBatch) btnBatch.onclick = () => this.batchImportModal.open();
+    if (btnFeedback) btnFeedback.onclick = () => {
+      if (this.onNavigate) this.onNavigate('feedback');
+    };
     if (btnCurrent) btnCurrent.onclick = () => this.handleAddCurrent();
 
     if (btnClear) {

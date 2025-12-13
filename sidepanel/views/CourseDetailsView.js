@@ -1,4 +1,4 @@
-import { createWeekElement } from '../ui/components.js';
+import { createWeekElement } from '../components/Items/WeekItem.js';
 import { scrapeWeeksFromTab } from '../logic/scraper.js';
 import { updateItem } from '../logic/storage.js';
 
@@ -54,7 +54,7 @@ export class CourseDetailsView {
       openCourseBtn.onclick = () => this.callbacks.onOpenCourse(this.course.url);
     }
 
-    if (refreshWeeksBtn) {
+    if (refreshWeeksBtn instanceof HTMLButtonElement) {
       refreshWeeksBtn.onclick = async () => {
         refreshWeeksBtn.disabled = true;
         refreshWeeksBtn.textContent = '...';
@@ -103,7 +103,7 @@ export class CourseDetailsView {
 
           if (!activeCourseId || activeCourseId !== expectedCourseId) {
             alert(`Por favor, aguarde a página da matéria "${this.course.name}" carregar e tente novamente.`);
-            if (btn) {
+            if (btn && btn instanceof HTMLButtonElement) {
               btn.disabled = false;
               btn.textContent = '↻';
             }
@@ -129,7 +129,7 @@ export class CourseDetailsView {
             console.error(error);
             alert('Erro ao buscar semanas.');
           } finally {
-            if (btn) {
+            if (btn && btn instanceof HTMLButtonElement) {
               btn.disabled = false;
               btn.textContent = '↻';
             }

@@ -3,6 +3,7 @@ import { HomeView } from './views/HomeView.js';
 import { CoursesView } from './views/CoursesView.js';
 import { SettingsView } from './views/SettingsView.js';
 import { CourseDetailsView } from './views/CourseDetailsView.js';
+import { FeedbackView } from './views/FeedbackView.js';
 import { addItem } from './logic/storage.js';
 import { openOrSwitchToTab } from './logic/tabs.js';
 import { scrapeWeeksFromTab } from './logic/scraper.js';
@@ -76,12 +77,20 @@ document.addEventListener('DOMContentLoaded', () => {
     onOpenCourse: (url) => openOrSwitchToTab(url),
   });
 
+  const feedbackView = new FeedbackView({
+    onBack: () => {
+      layout.topNav.setActive('settings'); // Voltar para settings faz sentido
+      layout.navigateTo('settings');
+    },
+  });
+
   // Mapeamento de Views
   const views = {
     home: homeView,
     courses: coursesView,
     settings: settingsView,
     courseDetails: courseDetailsView,
+    feedback: feedbackView,
   };
 
   // Inicialização do Layout
