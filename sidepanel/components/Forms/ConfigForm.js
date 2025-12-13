@@ -3,10 +3,10 @@ import { DomainManager } from '../../logic/domainManager.js';
 
 export class ConfigForm {
     /**
-     * @param {Object} feedbackManager - Instância do FeedbackManager
+     * @param {Object} statusManager - Instância do StatusManager
      */
-    constructor(feedbackManager) {
-        this.feedback = feedbackManager;
+    constructor(statusManager) {
+        this.feedback = statusManager;
     }
 
     render() {

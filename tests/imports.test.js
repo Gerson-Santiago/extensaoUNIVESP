@@ -31,6 +31,7 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
     'sidepanel/views/CoursesView.js', // 🆕
     'sidepanel/views/CourseDetailsView.js', // 🆕
     'sidepanel/views/SettingsView.js', // 🆕
+    'sidepanel/utils/statusManager.js',
     'shared/utils/settings.js', // 🆕
     'scripts/content.js',
   ];
@@ -48,6 +49,7 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
       '../sidepanel/logic/tabs.js',
       '../sidepanel/components/Items/CourseItem.js',
       '../sidepanel/components/Items/WeekItem.js',
+      '../sidepanel/utils/statusManager.js',
       '../shared/utils/settings.js',
     ];
 

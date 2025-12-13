@@ -1,9 +1,9 @@
 /**
- * Gerencia a exibição de mensagens de feedback na interface.
+ * Gerencia a exibição de mensagens de status (toasts) na interface.
  */
-export class FeedbackManager {
+export class StatusManager {
     /**
-     * @param {string} elementId - ID do elemento onde o feedback será exibido.
+     * @param {string} elementId - ID do elemento onde o status será exibido.
      */
     constructor(elementId = 'settingsFeedback') {
         this.elementId = elementId;
@@ -11,7 +11,7 @@ export class FeedbackManager {
     }
 
     /**
-     * Exibe uma mensagem de feedback.
+     * Exibe uma mensagem de status.
      * @param {string} message - Mensagem a ser exibida.
      * @param {'success'|'error'|'info'} type - Tipo da mensagem.
      * @param {number} duration - Duração em ms (padrão 3000ms).

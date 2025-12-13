@@ -2,13 +2,13 @@ import { AddManualModal } from '../components/Modals/AddManualModal.js';
 import { BatchImportModal } from '../components/Modals/BatchImportModal.js';
 import { addItem, clearItems } from '../logic/storage.js';
 import { scrapeWeeksFromTab } from '../logic/scraper.js';
-import { FeedbackManager } from '../utils/feedback.js';
+import { StatusManager } from '../utils/statusManager.js';
 import { ConfigForm } from '../components/Forms/ConfigForm.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {
     this.onNavigate = callbacks.onNavigate;
-    this.feedback = new FeedbackManager('settingsFeedback');
+    this.feedback = new StatusManager('settingsFeedback');
     this.configForm = new ConfigForm(this.feedback);
 
     this.addManualModal = new AddManualModal(() =>
