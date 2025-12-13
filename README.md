@@ -1,58 +1,50 @@
-# AutoPreencher UNIVESP
+# AutoPreencher UNIVESP (Extensão Chrome)
 
-**Ferramentas de produtividade para alunos UNIVESP: Autopreenchimento SEI, Gestão de Cursos e Navegação Inteligente no AVA.**
+> **Ferramentas de produtividade para alunos UNIVESP: Autopreenchimento SEI, Gestão de Cursos e Navegação Inteligente no AVA.**
 
-Extensão para facilitar a vida do aluno UNIVESP, automatizando o preenchimento de emails institucionais no SEI e melhorando a navegação no Blackboard (AVA).
+![Version](https://img.shields.io/badge/version-2.3.1-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 
-## Funcionalidades
+Esta extensão é uma ferramenta **Open Source** e **Local-First** para facilitar a vida do aluno UNIVESP, automatizando tarefas repetitivas e organizando o acesso ao conteúdo acadêmico.
 
-- **Autopreenchimento no SEI**: Detecta campos de login e preenche seu email institucional automaticamente.
-- **Painel Lateral (Side Panel)**:
-    - **Importação em Lote**: Importe todas as suas matérias do bimestre com um clique.
-    - **Links Diretos**: Cria atalhos diretos para a "Página Inicial" e Semanas do curso.
-    - **Navegação Inteligente**: Ao clicar em uma matéria, a extensão foca na aba já aberta em vez de criar duplicatas.
-- **Scraper Inteligente**:
-    - *Deep Scraping*: Visita a página do curso em segundo plano para garantir links precisos.
-    - *Detecção de Semanas*: Lista automaticamente as semanas de aula.
-- **Configurações**: Personalize seu RA e domínio de email.
+## 📚 Documentação Oficial
 
-## Instalação (Desenvolvimento)
+Para entender como usamos, como construímos e no que acreditamos:
+
+| Documento | Descrição |
+| :--- | :--- |
+| **[Identidade do Projeto](./IDENTIDADE_DO_PROJETO.md)** | Nossa filosofia, visão e funcionalidades principais. Comece por aqui! |
+| **[Tecnologias & Arquitetura](./TECNOLOGIAS_E_ARQUITETURA.md)** | A "Bíblia Técnica": Stack, Diagramas e Protocolo de Privacidade. |
+| **[Fluxos de Trabalho](./FLUXOS_DE_TRABALHO.md)** | Guia para Desenvolvedores: Como contribuir, padrões e regras. |
+| **[Log de Mudanças (Changelog)](./CHANGELOG.md)** | Histórico de versões e atualizações. |
+
+---
+
+## 🚀 Instalação Rápida (Desenvolvimento)
 
 1.  Clone este repositório.
-2.  Acesse `chrome://extensions/` no seu navegador.
-3.  Ative o "Modo do desenvolvedor" (Developer mode).
-4.  Clique em "Carregar sem compactação" (Load unpacked).
+2.  Acesse `chrome://extensions/` no seu navegador Chrome/Brave/Edge.
+3.  Ative o **"Modo do desenvolvedor"** (Canto superior direito).
+4.  Clique em **"Carregar sem compactação"** (Load unpacked).
 5.  Selecione a pasta raiz deste projeto.
 
-## Desenvolvimento e Testes
+---
 
-O projeto utiliza **Node.js** e **Jest** para garantir a qualidade do código.
+## 🛠️ Comandos Úteis
 
-### Pré-requisitos
-- Node.js instalado.
+Para desenvolvedores que desejam contribuir:
 
-### Configuração
 ```bash
+# Instalar dependências
 npm install
-```
 
-### Rodando Testes
-Para verificar a integridade, importação e lógica dos scripts (incluindo Scrapers e Abas):
-```bash
+# Rodar testes automatizados (Jest)
 npm test
+
+# Verificar estilo de código (Lint)
+npm run lint
+
+# Formatar código (Prettier)
+npm run format
 ```
 
-## Arquitetura Técnica
-
-- **Manifest V3**: Base segura e moderna para extensões Chrome.
-- **Estrutura Modular**:
-    - `sidepanel/`: Lógica principal.
-        - `batchScraper.js`: Realiza a varredura em massa e "Deep Scraping" para obter metadados do curso.
-        - `tabs.js`: Gerenciador de abas inteligente (evita duplicidade).
-    - `scripts/`: Scripts injetados (Content Scripts).
-- **Testes**: Cobertura unitária para lógica de negócios crítica (`tests/`).
-
-## 🛡️ Privacidade e Arquitetura
-
-Para detalhes técnicos sobre como seus dados são manuseados (Local-First / No-Database), consulte o protocolo oficial:
-📄 [**Protocolo de Arquitetura Técnica & Privacidade**](./TECHNICAL_ARCHITECTURE_AND_PRIVACY.md)
+> *Projeto desenvolvido de aluno para aluno. Não possui vínculo oficial com a UNIVESP.*
