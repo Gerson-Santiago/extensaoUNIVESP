@@ -64,7 +64,7 @@ export class BatchImportModal extends Modal {
       if (result.success && result.terms) {
         this.foundTerms = result.terms;
         this.renderTerms(termsList);
-        status.textContent = 'Selecione os bimestres que deseja importar.';
+        status.textContent = 'Selecione as disciplinas que deseja importar.';
         btnRun.disabled = false;
       } else {
         termsList.innerHTML = `<div style="color: red; text-align: center;">${result.message || 'Falha ao ler cursos.'}</div>`;
@@ -76,8 +76,7 @@ export class BatchImportModal extends Modal {
   renderTerms(container) {
     container.innerHTML = '';
 
-    // Sort terms: Oldest to Newest
-    // Format usually: "2025/1 - 1º Bimestre"
+    // Sort terms: Newest to Oldest (Descending)
     this.foundTerms.sort((a, b) => {
       const nameA = a.name.toLowerCase();
       const nameB = b.name.toLowerCase();
@@ -88,10 +87,7 @@ export class BatchImportModal extends Modal {
       const yearA = yearAMatch ? parseInt(yearAMatch[1]) : 0;
       const yearB = yearBMatch ? parseInt(yearBMatch[1]) : 0;
 
-      if (yearA !== yearB) return yearA - yearB;
-
-      // Extract period/semester (optional, e.g. 2025/2)
-      // Simple string compare for "2025/1" vs "2025/2" works mostly
+      if (yearA !== yearB) return yearB - yearA; // Newest year first
 
       // Extract 'Xº Bimestre'
       const bimA = nameA.match(/(\d)º/);
@@ -99,7 +95,7 @@ export class BatchImportModal extends Modal {
       const valA = bimA ? parseInt(bimA[1]) : 0;
       const valB = bimB ? parseInt(bimB[1]) : 0;
 
-      return valA - valB;
+      return valB - valA; // Newest term first
     });
 
     if (this.foundTerms.length === 0) {
@@ -107,38 +103,40 @@ export class BatchImportModal extends Modal {
       return;
     }
 
-    this.foundTerms.forEach((term, index) => {
-      const div = document.createElement('div');
-      div.style.padding = '5px 0';
-      div.style.borderBottom = '1px solid #f9f9f9';
+    this.foundTerms.forEach((term, termIndex) => {
+      // Create Term Group
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'term-group';
 
-      // Checkbox
-      const checkbox = document.createElement('input');
-      checkbox.type = 'checkbox';
-      checkbox.id = `term-${index}`;
-      checkbox.name = `term-${index}`;
-      checkbox.value = String(index); // Index of the term
-      checkbox.checked = true; // Default selected
-      checkbox.style.marginRight = '8px';
+      // Header
+      const header = document.createElement('header');
+      header.className = 'term-header';
+      header.textContent = term.name;
+      groupDiv.appendChild(header);
 
-      // Label
-      const label = document.createElement('label');
-      label.htmlFor = `term-${index}`;
-      label.style.fontWeight = '500';
-      label.textContent = term.name; // e.g. "2025/2 - 4º Bimestre"
+      // Courses List
+      term.courses.forEach((course, courseIndex) => {
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'course-item';
 
-      // Count
-      const countSpan = document.createElement('span');
-      countSpan.style.fontSize = '11px';
-      countSpan.style.color = '#777';
-      countSpan.style.marginLeft = '5px';
-      countSpan.textContent = `(${term.courses.length} disciplinas)`;
+        // Checkbox using compound ID: termIndex-courseIndex
+        const checkbox = document.createElement('input');
+        checkbox.type = 'checkbox';
+        checkbox.id = `t${termIndex}-c${courseIndex}`;
+        checkbox.value = `${termIndex}-${courseIndex}`;
+        checkbox.checked = true; // Default selected
 
-      div.appendChild(checkbox);
-      div.appendChild(label);
-      div.appendChild(countSpan);
+        // Label
+        const label = document.createElement('label');
+        label.htmlFor = `t${termIndex}-c${courseIndex}`;
+        label.textContent = course.name;
 
-      container.appendChild(div);
+        itemDiv.appendChild(checkbox);
+        itemDiv.appendChild(label);
+        groupDiv.appendChild(itemDiv);
+      });
+
+      container.appendChild(groupDiv);
     });
   }
 
@@ -149,20 +147,24 @@ export class BatchImportModal extends Modal {
     btnRun.onclick = async () => {
       const checkboxes = overlay.querySelectorAll('input[type="checkbox"]:checked');
       if (checkboxes.length === 0) {
-        status.textContent = 'Selecione pelo menos um bimestre.';
+        status.textContent = 'Selecione pelo menos uma disciplina.';
         return;
       }
 
       btnRun.disabled = true;
       status.textContent = 'Coletando informações dos cursos... Isso pode levar alguns segundos.';
 
-      // Gather all courses from selected terms
-      let allCoursesToScrape = [];
-      checkboxes.forEach(cb => {
-        const termIndex = parseInt(cb.value);
-        const term = this.foundTerms[termIndex];
-        if (term) {
-          allCoursesToScrape = allCoursesToScrape.concat(term.courses);
+      // Gather all selected courses
+      const allCoursesToScrape = [];
+      checkboxes.forEach((cb) => {
+        const parts = cb.value.split('-');
+        if (parts.length === 2) {
+          const tIdx = parseInt(parts[0], 10);
+          const cIdx = parseInt(parts[1], 10);
+          const term = this.foundTerms[tIdx];
+          if (term && term.courses[cIdx]) {
+            allCoursesToScrape.push(term.courses[cIdx]);
+          }
         }
       });
 
