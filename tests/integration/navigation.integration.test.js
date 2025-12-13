@@ -83,7 +83,8 @@ describe('Integration: Navigation Flow', () => {
         layout.navigateTo('courses');
 
         expect(document.getElementById('main-content').querySelector('.view-courses')).toBeTruthy();
-        const coursesBtn = document.querySelectorAll('.nav-item')[1]; // TopNav updates via setActive inside layout if wired?
+
+        // TopNav updates via setActive inside layout if wired?
 
         // Wait, MainLayout.navigateTo sets currentViewId and calls view.render
         // But TopNav state is separate class instance property 'topNav'.

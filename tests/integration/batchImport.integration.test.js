@@ -1,12 +1,10 @@
 import { BatchImportModal } from '../../sidepanel/components/Modals/BatchImportModal.js';
 
 describe('Integration: Batch Import Flow', () => {
-    let container;
     const mockSuccess = jest.fn();
 
     beforeEach(() => {
         document.body.innerHTML = '<div id="app"></div>';
-        container = document.getElementById('app');
         jest.clearAllMocks();
         jest.useFakeTimers();
 
