@@ -1,6 +1,6 @@
 # 🔍 Auditoria Técnica: Extensão UNIVESP
 
-> **Versão:** 2.3.1 | **Data:** 13/12/2025 | **Total Linhas:** ~4.3k
+> **Versão:** 2.3.1 | **Data:** 13/12/2025 | **Total Linhas:** ~4.1k
 
 ## 📊 Resumo Executivo
 
@@ -11,7 +11,7 @@ O projeto encontra-se em **estágio de maturação avançado**. A arquitetura mi
 | **Arquitetura** | 🟢 Sólida | Padrão MVC e Shared Utilities bem definidos. |
 | **Qualidade de Código** | 🟢 Alta | Linting e Prettier configurados e ativos (Zero Warnings). |
 | **Testes** | 🟡 Médio | Ótima cobertura unitária (Storage/Logic), mas sem E2E. |
-| **Manutenibilidade** | 🟡 Atenção | Código legado não removido infla a base de código. |
+| **Manutenibilidade** | 🟢 Melhorada | Código legado removido, base mais limpa. |
 
 ---
 
@@ -23,9 +23,8 @@ O projeto encontra-se em **estágio de maturação avançado**. A arquitetura mi
 *   **CSS Modular**: `sidepanel/styles/` organiza estilos por componente/view, facilitando manutenção.
 
 ### Débitos Técnicos (Pontos de Atenção)
-1.  **Código Legado**: Arquivos como `legacy_batchScraper.js` e `LegacyBatchImportModal.js` somam ~270 linhas de código morto ou depreciado.
-2.  **Disparidade de Complexidade**: O `sidepanel` possui uma arquitetura rica (Components/Views), enquanto o `popup` permanece simplista. Isso é aceitável dada a complexidade do painel, mas gera inconsistência.
-3.  **Monólitos em Potencial**: `storage.test.js` (459 linhas) e `BatchImportModal.js` (144 linhas) estão crescendo excessivamente e podem precisar de fragmentação.
+1.  **Disparidade de Complexidade**: O `sidepanel` possui uma arquitetura rica (Components/Views), enquanto o `popup` permanece simplista. Isso é aceitável dada a complexidade do painel, mas gera inconsistência.
+2.  **Monólitos em Potencial**: `storage.test.js` (459 linhas) e `BatchImportModal.js` (144 linhas) estão crescendo excessivamente e podem precisar de fragmentação.
 
 ---
 
@@ -46,7 +45,7 @@ A suíte de testes (Jest) cobre as funcionalidades críticas do backend da exten
 ## 🎯 Plano de Ação Recomendado
 
 ### 1. Limpeza Imediata (Refactor)
-- [ ] **Remover Código Morto**: Excluir `legacy_batchScraper.js` e `LegacyBatchImportModal.js`.
+- [x] **Remover Código Morto**: Excluir `legacy_batchScraper.js` e `LegacyBatchImportModal.js`.
 - [ ] **Consolidar Componentes**: Padronizar a localização de componentes UI (atualmente espalhados entre `ui/` e `components/`).
 
 ### 2. Melhorias de UX/UI (Feature)
