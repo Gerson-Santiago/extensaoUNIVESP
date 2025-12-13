@@ -28,7 +28,16 @@ export function saveItems(courses, callback) {
  * @param {Array} [weeks=[]] - Lista inicial de semanas.
  * @param {Function} [callback] - Função de retorno. Ex: (success, message) => {}
  */
-export function addItem(name, url, weeks = [], callback) {
+export function addItem(name, url, weeks = [], optionsOrCallback, extraCallback) {
+  let callback = optionsOrCallback;
+  let termName = '';
+
+  // Check if 4th arg is options object
+  if (typeof optionsOrCallback === 'object' && optionsOrCallback !== null && !Array.isArray(optionsOrCallback)) {
+    termName = optionsOrCallback.termName || '';
+    callback = extraCallback;
+  }
+
   loadItems((courses) => {
     // Normaliza a URL para comparação (opcional: remover query params se necessário, mas por enquanto exata)
     const exists = courses.some((c) => c.url === url);
@@ -39,7 +48,7 @@ export function addItem(name, url, weeks = [], callback) {
       return;
     }
 
-    courses.push({ id: Date.now(), name, url, weeks, termName: '' });
+    courses.push({ id: Date.now(), name, url, weeks, termName: termName });
     saveItems(courses, () => {
       if (callback) callback(true, 'Matéria adicionada com sucesso!');
     });

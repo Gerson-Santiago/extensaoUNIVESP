@@ -1,5 +1,5 @@
 
-import { addItemsBatch, loadItems } from '../sidepanel/logic/storage.js';
+import { addItemsBatch, addItem, loadItems } from '../sidepanel/logic/storage.js';
 
 // Mock chrome.storage.sync
 const storageMock = {};
@@ -17,7 +17,7 @@ global.chrome = {
     }
 };
 
-describe('Storage Logic - Persistence', () => {
+describe('Storage Logic - Persistence & v2.4.1 Features', () => {
     beforeEach(() => {
         // Limpa mock
         for (const key in storageMock) delete storageMock[key];
@@ -35,13 +35,35 @@ describe('Storage Logic - Persistence', () => {
 
             loadItems((courses) => {
                 expect(courses).toHaveLength(2);
+                expect(courses.find(c => c.name === 'Curso A').termName).toBe('2025/1');
+                done();
+            });
+        });
+    });
 
-                const courseA = courses.find(c => c.name === 'Curso A');
-                expect(courseA.termName).toBe('2025/1');
+    test('addItem should accept options object with termName', (done) => {
+        // addItem(name, url, weeks = [], optionsOrCallback, extraCallback)
+        addItem('Curso Manual', 'http://manual.com', [], { termName: 'Manual Term' }, (success) => {
+            expect(success).toBe(true);
 
-                const courseB = courses.find(c => c.name === 'Curso B');
-                expect(courseB.termName).toBe(''); // Default
+            loadItems((courses) => {
+                const course = courses.find(c => c.name === 'Curso Manual');
+                expect(course).toBeTruthy();
+                expect(course.termName).toBe('Manual Term');
+                done();
+            });
+        });
+    });
 
+    test('addItem should work with old signature (backward compatibility)', (done) => {
+        // addItem(name, url, weeks = [], callback)
+        addItem('Curso Old', 'http://old.com', [], (success) => {
+            expect(success).toBe(true);
+
+            loadItems((courses) => {
+                const course = courses.find(c => c.name === 'Curso Old');
+                expect(course).toBeTruthy();
+                expect(course.termName).toBe(''); // Default empty
                 done();
             });
         });
