@@ -116,7 +116,8 @@ export class BatchImportModal extends Modal {
       const checkbox = document.createElement('input');
       checkbox.type = 'checkbox';
       checkbox.id = `term-${index}`;
-      checkbox.value = index;
+      checkbox.name = `term-${index}`;
+      checkbox.value = String(index); // Index of the term
       checkbox.checked = true; // Default selected
       checkbox.style.marginRight = '8px';
 
@@ -153,7 +154,7 @@ export class BatchImportModal extends Modal {
       }
 
       btnRun.disabled = true;
-      status.textContent = 'Coletando informações dos cursos (Deep Scraping)... Isso pode levar alguns segundos.';
+      status.textContent = 'Coletando informações dos cursos... Isso pode levar alguns segundos.';
 
       // Gather all courses from selected terms
       let allCoursesToScrape = [];
