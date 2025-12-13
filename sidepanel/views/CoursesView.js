@@ -1,9 +1,10 @@
 import { loadItems, deleteItem } from '../logic/storage.js';
 import { createCourseElement } from '../components/Items/CourseItem.js';
+import { groupCoursesByTerm } from '../utils/courseGrouper.js';
 
 export class CoursesView {
   constructor(callbacks) {
-    this.callbacks = callbacks; // { onOpenCourse, onViewDetails }
+    this.callbacks = callbacks;
   }
 
   render() {
@@ -18,7 +19,7 @@ export class CoursesView {
                 <span style="text-align: center;">Remover</span>
             </div>
 
-            <ul id="itemList" class="item-list"></ul>
+            <div id="coursesListContainer" class="courses-list-container"></div>
         `;
     return div;
   }
@@ -28,29 +29,47 @@ export class CoursesView {
   }
 
   loadCourses() {
-    const list = document.getElementById('itemList');
-    if (!list) return;
+    const container = document.getElementById('coursesListContainer');
+    if (!container) return;
 
-    list.innerHTML = '';
+    container.innerHTML = '';
     loadItems((courses) => {
       if (courses.length === 0) {
-        list.innerHTML =
-          '<li style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</li>';
+        container.innerHTML =
+          '<div style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</div>';
         return;
       }
 
-      courses.forEach((course) => {
-        const li = createCourseElement(course, {
-          onDelete: (id) => deleteItem(id, () => this.loadCourses()),
-          onClick: (url) => this.callbacks.onOpenCourse(url),
-          // Detalhes não navegam mais para 'view-details' escondida,
-          // mas poderiam navegar para uma View de Detalhes dedicada se implementada.
-          // Por simplicidade, vamos usar um callback que o MainLayout pode tratar
-          // ou expandir na própria lista (se fosse accordion).
-          // Como a refatoração pede Views, vamos assumir que o MainLayout troca para CourseDetailsView.
-          onViewDetails: (c) => this.callbacks.onViewDetails(c),
+      // Group courses by term using centralized logic
+      const grouped = groupCoursesByTerm(courses);
+
+      grouped.forEach((group) => {
+        // Create Group Container
+        const groupDiv = document.createElement('div');
+        groupDiv.className = 'term-group';
+
+        // Header (Term Name)
+        const header = document.createElement('header');
+        header.className = 'term-header';
+        header.textContent = group.title;
+        groupDiv.appendChild(header);
+
+        // List Container (UL)
+        const ul = document.createElement('ul');
+        ul.className = 'item-list';
+
+        // Render Courses
+        group.courses.forEach((course) => {
+          const li = createCourseElement(course, {
+            onDelete: (id) => deleteItem(id, () => this.loadCourses()),
+            onClick: (url) => this.callbacks.onOpenCourse(url),
+            onViewDetails: (c) => this.callbacks.onViewDetails(c),
+          });
+          ul.appendChild(li);
         });
-        list.appendChild(li);
+
+        groupDiv.appendChild(ul);
+        container.appendChild(groupDiv);
       });
     });
   }

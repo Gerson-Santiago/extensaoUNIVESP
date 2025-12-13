@@ -163,7 +163,11 @@ export class BatchImportModal extends Modal {
           const cIdx = parseInt(parts[1], 10);
           const term = this.foundTerms[tIdx];
           if (term && term.courses[cIdx]) {
-            allCoursesToScrape.push(term.courses[cIdx]);
+            // Inject term name into the course object for deep scraper to carry over
+            // or just carry it locally if deep scraper preserves object identity/properties?
+            // Safer to add it to a temporary property that won't break anything.
+            const courseRef = { ...term.courses[cIdx], _termName: term.name };
+            allCoursesToScrape.push(courseRef);
           }
         }
       });
@@ -185,7 +189,8 @@ export class BatchImportModal extends Modal {
         const itemsToAdd = processedList.map(c => ({
           name: c.name,
           url: c.url,
-          weeks: c.weeks || []
+          weeks: c.weeks || [],
+          termName: c.original ? c.original._termName : (c._termName || '') // Save term name for grouping logic
         }));
 
         addItemsBatch(itemsToAdd, (added, _total) => {
