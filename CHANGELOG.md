@@ -1,5 +1,15 @@
 # Changelog - Versão Beta
 
+## [2.3.2] - 2025-12-13
+### Novas Funcionalidades
+- **Importação em Lote v2 (Deep Scraping)**:
+    - **Seleção de Bimestres**: Agora é possível escolher quais bimestres importar, identificados com precisão via código interno do curso (ex: 2024.1 S2B2).
+    - **Automação de Semanas**: Ao importar, a extensão busca automaticamente as semanas de aula, eliminando a necessidade de "Atualizar Semanas" manualmente curso a curso.
+    - **Robustez**: O sistema foi blindado contra mudanças visuais no AVA, dependendo menos do DOM (HTML) e mais de dados estruturados.
+
+### Linkagem e Testes
+- **Refatoração de Testes**: Suite de integração e unitária atualizada para cobrir fluxos assíncronos complexos.
+
 ## [2.3.1] - 2025-12-12
 ### Refatoração
 - **SettingsView.js**: Modularização completa do código settings para melhorar manutenção e testes.

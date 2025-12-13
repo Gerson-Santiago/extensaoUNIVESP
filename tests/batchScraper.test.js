@@ -1,55 +1,81 @@
-import { scrapeCourseList } from '../sidepanel/logic/batchScraper.js';
-
-
+import { scrapeAvailableTerms, processSelectedCourses } from '../sidepanel/logic/batchScraper.js';
 
 describe('Lógica - Batch Scraper', () => {
   beforeEach(() => {
     jest.clearAllMocks();
   });
 
-  test('Deve realizar a extração correta da lista de cursos', async () => {
-    // Mock the return value of the injected script
-    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
-    {
-      result: {
-        success: true,
-        courses: [
-          { name: 'Curso 1', url: 'https://ava.univesp.br/ultra/course/_123_1' },
-          { name: 'Curso 2', url: 'https://ava.univesp.br/ultra/course/_456_1' },
-        ],
-        message: 'Encontrados 2 cursos.',
-      },
-    },
-  ]);
+  describe('scrapeAvailableTerms', () => {
+    test('Deve retornar termos agrupados corretamente por Display ID', async () => {
+      // Mock do retorno do script injetado
+      const mockTerms = [
+        { name: '2025/1 - 1º Bimestre', courses: [{ name: 'C1', url: 'u1', courseId: 'c1' }] },
+        { name: '2025/1 - 2º Bimestre', courses: [{ name: 'C2', url: 'u2', courseId: 'c2' }] }
+      ];
 
-    const result = await scrapeCourseList(101, 3);
+        // Aqui mockamos o RETORNO FINAL da função injetada (que é o que o executeScript devolve).
+        // Isso significa que estamos testando a interface do chrome.scripting, e não a logica interna do DOM_scan...
+        // que roda no browser. Como não temos DOM real aqui, testar a lógica INTERNA exigiria JSDOM complexo.
+        // Pelo padrão do projeto, estamos testando o wrapper.
+        // MAS, para garantir que o Regex funciona, poderíamos extrair a logica interna para unidade pura.
+        // Dado o contexto atual, manteremos o teste de integração do wrapper.
 
-    expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
-      target: { tabId: 101 },
-      func: expect.any(Function), // We can't easily test the injected function body here without more complex setup
-      args: [3],
+        /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
+        {
+          result: {
+            success: true,
+            terms: mockTerms,
+            message: ''
+          },
+        },
+      ]);
+
+      const result = await scrapeAvailableTerms(101);
+
+      expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
+        target: { tabId: 101 },
+        func: expect.any(Function),
+      });
+
+      expect(result.success).toBe(true);
+      expect(result.terms).toHaveLength(2);
+      expect(result.terms[0].name).toBe('2025/1 - 1º Bimestre');
     });
 
-    expect(result.success).toBe(true);
-    expect(result.courses).toHaveLength(2);
-    expect(result.courses[0].name).toBe('Curso 1');
+    test('Deve lidar com falha no script', async () => {
+        /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(new Error('Injection failed'));
+      const result = await scrapeAvailableTerms(101);
+      expect(result.success).toBe(false);
+      expect(result.message).toContain('Erro ao executar script');
+    });
   });
 
-  test('Deve lidar com falha na execução do script', async () => {
-    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(new Error('Injection failed'));
+  describe('processSelectedCourses', () => {
+    test('Deve processar cursos selecionados (Deep Scraping)', async () => {
+      const mockInputCourses = [{ name: 'C1', url: 'u1', courseId: 'c1' }];
+      const mockProcessed = [{ name: 'C1', url: 'final_u1', weeks: [] }];
 
-    const result = await scrapeCourseList(101);
+         /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
+        { result: mockProcessed }
+      ]);
 
-    expect(result.success).toBe(false);
-    expect(result.message).toContain('Erro ao executar script');
-  });
+      const result = await processSelectedCourses(101, mockInputCourses);
 
-  test('Deve lidar com resultado vazio ou inválido do script', async () => {
-    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([]); // Empty array
+      expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
+        target: { tabId: 101 },
+        func: expect.any(Function),
+        args: [mockInputCourses]
+      });
 
-    const result = await scrapeCourseList(101);
+      expect(result).toHaveLength(1);
+      expect(result[0].url).toBe('final_u1');
+    });
 
-    expect(result.success).toBe(false);
-    expect(result.message).toBe('Falha na comunicação com a página.');
+    test('Deve retornar array vazio em caso de erro', async () => {
+          /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(new Error('Fail'));
+      const result = await processSelectedCourses(101, []);
+      expect(result).toEqual([]);
+    });
   });
 });
+

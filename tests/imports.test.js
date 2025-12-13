@@ -24,6 +24,8 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
     'sidepanel/logic/storage.js',
     'sidepanel/logic/tabs.js',
     'sidepanel/logic/batchScraper.js', // 🆕
+    'sidepanel/components/Modals/BatchImportModal.js', // 🆕
+    'sidepanel/components/Modals/Modal.js', // 🆕
     'sidepanel/components/Items/CourseItem.js',
     'sidepanel/components/Items/WeekItem.js',
     'sidepanel/views/FeedbackView.js',
@@ -47,6 +49,7 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
       '../sidepanel/logic/scraper.js',
       '../sidepanel/logic/storage.js',
       '../sidepanel/logic/tabs.js',
+      '../sidepanel/logic/batchScraper.js',
       '../sidepanel/components/Items/CourseItem.js',
       '../sidepanel/components/Items/WeekItem.js',
       '../sidepanel/utils/statusManager.js',

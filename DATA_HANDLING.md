@@ -13,8 +13,8 @@ Esta extensão interage com os portais da UNIVESP para oferecer funcionalidades 
 ## 2. AVA (Ambiente Virtual de Aprendizagem / Blackboard)
 - **URLs Alvo**: Páginas de cursos no Blackboard (ex: `https://ava.univesp.br/...` ou domínios relacionados).
 - **Funcionalidade**:
-  - **Importação em Lote**: A extensão lê a lista de cursos na página "Cursos".
-  - **Deep Scraping (Novo)**: Para garantir que o link do curso leve à "Página Inicial" e não aos Avisos, a extensão acessa brevemente a URL de entrada de cada curso em background (*fetch*) para capturar o ID de conteúdo correto (`content_id`).
+  - **Importação em Lote Inteligente**: A extensão lê a lista de cursos na página, identificando automaticamente o Bimestre e Ano de cada matéria através dos seus códigos internos (ID). Isso garante que as matérias sejam agrupadas corretamente (ex: "2024 - 1º Bimestre"), independente de como o AVA as exibe visualmente.
+  - **Carregamento Automático de Semanas (Deep Feature)**: Ao selecionar matérias para importar, a extensão faz o "trabalho pesado" para você. Ela acessa silenciosamente a página de cada matéria selecionada para identificar e salvar os links das semanas. Assim, quando você abre o painel lateral, tudo já está pronto para uso.
   - **Leitura de Semanas**: Ao clicar em "Atualizar Semanas", a extensão lê o DOM da aba ativa para listar os links de aula.
   - **Armazenamento**: Todos os dados (nomes de cursos, links) são salvos **apenas localmente** no navegador (`chrome.storage.sync` para sincronização entre dispositivos do mesmo usuário). Nenhuma informação é enviada para servidores externos.
   - **Detalhes Técnicos**: Consulte o [Protocolo de Privacidade](./TECHNICAL_ARCHITECTURE_AND_PRIVACY.md).

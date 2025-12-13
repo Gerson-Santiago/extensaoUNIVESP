@@ -54,7 +54,8 @@ O painel lateral é o coração da experiência do usuário.
 
 #### B. Content Scripts (`/scripts`)
 Scripts injetados na página alvo para ler o DOM.
-*   **Scraper**: Lê a estrutura HTML do Blackboard para identificar cursos e semanas.
+*   **Scraper**: Lê a estrutura HTML do Blackboard para identificar cursos.
+*   **Deep Access**: Utiliza `fetch` em background para acessar páginas internas do curso e garantir links precisos.
 *   **Isolamento**: Roda em um "mundo isolado" (Isolated World) para não conflitar com o JS da página.
 
 #### C. Background Service (`background.js`)

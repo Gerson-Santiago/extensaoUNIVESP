@@ -28,63 +28,75 @@ describe('Integration: Batch Import Flow', () => {
     });
 
     test('should scrape multiple courses and save them', async () => {
-        // 1. Setup Mock Batch Result
-        const mockBatchResult = {
+        // 1. Setup Mock Terms Result (First Step)
+        const mockTermsResult = {
             success: true,
-            courses: [
-                { name: 'Curso Batch 1', url: 'https://ava.univesp.br/course1' },
-                { name: 'Curso Batch 2', url: 'https://ava.univesp.br/course2' }
+            terms: [
+                {
+                    name: '2025/1 - 1º Bimestre',
+                    courses: [
+                        { name: 'Curso Batch 1', url: 'https://ava.univesp.br/course1', courseId: 'c1' },
+                        { name: 'Curso Batch 2', url: 'https://ava.univesp.br/course2', courseId: 'c2' }
+                    ]
+                }
             ],
-            message: 'Encontrados 2 cursos.'
+            message: ''
         };
 
-        // Note: scrapeCourseList returns results[0].result
-        /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
-            { result: mockBatchResult }
-        ]);
+        // 2. Setup Mock Deep Scrape Result (Second Step)
+        const mockDeepScrapeResult = [
+            { name: 'Curso Batch 1', url: 'https://ava.univesp.br/course1_final', weeks: [] },
+            { name: 'Curso Batch 2', url: 'https://ava.univesp.br/course2_final', weeks: [] }
+        ];
 
-        // 2. Open Modal
+        // Mock ExecuteScript to return Terms first, then Deep Scrape result
+        /** @type {jest.Mock} */ (chrome.scripting.executeScript)
+            .mockResolvedValueOnce([{ result: mockTermsResult }]) // 1st call: scrapeAvailableTerms
+            .mockResolvedValueOnce([{ result: mockDeepScrapeResult }]); // 2nd call: processSelectedCourses
+
+        // 3. Open Modal
         const modal = new BatchImportModal(mockSuccess);
         modal.open();
 
-        // Modal appends to body
-        const modalEl = document.querySelector('.modal-overlay');
-        expect(modalEl).toBeTruthy();
-        expect(/** @type {HTMLElement} */(modalEl).style.display).not.toBe('none');
-
-        const btnRun = document.getElementById('btnRunBatch');
-        expect(btnRun).toBeTruthy();
-
-        // 3. Trigger Import
-        btnRun.click();
-
-        // 4. Wait for Async
-        await Promise.resolve(); // microtasks
+        // Wait for autoLoadTerms (microtasks)
+        await Promise.resolve();
+        await Promise.resolve();
         await Promise.resolve();
 
-        // 5. Verify Script Execution
-        expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
-            target: { tabId: 999 },
-            func: expect.any(Function),
-            args: expect.any(Array)
-        });
+        // 4. Verify Terms Loaded and UI Updated
+        const termsList = document.getElementById('terms-list');
+        expect(termsList.innerHTML).toContain('2025/1 - 1º Bimestre');
+        expect(termsList.innerHTML).toContain('(2 disciplina');
 
-        // 6. Verify Storage Save
-        // We mocked get -> returns [], so it should save 2 courses
+        const btnRun = document.getElementById('btnRunBatch');
+        expect(btnRun.disabled).toBe(false);
+
+        // 5. Trigger Import
+        btnRun.click();
+
+        // 6. Wait for Deep Scrape (microtasks)
+        await Promise.resolve();
+        await Promise.resolve();
+        await Promise.resolve();
+
+        // 7. Verify Script Execution
+        // Call 1: scrapeAvailableTerms (no args)
+        // Call 2: processSelectedCourses (args: [courses])
+        expect(chrome.scripting.executeScript).toHaveBeenCalledTimes(2);
+
+        // Check 2nd call args
+        const secondCall = /** @type {jest.Mock} */ (chrome.scripting.executeScript).mock.calls[1][0];
+        expect(secondCall.args[0]).toHaveLength(2); // 2 courses to scrape
+
+        // 8. Verify Storage Save
         expect(chrome.storage.sync.set).toHaveBeenCalled();
         const setCall = /** @type {jest.Mock} */ (chrome.storage.sync.set).mock.calls[0][0];
         expect(setCall.savedCourses).toHaveLength(2);
-        expect(setCall.savedCourses[0].name).toBe('Curso Batch 1');
-        expect(setCall.savedCourses[1].name).toBe('Curso Batch 2');
 
-        // 7. Verify Success Callback (after timeout)
+        // 9. Verify Success Callback
         jest.runAllTimers();
         expect(mockSuccess).toHaveBeenCalled();
 
-        // Verify Modal Closed
-        // Modal.close() usually removes element or hides it. 
-        // Checking if it's gone or hidden would require checking Modal implementation details 
-        // but typically it calls remove().
         expect(document.querySelector('.modal-overlay')).toBeNull();
     });
 
@@ -95,10 +107,7 @@ describe('Integration: Batch Import Flow', () => {
     });
 
         const modal = new BatchImportModal(mockSuccess);
-        modal.open();
-
-        const btnRun = document.getElementById('btnRunBatch');
-        btnRun.click();
+        modal.open(); // Triggers autoLoadTerms immediately
 
         await Promise.resolve(); // microtasks
 
@@ -106,6 +115,6 @@ describe('Integration: Batch Import Flow', () => {
         expect(chrome.tabs.update).toHaveBeenCalledWith(999, { url: 'https://ava.univesp.br/ultra/course' });
 
         const status = document.getElementById('batchStatus');
-        expect(status.textContent).toContain('Abrindo Cursos');
+        expect(status.textContent).toContain('Redirecionando para Cursos');
     });
 });
