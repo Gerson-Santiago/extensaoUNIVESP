@@ -1,6 +1,12 @@
 # ⚙️ Fluxos de Trabalho da Equipe (Team Workflow)
 
-Este documento descreve como a equipe de desenvolvimento opera no dia-a-dia. Se você é um novo desenvolvedor (ou uma IA), **leia isto antes de tocar no código**.
+> [!WARNING]
+> **Regras Gerais:**
+> 1.  🚫 Proibido `npm install` sem discussão prévia.
+> 2.  🛡️ Commit direto na `main` ou `dev` é proibido sem aprovação (Gate Manual).
+> 3.  🧪 Sem teste, sem feature.
+
+Este documento descreve como a equipe de desenvolvimento opera. Se você é um novo desenvolvedor (ou uma IA), **leia isto antes de tocar no código**.
 
 ---
 
@@ -9,76 +15,93 @@ Este documento descreve como a equipe de desenvolvimento opera no dia-a-dia. Se 
 Nosso fluxo segue um padrão simples de Feature Branch.
 
 ### 1. Escolha da Tarefa
-*   Identifique uma Issue ou crie uma tarefa no `task.md`.
-*   Entenda o "Porquê" antes do "Como". Se a tarefa não tem um valor claro para o usuário, questione.
+- [ ] Identifique uma Issue ou crie uma tarefa no `task.md`.
+- [ ] Entenda o "Porquê" antes do "Como". Se a tarefa não tem um valor claro para o usuário, questione.
 
 ### 2. Branching
-*   Crie uma branch descritiva a partir da `dev` (ou `main` se não houver dev):
-    *   `feat/nova-funcionalidade`
-    *   `fix/correcao-bug`
-    *   `refactor/limpeza-codigo`
-    *   `docs/atualizacao-readme`
-    *   **Dica:** O agente possui workflows automatizados para essas tarefas (`.agent/workflows/`). Peça "crie uma feature" ou "corrija esse bug" e ele executará os passos.
+- [ ] Crie uma branch descritiva a partir da `dev` (ou `main` se não houver dev):
+    - `feat/nova-funcionalidade`
+    - `bug/correcao-critica`
+    - `refactor/limpeza-codigo`
+    - `docs/atualizacao-readme`
+    - **Dica:** Use os workflows automatizados (`.agent/workflows/`).
 
 ### 3. Codificação (Coding Rules)
-*   **Javascript Moderno**: Use ES6+, `const`/`let`, Arrow Functions.
-*   **Modularização**: Siga a arquitetura de pastas (`shared/`, `logic/`, `views/`). Não crie arquivos gigantes.
-*   **Padrões**: Consulte `PADROES_DO_PROJETO.md` se tiver dúvida sobre uma convenção.
-*   **Linting Contínuo**: O VS Code deve estar configurado para mostrar erros de ESLint em tempo real. **Não ignore os sublinhados vermelhos ou amarelos.**
+- **Javascript Moderno**: Use ES6+, `const`/`let`, Arrow Functions.
+- **Modularização**: Siga a arquitetura de pastas (`shared/`, `logic/`, `views/`).
+- **Padrões**: Consulte `PADROES_DO_PROJETO.md`.
+- **Linting Contínuo**: VS Code deve estar sem sublinhados vermelhos.
 
 ### 4. Verificação Local (Before Commit)
-Antes de comitar, você **DEVE** rodar os seguintes comandos:
 
-1.  **Corrigir Estilo**:
-    ```bash
-    npm run format
-    ```
-2.  **Validar Regras (Lint)**:
-    ```bash
-    npm run lint
-    ```
-    🚨 **Regra de Ouro**: O comando `npm run lint` deve retornar **0 erros e 0 warnings**. Se houver warnings, corrija-os.
-3.  **Rodar Testes**:
-    ```bash
-    npm test
-    ```
-    Todos os testes devem passar. Se você adicionou funcionalidade nova, adicione testes novos.
+#### 🛡️ segurança de Refatoração
+**Nunca refatore código sem cobertura de testes.**
+- [ ] Se não tem teste, crie um teste que passe com o código atual.
+- [ ] Só depois refatore.
+
+#### 🔄 Princípio da Co-evolução
+> "Se a lógica muda, o teste muda."
+
+- [ ] Validou se o teste passou pelo motivo certo?
+- [ ] Atualizou o teste para refletir a nova regra?
+
+#### 💻 Comandos Obrigatórios
+- [ ] `npm run format`
+- [ ] `npm run lint` (Zero Warnings)
+- [ ] `npm test` (All Green)
 
 ### 5. Commit e Pull Request (PR)
-*   Mensagens de commit semânticas:
-    *   `feat: adiciona modal de importação`
-    *   `fix: resolve erro de digitação no CSS`
-    *   `docs: atualiza guia de instalação`
-*   Abra o PR descrevendo o que foi feito e como testar.
+- Use mensagens semânticas (`feat:`, `fix:`, `docs:`).
+- **Idioma**: A descrição do commit deve ser sempre em **Português do Brasil**.
+    - ✅ `feat: adiciona botão de login`
+    - ❌ `feat: add login button`
+- Abra o PR descrevendo o que foi feito. deve ser sempre em **Português do Brasil**.
+    - ✅ `feat: adiciona botão de login`
+    - ❌ `feat: add login button`
+- Abra o PR descrevendo o que foi feito.
+
+## 🏛️ Governança e Regras de Segurança
+
+### 4.1 Gate de Aprovação
+O agente (ou dev) tem autonomia para rodar testes "Turbo", mas **NÃO TEM AUTONOMIA** para commitar alterações funcionais sem revisão explícita.
+- **Fluxo**: Implementar -> Validar (Turbo) -> Pausar -> Pedir feedback -> Commitar.
+
+### 4.2 Documentação Viva
+Software muda. Documentação deve acompanhar.
+- [ ] Estrutura mudou? -> Atualizar `TECNOLOGIAS_E_ARQUITETURA.md`.
+- [ ] Fluxo mudou? -> Atualizar `FLUXOS_DE_TRABALHO.md`.
+- [ ] Changelog atualizado?
+
+### 4.3 Política Estrita de NPM
+**Proibido `npm install` silencioso.**
+Novas dependências são um risco de segurança e performance.
+- Regra: Todo `npm install` deve ser proposto, justificado e aprovado pelo usuário antes de execução.
 
 ---
 
 ## 🛠️ Ferramentas e Configurações
 
 ### Ambiente
-*   **Editor**: VS Code (Recomendado) com extensão ESLint e Prettier.
-*   **Node**: Versão 20.x ou superior.
-*   **Gerenciador de Pacotes**: `npm`.
+- **Editor**: VS Code (Recomendado) + ESLint + Prettier.
+- **Node**: Versão 20.x+.
 
 ### Scripts Principais (`package.json`)
 | Comando | Descrição |
 | :--- | :--- |
-| `npm install` | Instala dependências. |
+| `npm install` | Instala dependências (Cuidado!). |
 | `npm run lint` | Roda o ESLint (Check). |
-| `npm run lint:fix` | Tenta corrigir erros de Lint automaticamente. |
-| `npm run format` | Formata o código com Prettier. |
-| `npm test` | Executa a suíte de testes Jest. |
-| `npm run test:watch` | Roda testes em modo de observação (durante desenvolvimento). |
+| `npm run lint:fix` | Auto-fix Lint. |
+| `npm run format` | Prettier. |
+| `npm test` | Jest Suite. |
 
 ---
 
 ## 🚫 O que NÃO Fazer
 
-1.  **Não comite código quebrado.** (O Lint e Testes são seus guardiões).
-2.  **Não ignore o console.** Se o console do navegador mostrar erros vermelhos, investigue.
-3.  **Não misture idiomas.** Código/Comentários em Inglês ou Português (decidido no projeto: Doc em PT-BR, Código misto mas tendendo a Inglês para variáveis/funções e PT-BR para comentários explicativos longos é o padrão atual, mas **consistência** é a chave).
-    *   *Nota: Atualmente o projeto prioriza documentação em PT-BR.*
+1.  **Não comite código quebrado.**
+2.  **Não ignore o console.**
+3.  **Não misture idiomas.** (Doc em PT-BR, Código misto).
 
 ---
 
-> *"Qualidade não é um ato, é um hábito."* - Aristóteles (e nossa equipe de QA).
+> *"Qualidade não é um ato, é um hábito."*

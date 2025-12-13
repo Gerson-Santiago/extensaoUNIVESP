@@ -12,10 +12,10 @@ Para entender como usamos, como construímos e no que acreditamos:
 
 | Documento | Descrição |
 | :--- | :--- |
-| **[Identidade do Projeto](./IDENTIDADE_DO_PROJETO.md)** | Nossa filosofia, visão e funcionalidades principais. Comece por aqui! |
-| **[Tecnologias & Arquitetura](./TECNOLOGIAS_E_ARQUITETURA.md)** | A "Bíblia Técnica": Stack, Diagramas e Protocolo de Privacidade. |
-| **[Fluxos de Trabalho](./FLUXOS_DE_TRABALHO.md)** | Guia para Desenvolvedores: Como contribuir, padrões e regras. |
-| **[Log de Mudanças (Changelog)](./CHANGELOG.md)** | Histórico de versões e atualizações. |
+| **[🎓 Identidade do Projeto](./IDENTIDADE_DO_PROJETO.md)** | Nossa filosofia, visão e funcionalidades principais. Comece por aqui! |
+| **[🏗️ Tecnologias & Arquitetura](./TECNOLOGIAS_E_ARQUITETURA.md)** | A "Bíblia Técnica": Stack, Diagramas e Protocolo de Privacidade. |
+| **[⚙️ Fluxos de Trabalho](./FLUXOS_DE_TRABALHO.md)** | Guia para Desenvolvedores: Como contribuir, padrões e regras. |
+| **[📝 Log de Mudanças (Changelog)](./CHANGELOG.md)** | Histórico de versões e atualizações. |
 
 ---
 

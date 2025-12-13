@@ -6,7 +6,7 @@ Este documento detalha o funcionamento interno da extensão, a stack utilizada e
 
 ---
 
-## 1. Stack Tecnológica
+## 🧱 1. Stack Tecnológica
 
 ### Core
 *   **Plataforma**: Google Chrome Extensions (Manifest V3).
@@ -22,7 +22,7 @@ Este documento detalha o funcionamento interno da extensão, a stack utilizada e
 
 ---
 
-## 2. Visão Geral da Arquitetura
+## 🏛️ 2. Visão Geral da Arquitetura
 
 A extensão segue o padrão **MVC (Model-View-Controller)** adaptado para o contexto de Browser Extension.
 
@@ -63,11 +63,11 @@ Gerenciador de eventos do Chrome.
 
 ---
 
-## 3. Protocolo de Privacidade e Dados (Data Handling)
+## 🔒 3. Protocolo de Privacidade e Dados (Data Handling)
 
 Este projeto segue estritamente a filosofia **Local-First**.
 
-### 🔒 Soberania de Dados
+### Soberania de Dados
 *   **Zero Backend**: Não possuímos servidores. Não coletamos dados.
 *   **Armazenamento Local**: Todos os dados (RA, Lista de Matérias) ficam salvos no navegador do usuário (`chrome.storage`), sincronizados apenas com a conta Google dele (se ativado).
 
@@ -78,7 +78,9 @@ Este projeto segue estritamente a filosofia **Local-First**.
 
 ---
 
-## 4. Estrutura de Diretórios
+---
+
+## 📂 4. Estrutura de Diretórios
 
 ```
 /
