@@ -47,22 +47,19 @@ A regra `no-console` está ativa para evitar poluição do console em produção
 ## 4. Variáveis Não Utilizadas (no-unused-vars)
 
 *   **Regra:** Não deixar variáveis declaradas sem uso.
-*   **Correção aplicada:** Em blocos `catch (_error)`, se o erro não for usado, remover a variável ou usar a sintaxe `catch {}` (ES2019+).
+*   **Correção aplicada:** O projeto segue uma política de **Zero Warnings**. Variáveis não utilizadas devem ser removidas. Se a variável for necessária para manter a assinatura de uma função (ex: em callbacks), deve-se prefixar o nome com `_` (ex: `_error`, `_req`).
 
 ## 5. Mocks e Testes (JSDoc Casts)
 
-*   **Problema:** O TypeScript/Linter não reconhece métodos do Jest (`mockImplementation`, `mockReturnValue`) em objetos globais como `chrome.storage` ou `chrome.tabs`, pois suas definições oficiais não incluem esses métodos.
+*   **Problema:** O TypeScript/Linter não reconhece métodos do Jest (`mockImplementation`, `mockReturnValue`) em objetos globais como `chrome.storage` ou `chrome.tabs`.
 *   **Solução (Regra):** Usar **JSDoc Cast** para forçar o tipo `jest.Mock` na linha da chamada.
 
     ```javascript
-    // ❌ Incorreto (Erro: Property 'mockImplementation' does not exist)
-    chrome.storage.sync.get.mockImplementation(...);
-
-    // ✅ Correto
     /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation(...);
     ```
 
 ---
 **Status Atual:**
-*   `npm run lint`: **Sucesso** (0 erros, 0 warnings).
+*   `npm run lint`: **Sucesso Absoluto** (0 erros, 0 warnings).
 *   `npm test`: **Sucesso** (Todos os testes passando).
+

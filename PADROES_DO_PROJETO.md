@@ -11,7 +11,8 @@ Este documento define as tecnologias, ferramentas e padrões de código exigidos
 
 ### 2.1 ESLint (Linting)
 Utilizamos o **ESLint 9.x** com configuração em Flat Config (`eslint.config.mjs`).
-*   **Comando:** `npm run lint` (verifica) / `npm run lint:fix` (corrige).
+*   **Comando:** `npm run lint` deve retornar sucesso (exit code 0).
+*   **Política:** Zero Warnings. Qualquer aviso bloqueia o CI/CD (futuro) e deve ser corrigido imediatamente.
 *   **Regras Principais:**
     *   `semi`: Ponto e vírgula **obrigatório** (`always`).
     *   `quotes`: Aspas simples **obrigatórias** (`single`).
