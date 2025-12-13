@@ -1,5 +1,15 @@
 # Changelog - Versão Beta
 
+## [2.4.0] - 2025-12-13
+### Novas Funcionalidades
+- **Agrupamento Inteligente de Cursos**: Visualize suas matérias organizadas por bimestre (ex: 2025/2 - 4º Bimestre) na aba "Minhas Matérias".
+- **Visualização Hierárquica**: Nova interface visual com cabeçalhos claros separando os períodos letivos.
+- **Ordenação Automática**: Matérias mais recentes aparecem automaticamente no topo.
+
+### Engenharia de Dados
+- **Persistência de Metadados**: Reformulação do sistema de armazenamento (`storage.js`) para salvar tags de agrupamento (`termName`) permanentemente.
+- **Parsers Centralizados**: Criação de `termParser.js` e `courseGrouper.js` para garantir consistência lógica em toda a extensão.
+
 ## [2.3.2] - 2025-12-13
 ### Novas Funcionalidades
 - **Importação em Lote v2 (Deep Scraping)**:

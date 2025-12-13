@@ -1,9 +1,9 @@
 # AutoPreencher UNIVESP (Extensão Chrome)
 
-> **Versão Atual**: v2.3.2 (Beta)
+> **Versão Atual**: v2.4.0 (Stable)
 > **Ferramentas de produtividade para alunos UNIVESP: Autopreenchimento SEI, Gestão de Cursos e Navegação Inteligente no AVA.**
 
-![Version](https://img.shields.io/badge/version-2.3.2-blue) ![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-2.4.0-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 
 Esta extensão é uma ferramenta **Open Source** e **Local-First** para facilitar a vida do aluno UNIVESP, automatizando tarefas repetitivas e organizando o acesso ao conteúdo acadêmico.
 
