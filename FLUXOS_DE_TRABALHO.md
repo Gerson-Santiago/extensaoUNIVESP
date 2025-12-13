@@ -18,6 +18,7 @@ Nosso fluxo segue um padrão simples de Feature Branch.
     *   `fix/correcao-bug`
     *   `refactor/limpeza-codigo`
     *   `docs/atualizacao-readme`
+    *   **Dica:** O agente possui workflows automatizados para essas tarefas (`.agent/workflows/`). Peça "crie uma feature" ou "corrija esse bug" e ele executará os passos.
 
 ### 3. Codificação (Coding Rules)
 *   **Javascript Moderno**: Use ES6+, `const`/`let`, Arrow Functions.
