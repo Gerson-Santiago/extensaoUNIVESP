@@ -459,7 +459,6 @@ describe('Storage - CRUD de Cursos', () => {
       });
 
       updateItem(123, { name: 'Test' }, () => {
-        expect(true).toBe(true); // Callback foi chamado
         done();
       });
     });
