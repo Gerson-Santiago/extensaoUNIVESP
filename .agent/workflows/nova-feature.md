@@ -64,7 +64,7 @@ Antes de finalizar, responda:
 **PARE AGORA.**
 Não abra PR nem faça commit na main/dev sem revisão.
 - [ ] Liste para o usuário o comando exato para testar a feature.
-- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit em **Português (PT-BR)** seguindo o padrão (`feat: descrição`).
+- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit estritamente em **Português (PT-BR)** conforme `PADROES_DO_PROJETO.md` (ex: `feat: adiciona filtro de busca`).
 - [ ] Pergunte: "Posso finalizar e commitar?"
 - [ ] Se aprovado: Faça o commit (O Husky corrigirá formatação automaticamente).
 - [ ] **Nota sobre Dependências**: Se você precisou instalar algo via `npm`, justifique explicitamente agora. Instalações silenciosas são proibidas.

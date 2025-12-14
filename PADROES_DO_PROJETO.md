@@ -36,6 +36,23 @@ Utilizamos Git Hooks para garantir a qualidade antes do código entrar no reposi
     *   Arquivos `.json`, `.css`, `.md`: Roda `prettier --write`.
 
 
+### 2.4 Padrão de Commits
+Utilizamos **Conventional Commits** estritamente em **Português Brasileiro**.
+*   **Formato:** `<tipo>(<escopo opcional>): <descrição no imperativo>`
+*   **Tipos Permitidos:**
+    *   `feat`: Nova funcionalidade.
+    *   `fix`: Correção de bug.
+    *   `docs`: Alteração apenas em documentação.
+    *   `style`: Formatação, pontos e vírgulas, etc (sem mudança de código).
+    *   `refactor`: Alteração de código que não corrige bug nem cria feature.
+    *   `perf`: Melhoria de performance.
+    *   `test`: Adição ou correção de testes.
+    *   `chore`: Alterações de build, ferramentas, deps, etc.
+*   **Idioma:** A descrição DEVE ser em Português.
+    *   ✅ `feat: adiciona botão de login`
+    *   ❌ `feat: add login button` (Inglês proibido)
+    *   ❌ `feat: adicionei botão` (Passado proibido, use Imperativo)
+
 ## 3. Testes Automatizados (Jest)
 
 ### 3.1 Framework

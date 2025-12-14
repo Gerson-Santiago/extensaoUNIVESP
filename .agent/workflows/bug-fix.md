@@ -34,7 +34,7 @@ Registre a correção na seção "Fixed" da versão atual no `CHANGELOG.md`.
 # 🛡️ Passo 6: Gate de Entrega (Manual)
 **PARE AGORA.**
 - [ ] Confirme se os testes automatizados passaram.
-- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit em **Português (PT-BR)** seguindo o padrão (`fix: descrição`).
+- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit estritamente em **Português (PT-BR)** conforme `PADROES_DO_PROJETO.md` (ex: `fix: corrige validação de data`).
 - [ ] **Nota:** O Husky validará automaticamente o lint ao commitar.
 - [ ] Pergunte ao usuário: "Posso finalizar e commitar?"
 - [ ] Só comite após o "Sim".
