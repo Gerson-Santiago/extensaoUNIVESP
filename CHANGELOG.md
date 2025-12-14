@@ -1,5 +1,9 @@
 # Changelog - Versão Beta
 
+## [2.5.3] - 2025-12-13
+### Infraestrutura
+- **Automação de Qualidade**: Implementação do Husky e lint-staged. Agora, lint e formatação são verificados e corrigidos automaticamente a cada commit, garantindo padronização do código fonte.
+
 ## [2.5.2] - 2025-12-13
 ### UI/UX
 - **Ajuste Fino de Interface**: Reversão do layout de configurações para manter botões de ação (Remover Tudo, Feedback) no corpo da página, melhorando a acessibilidade e visibilidade conforme preferência do usuário.

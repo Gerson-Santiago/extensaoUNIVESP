@@ -42,5 +42,6 @@ Embora refatoração idealmente não mude comportamento externo, verifique:
 # 🛡️ Passo 5: Gate de Entrega e Arquitetura
 - [ ] Se a refatoração mudou "quais arquivos chamam quais", atualize o diagrama em `TECNOLOGIAS_E_ARQUITETURA.md`.
 - [ ] **Sugestão de Commit**: Proponha uma mensagem de commit em **Português (PT-BR)** seguindo o padrão (`refactor: descrição`).
+- [ ] **Nota:** O Husky rodará o lint/format automaticamente.
 - [ ] **PARE E PERGUNTE**: "Refatoração concluída e validada. Posso commitar?"
 - [ ] Só prossiga com autorização.

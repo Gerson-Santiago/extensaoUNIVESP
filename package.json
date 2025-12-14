@@ -1,6 +1,6 @@
 {
   "name": "univesp-extension",
-  "version": "2.5.1",
+  "version": "2.5.3",
   "description": "Ferramentas de produtividade para alunos UNIVESP: Autopreenchimento SEI, Gestão de Cursos e Navegação Inteligente no AVA.",
   "main": "popup/popup.js",
   "scripts": {
@@ -23,9 +23,11 @@
     "babel-jest": "^30.2.0",
     "eslint": "^9.39.1",
     "globals": "^16.5.0",
+    "husky": "^9.1.7",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
     "jest-webextension-mock": "^4.0.0",
+    "lint-staged": "^16.2.7",
     "prettier": "^3.7.4"
   },
   "babel": {
@@ -38,6 +40,15 @@
           }
         }
       ]
+    ]
+  },
+  "lint-staged": {
+    "*.{js,mjs}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,css,md}": [
+      "prettier --write"
     ]
   }
 }

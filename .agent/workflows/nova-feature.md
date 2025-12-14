@@ -66,5 +66,5 @@ Não abra PR nem faça commit na main/dev sem revisão.
 - [ ] Liste para o usuário o comando exato para testar a feature.
 - [ ] **Sugestão de Commit**: Proponha uma mensagem de commit em **Português (PT-BR)** seguindo o padrão (`feat: descrição`).
 - [ ] Pergunte: "Posso finalizar e commitar?"
-- [ ] Se aprovado: Faça o commit.
+- [ ] Se aprovado: Faça o commit (O Husky corrigirá formatação automaticamente).
 - [ ] **Nota sobre Dependências**: Se você precisou instalar algo via `npm`, justifique explicitamente agora. Instalações silenciosas são proibidas.

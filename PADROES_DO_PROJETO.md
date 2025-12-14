@@ -28,6 +28,14 @@ Utilizamos o **Prettier** para padronização visual.
     *   `"trailingComma": "es5"`
     *   `"printWidth": 100`
 
+### 2.3 Automação (Husky & Lint-Staged)
+Utilizamos Git Hooks para garantir a qualidade antes do código entrar no repositório.
+*   **Hook (`pre-commit`):** Executado automaticamente ao rodar `git commit`.
+*   **Ação:** O `lint-staged` verifica apenas os arquivos em *staging* (modificados).
+    *   Arquivos `.js`: Roda `eslint --fix` e `prettier --write`. Se houver erro não corrigível automaticamente, o commit é abortado.
+    *   Arquivos `.json`, `.css`, `.md`: Roda `prettier --write`.
+
+
 ## 3. Testes Automatizados (Jest)
 
 ### 3.1 Framework

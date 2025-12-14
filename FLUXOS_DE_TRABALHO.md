@@ -45,10 +45,12 @@ Nosso fluxo segue um padrão simples de Feature Branch.
 - [ ] Validou se o teste passou pelo motivo certo?
 - [ ] Atualizou o teste para refletir a nova regra?
 
-#### 💻 Comandos Obrigatórios
-- [ ] `npm run format`
-- [ ] `npm run lint` (Zero Warnings)
-- [ ] `npm test` (All Green)
+#### 💻 Comandos Obrigatórios (Automação Ativa)
+O projeto possui **Husky** configurado.
+- [ ] `git commit`: Dispara automaticamente Lint e Prettier.
+    - Se falhar: Corrija os erros reportados e tente novamente.
+    - Se passar: O código será formatado automaticamente.
+- [ ] `npm test`: **Deve ser rodado manualmente** antes do push (ainda não está no pre-commit por performance).
 
 ### 5. Commit e Pull Request (PR)
 - Use mensagens semânticas (`feat:`, `fix:`, `docs:`).

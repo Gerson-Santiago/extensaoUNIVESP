@@ -19,6 +19,7 @@ Este documento detalha o funcionamento interno da extensão, a stack utilizada e
 *   **jest-webextension-mock**: Simulação robusta da API `chrome.*`.
 *   **ESLint**: Análise estática de código (Linter).
 *   **Prettier**: Formatador de código.
+*   **Husky + Lint-Staged**: Automação de hooks de pré-commit (Garantia de Qualidade).
 *   **JSDoc**: Documentação e Tipagem "Soft".
 
 ---

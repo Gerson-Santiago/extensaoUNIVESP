@@ -35,5 +35,6 @@ Registre a correção na seção "Fixed" da versão atual no `CHANGELOG.md`.
 **PARE AGORA.**
 - [ ] Confirme se os testes automatizados passaram.
 - [ ] **Sugestão de Commit**: Proponha uma mensagem de commit em **Português (PT-BR)** seguindo o padrão (`fix: descrição`).
+- [ ] **Nota:** O Husky validará automaticamente o lint ao commitar.
 - [ ] Pergunte ao usuário: "Posso finalizar e commitar?"
 - [ ] Só comite após o "Sim".
