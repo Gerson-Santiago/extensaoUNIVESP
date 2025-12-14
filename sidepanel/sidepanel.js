@@ -36,9 +36,7 @@ document.addEventListener('DOMContentLoaded', () => {
       courseDetailsView.setCourse(course);
       layout.navigateTo('courseDetails');
     },
-    onManualAdd: (_name, _url, _onSuccess) => {
-      // Deprecated callback from old flow, but keeping for compatibility if needed
-    },
+
     onAddBatch: () => {
       batchImportModal.open();
     },

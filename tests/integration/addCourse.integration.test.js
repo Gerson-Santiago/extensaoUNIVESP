@@ -91,7 +91,7 @@ describe('Integration: Add Course Manual Flow', () => {
     // Wait for render
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    const listItems = document.querySelectorAll('#itemList li');
+    const listItems = document.querySelectorAll('.item-list li');
     expect(listItems.length).toBe(1);
     expect(listItems[0].textContent).toContain('Matéria Teste Integração');
   });

@@ -3,6 +3,7 @@
 ## [2.5.3] - 2025-12-13
 ### Infraestrutura
 - **Automação de Qualidade**: Implementação do Husky e lint-staged. Agora, lint e formatação são verificados e corrigidos automaticamente a cada commit, garantindo padronização do código fonte.
+- **Limpeza**: Remoção de código legado (`onManualAdd`) e atualização de testes de integração para refletir a estrutura atual da UI.
 
 ## [2.5.2] - 2025-12-13
 ### UI/UX
