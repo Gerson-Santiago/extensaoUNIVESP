@@ -1,6 +1,7 @@
 import { Modal } from './Modal.js';
 import { scrapeAvailableTerms, processSelectedCourses } from '../../logic/batchScraper.js';
 import { addItemsBatch } from '../../logic/storage.js';
+import { parseTerm } from '../../utils/termParser.js';
 
 export class BatchImportModal extends Modal {
   constructor(onSuccess) {
@@ -77,25 +78,11 @@ export class BatchImportModal extends Modal {
     container.innerHTML = '';
 
     // Sort terms: Newest to Oldest (Descending)
+    // Sort terms: Newest to Oldest (Descending) using centralised parser
     this.foundTerms.sort((a, b) => {
-      const nameA = a.name.toLowerCase();
-      const nameB = b.name.toLowerCase();
-
-      // Extract year
-      const yearAMatch = nameA.match(/(\d{4})/);
-      const yearBMatch = nameB.match(/(\d{4})/);
-      const yearA = yearAMatch ? parseInt(yearAMatch[1]) : 0;
-      const yearB = yearBMatch ? parseInt(yearBMatch[1]) : 0;
-
-      if (yearA !== yearB) return yearB - yearA; // Newest year first
-
-      // Extract 'Xº Bimestre'
-      const bimA = nameA.match(/(\d)º/);
-      const bimB = nameB.match(/(\d)º/);
-      const valA = bimA ? parseInt(bimA[1]) : 0;
-      const valB = bimB ? parseInt(bimB[1]) : 0;
-
-      return valB - valA; // Newest term first
+      const parsedA = parseTerm(a.name);
+      const parsedB = parseTerm(b.name);
+      return parsedB.sortKey - parsedA.sortKey;
     });
 
     if (this.foundTerms.length === 0) {

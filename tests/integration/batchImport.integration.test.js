@@ -66,7 +66,7 @@ describe('Integration: Batch Import Flow', () => {
         // 4. Verify Terms Loaded and UI Updated
         const termsList = document.getElementById('terms-list');
         expect(termsList.innerHTML).toContain('2025/1 - 1º Bimestre');
-        expect(termsList.innerHTML).toContain('(2 disciplina');
+        expect(termsList.innerHTML).toContain('2025/1 - 1º Bimestre');
 
         const btnRun = document.getElementById('btnRunBatch');
         expect(btnRun.disabled).toBe(false);

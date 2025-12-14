@@ -49,21 +49,6 @@
 }
 
 /* Batch Import Styles */
-.term-group {
-    margin-bottom: 20px;
-    border: 1px solid #eee;
-    border-radius: 6px;
-    overflow: hidden;
-}
-
-.term-header {
-    background: #f5f5f5;
-    padding: 8px 12px;
-    font-weight: 600;
-    color: #333;
-    font-size: 13px;
-    border-bottom: 1px solid #eee;
-}
 
 .course-item {
     padding: 8px 12px;

@@ -1,5 +1,10 @@
 # Changelog - Versão Beta
 
+## [2.4.1] - 2025-12-13
+### Novas Funcionalidades
+- **Adição Manual Aprimorada**: Agora é possível selecionar o Ano, Semestre e Bimestre ao adicionar cursos manualmente, garantindo que eles sejam agrupados corretamente na lista.
+- **Opções no Storage**: A função `addItem` agora aceita um objeto de opções para metadados adicionais.
+
 ## [2.4.0] - 2025-12-13
 ### Novas Funcionalidades
 - **Agrupamento Inteligente de Cursos**: Visualize suas matérias organizadas por bimestre (ex: 2025/2 - 4º Bimestre) na aba "Minhas Matérias".

@@ -18,7 +18,7 @@ describe('Storage - CRUD de Cursos', () => {
     });
 
     afterEach(() => {
-        console.warn.mockRestore();
+        /** @type {jest.Mock} */ (console.warn).mockRestore();
     });
 
     // Dados de teste reutilizáveis
@@ -38,9 +38,9 @@ describe('Storage - CRUD de Cursos', () => {
 
     describe('loadItems()', () => {
         test('Deve carregar lista vazia por padrão', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({}); // Sem savedCourses
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({}); // Sem savedCourses
+        });
 
             loadItems((courses) => {
                 expect(courses).toEqual([]);
@@ -51,7 +51,7 @@ describe('Storage - CRUD de Cursos', () => {
 
         test('Deve carregar cursos existentes', (done) => {
             const mockData = [mockCourse1, mockCourse2];
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
                 callback({ savedCourses: mockData });
             });
 
@@ -63,9 +63,9 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve chamar callback com dados corretos', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1] });
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [mockCourse1] });
+        });
 
             loadItems((courses) => {
                 expect(courses[0].name).toBe('Curso Teste 1');
@@ -78,7 +78,7 @@ describe('Storage - CRUD de Cursos', () => {
     describe('saveItems()', () => {
         test('Deve salvar lista de cursos', (done) => {
             const coursesToSave = [mockCourse1, mockCourse2];
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
                 callback();
             });
 
@@ -92,9 +92,9 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve executar callback após salvar', (done) => {
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            callback();
+        });
 
             saveItems([mockCourse1], () => {
                 expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -103,9 +103,9 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve funcionar sem callback', () => {
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            callback();
+        });
 
             saveItems([mockCourse1]);
             expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -123,12 +123,12 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve adicionar curso com sucesso', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            callback();
+        });
 
             addItem('Novo Curso', 'https://ava.univesp.br/new', [], (success, message) => {
                 expect(success).toBe(true);
@@ -139,14 +139,14 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve gerar ID único usando Date.now()', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                const savedCourses = data.savedCourses;
-                expect(savedCourses[0].id).toBe(1234567890);
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            const savedCourses = data.savedCourses;
+            expect(savedCourses[0].id).toBe(1234567890);
+            callback();
+        });
 
             addItem('Curso', 'https://test.com', [], () => {
                 done();
@@ -154,9 +154,9 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve rejeitar duplicata (mesma URL)', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1] });
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [mockCourse1] });
+        });
 
             addItem('Duplicado', 'https://ava.univesp.br/course1', [], (success, message) => {
                 expect(success).toBe(false);
@@ -170,14 +170,14 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve incluir weeks vazio por padrão', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                const course = data.savedCourses[0];
-                expect(course.weeks).toEqual([]);
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            const course = data.savedCourses[0];
+            expect(course.weeks).toEqual([]);
+            callback();
+        });
 
             addItem('Curso', 'https://test.com', undefined, () => {
                 done();
@@ -186,16 +186,32 @@ describe('Storage - CRUD de Cursos', () => {
 
         test('Deve passar weeks customizado', (done) => {
             const customWeeks = [{ name: 'Semana 1', url: 'http://s1.com' }];
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
                 callback({ savedCourses: [] });
             });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
                 const course = data.savedCourses[0];
                 expect(course.weeks).toEqual(customWeeks);
                 callback();
             });
 
             addItem('Curso', 'https://test.com', customWeeks, () => {
+                done();
+            });
+        });
+
+        test('Deve persistir termName passado via options', (done) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            const course = data.savedCourses[0];
+            expect(course.termName).toBe('2025/1 - 1º Bimestre');
+            callback();
+        });
+
+            addItem('Curso Termo', 'https://term.com', [], { termName: '2025/1 - 1º Bimestre' }, (success) => {
+                expect(success).toBe(true);
                 done();
             });
         });
@@ -209,10 +225,10 @@ describe('Storage - CRUD de Cursos', () => {
                 { name: 'Curso C', url: 'https://c.com', weeks: [] },
             ];
 
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
                 callback({ savedCourses: [] });
             });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
                 callback();
             });
 
@@ -230,10 +246,10 @@ describe('Storage - CRUD de Cursos', () => {
                 { name: 'Curso B', url: 'https://b.com' },
             ];
 
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
                 callback({ savedCourses: [] });
             });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
                 const courses = data.savedCourses;
                 expect(courses[0].id).not.toBe(courses[1].id);
                 callback();
@@ -250,10 +266,10 @@ describe('Storage - CRUD de Cursos', () => {
                 { name: 'Duplicado', url: 'https://ava.univesp.br/course1' }, // Já existe
             ];
 
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
                 callback({ savedCourses: [mockCourse1] });
             });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
                 callback();
             });
 
@@ -271,10 +287,10 @@ describe('Storage - CRUD de Cursos', () => {
                 { name: 'C', url: 'https://c.com' },
             ];
 
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
                 callback({ savedCourses: [mockCourse1] });
             });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
                 callback();
             });
 
@@ -286,9 +302,9 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve lidar com lista vazia', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [] });
+        });
 
             addItemsBatch([], (addedCount, ignoredCount) => {
                 expect(addedCount).toBe(0);
@@ -304,7 +320,7 @@ describe('Storage - CRUD de Cursos', () => {
                 { name: 'Dup2', url: 'https://ava.univesp.br/course2' },
             ];
 
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
                 callback({ savedCourses: [mockCourse1, mockCourse2] });
             });
 
@@ -315,19 +331,39 @@ describe('Storage - CRUD de Cursos', () => {
                 done();
             });
         });
+
+        test('Deve persistir termName nos itens do lote', (done) => {
+            const newItems = [
+                { name: 'Curso T', url: 'https://t.com', termName: 'Termo Teste' },
+            ];
+
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+                callback({ savedCourses: [] });
+            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+                const course = data.savedCourses[0];
+                expect(course.termName).toBe('Termo Teste');
+                callback();
+            });
+
+            addItemsBatch(newItems, (added) => {
+                expect(added).toBe(1);
+                done();
+            });
+        });
     });
 
     describe('deleteItem()', () => {
         test('Deve remover curso existente', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1, mockCourse2] });
-            });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                const courses = data.savedCourses;
-                expect(courses).toHaveLength(1);
-                expect(courses[0].id).toBe(1000000002);
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [mockCourse1, mockCourse2] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            const courses = data.savedCourses;
+            expect(courses).toHaveLength(1);
+            expect(courses[0].id).toBe(1000000002);
+            callback();
+        });
 
             deleteItem(1000000001, () => {
                 done();
@@ -335,14 +371,14 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve lidar com ID inexistente', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1] });
-            });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                const courses = data.savedCourses;
-                expect(courses).toHaveLength(1); // Nada removido
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [mockCourse1] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            const courses = data.savedCourses;
+            expect(courses).toHaveLength(1); // Nada removido
+            callback();
+        });
 
             deleteItem(99999999, () => {
                 done();
@@ -350,12 +386,12 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve executar callback', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            callback();
+        });
 
             deleteItem(123, () => {
                 expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -366,15 +402,15 @@ describe('Storage - CRUD de Cursos', () => {
 
     describe('updateItem()', () => {
         test('Deve atualizar curso existente', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1] });
-            });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                const updated = data.savedCourses[0];
-                expect(updated.name).toBe('Nome Atualizado');
-                expect(updated.id).toBe(1000000001); // ID permanece
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [mockCourse1] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            const updated = data.savedCourses[0];
+            expect(updated.name).toBe('Nome Atualizado');
+            expect(updated.id).toBe(1000000001); // ID permanece
+            callback();
+        });
 
             updateItem(1000000001, { name: 'Nome Atualizado' }, () => {
                 done();
@@ -382,16 +418,16 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve mesclar updates com dados existentes', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1] });
-            });
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                const updated = data.savedCourses[0];
-                expect(updated.name).toBe('Nome Atualizado');
-                expect(updated.url).toBe('https://ava.univesp.br/course1'); // URL original mantida
-                expect(updated.weeks).toEqual(mockCourse1.weeks); // Weeks mantidos
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [mockCourse1] });
+        });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            const updated = data.savedCourses[0];
+            expect(updated.name).toBe('Nome Atualizado');
+            expect(updated.url).toBe('https://ava.univesp.br/course1'); // URL original mantida
+            expect(updated.weeks).toEqual(mockCourse1.weeks); // Weeks mantidos
+            callback();
+        });
 
             updateItem(1000000001, { name: 'Nome Atualizado' }, () => {
                 done();
@@ -399,9 +435,9 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve lidar com ID inexistente sem falhar', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1] });
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [mockCourse1] });
+        });
 
             updateItem(99999999, { name: 'Teste' }, () => {
                 expect(console.warn).toHaveBeenCalledWith('Item com id 99999999 não encontrado para atualização.');
@@ -411,9 +447,9 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve executar callback mesmo com ID inexistente', (done) => {
-            chrome.storage.sync.get.mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+            callback({ savedCourses: [] });
+        });
 
             updateItem(123, { name: 'Test' }, () => {
                 expect(true).toBe(true); // Callback foi chamado
@@ -424,10 +460,10 @@ describe('Storage - CRUD de Cursos', () => {
 
     describe('clearItems()', () => {
         test('Deve limpar todos os cursos', (done) => {
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                expect(data.savedCourses).toEqual([]);
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            expect(data.savedCourses).toEqual([]);
+            callback();
+        });
 
             clearItems(() => {
                 done();
@@ -435,10 +471,10 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve chamar saveItems com array vazio', (done) => {
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                expect(data.savedCourses).toHaveLength(0);
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            expect(data.savedCourses).toHaveLength(0);
+            callback();
+        });
 
             clearItems(() => {
                 done();
@@ -446,9 +482,9 @@ describe('Storage - CRUD de Cursos', () => {
         });
 
         test('Deve executar callback', (done) => {
-            chrome.storage.sync.set.mockImplementation((data, callback) => {
-                callback();
-            });
+            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+            callback();
+        });
 
             clearItems(() => {
                 expect(chrome.storage.sync.set).toHaveBeenCalled();
