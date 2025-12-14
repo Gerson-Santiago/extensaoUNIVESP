@@ -4,7 +4,6 @@ import { addItem, clearItems } from '../logic/storage.js';
 import { scrapeWeeksFromTab } from '../logic/scraper.js';
 import { StatusManager } from '../utils/statusManager.js';
 import { ConfigForm } from '../components/Forms/ConfigForm.js';
-import { ActionMenu } from '../components/Shared/ActionMenu.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {
@@ -25,40 +24,10 @@ export class SettingsView {
     const div = document.createElement('div');
     div.className = 'view-settings';
 
-    // Header Flex
-    const header = document.createElement('div');
-    header.style.display = 'flex';
-    header.style.justifyContent = 'space-between';
-    header.style.alignItems = 'center';
-
-    const h2 = document.createElement('h2');
-    h2.textContent = 'Configurações';
-    h2.style.margin = '0';
-
-    // Menu de Ações Globais
-    const actionMenu = new ActionMenu({
-      title: 'Ações Globais',
-      icon: '⚙️', // Icone de engrenagem ou reticencias
-      actions: [
-        {
-          label: 'Remover Todas as Matérias',
-          icon: '🗑️',
-          type: 'danger',
-          onClick: () => this.handleClearAll()
-        },
-        {
-          label: 'Enviar Feedback',
-          icon: '📢',
-          onClick: () => this.onNavigate && this.onNavigate('feedback')
-        }
-      ]
-    });
-
-    header.appendChild(h2);
-    header.appendChild(actionMenu.render());
-    div.appendChild(header);
-
-    div.insertAdjacentHTML('beforeend', `
+    div.className = 'view-settings';
+    div.innerHTML = `
+            <h2>Configurações</h2>
+            
             ${this.configForm.render()}
             
             <hr class="divider">
@@ -76,16 +45,25 @@ export class SettingsView {
                 <button id="btnBatchImport" class="action-card small-action">
                     <span class="icon">📦</span><span class="label">Importar em Lote (AVA)</span>
                 </button>
+                <hr class="divider">
+                <button id="btnClearAll" class="action-card small-action" style="border-color: #ffcccc; color: #d9534f;">
+                    <span class="icon">🗑️</span><span class="label">Remover Todas as Matérias</span>
+                </button>
             </div>
 
             <hr class="divider">
 
-            <h3>Ajuda</h3>
-            <p class="config-desc">Para reportar bugs ou sugestões, use o menu de ações acima (⚙️).</p>
+            <h3>Ajuda e Feedback</h3>
+            <p class="config-desc">Encontrou um problema ou tem uma sugestão?</p>
+            <div class="action-list">
+                <button id="btnFeedback" class="action-card small-action">
+                    <span class="icon">📢</span><span class="label">Enviar Feedback</span>
+                </button>
+            </div>
 
             <div id="settingsFeedback" class="status-msg"></div>
             <div class="footer-info"></div>
-        `);
+        `;
     return div;
   }
 
@@ -97,10 +75,19 @@ export class SettingsView {
     const btnManual = document.getElementById('btnManualAdd');
     const btnCurrent = document.getElementById('btnAddCurrent');
     const btnBatch = document.getElementById('btnBatchImport');
+    const btnFeedback = document.getElementById('btnFeedback');
+    const btnClear = document.getElementById('btnClearAll');
 
     if (btnManual) btnManual.onclick = () => this.addManualModal.open();
     if (btnBatch) btnBatch.onclick = () => this.batchImportModal.open();
+    if (btnFeedback) btnFeedback.onclick = () => {
+      if (this.onNavigate) this.onNavigate('feedback');
+    };
     if (btnCurrent) btnCurrent.onclick = () => this.handleAddCurrent();
+
+    if (btnClear) {
+      btnClear.onclick = () => this.handleClearAll();
+    }
   }
 
   handleClearAll() {

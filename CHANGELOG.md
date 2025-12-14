@@ -1,5 +1,18 @@
 # Changelog - Versão Beta
 
+## [2.5.2] - 2025-12-13
+### UI/UX
+- **Ajuste Fino de Interface**: Reversão do layout de configurações para manter botões de ação (Remover Tudo, Feedback) no corpo da página, melhorando a acessibilidade e visibilidade conforme preferência do usuário.
+- **Menu Genérico**: Manutenção do componente `ActionMenu` para uso exclusivo na view de Cursos.
+
+## [2.5.1] - 2025-12-13
+### UI
+- **ActionMenu Genérico**: Implementação de componente reutilizável de menu.
+
+## [2.5.0] - 2025-12-13
+### UI
+- **Dropdown de Ações Rápidas**: Adicionado menu flutuante em "Minhas Matérias".
+
 ## [2.4.1] - 2025-12-13
 ### Novas Funcionalidades
 - **Adição Manual Aprimorada**: Agora é possível selecionar o Ano, Semestre e Bimestre ao adicionar cursos manualmente, garantindo que eles sejam agrupados corretamente na lista.
