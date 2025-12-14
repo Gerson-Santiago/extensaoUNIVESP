@@ -14,12 +14,12 @@ export function extractWeeksFromDoc(doc, baseUrl) {
     let href = a.href;
     // Fix relative links if using DOMParser where base might be different or empty
     if (a.getAttribute('href')) {
-        const raw = a.getAttribute('href');
-        if (!raw.startsWith('http') && !raw.startsWith('javascript:')) {
-             href = baseUrl + (raw.startsWith('/') ? '' : '/') + raw;
-        } else if (raw.startsWith('http')) {
-            href = raw;
-        }
+      const raw = a.getAttribute('href');
+      if (!raw.startsWith('http') && !raw.startsWith('javascript:')) {
+        href = baseUrl + (raw.startsWith('/') ? '' : '/') + raw;
+      } else if (raw.startsWith('http')) {
+        href = raw;
+      }
     }
 
     const cleanText = (text || '').trim();
@@ -77,77 +77,77 @@ export function extractWeeksFromDoc(doc, baseUrl) {
 }
 
 function DOM_extractWeeks_Injected() {
-    // Wrapper para chamar a função exportada no contexto da página (se injetado)
-    // Nota: Funções injetadas via scripting.executeScript não têm acesso a imports.
-    // Portanto, precisamos duplicar a lógica OU injetar o arquivo todo.
-    // Pela arquitetura atual, duplicar a core logic dentro da injeção é mais seguro
-    // ou usamos a approach de `func` que contem tudo.
-    
-    // COMO NÃO POSSO IMPORTAR DENTRO DE UMA FUNÇÃO INJETADA:
-    // Vou manter o codigo original aqui para a injeção funcionar, 
-    // mas a `extractWeeksFromDoc` servirá para o BatchScraper usar no background/sidepane.
-    
-    // ... (Mantendo logica original para não quebrar tabs.js injection) ...
-    // Na verdade, o ideal seria que extractWeeksFromDoc fosse usada pelo batchScraper.
-    // O scraper.js injection continua autônomo.
-    
-    const weeks = [];
-    const links = document.querySelectorAll('a');
-    
-    links.forEach((a) => {
-        const text = (a.innerText || '').trim();
-        const title = (a.title || '').trim();
-    
-        let href = a.href;
-        if (href && !href.startsWith('http')) {
-          const rawHref = a.getAttribute('href');
-          if (rawHref && !rawHref.startsWith('http')) {
-            href = window.location.origin + rawHref;
+  // Wrapper para chamar a função exportada no contexto da página (se injetado)
+  // Nota: Funções injetadas via scripting.executeScript não têm acesso a imports.
+  // Portanto, precisamos duplicar a lógica OU injetar o arquivo todo.
+  // Pela arquitetura atual, duplicar a core logic dentro da injeção é mais seguro
+  // ou usamos a approach de `func` que contem tudo.
+
+  // COMO NÃO POSSO IMPORTAR DENTRO DE UMA FUNÇÃO INJETADA:
+  // Vou manter o codigo original aqui para a injeção funcionar,
+  // mas a `extractWeeksFromDoc` servirá para o BatchScraper usar no background/sidepane.
+
+  // ... (Mantendo logica original para não quebrar tabs.js injection) ...
+  // Na verdade, o ideal seria que extractWeeksFromDoc fosse usada pelo batchScraper.
+  // O scraper.js injection continua autônomo.
+
+  const weeks = [];
+  const links = document.querySelectorAll('a');
+
+  links.forEach((a) => {
+    const text = (a.innerText || '').trim();
+    const title = (a.title || '').trim();
+
+    let href = a.href;
+    if (href && !href.startsWith('http')) {
+      const rawHref = a.getAttribute('href');
+      if (rawHref && !rawHref.startsWith('http')) {
+        href = window.location.origin + rawHref;
+      }
+    }
+
+    const cleanText = (text || '').trim();
+    const cleanTitle = (title || '').trim();
+
+    const weekRegex = /^Semana\s+(\d{1,2})$/i;
+
+    let match = cleanText.match(weekRegex);
+    let nameToUse = cleanText;
+
+    if (!match && cleanTitle) {
+      match = cleanTitle.match(weekRegex);
+      nameToUse = cleanTitle;
+    }
+
+    if (match && href) {
+      const weekNum = parseInt(match[1], 10);
+
+      if (weekNum >= 1 && weekNum <= 15) {
+        if (!href.startsWith('javascript:')) {
+          weeks.push({ name: nameToUse, url: href });
+        } else if (a.onclick) {
+          const onClickText = a.getAttribute('onclick');
+          const urlMatch = onClickText.match(/'(\/webapps\/.*?)'/);
+          if (urlMatch && urlMatch[1]) {
+            weeks.push({ name: nameToUse, url: window.location.origin + urlMatch[1] });
           }
-        }
-    
-        const cleanText = (text || '').trim();
-        const cleanTitle = (title || '').trim();
-    
-        const weekRegex = /^Semana\s+(\d{1,2})$/i;
-    
-        let match = cleanText.match(weekRegex);
-        let nameToUse = cleanText;
-    
-        if (!match && cleanTitle) {
-          match = cleanTitle.match(weekRegex);
-          nameToUse = cleanTitle;
-        }
-    
-        if (match && href) {
-          const weekNum = parseInt(match[1], 10);
-    
-          if (weekNum >= 1 && weekNum <= 15) {
-            if (!href.startsWith('javascript:')) {
-              weeks.push({ name: nameToUse, url: href });
-            } else if (a.onclick) {
-              const onClickText = a.getAttribute('onclick');
-              const urlMatch = onClickText.match(/'(\/webapps\/.*?)'/);
-              if (urlMatch && urlMatch[1]) {
-                weeks.push({ name: nameToUse, url: window.location.origin + urlMatch[1] });
-              }
-            }
-          }
-        }
-      });
-    
-      let pageTitle = null;
-      const pDisc = document.querySelector('p.discipline-title');
-      if (pDisc instanceof HTMLElement) {
-        pageTitle = pDisc.innerText.trim();
-      } else {
-        const h1 = document.querySelector('h1.panel-title');
-        if (h1 instanceof HTMLElement) {
-          pageTitle = h1.innerText.trim();
         }
       }
-    
-      return { weeks: weeks, title: pageTitle };
+    }
+  });
+
+  let pageTitle = null;
+  const pDisc = document.querySelector('p.discipline-title');
+  if (pDisc instanceof HTMLElement) {
+    pageTitle = pDisc.innerText.trim();
+  } else {
+    const h1 = document.querySelector('h1.panel-title');
+    if (h1 instanceof HTMLElement) {
+      pageTitle = h1.innerText.trim();
+    }
+  }
+
+  return { weeks: weeks, title: pageTitle };
 }
 
 export async function scrapeWeeksFromTab(tabId) {

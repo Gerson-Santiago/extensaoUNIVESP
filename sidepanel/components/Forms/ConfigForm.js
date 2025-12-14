@@ -2,15 +2,15 @@ import { RaManager } from '../../logic/raManager.js';
 import { DomainManager } from '../../logic/domainManager.js';
 
 export class ConfigForm {
-    /**
-     * @param {Object} statusManager - Instância do StatusManager
-     */
-    constructor(statusManager) {
-        this.feedback = statusManager;
-    }
+  /**
+   * @param {Object} statusManager - Instância do StatusManager
+   */
+  constructor(statusManager) {
+    this.feedback = statusManager;
+  }
 
-    render() {
-        return `
+  render() {
+    return `
       <div class="settings-content">
         <h3>Configurar Acesso</h3>
         <p class="config-desc">Configuração para preenchimento automático (Login).</p>
@@ -39,87 +39,87 @@ export class ConfigForm {
         </div>
       </div>
     `;
-    }
+  }
 
-    attachListeners() {
-        this.setupLoadData();
-        this.setupSaveActions();
-        this.setupBehaviorActions();
-        this.setupResetDomain();
-    }
+  attachListeners() {
+    this.setupLoadData();
+    this.setupSaveActions();
+    this.setupBehaviorActions();
+    this.setupResetDomain();
+  }
 
-    setupLoadData() {
-        const raInput = /** @type {HTMLInputElement} */ (document.getElementById('raInput'));
-        const domainInput = /** @type {HTMLInputElement} */ (document.getElementById('domainInput'));
-        const popupToggle = /** @type {HTMLInputElement} */ (document.getElementById('popupToggle'));
+  setupLoadData() {
+    const raInput = /** @type {HTMLInputElement} */ (document.getElementById('raInput'));
+    const domainInput = /** @type {HTMLInputElement} */ (document.getElementById('domainInput'));
+    const popupToggle = /** @type {HTMLInputElement} */ (document.getElementById('popupToggle'));
 
-        chrome.storage.sync.get(['userEmail', 'customDomain', 'clickBehavior'], (result) => {
-            const userEmail = /** @type {string} */ (result.userEmail || '');
-            const customDomain = /** @type {string} */ (result.customDomain || '');
+    chrome.storage.sync.get(['userEmail', 'customDomain', 'clickBehavior'], (result) => {
+      const userEmail = /** @type {string} */ (result.userEmail || '');
+      const customDomain = /** @type {string} */ (result.customDomain || '');
 
-            const domain = DomainManager.getCurrentDomain(userEmail, customDomain);
-            if (domainInput) domainInput.value = domain;
+      const domain = DomainManager.getCurrentDomain(userEmail, customDomain);
+      if (domainInput) domainInput.value = domain;
 
-            if (userEmail && raInput) {
-                raInput.value = RaManager.getRaFromEmail(userEmail);
-            }
+      if (userEmail && raInput) {
+        raInput.value = RaManager.getRaFromEmail(userEmail);
+      }
 
-            // Load Behavior
-            const savedBehavior = result.clickBehavior || 'sidepanel';
-            if (popupToggle) {
-                popupToggle.checked = savedBehavior === 'popup';
-            }
-        });
-    }
+      // Load Behavior
+      const savedBehavior = result.clickBehavior || 'sidepanel';
+      if (popupToggle) {
+        popupToggle.checked = savedBehavior === 'popup';
+      }
+    });
+  }
 
-    setupSaveActions() {
-        const saveConfigBtn = document.getElementById('saveConfigBtn');
-        const raInput = /** @type {HTMLInputElement} */ (document.getElementById('raInput'));
-        const domainInput = /** @type {HTMLInputElement} */ (document.getElementById('domainInput'));
+  setupSaveActions() {
+    const saveConfigBtn = document.getElementById('saveConfigBtn');
+    const raInput = /** @type {HTMLInputElement} */ (document.getElementById('raInput'));
+    const domainInput = /** @type {HTMLInputElement} */ (document.getElementById('domainInput'));
 
-        if (saveConfigBtn) {
-            saveConfigBtn.addEventListener('click', () => {
-                const ra = raInput.value;
-                const domain = domainInput.value;
+    if (saveConfigBtn) {
+      saveConfigBtn.addEventListener('click', () => {
+        const ra = raInput.value;
+        const domain = domainInput.value;
 
-                const { isValid, fullEmail, cleanDomain, error } = RaManager.prepareCredentials(ra, domain);
+        const { isValid, fullEmail, cleanDomain, error } = RaManager.prepareCredentials(ra, domain);
 
-                if (!isValid) {
-                    alert(error);
-                    return;
-                }
-
-                chrome.storage.sync.set(
-                    {
-                        userEmail: fullEmail,
-                        customDomain: cleanDomain,
-                    },
-                    () => {
-                        this.feedback.show('Configuração salva com sucesso!', 'success');
-                    }
-                );
-            });
+        if (!isValid) {
+          alert(error);
+          return;
         }
-    }
 
-    setupBehaviorActions() {
-        const popupToggle = /** @type {HTMLInputElement} */ (document.getElementById('popupToggle'));
-        if (popupToggle) {
-            popupToggle.addEventListener('change', (e) => {
-                const target = /** @type {HTMLInputElement} */ (e.target);
-                const behavior = target.checked ? 'popup' : 'sidepanel';
-                chrome.storage.sync.set({ clickBehavior: behavior });
-            });
-        }
+        chrome.storage.sync.set(
+          {
+            userEmail: fullEmail,
+            customDomain: cleanDomain,
+          },
+          () => {
+            this.feedback.show('Configuração salva com sucesso!', 'success');
+          }
+        );
+      });
     }
+  }
 
-    setupResetDomain() {
-        const resetDomainBtn = document.getElementById('resetDomainBtn');
-        const domainInput = /** @type {HTMLInputElement} */ (document.getElementById('domainInput'));
-        if (resetDomainBtn) {
-            resetDomainBtn.addEventListener('click', () => {
-                domainInput.value = DomainManager.getDefaultDomain();
-            });
-        }
+  setupBehaviorActions() {
+    const popupToggle = /** @type {HTMLInputElement} */ (document.getElementById('popupToggle'));
+    if (popupToggle) {
+      popupToggle.addEventListener('change', (e) => {
+        const target = /** @type {HTMLInputElement} */ (e.target);
+        const behavior = target.checked ? 'popup' : 'sidepanel';
+        chrome.storage.sync.set({ clickBehavior: behavior });
+      });
     }
+  }
+
+  setupResetDomain() {
+    const resetDomainBtn = document.getElementById('resetDomainBtn');
+    const domainInput = /** @type {HTMLInputElement} */ (document.getElementById('domainInput'));
+    if (resetDomainBtn) {
+      resetDomainBtn.addEventListener('click', () => {
+        domainInput.value = DomainManager.getDefaultDomain();
+      });
+    }
+  }
 }

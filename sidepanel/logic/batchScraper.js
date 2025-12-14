@@ -13,7 +13,10 @@ function DOM_scanTermsAndCourses_Injected() {
     message: '',
   };
 
-  if (!window.location.href.includes('/ultra/course') && !window.location.href.includes('bb_router')) {
+  if (
+    !window.location.href.includes('/ultra/course') &&
+    !window.location.href.includes('bb_router')
+  ) {
     if (!document.getElementById('courses-overview-content')) {
       results.message = 'Por favor, acesse a página de Cursos do AVA.';
       return results;
@@ -31,15 +34,18 @@ function DOM_scanTermsAndCourses_Injected() {
 
   const termsMap = new Map(); // Chave: "2025/1 - 1º Bimestre" -> Valor: [cursos]
 
-  courseTitles.forEach(titleEl => {
+  courseTitles.forEach((titleEl) => {
     // Navegamos para cima para achar o container do curso (o "Card" ou "Linha")
     // Geralmente é um <li> ou <div>
-    const card = titleEl.closest('li') || titleEl.closest('div.element-card') || titleEl.parentNode.parentNode;
+    const card =
+      titleEl.closest('li') || titleEl.closest('div.element-card') || titleEl.parentNode.parentNode;
 
     if (!card) return;
 
     // Dentro do card, buscamos o Link e o ID de Exibição
-    const linkEl = titleEl.closest('a') ? titleEl.closest('a') : card.querySelector('a[href*="course_id="], a[href*="/launcher"]');
+    const linkEl = titleEl.closest('a')
+      ? titleEl.closest('a')
+      : card.querySelector('a[href*="course_id="], a[href*="/launcher"]');
 
     if (!linkEl) return;
 
@@ -52,7 +58,9 @@ function DOM_scanTermsAndCourses_Injected() {
       const idAttr = linkEl.id;
       if (idAttr && idAttr.startsWith('course-link-')) {
         internalId = idAttr.replace('course-link-', '');
-        url = window.location.origin + `/webapps/blackboard/execute/launcher?type=Course&id=${internalId}&url=`;
+        url =
+          window.location.origin +
+          `/webapps/blackboard/execute/launcher?type=Course&id=${internalId}&url=`;
       }
     } else if (url.includes('course_id=')) {
       const match = url.match(/course_id=(_.+?)(&|$)/);
@@ -124,13 +132,13 @@ function DOM_scanTermsAndCourses_Injected() {
     if (!termsMap.has(termKey)) {
       termsMap.set(termKey, {
         order: sortOrder,
-        courses: []
+        courses: [],
       });
     }
 
     const group = termsMap.get(termKey);
     // Evita duplicatas (as vezes o mesmo curso aparece em listas diferentes no DOM mobile/desktop)
-    if (!group.courses.some(c => c.courseId === internalId)) {
+    if (!group.courses.some((c) => c.courseId === internalId)) {
       group.courses.push({ name, url, courseId: internalId });
     }
   });
@@ -141,7 +149,7 @@ function DOM_scanTermsAndCourses_Injected() {
     termsArray.push({
       name: key,
       courses: val.courses,
-      _sort: val.order
+      _sort: val.order,
     });
   });
 
@@ -153,7 +161,7 @@ function DOM_scanTermsAndCourses_Injected() {
   });
 
   // Limpar metadados auxiliares
-  const finalTerms = termsArray.map(t => ({ name: t.name, courses: t.courses }));
+  const finalTerms = termsArray.map((t) => ({ name: t.name, courses: t.courses }));
 
   results.terms = finalTerms;
   results.success = finalTerms.length > 0;
@@ -237,7 +245,9 @@ async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
   for (const course of coursesToScrape) {
     try {
       // 1. Fetch Course Entry
-      const fetchUrl = window.location.origin + `/webapps/blackboard/execute/launcher?type=Course&id=${course.courseId}&url=`;
+      const fetchUrl =
+        window.location.origin +
+        `/webapps/blackboard/execute/launcher?type=Course&id=${course.courseId}&url=`;
       const response = await fetch(fetchUrl);
       const text = await response.text();
       const parser = new DOMParser();
@@ -249,7 +259,11 @@ async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
       const targetSpan = spans.find((s) => {
         const title = (s.getAttribute('title') || '').toLowerCase();
         const textContent = s.innerText.toLowerCase();
-        return title.includes('página inicial') || textContent.includes('página inicial') || textContent === 'início';
+        return (
+          title.includes('página inicial') ||
+          textContent.includes('página inicial') ||
+          textContent === 'início'
+        );
       });
 
       let finalUrl = course.url; // Default
@@ -277,23 +291,21 @@ async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
         name: course.name,
         url: finalUrl,
         weeks: weeks,
-        original: course
+        original: course,
       });
-
     } catch (e) {
       console.error('Erro deep scraping', course.name, e);
       results.push({
         name: course.name,
         url: course.url,
         weeks: [],
-        error: true
+        error: true,
       });
     }
   }
 
   return results;
 }
-
 
 export async function scrapeAvailableTerms(tabId) {
   try {
@@ -317,7 +329,7 @@ export async function processSelectedCourses(tabId, courses) {
     const results = await chrome.scripting.executeScript({
       target: { tabId: tabId },
       func: DOM_deepScrapeSelected_Injected,
-      args: [courses]
+      args: [courses],
     });
 
     if (results && results[0] && results[0].result) {

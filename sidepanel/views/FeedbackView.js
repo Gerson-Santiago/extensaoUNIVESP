@@ -1,16 +1,16 @@
 export class FeedbackView {
-    constructor(callbacks = {}) {
-        this.onBack = callbacks.onBack;
-    }
+  constructor(callbacks = {}) {
+    this.onBack = callbacks.onBack;
+  }
 
-    render() {
-        const div = document.createElement('div');
-        div.className = 'view-feedback';
-        div.style.height = '100%';
-        div.style.display = 'flex';
-        div.style.flexDirection = 'column';
+  render() {
+    const div = document.createElement('div');
+    div.className = 'view-feedback';
+    div.style.height = '100%';
+    div.style.display = 'flex';
+    div.style.flexDirection = 'column';
 
-        div.innerHTML = `
+    div.innerHTML = `
       <div class="details-header">
           <button id="backBtn" class="btn-back">← Voltar</button>
           <h2 class="details-title">Feedback</h2>
@@ -27,13 +27,13 @@ export class FeedbackView {
         >Carregando…</iframe>
       </div>
     `;
-        return div;
-    }
+    return div;
+  }
 
-    afterRender() {
-        const backBtn = document.getElementById('backBtn');
-        if (backBtn && this.onBack) {
-            backBtn.onclick = () => this.onBack();
-        }
+  afterRender() {
+    const backBtn = document.getElementById('backBtn');
+    if (backBtn && this.onBack) {
+      backBtn.onclick = () => this.onBack();
     }
+  }
 }

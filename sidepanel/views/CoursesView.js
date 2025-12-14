@@ -32,19 +32,19 @@ export class CoursesView {
         {
           label: 'Importar em Lote',
           icon: '📥',
-          onClick: () => this.callbacks.onAddBatch && this.callbacks.onAddBatch()
+          onClick: () => this.callbacks.onAddBatch && this.callbacks.onAddBatch(),
         },
         {
           label: 'Adicionar desta Página',
           icon: '📄',
-          onClick: () => this.callbacks.onAddCurrentPage && this.callbacks.onAddCurrentPage()
+          onClick: () => this.callbacks.onAddCurrentPage && this.callbacks.onAddCurrentPage(),
         },
         {
           label: 'Adicionar Manualmente',
           icon: '✍️',
-          onClick: () => this.callbacks.onAddManual && this.callbacks.onAddManual()
-        }
-      ]
+          onClick: () => this.callbacks.onAddManual && this.callbacks.onAddManual(),
+        },
+      ],
     });
     const dropdownEl = dropdown.render();
 
@@ -53,7 +53,9 @@ export class CoursesView {
 
     div.appendChild(headerContainer);
 
-    div.insertAdjacentHTML('beforeend', `
+    div.insertAdjacentHTML(
+      'beforeend',
+      `
             <div class="course-legend">
                 <span class="legend-left">Matéria</span>
                 <span style="text-align: center;">Ver semana</span>
@@ -61,7 +63,8 @@ export class CoursesView {
             </div>
 
             <div id="coursesListContainer" class="courses-list-container"></div>
-        `);
+        `
+    );
     return div;
   }
 

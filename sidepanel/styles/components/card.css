@@ -1,60 +1,62 @@
 /* Componente: Cards */
 .link-card {
-    background: var(--bg-white);
-    border: 1px solid var(--border-color);
-    border-radius: 6px;
-    padding: 8px;
-    text-decoration: none;
-    color: var(--primary-color);
-    font-weight: 500;
-    font-size: 13px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.2s;
-    height: 50px;
-    text-align: center;
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 6px;
+  padding: 8px;
+  text-decoration: none;
+  color: var(--primary-color);
+  font-weight: 500;
+  font-size: 13px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+  height: 50px;
+  text-align: center;
 }
 
 .link-card:hover {
-    background-color: #f0f4f8;
-    border-color: var(--primary-color);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
+  background-color: #f0f4f8;
+  border-color: var(--primary-color);
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
 }
 
 .blackboard-card {
-    background-color: #fcfcfc;
+  background-color: #fcfcfc;
 }
 
 .action-card {
-    background: var(--bg-white);
-    border: 1px solid var(--border-color);
-    border-radius: 8px;
-    padding: 15px;
-    width: 100%;
-    margin: 10px 0;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-weight: bold;
-    color: var(--primary-color);
-    box-shadow: var(--shadow-sm);
-    transition: transform 0.1s, box-shadow 0.1s;
-    box-sizing: border-box;
+  background: var(--bg-white);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 15px;
+  width: 100%;
+  margin: 10px 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: bold;
+  color: var(--primary-color);
+  box-shadow: var(--shadow-sm);
+  transition:
+    transform 0.1s,
+    box-shadow 0.1s;
+  box-sizing: border-box;
 }
 
 .action-card:hover {
-    background: #fdfdfd;
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
+  background: #fdfdfd;
+  box-shadow: var(--shadow-md);
+  transform: translateY(-2px);
 }
 
 .small-action {
-    max-width: 100%;
-    margin: 0;
-    padding: 10px;
+  max-width: 100%;
+  margin: 0;
+  padding: 10px;
 }

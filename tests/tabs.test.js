@@ -1,7 +1,5 @@
 import { openOrSwitchToTab } from '../sidepanel/logic/tabs.js';
 
-
-
 describe('Lógica - Troca de Abas', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -12,19 +10,19 @@ describe('Lógica - Troca de Abas', () => {
       'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1';
 
     /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((query, callback) => {
-        callback([
-          {
-            id: 101,
-            url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_99999_1&content_id=_11111_1',
-            windowId: 888,
-          },
-          {
-            id: 102,
-            url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1',
-            windowId: 999,
-          },
-        ]);
-      });
+      callback([
+        {
+          id: 101,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_99999_1&content_id=_11111_1',
+          windowId: 888,
+        },
+        {
+          id: 102,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1',
+          windowId: 999,
+        },
+      ]);
+    });
 
     openOrSwitchToTab(targetUrl);
 
@@ -41,7 +39,9 @@ describe('Lógica - Troca de Abas', () => {
       { id: 201, windowId: 888, url: 'https://google.com/search?q=test&page=2' }, // Starts with same base
     ];
 
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => callback(mockTabs));
+    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) =>
+      callback(mockTabs)
+    );
 
     openOrSwitchToTab(targetUrl);
 
@@ -73,19 +73,19 @@ describe('Lógica - Troca de Abas', () => {
       'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_EXACT_1';
 
     /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-        callback([
-          {
-            id: 101,
-            url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_OTHER_1',
-            windowId: 888,
-          },
-          {
-            id: 102,
-            url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_EXACT_1',
-            windowId: 999,
-          },
-        ]);
-      });
+      callback([
+        {
+          id: 101,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_OTHER_1',
+          windowId: 888,
+        },
+        {
+          id: 102,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_EXACT_1',
+          windowId: 999,
+        },
+      ]);
+    });
 
     openOrSwitchToTab(targetUrl);
 

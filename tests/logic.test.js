@@ -1,7 +1,5 @@
 import { scrapeWeeksFromTab } from '../sidepanel/logic/scraper.js';
 
-
-
 describe('Testes de Lógica - Scraper', () => {
   beforeEach(() => {
     jest.clearAllMocks();
@@ -126,7 +124,9 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve lidar com erro no executeScript', async () => {
-    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(new Error('Falha na injeção'));
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(
+      new Error('Falha na injeção')
+    );
 
     const result = await scrapeWeeksFromTab(123);
 

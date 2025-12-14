@@ -10,22 +10,22 @@ describe('Lógica - Batch Scraper', () => {
       // Mock do retorno do script injetado
       const mockTerms = [
         { name: '2025/1 - 1º Bimestre', courses: [{ name: 'C1', url: 'u1', courseId: 'c1' }] },
-        { name: '2025/1 - 2º Bimestre', courses: [{ name: 'C2', url: 'u2', courseId: 'c2' }] }
+        { name: '2025/1 - 2º Bimestre', courses: [{ name: 'C2', url: 'u2', courseId: 'c2' }] },
       ];
 
-        // Aqui mockamos o RETORNO FINAL da função injetada (que é o que o executeScript devolve).
-        // Isso significa que estamos testando a interface do chrome.scripting, e não a logica interna do DOM_scan...
-        // que roda no browser. Como não temos DOM real aqui, testar a lógica INTERNA exigiria JSDOM complexo.
-        // Pelo padrão do projeto, estamos testando o wrapper.
-        // MAS, para garantir que o Regex funciona, poderíamos extrair a logica interna para unidade pura.
-        // Dado o contexto atual, manteremos o teste de integração do wrapper.
+      // Aqui mockamos o RETORNO FINAL da função injetada (que é o que o executeScript devolve).
+      // Isso significa que estamos testando a interface do chrome.scripting, e não a logica interna do DOM_scan...
+      // que roda no browser. Como não temos DOM real aqui, testar a lógica INTERNA exigiria JSDOM complexo.
+      // Pelo padrão do projeto, estamos testando o wrapper.
+      // MAS, para garantir que o Regex funciona, poderíamos extrair a logica interna para unidade pura.
+      // Dado o contexto atual, manteremos o teste de integração do wrapper.
 
-        /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
+      /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
         {
           result: {
             success: true,
             terms: mockTerms,
-            message: ''
+            message: '',
           },
         },
       ]);
@@ -43,7 +43,9 @@ describe('Lógica - Batch Scraper', () => {
     });
 
     test('Deve lidar com falha no script', async () => {
-        /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(new Error('Injection failed'));
+      /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(
+        new Error('Injection failed')
+      );
       const result = await scrapeAvailableTerms(101);
       expect(result.success).toBe(false);
       expect(result.message).toContain('Erro ao executar script');
@@ -55,8 +57,8 @@ describe('Lógica - Batch Scraper', () => {
       const mockInputCourses = [{ name: 'C1', url: 'u1', courseId: 'c1' }];
       const mockProcessed = [{ name: 'C1', url: 'final_u1', weeks: [] }];
 
-         /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
-        { result: mockProcessed }
+      /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
+        { result: mockProcessed },
       ]);
 
       const result = await processSelectedCourses(101, mockInputCourses);
@@ -64,7 +66,7 @@ describe('Lógica - Batch Scraper', () => {
       expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
         target: { tabId: 101 },
         func: expect.any(Function),
-        args: [mockInputCourses]
+        args: [mockInputCourses],
       });
 
       expect(result).toHaveLength(1);
@@ -72,10 +74,11 @@ describe('Lógica - Batch Scraper', () => {
     });
 
     test('Deve retornar array vazio em caso de erro', async () => {
-          /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(new Error('Fail'));
+      /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(
+        new Error('Fail')
+      );
       const result = await processSelectedCourses(101, []);
       expect(result).toEqual([]);
     });
   });
 });
-

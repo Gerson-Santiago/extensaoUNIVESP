@@ -23,10 +23,8 @@ export function openOrSwitchToTab(url) {
 
     // Busca aba que contenha AMBOS: course_id E content_id (página específica)
     if (targetCourseId && targetContentId) {
-      existingTab = tabs.find((t) =>
-        t.url &&
-        t.url.includes(targetCourseId) &&
-        t.url.includes(targetContentId)
+      existingTab = tabs.find(
+        (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
       );
       // if (DEBUG) console.log('🔍 DEBUG: Aba existente com courseId E contentId?', existingTab ? existingTab.id : 'NÃO');
     } else if (targetCourseId) {
@@ -41,8 +39,12 @@ export function openOrSwitchToTab(url) {
       existingTab = tabs.find(
         (t) => t.url && (t.url.startsWith(url) || t.url.startsWith(cleanUrl))
       );
-      // eslint-disable-next-line no-console
-      if (DEBUG) console.debug('🔍 DEBUG: Aba existente por URL exata?', existingTab ? existingTab.id : 'NÃO');
+      if (DEBUG)
+        // eslint-disable-next-line no-console
+        console.debug(
+          '🔍 DEBUG: Aba existente por URL exata?',
+          existingTab ? existingTab.id : 'NÃO'
+        );
     }
 
     if (existingTab) {

@@ -15,7 +15,8 @@ Este documento detalha o funcionamento interno da extensão, a stack utilizada e
 
 ### Qualidade & Testes
 *   **Node.js**: Ambiente de desenvolvimento (Scripts e Testes).
-*   **Jest**: Framework de testes (Unitários e Integração).
+*   **Jest (v30+)**: Framework de testes (Unitários e Integração), com provider V8 para cobertura.
+*   **jest-webextension-mock**: Simulação robusta da API `chrome.*`.
 *   **ESLint**: Análise estática de código (Linter).
 *   **Prettier**: Formatador de código.
 *   **JSDoc**: Documentação e Tipagem "Soft".
@@ -33,7 +34,7 @@ flowchart LR
     subgraph "Navegador do Usuário"
         direction TB
         UI[Side Panel / Popup (View)]
-        Logic[Business Logic (Controller)]
+        Logic[RaManager / DomainManager (Logic)]
         Storage[(Chrome Storage (Model))]
         Web[Página AVA/SEI]
     end
@@ -49,16 +50,17 @@ flowchart LR
 #### A. Side Panel (`/sidepanel`)
 O painel lateral é o coração da experiência do usuário.
 *   **Views**: Componentes visuais (`CoursesView.js`, `SettingsView.js`).
-*   **Logic**: Controladores (`batchScraper.js`, `tabs.js`).
-*   **Components**: Elementos UI reutilizáveis (`Items/`, `Modals/`).
+*   **Logic**: Regras de negócio (`batchScraper.js`, `tabs.js`).
+*   **Components**: Elementos UI reutilizáveis (`ActionMenu.js`, `Items/`).
+*   **Shared**: Reutiliza utilitários de `/shared/utils/`.
 
 #### B. Content Scripts (`/scripts`)
 Scripts injetados na página alvo para ler o DOM.
 *   **Scraper**: Lê a estrutura HTML do Blackboard para identificar cursos.
-*   **Deep Access**: Utiliza `fetch` em background para acessar páginas internas do curso e garantir links precisos.
+*   **Deep Access**: Utiliza `fetch` em background para acessar páginas internas do curso.
 *   **Isolamento**: Roda em um "mundo isolado" (Isolated World) para não conflitar com o JS da página.
 
-#### C. Background Service (`background.js`)
+#### C. Background Service (`scripts/background.js`)
 Gerenciador de eventos do Chrome.
 *   Responsável pela instalação, mensagens entre abas e o Side Panel.
 
@@ -88,13 +90,13 @@ Este projeto segue estritamente a filosofia **Local-First**.
 ├── assets/          # Ícones e imagens estáticas
 ├── popup/           # Interface do popup (ícone na barra)
 ├── sidepanel/       # Lógica e UI do painel lateral
-│   ├── components/  # Botões, Cards, Modais reutilizáveis
-│   ├── logic/       # Regras de negócio (Scraper, Storage)
-│   ├── views/       # Telas inteiras (Home, Config)
+│   ├── components/  # Componentes reutilizáveis
+│   ├── logic/       # Controladores (Scrapers, Tabs)
+│   ├── views/       # Telas principais
 │   └── styles/      # CSS modular
-├── scripts/         # Content Scripts injetados
+├── scripts/         # Scripts de Background e Content
 ├── shared/          # Utils compartilhados (Popup <-> Sidepanel)
 └── tests/           # Testes automatizados (Jest)
 ```
 
-> *Documento atualizado em: Dezembro 2025 (v2.4.0).*
+> *Documento atualizado em: Dezembro 2025 (v2.5.2).*

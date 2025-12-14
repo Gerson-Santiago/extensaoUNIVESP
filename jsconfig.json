@@ -1,22 +1,11 @@
 {
-    "compilerOptions": {
-        "module": "commonjs",
-        "target": "es6",
-        "checkJs": true,
-        "lib": [
-            "es6",
-            "dom"
-        ],
-        "types": [
-            "chrome",
-            "jest"
-        ]
-    },
-    "include": [
-        "**/*"
-    ],
-    "exclude": [
-        "node_modules",
-        "dist"
-    ]
+  "compilerOptions": {
+    "module": "commonjs",
+    "target": "es6",
+    "checkJs": true,
+    "lib": ["es6", "dom"],
+    "types": ["chrome", "jest"]
+  },
+  "include": ["**/*"],
+  "exclude": ["node_modules", "dist"]
 }

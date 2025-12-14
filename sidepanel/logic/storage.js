@@ -33,7 +33,11 @@ export function addItem(name, url, weeks = [], optionsOrCallback, extraCallback)
   let termName = '';
 
   // Check if 4th arg is options object
-  if (typeof optionsOrCallback === 'object' && optionsOrCallback !== null && !Array.isArray(optionsOrCallback)) {
+  if (
+    typeof optionsOrCallback === 'object' &&
+    optionsOrCallback !== null &&
+    !Array.isArray(optionsOrCallback)
+  ) {
     termName = optionsOrCallback.termName || '';
     callback = extraCallback;
   }

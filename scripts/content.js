@@ -1,4 +1,3 @@
-
 function preencherEmail() {
   // 1. Busca o email salvo nas configurações da extensão
   chrome.storage.sync.get(['userEmail'], (result) => {

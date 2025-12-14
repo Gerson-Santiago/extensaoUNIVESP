@@ -1,495 +1,502 @@
 import {
-    loadItems,
-    saveItems,
-    addItem,
-    addItemsBatch,
-    deleteItem,
-    updateItem,
-    clearItems,
+  loadItems,
+  saveItems,
+  addItem,
+  addItemsBatch,
+  deleteItem,
+  updateItem,
+  clearItems,
 } from '../sidepanel/logic/storage.js';
 
-
-
 describe('Storage - CRUD de Cursos', () => {
+  beforeEach(() => {
+    jest.clearAllMocks();
+    // Limpa console.warn para não poluir output
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
+  });
+
+  afterEach(() => {
+    /** @type {jest.Mock} */ (console.warn).mockRestore();
+  });
+
+  // Dados de teste reutilizáveis
+  const mockCourse1 = {
+    id: 1000000001,
+    name: 'Curso Teste 1',
+    url: 'https://ava.univesp.br/course1',
+    weeks: [{ name: 'Semana 1', url: 'http://test.com/s1' }],
+  };
+
+  const mockCourse2 = {
+    id: 1000000002,
+    name: 'Curso Teste 2',
+    url: 'https://ava.univesp.br/course2',
+    weeks: [],
+  };
+
+  describe('loadItems()', () => {
+    test('Deve carregar lista vazia por padrão', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({}); // Sem savedCourses
+      });
+
+      loadItems((courses) => {
+        expect(courses).toEqual([]);
+        expect(chrome.storage.sync.get).toHaveBeenCalledWith(
+          ['savedCourses'],
+          expect.any(Function)
+        );
+        done();
+      });
+    });
+
+    test('Deve carregar cursos existentes', (done) => {
+      const mockData = [mockCourse1, mockCourse2];
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: mockData });
+      });
+
+      loadItems((courses) => {
+        expect(courses).toEqual(mockData);
+        expect(courses).toHaveLength(2);
+        done();
+      });
+    });
+
+    test('Deve chamar callback com dados corretos', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1] });
+      });
+
+      loadItems((courses) => {
+        expect(courses[0].name).toBe('Curso Teste 1');
+        expect(courses[0].url).toBe('https://ava.univesp.br/course1');
+        done();
+      });
+    });
+  });
+
+  describe('saveItems()', () => {
+    test('Deve salvar lista de cursos', (done) => {
+      const coursesToSave = [mockCourse1, mockCourse2];
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
+
+      saveItems(coursesToSave, () => {
+        expect(chrome.storage.sync.set).toHaveBeenCalledWith(
+          { savedCourses: coursesToSave },
+          expect.any(Function)
+        );
+        done();
+      });
+    });
+
+    test('Deve executar callback após salvar', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
+
+      saveItems([mockCourse1], () => {
+        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        done();
+      });
+    });
+
+    test('Deve funcionar sem callback', () => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
+
+      saveItems([mockCourse1]);
+      expect(chrome.storage.sync.set).toHaveBeenCalled();
+    });
+  });
+
+  describe('addItem()', () => {
     beforeEach(() => {
-        jest.clearAllMocks();
-        // Limpa console.warn para não poluir output
-        jest.spyOn(console, 'warn').mockImplementation(() => { });
+      // Mock Date.now() para gerar IDs previsíveis
+      jest.spyOn(Date, 'now').mockReturnValue(1234567890);
     });
 
     afterEach(() => {
-        /** @type {jest.Mock} */ (console.warn).mockRestore();
+      Date.now.mockRestore();
     });
 
-    // Dados de teste reutilizáveis
-    const mockCourse1 = {
-        id: 1000000001,
-        name: 'Curso Teste 1',
-        url: 'https://ava.univesp.br/course1',
-        weeks: [{ name: 'Semana 1', url: 'http://test.com/s1' }],
-    };
+    test('Deve adicionar curso com sucesso', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
 
-    const mockCourse2 = {
-        id: 1000000002,
-        name: 'Curso Teste 2',
-        url: 'https://ava.univesp.br/course2',
-        weeks: [],
-    };
-
-    describe('loadItems()', () => {
-        test('Deve carregar lista vazia por padrão', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({}); // Sem savedCourses
-        });
-
-            loadItems((courses) => {
-                expect(courses).toEqual([]);
-                expect(chrome.storage.sync.get).toHaveBeenCalledWith(['savedCourses'], expect.any(Function));
-                done();
-            });
-        });
-
-        test('Deve carregar cursos existentes', (done) => {
-            const mockData = [mockCourse1, mockCourse2];
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-                callback({ savedCourses: mockData });
-            });
-
-            loadItems((courses) => {
-                expect(courses).toEqual(mockData);
-                expect(courses).toHaveLength(2);
-                done();
-            });
-        });
-
-        test('Deve chamar callback com dados corretos', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [mockCourse1] });
-        });
-
-            loadItems((courses) => {
-                expect(courses[0].name).toBe('Curso Teste 1');
-                expect(courses[0].url).toBe('https://ava.univesp.br/course1');
-                done();
-            });
-        });
+      addItem('Novo Curso', 'https://ava.univesp.br/new', [], (success, message) => {
+        expect(success).toBe(true);
+        expect(message).toBe('Matéria adicionada com sucesso!');
+        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        done();
+      });
     });
 
-    describe('saveItems()', () => {
-        test('Deve salvar lista de cursos', (done) => {
-            const coursesToSave = [mockCourse1, mockCourse2];
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-                callback();
-            });
+    test('Deve gerar ID único usando Date.now()', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const savedCourses = data.savedCourses;
+        expect(savedCourses[0].id).toBe(1234567890);
+        callback();
+      });
 
-            saveItems(coursesToSave, () => {
-                expect(chrome.storage.sync.set).toHaveBeenCalledWith(
-                    { savedCourses: coursesToSave },
-                    expect.any(Function)
-                );
-                done();
-            });
-        });
-
-        test('Deve executar callback após salvar', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            callback();
-        });
-
-            saveItems([mockCourse1], () => {
-                expect(chrome.storage.sync.set).toHaveBeenCalled();
-                done();
-            });
-        });
-
-        test('Deve funcionar sem callback', () => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            callback();
-        });
-
-            saveItems([mockCourse1]);
-            expect(chrome.storage.sync.set).toHaveBeenCalled();
-        });
+      addItem('Curso', 'https://test.com', [], () => {
+        done();
+      });
     });
 
-    describe('addItem()', () => {
-        beforeEach(() => {
-            // Mock Date.now() para gerar IDs previsíveis
-            jest.spyOn(Date, 'now').mockReturnValue(1234567890);
-        });
+    test('Deve rejeitar duplicata (mesma URL)', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1] });
+      });
 
-        afterEach(() => {
-            Date.now.mockRestore();
-        });
-
-        test('Deve adicionar curso com sucesso', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            callback();
-        });
-
-            addItem('Novo Curso', 'https://ava.univesp.br/new', [], (success, message) => {
-                expect(success).toBe(true);
-                expect(message).toBe('Matéria adicionada com sucesso!');
-                expect(chrome.storage.sync.set).toHaveBeenCalled();
-                done();
-            });
-        });
-
-        test('Deve gerar ID único usando Date.now()', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            const savedCourses = data.savedCourses;
-            expect(savedCourses[0].id).toBe(1234567890);
-            callback();
-        });
-
-            addItem('Curso', 'https://test.com', [], () => {
-                done();
-            });
-        });
-
-        test('Deve rejeitar duplicata (mesma URL)', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [mockCourse1] });
-        });
-
-            addItem('Duplicado', 'https://ava.univesp.br/course1', [], (success, message) => {
-                expect(success).toBe(false);
-                expect(message).toBe('Matéria já adicionada anteriormente.');
-                expect(chrome.storage.sync.set).not.toHaveBeenCalled();
-                expect(console.warn).toHaveBeenCalledWith(
-                    'Curso com URL já existe: https://ava.univesp.br/course1'
-                );
-                done();
-            });
-        });
-
-        test('Deve incluir weeks vazio por padrão', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            const course = data.savedCourses[0];
-            expect(course.weeks).toEqual([]);
-            callback();
-        });
-
-            addItem('Curso', 'https://test.com', undefined, () => {
-                done();
-            });
-        });
-
-        test('Deve passar weeks customizado', (done) => {
-            const customWeeks = [{ name: 'Semana 1', url: 'http://s1.com' }];
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-                const course = data.savedCourses[0];
-                expect(course.weeks).toEqual(customWeeks);
-                callback();
-            });
-
-            addItem('Curso', 'https://test.com', customWeeks, () => {
-                done();
-            });
-        });
-
-        test('Deve persistir termName passado via options', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            const course = data.savedCourses[0];
-            expect(course.termName).toBe('2025/1 - 1º Bimestre');
-            callback();
-        });
-
-            addItem('Curso Termo', 'https://term.com', [], { termName: '2025/1 - 1º Bimestre' }, (success) => {
-                expect(success).toBe(true);
-                done();
-            });
-        });
+      addItem('Duplicado', 'https://ava.univesp.br/course1', [], (success, message) => {
+        expect(success).toBe(false);
+        expect(message).toBe('Matéria já adicionada anteriormente.');
+        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+        expect(console.warn).toHaveBeenCalledWith(
+          'Curso com URL já existe: https://ava.univesp.br/course1'
+        );
+        done();
+      });
     });
 
-    describe('addItemsBatch()', () => {
-        test('Deve adicionar múltiplos cursos', (done) => {
-            const newItems = [
-                { name: 'Curso A', url: 'https://a.com', weeks: [] },
-                { name: 'Curso B', url: 'https://b.com', weeks: [] },
-                { name: 'Curso C', url: 'https://c.com', weeks: [] },
-            ];
+    test('Deve incluir weeks vazio por padrão', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const course = data.savedCourses[0];
+        expect(course.weeks).toEqual([]);
+        callback();
+      });
 
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-                callback();
-            });
-
-            addItemsBatch(newItems, (addedCount, ignoredCount) => {
-                expect(addedCount).toBe(3);
-                expect(ignoredCount).toBe(0);
-                expect(chrome.storage.sync.set).toHaveBeenCalled();
-                done();
-            });
-        });
-
-        test('Deve gerar IDs únicos para cada curso', (done) => {
-            const newItems = [
-                { name: 'Curso A', url: 'https://a.com' },
-                { name: 'Curso B', url: 'https://b.com' },
-            ];
-
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-                const courses = data.savedCourses;
-                expect(courses[0].id).not.toBe(courses[1].id);
-                callback();
-            });
-
-            addItemsBatch(newItems, () => {
-                done();
-            });
-        });
-
-        test('Deve ignorar duplicatas', (done) => {
-            const newItems = [
-                { name: 'Novo', url: 'https://novo.com' },
-                { name: 'Duplicado', url: 'https://ava.univesp.br/course1' }, // Já existe
-            ];
-
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1] });
-            });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-                callback();
-            });
-
-            addItemsBatch(newItems, (addedCount, ignoredCount) => {
-                expect(addedCount).toBe(1);
-                expect(ignoredCount).toBe(1);
-                done();
-            });
-        });
-
-        test('Deve retornar contadores corretos', (done) => {
-            const newItems = [
-                { name: 'A', url: 'https://a.com' },
-                { name: 'B', url: 'https://ava.univesp.br/course1' }, // duplicata
-                { name: 'C', url: 'https://c.com' },
-            ];
-
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1] });
-            });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-                callback();
-            });
-
-            addItemsBatch(newItems, (addedCount, ignoredCount) => {
-                expect(addedCount).toBe(2);
-                expect(ignoredCount).toBe(1);
-                done();
-            });
-        });
-
-        test('Deve lidar com lista vazia', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [] });
-        });
-
-            addItemsBatch([], (addedCount, ignoredCount) => {
-                expect(addedCount).toBe(0);
-                expect(ignoredCount).toBe(0);
-                expect(chrome.storage.sync.set).not.toHaveBeenCalled();
-                done();
-            });
-        });
-
-        test('Deve não salvar se todos são duplicatas', (done) => {
-            const newItems = [
-                { name: 'Dup1', url: 'https://ava.univesp.br/course1' },
-                { name: 'Dup2', url: 'https://ava.univesp.br/course2' },
-            ];
-
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-                callback({ savedCourses: [mockCourse1, mockCourse2] });
-            });
-
-            addItemsBatch(newItems, (addedCount, ignoredCount) => {
-                expect(addedCount).toBe(0);
-                expect(ignoredCount).toBe(2);
-                expect(chrome.storage.sync.set).not.toHaveBeenCalled();
-                done();
-            });
-        });
-
-        test('Deve persistir termName nos itens do lote', (done) => {
-            const newItems = [
-                { name: 'Curso T', url: 'https://t.com', termName: 'Termo Teste' },
-            ];
-
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-                callback({ savedCourses: [] });
-            });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-                const course = data.savedCourses[0];
-                expect(course.termName).toBe('Termo Teste');
-                callback();
-            });
-
-            addItemsBatch(newItems, (added) => {
-                expect(added).toBe(1);
-                done();
-            });
-        });
+      addItem('Curso', 'https://test.com', undefined, () => {
+        done();
+      });
     });
 
-    describe('deleteItem()', () => {
-        test('Deve remover curso existente', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [mockCourse1, mockCourse2] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            const courses = data.savedCourses;
-            expect(courses).toHaveLength(1);
-            expect(courses[0].id).toBe(1000000002);
-            callback();
-        });
+    test('Deve passar weeks customizado', (done) => {
+      const customWeeks = [{ name: 'Semana 1', url: 'http://s1.com' }];
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const course = data.savedCourses[0];
+        expect(course.weeks).toEqual(customWeeks);
+        callback();
+      });
 
-            deleteItem(1000000001, () => {
-                done();
-            });
-        });
-
-        test('Deve lidar com ID inexistente', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [mockCourse1] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            const courses = data.savedCourses;
-            expect(courses).toHaveLength(1); // Nada removido
-            callback();
-        });
-
-            deleteItem(99999999, () => {
-                done();
-            });
-        });
-
-        test('Deve executar callback', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            callback();
-        });
-
-            deleteItem(123, () => {
-                expect(chrome.storage.sync.set).toHaveBeenCalled();
-                done();
-            });
-        });
+      addItem('Curso', 'https://test.com', customWeeks, () => {
+        done();
+      });
     });
 
-    describe('updateItem()', () => {
-        test('Deve atualizar curso existente', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [mockCourse1] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            const updated = data.savedCourses[0];
-            expect(updated.name).toBe('Nome Atualizado');
-            expect(updated.id).toBe(1000000001); // ID permanece
-            callback();
-        });
+    test('Deve persistir termName passado via options', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const course = data.savedCourses[0];
+        expect(course.termName).toBe('2025/1 - 1º Bimestre');
+        callback();
+      });
 
-            updateItem(1000000001, { name: 'Nome Atualizado' }, () => {
-                done();
-            });
-        });
+      addItem(
+        'Curso Termo',
+        'https://term.com',
+        [],
+        { termName: '2025/1 - 1º Bimestre' },
+        (success) => {
+          expect(success).toBe(true);
+          done();
+        }
+      );
+    });
+  });
 
-        test('Deve mesclar updates com dados existentes', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [mockCourse1] });
-        });
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            const updated = data.savedCourses[0];
-            expect(updated.name).toBe('Nome Atualizado');
-            expect(updated.url).toBe('https://ava.univesp.br/course1'); // URL original mantida
-            expect(updated.weeks).toEqual(mockCourse1.weeks); // Weeks mantidos
-            callback();
-        });
+  describe('addItemsBatch()', () => {
+    test('Deve adicionar múltiplos cursos', (done) => {
+      const newItems = [
+        { name: 'Curso A', url: 'https://a.com', weeks: [] },
+        { name: 'Curso B', url: 'https://b.com', weeks: [] },
+        { name: 'Curso C', url: 'https://c.com', weeks: [] },
+      ];
 
-            updateItem(1000000001, { name: 'Nome Atualizado' }, () => {
-                done();
-            });
-        });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
 
-        test('Deve lidar com ID inexistente sem falhar', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [mockCourse1] });
-        });
-
-            updateItem(99999999, { name: 'Teste' }, () => {
-                expect(console.warn).toHaveBeenCalledWith('Item com id 99999999 não encontrado para atualização.');
-                expect(chrome.storage.sync.set).not.toHaveBeenCalled();
-                done();
-            });
-        });
-
-        test('Deve executar callback mesmo com ID inexistente', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-            callback({ savedCourses: [] });
-        });
-
-            updateItem(123, { name: 'Test' }, () => {
-                expect(true).toBe(true); // Callback foi chamado
-                done();
-            });
-        });
+      addItemsBatch(newItems, (addedCount, ignoredCount) => {
+        expect(addedCount).toBe(3);
+        expect(ignoredCount).toBe(0);
+        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        done();
+      });
     });
 
-    describe('clearItems()', () => {
-        test('Deve limpar todos os cursos', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            expect(data.savedCourses).toEqual([]);
-            callback();
-        });
+    test('Deve gerar IDs únicos para cada curso', (done) => {
+      const newItems = [
+        { name: 'Curso A', url: 'https://a.com' },
+        { name: 'Curso B', url: 'https://b.com' },
+      ];
 
-            clearItems(() => {
-                done();
-            });
-        });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const courses = data.savedCourses;
+        expect(courses[0].id).not.toBe(courses[1].id);
+        callback();
+      });
 
-        test('Deve chamar saveItems com array vazio', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            expect(data.savedCourses).toHaveLength(0);
-            callback();
-        });
-
-            clearItems(() => {
-                done();
-            });
-        });
-
-        test('Deve executar callback', (done) => {
-            /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-            callback();
-        });
-
-            clearItems(() => {
-                expect(chrome.storage.sync.set).toHaveBeenCalled();
-                done();
-            });
-        });
+      addItemsBatch(newItems, () => {
+        done();
+      });
     });
+
+    test('Deve ignorar duplicatas', (done) => {
+      const newItems = [
+        { name: 'Novo', url: 'https://novo.com' },
+        { name: 'Duplicado', url: 'https://ava.univesp.br/course1' }, // Já existe
+      ];
+
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
+
+      addItemsBatch(newItems, (addedCount, ignoredCount) => {
+        expect(addedCount).toBe(1);
+        expect(ignoredCount).toBe(1);
+        done();
+      });
+    });
+
+    test('Deve retornar contadores corretos', (done) => {
+      const newItems = [
+        { name: 'A', url: 'https://a.com' },
+        { name: 'B', url: 'https://ava.univesp.br/course1' }, // duplicata
+        { name: 'C', url: 'https://c.com' },
+      ];
+
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
+
+      addItemsBatch(newItems, (addedCount, ignoredCount) => {
+        expect(addedCount).toBe(2);
+        expect(ignoredCount).toBe(1);
+        done();
+      });
+    });
+
+    test('Deve lidar com lista vazia', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+
+      addItemsBatch([], (addedCount, ignoredCount) => {
+        expect(addedCount).toBe(0);
+        expect(ignoredCount).toBe(0);
+        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    test('Deve não salvar se todos são duplicatas', (done) => {
+      const newItems = [
+        { name: 'Dup1', url: 'https://ava.univesp.br/course1' },
+        { name: 'Dup2', url: 'https://ava.univesp.br/course2' },
+      ];
+
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1, mockCourse2] });
+      });
+
+      addItemsBatch(newItems, (addedCount, ignoredCount) => {
+        expect(addedCount).toBe(0);
+        expect(ignoredCount).toBe(2);
+        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    test('Deve persistir termName nos itens do lote', (done) => {
+      const newItems = [{ name: 'Curso T', url: 'https://t.com', termName: 'Termo Teste' }];
+
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const course = data.savedCourses[0];
+        expect(course.termName).toBe('Termo Teste');
+        callback();
+      });
+
+      addItemsBatch(newItems, (added) => {
+        expect(added).toBe(1);
+        done();
+      });
+    });
+  });
+
+  describe('deleteItem()', () => {
+    test('Deve remover curso existente', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1, mockCourse2] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const courses = data.savedCourses;
+        expect(courses).toHaveLength(1);
+        expect(courses[0].id).toBe(1000000002);
+        callback();
+      });
+
+      deleteItem(1000000001, () => {
+        done();
+      });
+    });
+
+    test('Deve lidar com ID inexistente', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const courses = data.savedCourses;
+        expect(courses).toHaveLength(1); // Nada removido
+        callback();
+      });
+
+      deleteItem(99999999, () => {
+        done();
+      });
+    });
+
+    test('Deve executar callback', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
+
+      deleteItem(123, () => {
+        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        done();
+      });
+    });
+  });
+
+  describe('updateItem()', () => {
+    test('Deve atualizar curso existente', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const updated = data.savedCourses[0];
+        expect(updated.name).toBe('Nome Atualizado');
+        expect(updated.id).toBe(1000000001); // ID permanece
+        callback();
+      });
+
+      updateItem(1000000001, { name: 'Nome Atualizado' }, () => {
+        done();
+      });
+    });
+
+    test('Deve mesclar updates com dados existentes', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1] });
+      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        const updated = data.savedCourses[0];
+        expect(updated.name).toBe('Nome Atualizado');
+        expect(updated.url).toBe('https://ava.univesp.br/course1'); // URL original mantida
+        expect(updated.weeks).toEqual(mockCourse1.weeks); // Weeks mantidos
+        callback();
+      });
+
+      updateItem(1000000001, { name: 'Nome Atualizado' }, () => {
+        done();
+      });
+    });
+
+    test('Deve lidar com ID inexistente sem falhar', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [mockCourse1] });
+      });
+
+      updateItem(99999999, { name: 'Teste' }, () => {
+        expect(console.warn).toHaveBeenCalledWith(
+          'Item com id 99999999 não encontrado para atualização.'
+        );
+        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+        done();
+      });
+    });
+
+    test('Deve executar callback mesmo com ID inexistente', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
+        callback({ savedCourses: [] });
+      });
+
+      updateItem(123, { name: 'Test' }, () => {
+        expect(true).toBe(true); // Callback foi chamado
+        done();
+      });
+    });
+  });
+
+  describe('clearItems()', () => {
+    test('Deve limpar todos os cursos', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        expect(data.savedCourses).toEqual([]);
+        callback();
+      });
+
+      clearItems(() => {
+        done();
+      });
+    });
+
+    test('Deve chamar saveItems com array vazio', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        expect(data.savedCourses).toHaveLength(0);
+        callback();
+      });
+
+      clearItems(() => {
+        done();
+      });
+    });
+
+    test('Deve executar callback', (done) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        callback();
+      });
+
+      clearItems(() => {
+        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        done();
+      });
+    });
+  });
 });

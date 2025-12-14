@@ -80,9 +80,10 @@ export class SettingsView {
 
     if (btnManual) btnManual.onclick = () => this.addManualModal.open();
     if (btnBatch) btnBatch.onclick = () => this.batchImportModal.open();
-    if (btnFeedback) btnFeedback.onclick = () => {
-      if (this.onNavigate) this.onNavigate('feedback');
-    };
+    if (btnFeedback)
+      btnFeedback.onclick = () => {
+        if (this.onNavigate) this.onNavigate('feedback');
+      };
     if (btnCurrent) btnCurrent.onclick = () => this.handleAddCurrent();
 
     if (btnClear) {
@@ -91,7 +92,11 @@ export class SettingsView {
   }
 
   handleClearAll() {
-    if (confirm('Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.')) {
+    if (
+      confirm(
+        'Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.'
+      )
+    ) {
       clearItems(() => this.feedback.show('Todas as matérias foram removidas.', 'success'));
     }
   }

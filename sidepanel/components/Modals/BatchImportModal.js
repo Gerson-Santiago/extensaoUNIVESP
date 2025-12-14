@@ -173,11 +173,11 @@ export class BatchImportModal extends Modal {
           return;
         }
 
-        const itemsToAdd = processedList.map(c => ({
+        const itemsToAdd = processedList.map((c) => ({
           name: c.name,
           url: c.url,
           weeks: c.weeks || [],
-          termName: c.original ? c.original._termName : (c._termName || '') // Save term name for grouping logic
+          termName: c.original ? c.original._termName : c._termName || '', // Save term name for grouping logic
         }));
 
         addItemsBatch(itemsToAdd, (added, _total) => {

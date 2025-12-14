@@ -1,34 +1,34 @@
 /* Barra de Navegação Superior */
 .top-nav {
-    position: fixed;
-    top: 0;
-    width: 100%;
-    height: 60px;
-    background: var(--bg-white);
-    border-bottom: 1px solid var(--border-color);
-    display: flex;
-    justify-content: space-around;
-    align-items: center;
-    z-index: 100;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  height: 60px;
+  background: var(--bg-white);
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  z-index: 100;
 }
 
 .nav-item {
-    background: none;
-    border: none;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: var(--text-light);
-    font-size: 12px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: var(--text-light);
+  font-size: 12px;
 }
 
 .nav-item.active {
-    color: var(--primary-color);
-    font-weight: bold;
+  color: var(--primary-color);
+  font-weight: bold;
 }
 
 .nav-icon {
-    font-size: 20px;
-    margin-bottom: 2px;
+  font-size: 20px;
+  margin-bottom: 2px;
 }
