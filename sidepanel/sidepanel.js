@@ -7,9 +7,19 @@ import { FeedbackView } from './views/FeedbackView.js';
 import { addItem } from './logic/storage.js';
 import { openOrSwitchToTab } from './logic/tabs.js';
 import { scrapeWeeksFromTab } from './logic/scraper.js';
+import { BatchImportModal } from './components/Modals/BatchImportModal.js';
+import { AddManualModal } from './components/Modals/AddManualModal.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   // Inicialização das Views e Callbacks
+
+  // Modais Compartilhados
+  const batchImportModal = new BatchImportModal(() => {
+    // Ao terminar importação, recarregar cursos se estiver na view de cursos
+    if (coursesView) coursesView.loadCourses();
+  });
+
+  const addManualModal = new AddManualModal();
 
   const settingsView = new SettingsView({
     onNavigate: (viewId) => {
@@ -26,47 +36,54 @@ document.addEventListener('DOMContentLoaded', () => {
       courseDetailsView.setCourse(course);
       layout.navigateTo('courseDetails');
     },
-    onManualAdd: (name, url, onSuccess) => {
-      if (name && url) {
-        addItem(name, url, [], onSuccess);
-      } else {
-        alert('Preencha nome e URL.');
-      }
+    onManualAdd: (_name, _url, _onSuccess) => {
+      // Deprecated callback from old flow, but keeping for compatibility if needed
+    },
+    onAddBatch: () => {
+      batchImportModal.open();
+    },
+    onAddManual: () => {
+      addManualModal.open();
+    },
+    onAddCurrentPage: () => {
+      addCurrentPageFlow();
     },
   });
 
-  const homeView = new HomeView({
-    onAddCurrentInfo: () => {
-      // Lógica de "Adicionar Página Atual" reaproveitada
-      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-        if (tabs && tabs[0]) {
-          const tab = tabs[0];
-          let name = tab.title || 'Nova Matéria';
-          if (name.includes('-')) {
-            name = name.split('-')[0].trim();
-          }
-
-          let weeks = [];
-          let detectedName = null;
-
-          if (tab.url.startsWith('http')) {
-            const result = await scrapeWeeksFromTab(tab.id);
-            weeks = result.weeks || [];
-            detectedName = result.title;
-          }
-
-          if (detectedName) {
-            name = detectedName;
-          }
-
-          addItem(name, tab.url, weeks, () => {
-            // Após adicionar, redireciona para lista de cursos
-            layout.topNav.setActive('courses');
-            layout.navigateTo('courses');
-          });
+  const addCurrentPageFlow = () => {
+    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
+      if (tabs && tabs[0]) {
+        const tab = tabs[0];
+        let name = tab.title || 'Nova Matéria';
+        if (name.includes('-')) {
+          name = name.split('-')[0].trim();
         }
-      });
-    },
+
+        let weeks = [];
+        let detectedName = null;
+
+        if (tab.url.startsWith('http')) {
+          const result = await scrapeWeeksFromTab(tab.id);
+          weeks = result.weeks || [];
+          detectedName = result.title;
+        }
+
+        if (detectedName) {
+          name = detectedName;
+        }
+
+        addItem(name, tab.url, weeks, () => {
+          // Após adicionar, redireciona para lista de cursos
+          layout.topNav.setActive('courses');
+          layout.navigateTo('courses');
+          coursesView.loadCourses(); // Forçar reload
+        });
+      }
+    });
+  };
+
+  const homeView = new HomeView({
+    onAddCurrentInfo: () => addCurrentPageFlow(),
   });
 
   const courseDetailsView = new CourseDetailsView({
