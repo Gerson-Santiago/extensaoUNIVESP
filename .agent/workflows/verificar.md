@@ -3,7 +3,7 @@ description: Executa a verificação completa do projeto (Lint + Testes) conform
 ---
 
 # Passo 1: Verificação de Estilo e Regras
-@LINTING_RULES.md
+@docs/LINTING_RULES.md
 // turbo
 Execute os linters para garantir que o código está em conformidade.
 1. `npm run lint`

@@ -6,11 +6,11 @@ description: Fluxo para correção de bugs com foco em reprodução via teste e 
 > **Regra de Ouro:** Bug fix sem teste de regressão é gambiarra.
 
 # 🕵️ Passo 1: Análise e Reprodução
-@LINTING_RULES.md @FLUXOS_DE_TRABALHO.md
+@docs/LINTING_RULES.md @docs/FLUXOS_DE_TRABALHO.md
 
 Analise o erro reportado pelo usuário.
 - [ ] Crie um caso de teste em `tests/` que reproduza esse bug (o teste deve falhar inicialmente).
-- [ ] Verifique se o erro viola alguma regra de `LINTING_RULES.md` (ex: acesso inseguro a DOM, tipagem fraca).
+- [ ] Verifique se o erro viola alguma regra de `docs/LINTING_RULES.md` (ex: acesso inseguro a DOM, tipagem fraca).
 
 # 💻 Passo 2: Correção
 Realize a correção no código fonte.
@@ -34,7 +34,7 @@ Registre a correção na seção "Fixed" da versão atual no `CHANGELOG.md`.
 # 🛡️ Passo 6: Gate de Entrega (Manual)
 **PARE AGORA.**
 - [ ] Confirme se os testes automatizados passaram.
-- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit estritamente em **Português (PT-BR)** conforme `PADROES_DO_PROJETO.md` (ex: `fix: corrige validação de data`).
+- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit estritamente em **Português (PT-BR)** conforme `docs/PADROES_DO_PROJETO.md` (ex: `fix: corrige validação de data`).
 - [ ] **Nota:** O Husky validará automaticamente o lint ao commitar.
 - [ ] Pergunte ao usuário: "Posso finalizar e commitar?"
 - [ ] Só comite após o "Sim".

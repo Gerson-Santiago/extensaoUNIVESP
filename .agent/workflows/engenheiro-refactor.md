@@ -30,12 +30,12 @@ Antes de gerar o código refatorado, você deve realizar uma análise mental exp
 # Input
 Aqui está o código para refatorar:
 CHANGELOG.md
-DATA_HANDLING.md
-FLUXOS_DE_TRABALHO.md
-IDENTIDADE_DO_PROJETO.md
-LINTING_RULES.md
-PADROES_DO_PROJETO.md
+docs/DATA_HANDLING.md
+docs/FLUXOS_DE_TRABALHO.md
+docs/IDENTIDADE_DO_PROJETO.md
+docs/LINTING_RULES.md
+docs/PADROES_DO_PROJETO.md
 README.md
-TECNOLOGIAS_E_ARQUITETURA.md
+docs/TECNOLOGIAS_E_ARQUITETURA.md
 
 

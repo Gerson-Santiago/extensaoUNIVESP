@@ -16,7 +16,7 @@ Antes de tocar no código, verifique se existem testes cobrindo a funcionalidade
 - [ ] Se houver testes: Execute-os para garantir que estão passando (Green).
 
 # 🕵️ Passo 1: Análise de Conformidade
-@PADROES_DO_PROJETO.md @LINTING_RULES.md
+@docs/PADROES_DO_PROJETO.md @docs/LINTING_RULES.md
 
 Leia o arquivo alvo e identifique:
 - [ ] Funções muito longas que podem ser extraídas para `shared/utils` ou `sidepanel/logic`.
@@ -40,8 +40,8 @@ Embora refatoração idealmente não mude comportamento externo, verifique:
 - [ ] Garanta que os testes continuam cobrindo a lógica real e não ficaram obsoletos (testando coisas que não existem mais ou ignorando a nova estrutura).
 
 # 🛡️ Passo 5: Gate de Entrega e Arquitetura
-- [ ] Se a refatoração mudou "quais arquivos chamam quais", atualize o diagrama em `TECNOLOGIAS_E_ARQUITETURA.md`.
-- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit estritamente em **Português (PT-BR)** conforme `PADROES_DO_PROJETO.md` (ex: `refactor: extrai lógica de validação`).
+- [ ] Se a refatoração mudou "quais arquivos chamam quais", atualize o diagrama em `docs/TECNOLOGIAS_E_ARQUITETURA.md`.
+- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit estritamente em **Português (PT-BR)** conforme `docs/PADROES_DO_PROJETO.md` (ex: `refactor: extrai lógica de validação`).
 - [ ] **Nota:** O Husky rodará o lint/format automaticamente.
 - [ ] **PARE E PERGUNTE**: "Refatoração concluída e validada. Posso commitar?"
 - [ ] Só prossiga com autorização.
