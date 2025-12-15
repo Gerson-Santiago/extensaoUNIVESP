@@ -1,70 +1,29 @@
 ---
-description: Planeja e implementa uma nova funcionalidade seguindo o ciclo de vida do projeto (TDD, MVC, Linting).
+description: Planeja e implementa nova feature (TDD).
 ---
 
----
-description: Planeja e implementa uma nova funcionalidade seguindo o ciclo de vida do projeto (TDD, MVC, Linting).
----
+> **Regras:** 1. Não instale nada sem pedir. 2. TDD (teste primeiro).
 
-> [!WARNING]
-> **Regras de Ouro:**
-> 1. Proibido `npm install` sem autorização prévia.
-> 2. Proibido commitar sem Gate de Manual.
-> 3. TDD Rigoroso: Comece pelo teste (Red).
+# 1. Planejamento
+@docs/TECNOLOGIAS_E_ARQUITETURA.md @docs/DATA_HANDLING.md
+- [ ] Defina responsabilidade (View vs Logic).
+- [ ] Verifique privacidade (Local-First).
+- [ ] Verifique se precisa de novas permissões no `manifest.json`.
 
-# 🕵️ Passo 1: Auditoria de Arquitetura e Privacidade
-@docs/TECNOLOGIAS_E_ARQUITETURA.md @docs/PADROES_DO_PROJETO.md @docs/DATA_HANDLING.md @manifest.json
+# 2. TDD (Red Phase)
+- [ ] Crie teste em `tests/` que falhe.
 
-Analise a solicitação do usuário. Antes de escrever código, responda:
-- [ ] **Separação de Responsabilidades:** A funcionalidade pertence a `sidepanel/views` (UI), `sidepanel/logic` (Regra de Negócio) ou `scripts/` (DOM)? (Lembre-se: Views não devem ter lógica pesada).
-- [ ] **Privacidade:** A funcionalidade manipula dados sensíveis? Verifique `docs/DATA_HANDLING.md` para garantir que nada seja enviado para fora (Local-First).
-- [ ] **Manifesto:** Precisamos de novas permissões no `manifest.json`?
+# 3. Implementação
+@docs/PADROES_DO_PROJETO.md @docs/LINTING_RULES.md
+- [ ] Codifique usando ES Modules e Tipagem defensiva.
 
-# 🧪 Passo 2: Planejamento de Testes (TDD Rigoroso)
-@tests/ @jest.config.js
-
-Como definido em `docs/FLUXOS_DE_TRABALHO.md`, "Se não está testado, não existe".
-- [ ] Liste quais testes unitários ou de integração são necessários.
-- [ ] Identifique se será necessário mockar `chrome.storage` ou `chrome.tabs`.
-- [ ] **Red Phase**: Crie o arquivo de teste em `tests/` e execute-o. **Ele DEVE falhar** (pois a feature não existe). Se passar, seu teste está errado.
+# 4. Validação
 // turbo
-Run `npm test` -> Deve falhar.
+Execute o workflow de verificação:
+- [ ] /verificar
 
-# 💻 Passo 3: Implementação
-@docs/PADROES_DO_PROJETO.md @eslint.config.mjs
-
-Escreva o código seguindo estas regras estritas:
-- [ ] **ES Modules:** Use `import/export`.
-- [ ] **Tipagem:** Use Type Guards (ex: `element instanceof HTMLInputElement`) para evitar erros de tipagem, conforme `docs/LINTING_RULES.md`.
-- [ ] **Estilo:** Use aspas simples e ponto e vírgula, conforme o Prettier.
-- [ ] **CSS:** Se houver UI, crie o arquivo em `sidepanel/styles/` (não use estilos inline).
-
-# 🧹 Passo 4: Validação (Lint e Testes)
-// turbo
-Execute os comandos de verificação:
-- [ ] `npm run lint` (Deve retornar 0 erros).
-- [ ] `npm test` (Todos os testes devem passar).
-
-Se houver erros, corrija-os imediatamente. Não apresente código com falhas de lint.
-
-# 🔄 Passo 5: Checagem de Alinhamento (Co-evolução)
-Antes de finalizar, responda:
-- [ ] "Eu alterei a lógica do produto?" -> Sim.
-- [ ] "Eu editei o arquivo de teste correspondente para refletir isso?"
-    - Se **SIM**: Ótimo.
-    - Se **NÃO**: **ALERTA**. Você criou uma feature sem garantir que o teste a cobre especificamente ou o teste passou por falso positivo. Revise.
-
-# 📝 Passo 6: Documentação e Arquitetura
-@CHANGELOG.md @docs/TECNOLOGIAS_E_ARQUITETURA.md
-
-- [ ] Se a nova feature alterou a estrutura do projeto ou introduziu novos conceitos, atualize `docs/TECNOLOGIAS_E_ARQUITETURA.md`.
-- [ ] Adicione uma entrada na seção "Não Publicado" no `CHANGELOG.md`.
-
-# 🛡️ Passo 7: Gate de Entrega (Manual)
-**PARE AGORA.**
-Não abra PR nem faça commit na main/dev sem revisão.
-- [ ] Liste para o usuário o comando exato para testar a feature.
-- [ ] **Sugestão de Commit**: Proponha uma mensagem de commit estritamente em **Português (PT-BR)** conforme `docs/PADROES_DO_PROJETO.md` (ex: `feat: adiciona filtro de busca`).
-- [ ] Pergunte: "Posso finalizar e commitar?"
-- [ ] Se aprovado: Faça o commit (O Husky corrigirá formatação automaticamente).
-- [ ] **Nota sobre Dependências**: Se você precisou instalar algo via `npm`, justifique explicitamente agora. Instalações silenciosas são proibidas.
+# 5. Entrega
+@CHANGELOG.md
+- [ ] Atualize `docs/TECNOLOGIAS_E_ARQUITETURA.md` se mudou estrutura.
+- [ ] Adicione ao `CHANGELOG.md` (Não Publicado).
+- [ ] Proponha commit (ex: `feat: adiciona login`).
