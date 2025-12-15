@@ -1,81 +1,27 @@
-# ==========================
-# Dependências e Módulos
-# ==========================
+# Dependências
 node_modules/
 npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
-# package-lock.json (Versionado: Garante versões exatas das dependências)
 
-# ==========================
-# Testes e Cobertura
-# ==========================
+# Testes (Jest)
 coverage/
-.nyc_output/
-reports/
-junit.xml
 
-# ==========================
-# Produção e Build
-# ==========================
+# Builds / Distribuição
 dist/
 build/
-out/
-.next/
-.nuxt/
-*.min.js
-*.min.css
+*.zip
+*.crx
 
-# ==========================
-# Ambiente e Segurança (CRÍTICO)
-# ==========================
+# Segurança
 .env
-.env.local
-.env.development.local
-.env.test.local
-.env.production.local
+.env.*
 *.pem
 *.key
-*.cert
 
-# ==========================
-# Logs e Databases Locais
-# ==========================
-*.log
-logs/
-*.sqlite
-*.db
-
-# ==========================
-# Sistema Operacional (OS)
-# ==========================
-# Linux / Debian / ChromeOS
-*~
-.fuse_hidden*
-.directory
-.Trash-*
-.nfs*
-
-# macOS
+# Sistema Operacional
 .DS_Store
-.AppleDouble
-.LSOverride
-._*
-
-# Windows
 Thumbs.db
-ehthumbs.db
-Desktop.ini
+*~
 
-# ==========================
-# IDEs e Editores
-# ==========================
-.idea/
+# IDEs
 .vscode/
-*.swp
-*.swo
-*.sublime-project
-*.sublime-workspace
-.project
-.settings/
-.classpath
+.idea/
