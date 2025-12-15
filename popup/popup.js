@@ -1,4 +1,5 @@
 import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../shared/utils/settings.js';
+import { BrowserUtils } from '../shared/utils/BrowserUtils.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   /** @type {HTMLInputElement} */
@@ -52,32 +53,12 @@ document.addEventListener('DOMContentLoaded', () => {
     domainInput.value = CONSTANTS.DEFAULT_DOMAIN;
   });
 
-  // 4. LINK GITHUB (Rodapé tratado abaixo/unificado)
-
   // 5. ABRIR SIDE PANEL
   if (openSidePanelBtn) {
     openSidePanelBtn.addEventListener('click', () => {
-      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-        if (tabs.length > 0) {
-          const windowId = tabs[0].windowId;
-          if (chrome.sidePanel && chrome.sidePanel.open) {
-            try {
-              // Tenta abrir o painel
-              await chrome.sidePanel.open({ windowId: windowId });
-              // Se der certo, fecha o popup (opcional, mas comum para "transferir" o foco)
-              window.close();
-            } catch (error) {
-              console.error('Erro ao abrir painel:', error);
-              alert(
-                'Não foi possível abrir o Painel Lateral. Verifique se você está em uma página permitida.'
-              );
-            }
-          } else {
-            alert(
-              'Seu navegador não suporta abrir o Painel Lateral automaticamente. Por favor, abra-o manualmente pelo menu do navegador.'
-            );
-          }
-        }
+      BrowserUtils.openSidePanel().catch((error) => {
+        console.error('Erro ao abrir painel:', error);
+        alert(error.message);
       });
     });
   }
@@ -86,17 +67,16 @@ document.addEventListener('DOMContentLoaded', () => {
   const devLink = document.getElementById('devLink');
   const githubIconLink = document.getElementById('githubIconLink');
 
-  function openInNewTab(e) {
+  function openLink(e) {
     e.preventDefault();
-    chrome.tabs.create({ url: this.href });
+    BrowserUtils.openInNewTab(this.href);
   }
 
   if (devLink) {
-    devLink.addEventListener('click', openInNewTab);
+    devLink.addEventListener('click', openLink);
   }
 
-  // Mantendo consistência para o ícone, caso ele não tivesse ID antes ou para garantir o uso de chrome.tabs.create
   if (githubIconLink) {
-    githubIconLink.addEventListener('click', openInNewTab);
+    githubIconLink.addEventListener('click', openLink);
   }
 });

@@ -35,7 +35,7 @@ flowchart LR
     subgraph "Navegador do Usuário"
         direction TB
         UI[Side Panel / Popup (View)]
-        Logic[RaManager / DomainManager (Logic)]
+        Logic[CourseService / RaManager (Logic)]
         Storage[(Chrome Storage (Model))]
         Web[Página AVA/SEI]
     end
@@ -51,7 +51,7 @@ flowchart LR
 #### A. Side Panel (`/sidepanel`)
 O painel lateral é o coração da experiência do usuário.
 *   **Views**: Componentes visuais (`CoursesView.js`, `SettingsView.js`).
-*   **Logic**: Regras de negócio (`batchScraper.js`, `tabs.js`).
+*   **Logic**: Regras de negócio (`CourseService.js`, `batchScraper.js`).
 *   **Components**: Elementos UI reutilizáveis (`ActionMenu.js`, `Items/`).
 *   **Shared**: Reutiliza utilitários de `/shared/utils/`.
 
@@ -93,6 +93,7 @@ Este projeto segue estritamente a filosofia **Local-First**.
 ├── sidepanel/       # Lógica e UI do painel lateral
 │   ├── components/  # Componentes reutilizáveis
 │   ├── logic/       # Controladores (Scrapers, Tabs)
+│   ├── services/    # Camada de Serviço (Business Logic)
 │   ├── views/       # Telas principais
 │   └── styles/      # CSS modular
 ├── scripts/         # Scripts de Background e Content

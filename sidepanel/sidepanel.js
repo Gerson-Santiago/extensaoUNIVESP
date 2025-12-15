@@ -4,13 +4,14 @@ import { CoursesView } from './views/CoursesView.js';
 import { SettingsView } from './views/SettingsView.js';
 import { CourseDetailsView } from './views/CourseDetailsView.js';
 import { FeedbackView } from './views/FeedbackView.js';
-import { addItem } from './logic/storage.js';
 import { openOrSwitchToTab } from './logic/tabs.js';
-import { scrapeWeeksFromTab } from './logic/scraper.js';
 import { BatchImportModal } from './components/Modals/BatchImportModal.js';
 import { AddManualModal } from './components/Modals/AddManualModal.js';
+import { CourseService } from './services/CourseService.js';
 
 document.addEventListener('DOMContentLoaded', () => {
+  const courseService = new CourseService();
+
   // Inicialização das Views e Callbacks
 
   // Modais Compartilhados
@@ -44,44 +45,27 @@ document.addEventListener('DOMContentLoaded', () => {
       addManualModal.open();
     },
     onAddCurrentPage: () => {
-      addCurrentPageFlow();
+      handleAddCurrentPage();
     },
   });
 
-  const addCurrentPageFlow = () => {
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      if (tabs && tabs[0]) {
-        const tab = tabs[0];
-        let name = tab.title || 'Nova Matéria';
-        if (name.includes('-')) {
-          name = name.split('-')[0].trim();
-        }
-
-        let weeks = [];
-        let detectedName = null;
-
-        if (tab.url.startsWith('http')) {
-          const result = await scrapeWeeksFromTab(tab.id);
-          weeks = result.weeks || [];
-          detectedName = result.title;
-        }
-
-        if (detectedName) {
-          name = detectedName;
-        }
-
-        addItem(name, tab.url, weeks, () => {
-          // Após adicionar, redireciona para lista de cursos
-          layout.topNav.setActive('courses');
-          layout.navigateTo('courses');
-          coursesView.loadCourses(); // Forçar reload
-        });
+  const handleAddCurrentPage = () => {
+    courseService.addFromCurrentTab(
+      () => {
+        // Success callback
+        layout.topNav.setActive('courses');
+        layout.navigateTo('courses');
+        coursesView.loadCourses();
+      },
+      (errorMsg) => {
+        console.error(errorMsg);
+        alert(errorMsg);
       }
-    });
+    );
   };
 
   const homeView = new HomeView({
-    onAddCurrentInfo: () => addCurrentPageFlow(),
+    onAddCurrentInfo: () => handleAddCurrentPage(),
   });
 
   const courseDetailsView = new CourseDetailsView({
