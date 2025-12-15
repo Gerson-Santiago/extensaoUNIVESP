@@ -25,6 +25,7 @@ export class ConfigForm {
 
         <div style="margin-bottom: 20px;">
             <button id="saveConfigBtn" class="btn-save">Salvar Credenciais</button>
+            <div id="configFeedback" class="status-msg" style="margin-top: 10px; display: none;"></div>
         </div>
 
         <hr class="divider">

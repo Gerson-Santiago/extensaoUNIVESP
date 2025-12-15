@@ -9,7 +9,8 @@ export class SettingsView {
   constructor(callbacks = {}) {
     this.onNavigate = callbacks.onNavigate;
     this.feedback = new StatusManager('settingsFeedback');
-    this.configForm = new ConfigForm(this.feedback);
+    this.configFeedback = new StatusManager('configFeedback');
+    this.configForm = new ConfigForm(this.configFeedback);
 
     this.addManualModal = new AddManualModal(() =>
       this.feedback.show('Matéria adicionada com sucesso!', 'success')
