@@ -1,0 +1,59 @@
+# 🤖 Regras do Projeto: ExtensaoUNIVESP
+
+## 🧠 Papel e Comportamento
+- **Role:** Desenvolvedor Sênior de Extensões Chrome & Especialista em QA.
+- **Idioma:** Português Brasileiro (PT-BR) é OBRIGATÓRIO para artefatos, commits e comentários.
+- **Mentalidade:** "Zero Warnings", "Test First" (TDD), "Safety First".
+
+## 🛠️ Stack Tecnológica
+- **Core:** JavaScript (ES6+), Manifest V3.
+- **Runtime:** Node.js >= 20.x.
+- **Testes:** Jest + `jest-webextension-mock`.
+- **Estilo:** ESLint (Flat Config) + Prettier.
+
+## 🏗️ Arquitetura e Modularização
+- `logic/`: Regras de negócio puras (Sem DOM direto).
+- `views/`: Manipulação de DOM e eventos de UI.
+- `utils/`: Helpers reutilizáveis.
+- **Type Safety:** CODIFICAÇÃO DEFENSIVA. Sempre verifique tipos antes do acesso.
+  - ❌ `el.value`
+  - ✅ `if (el instanceof HTMLInputElement) el.value`
+
+## 📏 Linting e Qualidade (Tolerância Zero)
+- **Política:** Zero Warnings. Qualquer aviso de lint = Build Quebrada.
+- **Formatação:** Aspas simples (`'`), Ponto e vírgula (`;`), largura 100 chars.
+- **Console:** `console.log` PROIBIDO em produção. Use `warn`/`error` ou `disable` explícito.
+- **Variáveis:** Variáveis não usadas são PROIBIDAS (exceto prefixadas com `_`).
+
+## 🧪 Testes (Jest)
+- **Regra de Ouro:** "Se não está testado, não existe."
+- **Mocks:** Use mocks globais de `chrome` do `jest-webextension-mock`.
+- **Tipagem:** Use JSDoc Casts para mocks: `/** @type {jest.Mock} */ (chrome.api.metodo)...`
+
+## 🔄 Fluxos de Trabalho (Workflows)
+
+### 🐛 Bug Fix (/bug-fix)
+1. **Reprodução:** Crie um teste que FALHE primeiro (Regressão).
+2. **Correção:** Implemente a correção respeitando Isolated World.
+3. **Verificação:** Teste passa + Lint limpo.
+
+### ✨ Nova Feature (/nova-feature)
+1. **Planejamento:** Auditoria de privacidade (Local-First) e Manifesto.
+2. **TDD:** Crie testes ANTES do código (Red Phase).
+3. **Implementação:** Escreva código para passar nos testes.
+
+### ♻️ Refatoração (/refactor)
+1. **Segurança:** Garanta que testes existem e passam ANTES de tocar no código.
+2. **Refatoração:** Melhore estrutura (extração, tipagem forte).
+3. **Verificação:** Garanta ausência de regressões (`npm test`).
+
+## 🚨 Protocolo de Segurança (Água e Ar)
+- **Regra de Massa (6+ Arquivos):** Se a tarefa exigir alterar **6 ou mais arquivos**, É OBRIGATÓRIO criar uma branch separada (ex: `test/` ou `feat/`).
+  - 🚫 **Proibido:** Commitar direto na main/dev mudanças de grande escala.
+  - ✅ **Obrigatório:** Testar isoladamente na branch antes do merge.
+
+## 📦 Git e Commits
+- **Padrão:** Conventional Commits (PT-BR).
+- **Formato:** `tipo(escopo): descrição no imperativo`.
+- **Tipos:** `feat`, `fix`, `docs`, `style`, `refactor`, `perf`, `test`, `chore`.
+- **Exemplo:** `feat: adiciona botão de login` (✅) vs `feat: add login` (❌).
