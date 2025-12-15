@@ -1,12 +1,4 @@
-import {
-  loadItems,
-  saveItems,
-  addItem,
-  addItemsBatch,
-  deleteItem,
-  updateItem,
-  clearItems,
-} from '../sidepanel/logic/storage.js';
+import { CourseRepository } from '../sidepanel/data/repositories/CourseRepository.js';
 
 describe('Storage - CRUD de Cursos', () => {
   beforeEach(() => {
@@ -40,7 +32,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback({}); // Sem savedCourses
       });
 
-      loadItems((courses) => {
+      CourseRepository.loadItems((courses) => {
         expect(courses).toEqual([]);
         expect(chrome.storage.sync.get).toHaveBeenCalledWith(
           ['savedCourses'],
@@ -56,7 +48,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback({ savedCourses: mockData });
       });
 
-      loadItems((courses) => {
+      CourseRepository.loadItems((courses) => {
         expect(courses).toEqual(mockData);
         expect(courses).toHaveLength(2);
         done();
@@ -68,7 +60,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback({ savedCourses: [mockCourse1] });
       });
 
-      loadItems((courses) => {
+      CourseRepository.loadItems((courses) => {
         expect(courses[0].name).toBe('Curso Teste 1');
         expect(courses[0].url).toBe('https://ava.univesp.br/course1');
         done();
@@ -83,7 +75,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      saveItems(coursesToSave, () => {
+      CourseRepository.saveItems(coursesToSave, () => {
         expect(chrome.storage.sync.set).toHaveBeenCalledWith(
           { savedCourses: coursesToSave },
           expect.any(Function)
@@ -97,7 +89,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      saveItems([mockCourse1], () => {
+      CourseRepository.saveItems([mockCourse1], () => {
         expect(chrome.storage.sync.set).toHaveBeenCalled();
         done();
       });
@@ -108,7 +100,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      saveItems([mockCourse1]);
+      CourseRepository.saveItems([mockCourse1]);
       expect(chrome.storage.sync.set).toHaveBeenCalled();
     });
   });
@@ -131,7 +123,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItem('Novo Curso', 'https://ava.univesp.br/new', [], (success, message) => {
+      CourseRepository.add('Novo Curso', 'https://ava.univesp.br/new', [], (success, message) => {
         expect(success).toBe(true);
         expect(message).toBe('Matéria adicionada com sucesso!');
         expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -149,7 +141,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItem('Curso', 'https://test.com', [], () => {
+      CourseRepository.add('Curso', 'https://test.com', [], () => {
         done();
       });
     });
@@ -159,15 +151,20 @@ describe('Storage - CRUD de Cursos', () => {
         callback({ savedCourses: [mockCourse1] });
       });
 
-      addItem('Duplicado', 'https://ava.univesp.br/course1', [], (success, message) => {
-        expect(success).toBe(false);
-        expect(message).toBe('Matéria já adicionada anteriormente.');
-        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
-        expect(console.warn).toHaveBeenCalledWith(
-          'Curso com URL já existe: https://ava.univesp.br/course1'
-        );
-        done();
-      });
+      CourseRepository.add(
+        'Duplicado',
+        'https://ava.univesp.br/course1',
+        [],
+        (success, message) => {
+          expect(success).toBe(false);
+          expect(message).toBe('Matéria já adicionada anteriormente.');
+          expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+          expect(console.warn).toHaveBeenCalledWith(
+            'Curso com URL já existe: https://ava.univesp.br/course1'
+          );
+          done();
+        }
+      );
     });
 
     test('Deve incluir weeks vazio por padrão', (done) => {
@@ -180,7 +177,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItem('Curso', 'https://test.com', undefined, () => {
+      CourseRepository.add('Curso', 'https://test.com', undefined, () => {
         done();
       });
     });
@@ -196,7 +193,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItem('Curso', 'https://test.com', customWeeks, () => {
+      CourseRepository.add('Curso', 'https://test.com', customWeeks, () => {
         done();
       });
     });
@@ -211,7 +208,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItem(
+      CourseRepository.add(
         'Curso Termo',
         'https://term.com',
         [],
@@ -239,7 +236,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItemsBatch(newItems, (addedCount, ignoredCount) => {
+      CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
         expect(addedCount).toBe(3);
         expect(ignoredCount).toBe(0);
         expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -262,7 +259,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItemsBatch(newItems, () => {
+      CourseRepository.addBatch(newItems, () => {
         done();
       });
     });
@@ -280,7 +277,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItemsBatch(newItems, (addedCount, ignoredCount) => {
+      CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
         expect(addedCount).toBe(1);
         expect(ignoredCount).toBe(1);
         done();
@@ -301,7 +298,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItemsBatch(newItems, (addedCount, ignoredCount) => {
+      CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
         expect(addedCount).toBe(2);
         expect(ignoredCount).toBe(1);
         done();
@@ -313,7 +310,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback({ savedCourses: [] });
       });
 
-      addItemsBatch([], (addedCount, ignoredCount) => {
+      CourseRepository.addBatch([], (addedCount, ignoredCount) => {
         expect(addedCount).toBe(0);
         expect(ignoredCount).toBe(0);
         expect(chrome.storage.sync.set).not.toHaveBeenCalled();
@@ -331,7 +328,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback({ savedCourses: [mockCourse1, mockCourse2] });
       });
 
-      addItemsBatch(newItems, (addedCount, ignoredCount) => {
+      CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
         expect(addedCount).toBe(0);
         expect(ignoredCount).toBe(2);
         expect(chrome.storage.sync.set).not.toHaveBeenCalled();
@@ -351,7 +348,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      addItemsBatch(newItems, (added) => {
+      CourseRepository.addBatch(newItems, (added) => {
         expect(added).toBe(1);
         done();
       });
@@ -370,7 +367,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      deleteItem(1000000001, () => {
+      CourseRepository.delete(1000000001, () => {
         done();
       });
     });
@@ -385,7 +382,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      deleteItem(99999999, () => {
+      CourseRepository.delete(99999999, () => {
         done();
       });
     });
@@ -398,7 +395,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      deleteItem(123, () => {
+      CourseRepository.delete(123, () => {
         expect(chrome.storage.sync.set).toHaveBeenCalled();
         done();
       });
@@ -417,7 +414,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      updateItem(1000000001, { name: 'Nome Atualizado' }, () => {
+      CourseRepository.update(1000000001, { name: 'Nome Atualizado' }, () => {
         done();
       });
     });
@@ -434,7 +431,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      updateItem(1000000001, { name: 'Nome Atualizado' }, () => {
+      CourseRepository.update(1000000001, { name: 'Nome Atualizado' }, () => {
         done();
       });
     });
@@ -444,7 +441,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback({ savedCourses: [mockCourse1] });
       });
 
-      updateItem(99999999, { name: 'Teste' }, () => {
+      CourseRepository.update(99999999, { name: 'Teste' }, () => {
         expect(console.warn).toHaveBeenCalledWith(
           'Item com id 99999999 não encontrado para atualização.'
         );
@@ -458,7 +455,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback({ savedCourses: [] });
       });
 
-      updateItem(123, { name: 'Test' }, () => {
+      CourseRepository.update(123, { name: 'Test' }, () => {
         done();
       });
     });
@@ -471,7 +468,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      clearItems(() => {
+      CourseRepository.clear(() => {
         done();
       });
     });
@@ -482,7 +479,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      clearItems(() => {
+      CourseRepository.clear(() => {
         done();
       });
     });
@@ -492,7 +489,7 @@ describe('Storage - CRUD de Cursos', () => {
         callback();
       });
 
-      clearItems(() => {
+      CourseRepository.clear(() => {
         expect(chrome.storage.sync.set).toHaveBeenCalled();
         done();
       });

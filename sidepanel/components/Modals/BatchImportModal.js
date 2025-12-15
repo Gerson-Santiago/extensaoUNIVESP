@@ -1,7 +1,8 @@
 import { Modal } from './Modal.js';
 import { scrapeAvailableTerms, processSelectedCourses } from '../../logic/batchScraper.js';
-import { addItemsBatch } from '../../logic/storage.js';
+import { CourseRepository } from '../../data/repositories/CourseRepository.js';
 import { parseTerm } from '../../utils/termParser.js';
+import { Tabs } from '../../../shared/utils/Tabs.js';
 
 export class BatchImportModal extends Modal {
   constructor(onSuccess) {
@@ -41,37 +42,35 @@ export class BatchImportModal extends Modal {
 
     status.textContent = 'Verificando aba...';
 
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      if (!tabs || !tabs[0]) {
-        status.textContent = 'Erro ao acessar aba.';
-        return;
-      }
-      const tab = tabs[0];
+    const tab = await Tabs.getCurrentTab();
+    if (!tab) {
+      status.textContent = 'Erro ao acessar aba.';
+      return;
+    }
 
-      if (!tab.url.includes('/ultra/course') && !tab.url.includes('bb_router')) {
-        status.textContent = 'Redirecionando para Cursos...';
-        chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
+    if (!tab.url.includes('/ultra/course') && !tab.url.includes('bb_router')) {
+      status.textContent = 'Redirecionando para Cursos...';
+      chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
 
-        // Wait for reload
-        setTimeout(() => {
-          this.autoLoadTerms(overlay);
-        }, 4000);
-        return;
-      }
+      // Wait for reload
+      setTimeout(() => {
+        this.autoLoadTerms(overlay);
+      }, 4000);
+      return;
+    }
 
-      status.textContent = 'Lendo bimestres...';
-      const result = await scrapeAvailableTerms(tab.id);
+    status.textContent = 'Lendo bimestres...';
+    const result = await scrapeAvailableTerms(tab.id);
 
-      if (result.success && result.terms) {
-        this.foundTerms = result.terms;
-        this.renderTerms(termsList);
-        status.textContent = 'Selecione as disciplinas que deseja importar.';
-        btnRun.disabled = false;
-      } else {
-        termsList.innerHTML = `<div style="color: red; text-align: center;">${result.message || 'Falha ao ler cursos.'}</div>`;
-        status.textContent = 'Tente recarregar a página e abrir novamente.';
-      }
-    });
+    if (result.success && result.terms) {
+      this.foundTerms = result.terms;
+      this.renderTerms(termsList);
+      status.textContent = 'Selecione as disciplinas que deseja importar.';
+      btnRun.disabled = false;
+    } else {
+      termsList.innerHTML = `<div style="color: red; text-align: center;">${result.message || 'Falha ao ler cursos.'}</div>`;
+      status.textContent = 'Tente recarregar a página e abrir novamente.';
+    }
   }
 
   renderTerms(container) {
@@ -160,9 +159,8 @@ export class BatchImportModal extends Modal {
       });
 
       // Execute Deep Scrape
-      chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-        const tab = tabs[0];
-
+      const tab = await Tabs.getCurrentTab();
+      if (tab) {
         const processedList = await processSelectedCourses(tab.id, allCoursesToScrape);
 
         status.textContent = `Processado! Salvando ${processedList.length} cursos...`;
@@ -180,10 +178,10 @@ export class BatchImportModal extends Modal {
           termName: c.original ? c.original._termName : c._termName || '', // Save term name for grouping logic
         }));
 
-        addItemsBatch(itemsToAdd, (added, _total) => {
+        CourseRepository.addBatch(itemsToAdd, (added, _total) => {
           this.finish(added, itemsToAdd.length, status);
         });
-      });
+      }
     };
   }
 

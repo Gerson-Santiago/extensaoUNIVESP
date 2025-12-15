@@ -4,7 +4,7 @@ import { CoursesView } from './views/CoursesView.js';
 import { SettingsView } from './views/SettingsView.js';
 import { CourseDetailsView } from './views/CourseDetailsView.js';
 import { FeedbackView } from './views/FeedbackView.js';
-import { openOrSwitchToTab } from './logic/tabs.js';
+import { Tabs } from '../shared/utils/Tabs.js';
 import { BatchImportModal } from './components/Modals/BatchImportModal.js';
 import { AddManualModal } from './components/Modals/AddManualModal.js';
 import { CourseService } from './services/CourseService.js';
@@ -31,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // Callbacks para CoursesView
   const coursesView = new CoursesView({
-    onOpenCourse: (url) => openOrSwitchToTab(url),
+    onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
     onViewDetails: (course) => {
       // Navegação customizada para Detalhes
       courseDetailsView.setCourse(course);
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
       layout.topNav.setActive('courses');
       layout.navigateTo('courses');
     },
-    onOpenCourse: (url) => openOrSwitchToTab(url),
+    onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
   });
 
   const feedbackView = new FeedbackView({

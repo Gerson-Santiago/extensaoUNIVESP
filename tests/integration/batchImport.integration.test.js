@@ -66,19 +66,31 @@ describe('Integration: Batch Import Flow', () => {
     await Promise.resolve();
     await Promise.resolve();
     await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
 
     // 4. Verify Terms Loaded and UI Updated
     const termsList = document.getElementById('terms-list');
     expect(termsList.innerHTML).toContain('2025/1 - 1º Bimestre');
     expect(termsList.innerHTML).toContain('2025/1 - 1º Bimestre');
 
-    const btnRun = document.getElementById('btnRunBatch');
+    const btnRun = /** @type {HTMLButtonElement} */ (document.getElementById('btnRunBatch'));
     expect(btnRun.disabled).toBe(false);
 
     // 5. Trigger Import
     btnRun.click();
 
     // 6. Wait for Deep Scrape (microtasks)
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
     await Promise.resolve();
     await Promise.resolve();
     await Promise.resolve();
@@ -114,6 +126,9 @@ describe('Integration: Batch Import Flow', () => {
     modal.open(); // Triggers autoLoadTerms immediately
 
     await Promise.resolve(); // microtasks
+    await Promise.resolve();
+    await Promise.resolve();
+    await Promise.resolve();
 
     // Should try to update tab to correct URL
     expect(chrome.tabs.update).toHaveBeenCalledWith(999, {

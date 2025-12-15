@@ -1,4 +1,4 @@
-import { scrapeWeeksFromTab } from '../sidepanel/logic/scraper.js';
+import { ScraperService } from '../sidepanel/services/ScraperService.js';
 
 describe('Testes de Lógica - Scraper', () => {
   beforeEach(() => {
@@ -16,7 +16,7 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
       target: { tabId: 123, allFrames: true },
@@ -32,7 +32,7 @@ describe('Testes de Lógica - Scraper', () => {
   test('scrapeWeeksFromTab deve lidar com retorno vazio', async () => {
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([]); // Retorno vazio/falha
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result).toEqual({ weeks: [], title: null });
   });
@@ -53,7 +53,7 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result.weeks).toHaveLength(2);
     expect(result.weeks[0].name).toBe('Semana 1');
@@ -75,7 +75,7 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result.weeks).toHaveLength(2);
     expect(result.weeks[0].url).toBe('http://test.com/s1');
@@ -96,7 +96,7 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result.weeks[0].name).toBe('Semana 1');
     expect(result.weeks[1].name).toBe('Semana 2');
@@ -117,7 +117,7 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result.weeks).toHaveLength(1);
     expect(result.weeks[0].name).toBe('Semana 1');
@@ -128,7 +128,7 @@ describe('Testes de Lógica - Scraper', () => {
       new Error('Falha na injeção')
     );
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result).toEqual({ weeks: [], title: null });
   });
@@ -139,7 +139,7 @@ describe('Testes de Lógica - Scraper', () => {
       { result: null },
     ]);
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result).toEqual({ weeks: [], title: null });
   });
@@ -154,7 +154,7 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result.weeks).toEqual([]);
     expect(result.title).toBe('Curso Teste');
@@ -182,7 +182,7 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
-    const result = await scrapeWeeksFromTab(123);
+    const result = await ScraperService.scrapeWeeksFromTab(123);
 
     expect(result.title).toBe('Primeiro Título Válido');
   });

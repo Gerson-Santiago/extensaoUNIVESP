@@ -1,12 +1,6 @@
-export class BrowserUtils {
-  /**
-   * Abre uma URL em uma nova aba.
-   * @param {string} url
-   */
-  static openInNewTab(url) {
-    chrome.tabs.create({ url: url });
-  }
+import { Tabs } from './Tabs.js';
 
+export class BrowserUtils {
   /**
    * Tenta abrir o Side Panel na janela atual.
    * Fecha o popup (window) se tiver sucesso e for solicitado.
@@ -18,9 +12,9 @@ export class BrowserUtils {
       throw new Error('Navegador não suporta abertura automática do Painel Lateral.');
     }
 
-    const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    if (tabs.length > 0) {
-      const windowId = tabs[0].windowId;
+    const currentTab = await Tabs.getCurrentTab();
+    if (currentTab) {
+      const windowId = currentTab.windowId;
       await chrome.sidePanel.open({ windowId: windowId });
 
       if (closeWindowOnSuccess) {

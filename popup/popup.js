@@ -1,5 +1,6 @@
 import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../shared/utils/settings.js';
 import { BrowserUtils } from '../shared/utils/BrowserUtils.js';
+import { Tabs } from '../shared/utils/Tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   /** @type {HTMLInputElement} */
@@ -69,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function openLink(e) {
     e.preventDefault();
-    BrowserUtils.openInNewTab(this.href);
+    Tabs.create(this.href);
   }
 
   if (devLink) {

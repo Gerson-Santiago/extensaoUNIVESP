@@ -1,5 +1,5 @@
 import { Modal } from './Modal.js';
-import { addItem } from '../../logic/storage.js';
+import { CourseRepository } from '../../data/repositories/CourseRepository.js';
 
 export class AddManualModal extends Modal {
   constructor(onSuccess) {
@@ -77,7 +77,7 @@ export class AddManualModal extends Modal {
       status.textContent = 'Salvando...';
       status.style.color = '#666';
 
-      addItem(name, url, [], { termName: termName }, (success, message) => {
+      CourseRepository.add(name, url, [], { termName: termName }, (success, message) => {
         if (success) {
           status.textContent = message;
           status.style.color = 'green';

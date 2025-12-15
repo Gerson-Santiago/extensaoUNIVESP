@@ -6,8 +6,10 @@ jest.mock('../../sidepanel/logic/batchScraper.js', () => ({
   processSelectedCourses: jest.fn(),
 }));
 
-jest.mock('../../sidepanel/logic/storage.js', () => ({
-  addItemsBatch: jest.fn(),
+jest.mock('../../sidepanel/data/repositories/CourseRepository.js', () => ({
+  CourseRepository: {
+    addBatch: jest.fn(),
+  },
 }));
 
 /**

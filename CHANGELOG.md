@@ -1,5 +1,15 @@
 # Changelog - Versão Beta
 
+## [2.5.4] - 2025-12-15
+### Refatoração
+- **Gerenciamento de Abas Centralizado**: Refatoração completa da lógica de manipulação de abas, movendo toda a responsabilidade para a classe `Tabs.js`.
+    - Eliminado código duplicado em `BrowserUtils`, `CourseService`, `CourseDetailsView` e `BatchImportModal`.
+    - Substituída a lógica frágil de `chrome.tabs.query` espalhada pelo código por métodos robustos e testáveis (`Tabs.getCurrentTab`, `Tabs.openOrSwitchTo`).
+- **Limpeza de Código**: Remoção de logs de debug e métodos obsoletos em `BrowserUtils.js`.
+
+### Correções
+- **Testes**: Correção de erros de sintaxe em `SettingsView.js` e mocks obsoletos em testes de integração, garantindo que a suíte de testes (16 testes) passe integralmente.
+
 ## [2.5.3] - 2025-12-13
 ### Infraestrutura
 - **Automação de Qualidade**: Implementação do Husky e lint-staged. Agora, lint e formatação são verificados e corrigidos automaticamente a cada commit, garantindo padronização do código fonte.

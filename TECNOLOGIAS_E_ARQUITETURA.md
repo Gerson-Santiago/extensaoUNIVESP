@@ -92,13 +92,13 @@ Este projeto segue estritamente a filosofia **Local-First**.
 ├── popup/           # Interface do popup (ícone na barra)
 ├── sidepanel/       # Lógica e UI do painel lateral
 │   ├── components/  # Componentes reutilizáveis
-│   ├── logic/       # Controladores (Scrapers, Tabs)
+│   ├── logic/       # Controladores (Batch Scrapers, Managers)
 │   ├── services/    # Camada de Serviço (Business Logic)
 │   ├── views/       # Telas principais
 │   └── styles/      # CSS modular
 ├── scripts/         # Scripts de Background e Content
-├── shared/          # Utils compartilhados (Popup <-> Sidepanel)
+├── shared/          # Utils compartilhados (Tabs, Settings, Browser)
 └── tests/           # Testes automatizados (Jest)
 ```
 
-> *Documento atualizado em: Dezembro 2025 (v2.5.2).*
+> *Documento atualizado em: Dezembro 2025 (v2.5.4).*

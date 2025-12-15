@@ -1,4 +1,4 @@
-import { loadItems, deleteItem } from '../logic/storage.js';
+import { CourseRepository } from '../data/repositories/CourseRepository.js';
 import { createCourseElement } from '../components/Items/CourseItem.js';
 import { groupCoursesByTerm } from '../utils/courseGrouper.js';
 import { ActionMenu } from '../components/Shared/ActionMenu.js';
@@ -77,7 +77,7 @@ export class CoursesView {
     if (!container) return;
 
     container.innerHTML = '';
-    loadItems((courses) => {
+    CourseRepository.loadItems((courses) => {
       if (courses.length === 0) {
         container.innerHTML =
           '<div style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</div>';
@@ -105,7 +105,7 @@ export class CoursesView {
         // Render Courses
         group.courses.forEach((course) => {
           const li = createCourseElement(course, {
-            onDelete: (id) => deleteItem(id, () => this.loadCourses()),
+            onDelete: (id) => CourseRepository.delete(id, () => this.loadCourses()),
             onClick: (url) => this.callbacks.onOpenCourse(url),
             onViewDetails: (c) => this.callbacks.onViewDetails(c),
           });

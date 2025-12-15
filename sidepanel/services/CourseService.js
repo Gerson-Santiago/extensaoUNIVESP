@@ -1,5 +1,6 @@
-import { addItem } from '../logic/storage.js';
-import { scrapeWeeksFromTab } from '../logic/scraper.js';
+import { CourseRepository } from '../data/repositories/CourseRepository.js';
+import { ScraperService } from './ScraperService.js';
+import { Tabs } from '../../shared/utils/Tabs.js';
 
 export class CourseService {
   /**
@@ -9,14 +10,12 @@ export class CourseService {
    */
   async addFromCurrentTab(onSuccess, onError) {
     try {
-      const tabs = await chrome.tabs.query({ active: true, currentWindow: true });
+      const tab = await Tabs.getCurrentTab();
 
-      if (!tabs || !tabs[0]) {
+      if (!tab) {
         if (onError) onError('Nenhuma aba ativa encontrada.');
         return;
       }
-
-      const tab = tabs[0];
       let name = tab.title || 'Nova Matéria';
 
       // Limpeza básica do nome
@@ -29,7 +28,7 @@ export class CourseService {
 
       // Executa scraper apenas em URLs válidas
       if (tab.url && tab.url.startsWith('http')) {
-        const result = await scrapeWeeksFromTab(tab.id);
+        const result = await ScraperService.scrapeWeeksFromTab(tab.id);
         weeks = result.weeks || [];
         detectedName = result.title;
       }
@@ -39,7 +38,7 @@ export class CourseService {
       }
 
       // Adiciona ao storage
-      addItem(name, tab.url, weeks, (success, msg) => {
+      CourseRepository.add(name, tab.url, weeks, (success, msg) => {
         if (success) {
           if (onSuccess) onSuccess();
         } else {

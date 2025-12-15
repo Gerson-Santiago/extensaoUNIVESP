@@ -20,9 +20,9 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
     'sidepanel/styles/views/home.css',
     'sidepanel/styles/views/courses.css',
     'sidepanel/styles/views/settings.css',
-    'sidepanel/logic/scraper.js',
-    'sidepanel/logic/storage.js',
-    'sidepanel/logic/tabs.js',
+    'sidepanel/services/ScraperService.js',
+    'sidepanel/data/repositories/CourseRepository.js',
+    'shared/utils/Tabs.js',
     'sidepanel/logic/batchScraper.js', // 🆕
     'sidepanel/components/Modals/BatchImportModal.js', // 🆕
     'sidepanel/components/Modals/Modal.js', // 🆕
@@ -46,9 +46,9 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
   // Teste de sintaxe/importação básica
   test('Deve conseguir importar módulos JS sem erro de sintaxe', async () => {
     const modulesToImport = [
-      '../sidepanel/logic/scraper.js',
-      '../sidepanel/logic/storage.js',
-      '../sidepanel/logic/tabs.js',
+      '../sidepanel/services/ScraperService.js',
+      '../sidepanel/data/repositories/CourseRepository.js',
+      '../shared/utils/Tabs.js',
       '../sidepanel/logic/batchScraper.js',
       '../sidepanel/components/Items/CourseItem.js',
       '../sidepanel/components/Items/WeekItem.js',

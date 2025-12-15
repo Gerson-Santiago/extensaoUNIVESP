@@ -1,4 +1,4 @@
-import { addItemsBatch, addItem, loadItems } from '../sidepanel/logic/storage.js';
+import { CourseRepository } from '../sidepanel/data/repositories/CourseRepository.js';
 
 // Mock chrome.storage.sync
 const storageMock = {};
@@ -29,10 +29,10 @@ describe('Storage Logic - Persistence & v2.4.1 Features', () => {
       { name: 'Curso B', url: 'http://b.com' }, // Sem termName
     ];
 
-    addItemsBatch(items, (added) => {
+    CourseRepository.addBatch(items, (added) => {
       expect(added).toBe(2);
 
-      loadItems((courses) => {
+      CourseRepository.loadItems((courses) => {
         expect(courses).toHaveLength(2);
         expect(courses.find((c) => c.name === 'Curso A').termName).toBe('2025/1');
         done();
@@ -42,24 +42,30 @@ describe('Storage Logic - Persistence & v2.4.1 Features', () => {
 
   test('addItem should accept options object with termName', (done) => {
     // addItem(name, url, weeks = [], optionsOrCallback, extraCallback)
-    addItem('Curso Manual', 'http://manual.com', [], { termName: 'Manual Term' }, (success) => {
-      expect(success).toBe(true);
+    CourseRepository.add(
+      'Curso Manual',
+      'http://manual.com',
+      [],
+      { termName: 'Manual Term' },
+      (success) => {
+        expect(success).toBe(true);
 
-      loadItems((courses) => {
-        const course = courses.find((c) => c.name === 'Curso Manual');
-        expect(course).toBeTruthy();
-        expect(course.termName).toBe('Manual Term');
-        done();
-      });
-    });
+        CourseRepository.loadItems((courses) => {
+          const course = courses.find((c) => c.name === 'Curso Manual');
+          expect(course).toBeTruthy();
+          expect(course.termName).toBe('Manual Term');
+          done();
+        });
+      }
+    );
   });
 
   test('addItem should work with old signature (backward compatibility)', (done) => {
     // addItem(name, url, weeks = [], callback)
-    addItem('Curso Old', 'http://old.com', [], (success) => {
+    CourseRepository.add('Curso Old', 'http://old.com', [], (success) => {
       expect(success).toBe(true);
 
-      loadItems((courses) => {
+      CourseRepository.loadItems((courses) => {
         const course = courses.find((c) => c.name === 'Curso Old');
         expect(course).toBeTruthy();
         expect(course.termName).toBe(''); // Default empty

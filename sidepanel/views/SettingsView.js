@@ -1,7 +1,7 @@
 import { AddManualModal } from '../components/Modals/AddManualModal.js';
 import { BatchImportModal } from '../components/Modals/BatchImportModal.js';
-import { addItem, clearItems } from '../logic/storage.js';
-import { scrapeWeeksFromTab } from '../logic/scraper.js';
+import { CourseRepository } from '../data/repositories/CourseRepository.js';
+import { CourseService } from '../services/CourseService.js';
 import { StatusManager } from '../utils/statusManager.js';
 import { ConfigForm } from '../components/Forms/ConfigForm.js';
 
@@ -10,6 +10,7 @@ export class SettingsView {
     this.onNavigate = callbacks.onNavigate;
     this.feedback = new StatusManager('settingsFeedback');
     this.configForm = new ConfigForm(this.feedback);
+    this.courseService = new CourseService();
 
     this.addManualModal = new AddManualModal(() =>
       this.feedback.show('Matéria adicionada com sucesso!', 'success')
@@ -97,7 +98,9 @@ export class SettingsView {
         'Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.'
       )
     ) {
-      clearItems(() => this.feedback.show('Todas as matérias foram removidas.', 'success'));
+      CourseRepository.clear(() =>
+        this.feedback.show('Todas as matérias foram removidas.', 'success')
+      );
     }
   }
 
@@ -108,24 +111,13 @@ export class SettingsView {
       feedbackEl.style.display = 'block';
     }
 
-    chrome.tabs.query({ active: true, currentWindow: true }, async (tabs) => {
-      if (!tabs?.length) return;
-      const tab = tabs[0];
-
-      let name = (tab.title || 'Nova Matéria').split('-')[0].trim();
-      let weeks = [];
-
-      if (tab.url.startsWith('http')) {
-        const result = await scrapeWeeksFromTab(tab.id);
-        weeks = result.weeks || [];
-        if (result.title) name = result.title;
+    this.courseService.addFromCurrentTab(
+      () => {
+        this.feedback.show('Página atual adicionada com sucesso!', 'success');
+      },
+      (msg) => {
+        this.feedback.show(`Erro: ${msg}`, 'error');
       }
-
-      addItem(name, tab.url, weeks, (success, msg) => {
-        const type = success ? 'success' : 'error';
-        const text = success ? 'Página atual adicionada com sucesso!' : `Erro: ${msg}`;
-        this.feedback.show(text, type);
-      });
-    });
+    );
   }
 }

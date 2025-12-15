@@ -1,4 +1,4 @@
-import { openOrSwitchToTab } from '../sidepanel/logic/tabs.js';
+import { Tabs } from '../shared/utils/Tabs.js';
 
 describe('Lógica - Troca de Abas', () => {
   beforeEach(() => {
@@ -24,7 +24,7 @@ describe('Lógica - Troca de Abas', () => {
       ]);
     });
 
-    openOrSwitchToTab(targetUrl);
+    Tabs.openOrSwitchTo(targetUrl);
 
     // Should update tab 102 (possui AMBOS course_id E content_id)
     expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true });
@@ -43,7 +43,7 @@ describe('Lógica - Troca de Abas', () => {
       callback(mockTabs)
     );
 
-    openOrSwitchToTab(targetUrl);
+    Tabs.openOrSwitchTo(targetUrl);
 
     expect(chrome.tabs.update).toHaveBeenCalledWith(201, { active: true });
     expect(chrome.tabs.create).not.toHaveBeenCalled();
@@ -62,9 +62,9 @@ describe('Lógica - Troca de Abas', () => {
       ]);
     });
 
-    openOrSwitchToTab(targetUrl);
+    Tabs.openOrSwitchTo(targetUrl);
 
-    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl }, expect.any(Function));
+    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl });
     expect(chrome.tabs.update).not.toHaveBeenCalled();
   });
 
@@ -87,7 +87,7 @@ describe('Lógica - Troca de Abas', () => {
       ]);
     });
 
-    openOrSwitchToTab(targetUrl);
+    Tabs.openOrSwitchTo(targetUrl);
 
     expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true });
     expect(chrome.windows.update).toHaveBeenCalledWith(999, { focused: true });
@@ -106,7 +106,7 @@ describe('Lógica - Troca de Abas', () => {
       ]);
     });
 
-    openOrSwitchToTab(targetUrl);
+    Tabs.openOrSwitchTo(targetUrl);
 
     expect(chrome.tabs.update).toHaveBeenCalledWith(301, { active: true });
   });
@@ -124,7 +124,7 @@ describe('Lógica - Troca de Abas', () => {
       ]);
     });
 
-    openOrSwitchToTab(targetUrl);
+    Tabs.openOrSwitchTo(targetUrl);
 
     expect(chrome.tabs.update).toHaveBeenCalledWith(401, { active: true });
     expect(chrome.windows.update).toHaveBeenCalledWith(555, { focused: true });
@@ -137,9 +137,9 @@ describe('Lógica - Troca de Abas', () => {
       callback([]);
     });
 
-    openOrSwitchToTab(targetUrl);
+    Tabs.openOrSwitchTo(targetUrl);
 
-    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl }, expect.any(Function));
+    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl });
     expect(chrome.tabs.update).not.toHaveBeenCalled();
   });
 });
