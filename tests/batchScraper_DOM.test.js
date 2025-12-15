@@ -1,5 +1,6 @@
 /**
  * @jest-environment jsdom
+ * @testEnvironmentOptions {"url": "https://ava.univesp.br/ultra/course"}
  */
 
 import { DOM_scanTermsAndCourses_Injected } from '../sidepanel/logic/batchScraper.js';
@@ -9,22 +10,18 @@ describe('BatchScraper DOM Logic', () => {
     // Reset DOM
     document.body.innerHTML = '';
 
-    // Mock window location safely
-    delete window.location;
-    window.location = {
-      href: 'https://ava.univesp.br/ultra/course',
-      origin: 'https://ava.univesp.br',
-      toString: () => 'https://ava.univesp.br/ultra/course',
-    };
-
     // Mock scroll
     window.scrollTo = jest.fn();
     // Default scroll height
     Object.defineProperty(document.body, 'scrollHeight', { value: 1000, writable: true });
+
+    // Navigate to expected URL (relative works in JSDOM)
+    window.history.pushState({}, 'Test', '/ultra/course');
   });
 
   test('Deve retornar erro se não estiver logado ou na página errada', async () => {
-    window.location.href = 'https://google.com';
+    // Navigate away to invalid URL
+    window.history.pushState({}, 'Test', '/other');
     const result = await DOM_scanTermsAndCourses_Injected();
     expect(result.success).toBe(false);
     expect(result.message).toContain('acesse a página de Cursos');

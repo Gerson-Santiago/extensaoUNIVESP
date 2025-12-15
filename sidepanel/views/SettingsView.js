@@ -9,7 +9,7 @@ export class SettingsView {
   constructor(callbacks = {}) {
     this.onNavigate = callbacks.onNavigate;
     this.feedback = new StatusManager('settingsFeedback');
-    this.configForm = new ConfigForm(this.feedback);
+    this.configForm = new ConfigForm(new StatusManager('configFeedback'));
     this.courseService = new CourseService();
 
     this.addManualModal = new AddManualModal(() =>

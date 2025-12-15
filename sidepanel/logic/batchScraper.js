@@ -89,14 +89,19 @@ export async function DOM_scanTermsAndCourses_Injected() {
 
     if (!name || !url || !internalId) return;
 
-    // 4. Buscar Display ID (Ex: MMB002-2025S1B2-T006)
+    // 2. Buscar o ID de Exibição (Display ID) para saber o bimestre
+    // Exemplo: MMB002-2025S1B2-T006
+    // Procuramos qualquer span que tenha id começando com 'course-id-' DENTRO do card
     let displayIdRaw = '';
     const idSpan = card.querySelector('span[id^="course-id-"]');
 
     if (idSpan) {
-      displayIdRaw = idSpan.innerText.trim();
+      displayIdRaw = idSpan.textContent.trim();
     } else {
-      const matchText = card.innerText.match(/([A-Z]{3}\d{3}-\d{4}S\dB\d)/);
+      // Fallback: Tenta achar pelo texto padrao usando Regex no card todo
+      // Padrão: 4 letras, 3 numeros - 4 digitos S 1 digito B 1 digito
+      // Ex: ADM001-2024S2B1
+      const matchText = card.textContent.match(/([A-Z]{3}\d{3}-\d{4}S\dB\d)/);
       if (matchText) displayIdRaw = matchText[1];
     }
 
