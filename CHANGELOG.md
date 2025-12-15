@@ -10,6 +10,9 @@
 ### Correções
 - **Testes**: Correção de erros de sintaxe em `SettingsView.js` e mocks obsoletos em testes de integração, garantindo que a suíte de testes (16 testes) passe integralmente.
 
+### Documentação
+- **Regras de Negócio**: Criação de `docs/regras-de-negocio.md` detalhando o funcionamento funcional dos módulos `Tabs`, `Scraper` e `Storage`, conforme padrões de projetos Open Source.
+
 ## [2.5.3] - 2025-12-13
 ### Infraestrutura
 - **Automação de Qualidade**: Implementação do Husky e lint-staged. Agora, lint e formatação são verificados e corrigidos automaticamente a cada commit, garantindo padronização do código fonte.
