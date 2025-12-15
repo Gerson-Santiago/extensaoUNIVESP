@@ -137,50 +137,59 @@ export class BatchImportModal extends Modal {
         return;
       }
 
-      btnRun.disabled = true;
-      status.textContent = 'Coletando informações dos cursos... Isso pode levar alguns segundos.';
+      try {
+        btnRun.disabled = true;
+        status.textContent = 'Coletando informações dos cursos... Isso pode levar alguns segundos.';
 
-      // Gather all selected courses
-      const allCoursesToScrape = [];
-      checkboxes.forEach((cb) => {
-        const parts = cb.value.split('-');
-        if (parts.length === 2) {
-          const tIdx = parseInt(parts[0], 10);
-          const cIdx = parseInt(parts[1], 10);
-          const term = this.foundTerms[tIdx];
-          if (term && term.courses[cIdx]) {
-            // Inject term name into the course object for deep scraper to carry over
-            // or just carry it locally if deep scraper preserves object identity/properties?
-            // Safer to add it to a temporary property that won't break anything.
-            const courseRef = { ...term.courses[cIdx], _termName: term.name };
-            allCoursesToScrape.push(courseRef);
+        // Gather all selected courses
+        const allCoursesToScrape = [];
+        checkboxes.forEach((cb) => {
+          const parts = cb.value.split('-');
+          if (parts.length === 2) {
+            const tIdx = parseInt(parts[0], 10);
+            const cIdx = parseInt(parts[1], 10);
+            const term = this.foundTerms[tIdx];
+            if (term && term.courses[cIdx]) {
+              const courseRef = { ...term.courses[cIdx], _termName: term.name };
+              allCoursesToScrape.push(courseRef);
+            }
           }
-        }
-      });
-
-      // Execute Deep Scrape
-      const tab = await Tabs.getCurrentTab();
-      if (tab) {
-        const processedList = await processSelectedCourses(tab.id, allCoursesToScrape);
-
-        status.textContent = `Processado! Salvando ${processedList.length} cursos...`;
-
-        if (processedList.length === 0) {
-          status.textContent = 'Nenhum curso processado com sucesso.';
-          btnRun.disabled = false;
-          return;
-        }
-
-        const itemsToAdd = processedList.map((c) => ({
-          name: c.name,
-          url: c.url,
-          weeks: c.weeks || [],
-          termName: c.original ? c.original._termName : c._termName || '', // Save term name for grouping logic
-        }));
-
-        CourseRepository.addBatch(itemsToAdd, (added, _total) => {
-          this.finish(added, itemsToAdd.length, status);
         });
+
+        // Execute Deep Scrape
+        const tab = await Tabs.getCurrentTab();
+        if (tab) {
+          const processedList = await processSelectedCourses(tab.id, allCoursesToScrape);
+
+          status.textContent = `Processado! Salvando ${processedList.length} cursos...`;
+
+          if (processedList.length === 0) {
+            status.textContent = 'Nenhum curso processado com sucesso. Tente novamente.';
+            return;
+          }
+
+          const itemsToAdd = processedList.map((c) => ({
+            name: c.name,
+            url: c.url,
+            weeks: c.weeks || [],
+            termName: c.original ? c.original._termName : c._termName || '',
+          }));
+
+          CourseRepository.addBatch(itemsToAdd, (added, _total) => {
+            this.finish(added, itemsToAdd.length, status);
+          });
+        }
+      } catch (err) {
+        console.error(err);
+        status.textContent = 'Erro ao processar. Tente recarregar a página.';
+        status.style.color = 'red';
+      } finally {
+        // Only re-enable if not strictly successful (success path handles closing)
+        // But for safety, we can re-enable after a timeout or let finish() close it.
+        // If finish() is called, model closes. If return early, we simply re-enable.
+        if (!status.textContent.includes('Concluído')) {
+          btnRun.disabled = false;
+        }
       }
     };
   }

@@ -6,54 +6,74 @@
 const DEBUG = false;
 
 // -- FUNÇÃO INJETADA PARA LER BIMESTRES E CURSOS --
-function DOM_scanTermsAndCourses_Injected() {
+
+// -- FUNÇÃO INJETADA PARA LER BIMESTRES E CURSOS --
+export async function DOM_scanTermsAndCourses_Injected() {
   const results = {
     success: false,
     terms: [],
     message: '',
   };
 
+  // 1. Verificação de URL e Login
   if (
     !window.location.href.includes('/ultra/course') &&
     !window.location.href.includes('bb_router')
   ) {
     if (!document.getElementById('courses-overview-content')) {
-      results.message = 'Por favor, acesse a página de Cursos do AVA.';
+      results.message = 'Por favor, acesse a página de Cursos do AVA e faça login.';
       return results;
     }
   }
 
-  // 1. Encontrar todos os elementos de Título de Curso
-  // Esse seletor parece ser o mais estável para identificar um "card" de curso.
+  // 2. Auto-Scroll para carregar "Infinite Scroll"
+  try {
+    let lastHeight = document.body.scrollHeight;
+    let attempts = 0;
+    while (attempts < 10) {
+      // Limite de tentativas para não travar
+      window.scrollTo(0, document.body.scrollHeight);
+      await new Promise((r) => setTimeout(r, 1500)); // Aguarda 1.5s carregar
+
+      const newHeight = document.body.scrollHeight;
+      if (newHeight === lastHeight) break; // Chegou ao fim
+      lastHeight = newHeight;
+      attempts++;
+    }
+  } catch (e) {
+    console.error('Erro no auto-scroll:', e);
+    // Continua mesmo se falhar o scroll
+  }
+
+  // 3. Encontrar todos os elementos (H4 é o título do curso no card)
   const courseTitles = Array.from(document.querySelectorAll('h4.js-course-title-element'));
 
   if (courseTitles.length === 0) {
-    results.message = 'Nenhum curso encontrado na página.';
+    results.message = 'Nenhum curso encontrado na página. Verifique se você está logado.';
     return results;
   }
 
   const termsMap = new Map(); // Chave: "2025/1 - 1º Bimestre" -> Valor: [cursos]
 
   courseTitles.forEach((titleEl) => {
-    // Navegamos para cima para achar o container do curso (o "Card" ou "Linha")
-    // Geralmente é um <li> ou <div>
+    // Navegamos para cima para achar o container
     const card =
       titleEl.closest('li') || titleEl.closest('div.element-card') || titleEl.parentNode.parentNode;
 
     if (!card) return;
 
-    // Dentro do card, buscamos o Link e o ID de Exibição
+    // Link e ID
     const linkEl = titleEl.closest('a')
       ? titleEl.closest('a')
       : card.querySelector('a[href*="course_id="], a[href*="/launcher"]');
 
     if (!linkEl) return;
 
-    // Extrair URL e ID interno
-    const name = titleEl.innerText.trim();
+    const name = titleEl.textContent.trim();
     let url = linkEl.href;
     let internalId = null;
 
+    // Extrair ID interno (course_id)
     if (url.startsWith('javascript') || !url.includes('http')) {
       const idAttr = linkEl.id;
       if (idAttr && idAttr.startsWith('course-link-')) {
@@ -69,66 +89,40 @@ function DOM_scanTermsAndCourses_Injected() {
 
     if (!name || !url || !internalId) return;
 
-    // 2. Buscar o ID de Exibição (Display ID) para saber o bimestre
-    // Exemplo: MMB002-2025S1B2-T006
-    // Procuramos qualquer span que tenha id começando com 'course-id-' DENTRO do card
+    // 4. Buscar Display ID (Ex: MMB002-2025S1B2-T006)
     let displayIdRaw = '';
     const idSpan = card.querySelector('span[id^="course-id-"]');
 
     if (idSpan) {
       displayIdRaw = idSpan.innerText.trim();
     } else {
-      // Fallback: Tenta achar pelo texto padrao usando Regex no card todo
-      // Padrão: 4 letras, 3 numeros - 4 digitos S 1 digito B 1 digito
-      // Ex: ADM001-2024S2B1
       const matchText = card.innerText.match(/([A-Z]{3}\d{3}-\d{4}S\dB\d)/);
       if (matchText) displayIdRaw = matchText[1];
     }
 
-    // 3. Parse do Bimestre
-    // Padrão esperado: ...-YYYYSuBv... (Year, Semester, Bimestre)
-    // Ex: 2025S2B1 -> Ano 2025, Sem 2, Bim 1
+    // 5. Parse do Bimestre (2025S2B1)
     const navMatch = displayIdRaw.match(/-(\d{4})S(\d)B(\d)/);
 
     let termKey = 'Outros Cursos';
-    let sortOrder = 0; // Para ordenação posterior
+    let sortOrder = 0;
 
     if (navMatch) {
       const year = navMatch[1];
-      const semester = navMatch[2]; // 1 ou 2
-      const bimestre = navMatch[3]; // 1 ou 2 (dentro do semestre)
-
-      // Formatar Termo Amigável
-      // Se semestre 1 -> Bimestres são 1 e 2
-      // Se semestre 2 -> Bimestres são 3 e 4 (na logica da UNIVESP ou mantemos B1/B2 do semestre?)
-      // O usuário mencionou "2025/2 - 4º Bimestre".
-      // Se o ID diz 2025S2B2 -> Isso é Semestre 2, Bimestre 2 (logo, 4º do ano).
-      // Logica:
-      // S1B1 = 1º Bimestre
-      // S1B2 = 2º Bimestre
-      // S2B1 = 3º Bimestre
-      // S2B2 = 4º Bimestre
+      const semester = navMatch[2];
+      const bimestre = navMatch[3];
 
       let realBimestre = parseInt(bimestre);
-
       if (semester === '1') {
-        realBimestre = parseInt(bimestre);
+        realBimestre = parseInt(bimestre); // 1 ou 2
       } else if (semester === '2') {
-        realBimestre = parseInt(bimestre) + 2;
+        realBimestre = parseInt(bimestre) + 2; // 3 ou 4
       }
 
       termKey = `${year}/${semester} - ${realBimestre}º Bimestre`;
-
-      // Chave de ordenação: YYYY + S + B (Ex: 202522)
       sortOrder = parseInt(`${year}${semester}${bimestre}`);
-    } else {
-      // Tentar capturar termos sem esse padrao se houver cabeçalhos REGULAR_TERM (fallback hibrido)
-      // Mas se o usuario quer por ID, ficamos no ID.
-      // Se não tiver ID padrao, vai para 'Outros'.
-      sortOrder = 0;
     }
 
-    // Adicionar ao Mapa
+    // Adicionar Map
     if (!termsMap.has(termKey)) {
       termsMap.set(termKey, {
         order: sortOrder,
@@ -137,13 +131,12 @@ function DOM_scanTermsAndCourses_Injected() {
     }
 
     const group = termsMap.get(termKey);
-    // Evita duplicatas (as vezes o mesmo curso aparece em listas diferentes no DOM mobile/desktop)
     if (!group.courses.some((c) => c.courseId === internalId)) {
       group.courses.push({ name, url, courseId: internalId });
     }
   });
 
-  // Converter Mapa para Array
+  // Mapa -> Array
   const termsArray = [];
   termsMap.forEach((val, key) => {
     termsArray.push({
@@ -153,25 +146,25 @@ function DOM_scanTermsAndCourses_Injected() {
     });
   });
 
-  // Ordenar Termos (Antigo -> Novo)
+  // Ordenar
   termsArray.sort((a, b) => {
-    if (a._sort === 0) return 1; // Outros pro fim
+    if (a._sort === 0) return 1;
     if (b._sort === 0) return -1;
-    return a._sort - b._sort;
+    return a._sort - b._sort; // Recentes primeiro na UI será invertido
   });
 
-  // Limpar metadados auxiliares
   const finalTerms = termsArray.map((t) => ({ name: t.name, courses: t.courses }));
 
   results.terms = finalTerms;
   results.success = finalTerms.length > 0;
-  if (!results.success) results.message = 'Nenhum curso identificado com padrão de data.';
+  if (!results.success)
+    results.message = 'Nenhum curso identificado. Tente rolar a página manualmente.';
 
   return results;
 }
 
 // -- FUNÇÃO INJETADA PARA PROCESSAR LISTA --
-async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
+export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
   const results = [];
 
   // Função auxiliar de scraping de semanas (Duplicada aqui pois contexto injetado não tem imports)
