@@ -1,3 +1,82 @@
-# apenas para testes
-node_modules
+# ==========================
+# Dependências e Módulos
+# ==========================
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+package-lock.json # Mantemos versionado por ser boa prática, mas se quiser ignorar descomente
+# .npm/
+
+# ==========================
+# Testes e Cobertura
+# ==========================
 coverage/
+.nyc_output/
+reports/
+junit.xml
+
+# ==========================
+# Produção e Build
+# ==========================
+dist/
+build/
+out/
+.next/
+.nuxt/
+*.min.js
+*.min.css
+
+# ==========================
+# Ambiente e Segurança (CRÍTICO)
+# ==========================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.pem
+*.key
+*.cert
+
+# ==========================
+# Logs e Databases Locais
+# ==========================
+*.log
+logs/
+*.sqlite
+*.db
+
+# ==========================
+# Sistema Operacional (OS)
+# ==========================
+# Linux / Debian / ChromeOS
+*~
+.fuse_hidden*
+.directory
+.Trash-*
+.nfs*
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+._*
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+# ==========================
+# IDEs e Editores
+# ==========================
+.idea/
+.vscode/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+.project
+.settings/
+.classpath
