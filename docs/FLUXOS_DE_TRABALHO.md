@@ -24,7 +24,7 @@ Nosso fluxo segue um padrão simples de Feature Branch.
     - `bug/correcao-critica`
     - `refactor/limpeza-codigo`
     - `docs/atualizacao-readme`
-    - **Dica:** Use `git switch -c feat/nome` (Moderno) ao invés de `git checkout -b`.
+    - **Dica:** Use `git switch -c feat/nome` (Moderno) - **NÃO USE** `git checkout -b`.
     - **Dica:** Use os workflows automatizados (`.agent/workflows/`).
 
 ### 3. Codificação (Coding Rules)
@@ -69,9 +69,11 @@ Para evitar que a árvore balance e caia (branches divergentes), siga este ritua
 2.  **Balance a Árvore:** `git pull origin dev` (Garanta que você tem a verdade).
 3.  **Teste o Solo:** `npm test` (Nunca crie branch a partir de uma dev quebrada).
 4.  **REGRA DE OURO (Zero Divergência):**
+    > [!IMPORTANT]
+    > **Nunca crie uma feature branch se `main` e `dev` estiverem divergentes.**
     *   Verifique: `git diff main dev`
     *   **Deve retornar vazio.** Se houver diferença, PARE.
-    *   *Solução:* Crie uma branch `chore/sync`, resolva a divergência, mergeie e só então comece sua feature.
+    *   *Solução:* Crie uma branch `chore/sync`, resolva a divergência (rebase/merge), mergeie e só então comece sua feature.
 5.  **Crie:** `git switch -c feat/sua-feature`.
 
 ### 🛬 Pouso (Ao terminar)

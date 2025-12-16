@@ -15,9 +15,10 @@ Para entender como usamos, como construímos e no que acreditamos:
 | :--- | :--- |
 | **[🎓 Identidade do Projeto](./docs/IDENTIDADE_DO_PROJETO.md)** | Nossa filosofia, visão e funcionalidades principais. Comece por aqui! |
 | **[🏗️ Tecnologias & Arquitetura](./docs/TECNOLOGIAS_E_ARQUITETURA.md)** | A "Bíblia Técnica": Stack, Diagramas e Protocolo de Privacidade. |
-| **[⚙️ Fluxos de Trabalho](./docs/FLUXOS_DE_TRABALHO.md)** | Guia para Desenvolvedores: Como contribuir, padrões e regras. |
+| **[⚙️ Fluxos de Trabalho](./docs/FLUXOS_DE_TRABALHO.md)** | Guia para Desenvolvedores: Como contribuir, padrões e regras ("Zero Divergência"). |
 | **[📜 Regras de Negócio](./docs/REGRAS_DE_NEGOCIO.md)** | Especificação funcional do sistema e lógica de negócios. |
-| **[🧪 Estudos & Engenharia](./estudos/workflow-worktree-analise/RESUMO_GERAL_STUDY.md)** | Resumos técnicos, Estado da Arte e Workflows. |
+| **[📘 Manual de Engenharia](./docs/manual-engenharia.md)** | Estado da Arte técnico: Análise de Workflows e Git Moderno. |
+| **[🧪 Estudos & Workflow](./docs/estudos/workflow_resumo.md)** | Resumo consolidado dos estudos de Engenharia de Processos. |
 | **[⚖️ Conformidade Jurídica](./estudos/juridico/relatorio_conformidade.md)** | Relatório de conformidade legal e privacidade. |
 | **[📝 Log de Mudanças (Changelog)](./CHANGELOG.md)** | Histórico de versões e atualizações. |
 
