@@ -64,3 +64,12 @@ Este documento detalha o comportamento funcional e as decisões lógicas do sist
 ---
 
 > *Este documento deve se manter agnóstico à linguagem de programação. Alterações na implementação técnica não devem, idealmente, alterar este documento, a menos que a regra de negócio mude.*
+
+---
+
+### Documentação
+<!-- Documentação do projeto -->
+**[README.md](../README.md)**            Documentação do projeto.             
+<!-- Histórico de versões e atualizações -->
+**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+

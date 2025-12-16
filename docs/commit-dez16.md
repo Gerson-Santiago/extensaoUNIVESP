@@ -56,3 +56,12 @@ A transição para um workflow mais rígido trouxe benefícios tangíveis observ
 
 ### Conclusão
 O projeto evoluiu de um "hack" de extensão para um produto de software com ciclo de vida (ALM) maduro, pronto para manutenção a longo prazo e colaboração em equipe.
+
+---
+
+### Documentação
+<!-- Documentação do projeto -->
+**[README.md](../README.md)**            Documentação do projeto.             
+<!-- Histórico de versões e atualizações -->
+**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+

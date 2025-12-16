@@ -98,3 +98,12 @@ O comando legacy `git checkout` acumulava muitas responsabilidades. Adotamos os 
 | **Criar Branch** | `git switch -c nova` |
 | **Resetar Arquivo** | `git restore file` |
 
+---
+
+### Documentação
+<!-- Documentação do projeto -->
+**[README.md](../README.md)**            Documentação do projeto.             
+<!-- Histórico de versões e atualizações -->
+**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+
+

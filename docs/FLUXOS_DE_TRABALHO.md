@@ -134,3 +134,12 @@ Novas dependências são um risco de segurança e performance.
 ---
 
 > *"Qualidade não é um ato, é um hábito."*
+
+---
+
+### Documentação
+<!-- Documentação do projeto -->
+**[README.md](../README.md)**            Documentação do projeto.             
+<!-- Histórico de versões e atualizações -->
+**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+

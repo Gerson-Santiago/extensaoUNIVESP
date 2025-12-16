@@ -90,3 +90,12 @@ Utilizamos **Jest** (`jest`, `jest-environment-jsdom`) para testes unitários e 
 *   **package.json:**
     *   `npm run lint`: Validação de código.
     *   `npm test`: Execução de testes.
+
+---
+
+### Documentação
+<!-- Documentação do projeto -->
+**[README.md](../README.md)**            Documentação do projeto.             
+<!-- Histórico de versões e atualizações -->
+**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+

@@ -28,3 +28,12 @@ O menu da extensão (Popup) oferece atalhos diretos para os seguintes portais of
 - **Sistema de Provas**: `https://prova.univesp.br/`
 
 Esses links apenas abrem uma nova aba no navegador, sem passar parâmetros adicionais.
+
+---
+
+### Documentação
+<!-- Documentação do projeto -->
+**[README.md](../README.md)**            Documentação do projeto.             
+<!-- Histórico de versões e atualizações -->
+**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+

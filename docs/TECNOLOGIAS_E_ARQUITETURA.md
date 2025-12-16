@@ -106,3 +106,12 @@ Para mais detalhes jurídicos e técnicos sobre dados, veja:
 ```
 
 > *Documento atualizado em: Dezembro 2025 (v2.5.4).*
+
+---
+
+### Documentação
+<!-- Documentação do projeto -->
+**[README.md](../README.md)**            Documentação do projeto.             
+<!-- Histórico de versões e atualizações -->
+**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+

@@ -90,3 +90,12 @@ Este documento contém o histórico de mudanças de versões antigas do projeto.
 ### Correções
 - **Autopreenchimento SEI**: Corrigido um erro de digitação no código de cor que indicava o preenchimento automático.
 - **Link do GitHub**: Corrigido o link no rodapé do popup para abrir em uma nova aba.
+
+---
+
+### Documentação
+<!-- Documentação do projeto -->
+**[README.md](../README.md)**            Documentação do projeto.             
+<!-- Histórico de versões e atualizações -->
+**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+
