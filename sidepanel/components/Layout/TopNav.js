@@ -9,9 +9,9 @@ export class TopNav {
     nav.className = 'top-nav';
 
     const tabs = [
-      { id: 'home', icon: '🏠', label: 'Home' },
+      { id: 'home', icon: '🏠', label: 'Início' },
       { id: 'courses', icon: '📚', label: 'Cursos' },
-      { id: 'settings', icon: '⚙️', label: 'Config' },
+      { id: 'settings', icon: '⚙️', label: 'Configurações' },
     ];
 
     tabs.forEach((tab) => {
@@ -21,6 +21,7 @@ export class TopNav {
                 <span class="nav-icon">${tab.icon}</span>
                 <span class="nav-label">${tab.label}</span>
             `;
+      btn.title = `Ir para ${tab.label}`;
       btn.onclick = () => {
         this.setActive(tab.id);
         this.onNavigate(tab.id);
