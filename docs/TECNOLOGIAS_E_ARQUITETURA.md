@@ -80,7 +80,9 @@ Este projeto segue estritamente a filosofia **Local-First**.
 2.  **Sem Analytics**: Não usamos Google Analytics, Mixpanel ou qualquer rastreador.
 3.  **Auditoria Pública**: O código é aberto para que qualquer um possa verificar que não há envio de dados oculto.
 
----
+Para mais detalhes jurídicos e técnicos sobre dados, veja:
+*   **[📜 Protocolo de Privacidade e Dados (DATA_HANDLING.md)](./DATA_HANDLING.md)**: Regras completas.
+*   **[🏗️ Manual de Engenharia](../estudos/engenharia/manual-engenharia.md)**: Detalhes de implementação.
 
 ---
 

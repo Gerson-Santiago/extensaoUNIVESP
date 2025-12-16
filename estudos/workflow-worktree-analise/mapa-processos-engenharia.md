@@ -13,10 +13,11 @@ Para entender este sistema complexo, siga esta ordem de leitura. Cada documento 
 4.  **[TECNOLOGIAS_E_ARQUITETURA.md](../../docs/TECNOLOGIAS_E_ARQUITETURA.md)**: O mapa do território (MVC, Pastas).
 5.  **[PADROES_DO_PROJETO.md](../../docs/PADROES_DO_PROJETO.md)**: O guia de estilo (Linting, Commits).
 6.  **[manual-engenharia.md](../engenharia/manual-engenharia.md)**: A análise teórica da nossa prática.
+7.  **[REGRAS_DE_NEGOCIO.md](../../docs/REGRAS_DE_NEGOCIO.md)**: O manual do comportamento do sistema (`Tabs.js`, `Scraper`).
 
 ### 🔴 Nível 3: Operação Avançada (SCM)
-7.  **Este Documento**: O BPMN operacional.
-8.  **[analise-workflow-atual.md](analise-workflow-atual.md)**: A auditoria do estado atual.
+8.  **Este Documento**: O BPMN operacional.
+9.  **[analise-workflow-atual.md](analise-workflow-atual.md)**: A auditoria do estado atual.
 
 ---
 
