@@ -58,10 +58,30 @@ O projeto possui **Husky** configurado.
 - **Idioma**: A descrição do commit deve ser sempre em **Português do Brasil**.
     - ✅ `feat: adiciona botão de login`
     - ❌ `feat: add login button`
-- Abra o PR descrevendo o que foi feito. deve ser sempre em **Português do Brasil**.
-    - ✅ `feat: adiciona botão de login`
-    - ❌ `feat: add login button`
 - Abra o PR descrevendo o que foi feito.
+
+## 🔄 6. Ciclo de Vida e Sincronização (Anti-Caos)
+
+Para evitar que a árvore balance e caia (branches divergentes), siga este ritual sagrado:
+
+### 🛫 Decolagem (Antes de criar branch)
+1.  **Vá para a base:** `git switch dev`
+2.  **Balance a Árvore:** `git pull origin dev` (Garanta que você tem a verdade).
+3.  **Teste o Solo:** `npm test` (Nunca crie branch a partir de uma dev quebrada).
+4.  **Crie:** `git switch -c feat/sua-feature`.
+
+### 🛬 Pouso (Ao terminar)
+1.  **Merge Local:**
+    *   `git switch dev`
+    *   `git merge feat/sua-feature`
+2.  **Sincronização Imediata (Crucial):**
+    *   `git push origin dev`
+    *   *Se você não der push agora, a próxima pessoa (ou você mesmo no futuro) vai ramificar de uma base desatualizada.*
+
+### 🧹 Limpeza
+*   `git branch -d feat/sua-feature` (Delete branches mortas para não confundir).
+
+---
 
 ## 🏛️ Governança e Regras de Segurança
 
