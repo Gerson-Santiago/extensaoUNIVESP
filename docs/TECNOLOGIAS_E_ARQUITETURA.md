@@ -34,8 +34,8 @@ A extensão segue o padrão **MVC (Model-View-Controller)** adaptado para o cont
 flowchart LR
     subgraph "Navegador do Usuário"
         direction TB
-        UI[Side Panel / Popup (View)]
-        Logic[CourseService / RaManager (Logic)]
+        UI["Side Panel / Popup (View)"]
+        Logic["CourseService / raManager.js (Logic)"]
         Storage[(Chrome Storage (Model))]
         Web[Página AVA/SEI]
     end
@@ -94,10 +94,12 @@ Para mais detalhes jurídicos e técnicos sobre dados, veja:
 ├── popup/           # Interface do popup (ícone na barra)
 ├── sidepanel/       # Lógica e UI do painel lateral
 │   ├── components/  # Componentes reutilizáveis
+│   ├── data/        # Dados estáticos/mock
 │   ├── logic/       # Controladores (Batch Scrapers, Managers)
 │   ├── services/    # Camada de Serviço (CourseService, BatchImportFlow)
-│   ├── views/       # Telas principais
-│   └── styles/      # CSS modular
+│   ├── styles/      # CSS modular
+│   ├── utils/       # Utilitários específicos do painel
+│   └── views/       # Telas principais
 ├── scripts/         # Scripts de Background e Content
 ├── shared/          # Utils compartilhados (Tabs, Settings, Browser)
 └── tests/           # Testes automatizados (Jest)
