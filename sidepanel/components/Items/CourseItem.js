@@ -8,7 +8,7 @@ export function createCourseElement(course, callbacks) {
   // Info Container (clicável para abrir)
   const info = document.createElement('div');
   info.className = 'item-info';
-  info.title = 'Clique para abrir o AVA';
+  info.title = 'Abrir página da matéria no AVA';
   info.onclick = () => {
     if (callbacks.onClick) callbacks.onClick(course.url);
   };
@@ -30,7 +30,7 @@ export function createCourseElement(course, callbacks) {
   if (callbacks.onViewDetails) {
     const btnDetails = document.createElement('button');
     btnDetails.textContent = 'Ver Semanas'; // Texto explícito
-    btnDetails.title = 'Ver Semanas';
+    btnDetails.title = 'Visualizar semanas e conteúdo';
     btnDetails.className = 'btn-grid-action'; // Nova classe para estilizar
 
     btnDetails.onclick = (e) => {
@@ -48,7 +48,7 @@ export function createCourseElement(course, callbacks) {
   const btnDel = document.createElement('button');
   btnDel.className = 'btn-delete';
   btnDel.innerHTML = '&times;';
-  btnDel.title = 'Remover';
+  btnDel.title = 'Remover matéria da lista';
   btnDel.onclick = (e) => {
     e.stopPropagation();
     if (confirm(`Remover "${course.name}"?`)) {
