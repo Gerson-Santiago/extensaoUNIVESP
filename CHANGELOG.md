@@ -1,5 +1,17 @@
 # Changelog - Versão Beta
 
+## [2.6.0] - 2025-12-16
+### Arquitetura
+- **Separação de Modais**: Divisão do fluxo de importação em dois estágios para maior estabilidade:
+    - `LoginWaitModal`: Interface passiva que aguarda o login do usuário.
+    - `BatchImportModal`: Focado exclusivamente na seleção e importação, sem lógica de navegação.
+- **Orquestrador de Importação**: Novo serviço `BatchImportFlow` que gerencia a decisão de qual modal exibir.
+
+### UX
+- **Smart Switch**: Detecção inteligente de abas do AVA já abertas.
+- **Zero Redirect Loop**: Correção definitiva dos loops de redirecionamento.
+- **Unificação**: Botão "Importar em Lote" das Configurações agora usa o mesmo fluxo seguro da tela de Cursos.
+
 ## [2.5.4] - 2025-12-15
 ### Refatoração
 - **Gerenciamento de Abas Centralizado**: Refatoração completa da lógica de manipulação de abas, movendo toda a responsabilidade para a classe `Tabs.js`.

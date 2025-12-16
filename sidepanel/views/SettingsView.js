@@ -1,5 +1,5 @@
 import { AddManualModal } from '../components/Modals/AddManualModal.js';
-import { BatchImportModal } from '../components/Modals/BatchImportModal.js';
+// BatchImportModal removed (Delegated to Controller)
 import { CourseRepository } from '../data/repositories/CourseRepository.js';
 import { CourseService } from '../services/CourseService.js';
 import { StatusManager } from '../utils/statusManager.js';
@@ -8,6 +8,7 @@ import { ConfigForm } from '../components/Forms/ConfigForm.js';
 export class SettingsView {
   constructor(callbacks = {}) {
     this.onNavigate = callbacks.onNavigate;
+    this.onImportBatch = callbacks.onImportBatch; // New Callback
     this.feedback = new StatusManager('settingsFeedback');
     this.configForm = new ConfigForm(new StatusManager('configFeedback'));
     this.courseService = new CourseService();
@@ -15,17 +16,13 @@ export class SettingsView {
     this.addManualModal = new AddManualModal(() =>
       this.feedback.show('Matéria adicionada com sucesso!', 'success')
     );
-    this.batchImportModal = new BatchImportModal(() => {
-      this.feedback.show('Importação concluída!', 'success');
-      if (this.onNavigate) setTimeout(() => this.onNavigate('courses'), 1500);
-    });
+    // BatchImportModal extracted to Controller (sidepanel.js)
   }
 
   render() {
     const div = document.createElement('div');
     div.className = 'view-settings';
 
-    div.className = 'view-settings';
     div.innerHTML = `
             <h2>Configurações</h2>
             
@@ -80,7 +77,10 @@ export class SettingsView {
     const btnClear = document.getElementById('btnClearAll');
 
     if (btnManual) btnManual.onclick = () => this.addManualModal.open();
-    if (btnBatch) btnBatch.onclick = () => this.batchImportModal.open();
+    if (btnBatch)
+      btnBatch.onclick = () => {
+        if (this.onImportBatch) this.onImportBatch();
+      };
     if (btnFeedback)
       btnFeedback.onclick = () => {
         if (this.onNavigate) this.onNavigate('feedback');

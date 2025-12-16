@@ -1,141 +1,88 @@
-import { BatchImportModal } from '../../sidepanel/components/Modals/BatchImportModal.js';
+import { BatchImportFlow } from '../../sidepanel/services/BatchImportFlow.js';
 
-describe('Integration: Batch Import Flow', () => {
-  const mockSuccess = jest.fn();
+describe('Integration: Batch Import Flow (Split Architecture)', () => {
+  let mockBatchModal;
+  let mockLoginWaitModal;
+  let flow;
 
   beforeEach(() => {
-    document.body.innerHTML = '<div id="app"></div>';
     jest.clearAllMocks();
-    jest.useFakeTimers();
 
-    // Mock Storage
-    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) =>
-      callback({ savedCourses: [] })
+    // Mock Modals
+    mockBatchModal = { open: jest.fn() };
+    mockLoginWaitModal = { open: jest.fn() };
+
+    // Instantiate Flow with Mocks
+    flow = new BatchImportFlow({
+      batchImportModal: mockBatchModal,
+      loginWaitModal: mockLoginWaitModal,
+    });
+
+    // Default Chrome Mocks
+    chrome.tabs.create = jest.fn().mockImplementation(({ url }, cb) => {
+      const tab = { id: 888, url, active: true };
+      if (cb) cb(tab);
+      return Promise.resolve(tab);
+    });
+    chrome.tabs.update = jest.fn().mockResolvedValue({});
+    chrome.windows = { update: jest.fn().mockResolvedValue({}) };
+  });
+
+  test('Should open BatchImportModal directly if AVA course tab is found', async () => {
+    // Setup: Existing Tab on Course Page
+    chrome.tabs.query = jest.fn((q, cb) => {
+      const result = [
+        { id: 123, url: 'https://ava.univesp.br/ultra/course', active: false, windowId: 1 },
+      ];
+      if (cb) cb(result);
+      return Promise.resolve(result);
+    });
+
+    await flow.start();
+
+    // Expect: Switch to tab
+    expect(chrome.tabs.update).toHaveBeenCalledWith(123, { active: true });
+    // Expect: Open BatchModal
+    expect(mockBatchModal.open).toHaveBeenCalledWith(123);
+    // Expect: NOT Open LoginWait
+    expect(mockLoginWaitModal.open).not.toHaveBeenCalled();
+  });
+
+  test('Should open LoginWaitModal if AVA tab is found but NOT on course page', async () => {
+    // Setup: Existing Tab on Login Page
+    chrome.tabs.query = jest.fn((q, cb) => {
+      const result = [{ id: 123, url: 'https://ava.univesp.br/login', active: false }];
+      if (cb) cb(result);
+      return Promise.resolve(result);
+    });
+
+    await flow.start();
+
+    // Expect: Switch to tab
+    expect(chrome.tabs.update).toHaveBeenCalledWith(123, { active: true });
+    // Expect: Open LoginWaitModal
+    expect(mockLoginWaitModal.open).toHaveBeenCalled();
+    // Expect: NOT Open BatchModal
+    expect(mockBatchModal.open).not.toHaveBeenCalled();
+  });
+
+  test('Should create new tab and open LoginWaitModal if no AVA tab found', async () => {
+    // Setup: No AVA tabs
+    chrome.tabs.query = jest.fn((q, cb) => {
+      const result = [];
+      if (cb) cb(result);
+      return Promise.resolve(result);
+    });
+
+    await flow.start();
+
+    // Expect: Create Tab
+    expect(chrome.tabs.create).toHaveBeenCalledWith(
+      expect.objectContaining({ url: 'https://ava.univesp.br/ultra/course' }),
+      expect.any(Function)
     );
-    /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((items, callback) =>
-      callback()
-    );
 
-    // Mock Tabs
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((query, callback) => {
-      callback([{ id: 999, url: 'https://ava.univesp.br/ultra/course', active: true }]);
-    });
-
-    // Mock Scripting
-    chrome.scripting = /** @type {any} */ ({
-      executeScript: jest.fn(),
-    });
-  });
-
-  afterEach(() => {
-    jest.useRealTimers();
-  });
-
-  test('should scrape multiple courses and save them', async () => {
-    // 1. Setup Mock Terms Result (First Step)
-    const mockTermsResult = {
-      success: true,
-      terms: [
-        {
-          name: '2025/1 - 1º Bimestre',
-          courses: [
-            { name: 'Curso Batch 1', url: 'https://ava.univesp.br/course1', courseId: 'c1' },
-            { name: 'Curso Batch 2', url: 'https://ava.univesp.br/course2', courseId: 'c2' },
-          ],
-        },
-      ],
-      message: '',
-    };
-
-    // 2. Setup Mock Deep Scrape Result (Second Step)
-    const mockDeepScrapeResult = [
-      { name: 'Curso Batch 1', url: 'https://ava.univesp.br/course1_final', weeks: [] },
-      { name: 'Curso Batch 2', url: 'https://ava.univesp.br/course2_final', weeks: [] },
-    ];
-
-    // Mock ExecuteScript to return Terms first, then Deep Scrape result
-    /** @type {jest.Mock} */ (chrome.scripting.executeScript)
-      .mockResolvedValueOnce([{ result: mockTermsResult }]) // 1st call: scrapeAvailableTerms
-      .mockResolvedValueOnce([{ result: mockDeepScrapeResult }]); // 2nd call: processSelectedCourses
-
-    // 3. Open Modal
-    const modal = new BatchImportModal(mockSuccess);
-    modal.open();
-
-    // Wait for autoLoadTerms (microtasks)
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-
-    // 4. Verify Terms Loaded and UI Updated
-    const termsList = document.getElementById('terms-list');
-    expect(termsList.innerHTML).toContain('2025/1 - 1º Bimestre');
-    expect(termsList.innerHTML).toContain('2025/1 - 1º Bimestre');
-
-    const btnRun = /** @type {HTMLButtonElement} */ (document.getElementById('btnRunBatch'));
-    expect(btnRun.disabled).toBe(false);
-
-    // 5. Trigger Import
-    btnRun.click();
-
-    // 6. Wait for Deep Scrape (microtasks)
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-
-    // 7. Verify Script Execution
-    // Call 1: scrapeAvailableTerms (no args)
-    // Call 2: processSelectedCourses (args: [courses])
-    expect(chrome.scripting.executeScript).toHaveBeenCalledTimes(2);
-
-    // Check 2nd call args
-    const secondCall = /** @type {jest.Mock} */ (chrome.scripting.executeScript).mock.calls[1][0];
-    expect(secondCall.args[0]).toHaveLength(2); // 2 courses to scrape
-
-    // 8. Verify Storage Save
-    expect(chrome.storage.sync.set).toHaveBeenCalled();
-    const setCall = /** @type {jest.Mock} */ (chrome.storage.sync.set).mock.calls[0][0];
-    expect(setCall.savedCourses).toHaveLength(2);
-
-    // 9. Verify Success Callback
-    jest.runAllTimers();
-    expect(mockSuccess).toHaveBeenCalled();
-
-    expect(document.querySelector('.modal-overlay')).toBeNull();
-  });
-
-  test('should handle incorrect page', async () => {
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((query, callback) => {
-      // Wrong URL
-      callback([{ id: 999, url: 'https://google.com', active: true }]);
-    });
-
-    const modal = new BatchImportModal(mockSuccess);
-    modal.open(); // Triggers autoLoadTerms immediately
-
-    await Promise.resolve(); // microtasks
-    await Promise.resolve();
-    await Promise.resolve();
-    await Promise.resolve();
-
-    // Should try to update tab to correct URL
-    expect(chrome.tabs.update).toHaveBeenCalledWith(999, {
-      url: 'https://ava.univesp.br/ultra/course',
-    });
-
-    const status = document.getElementById('batchStatus');
-    expect(status.textContent).toContain('Redirecionando para Cursos');
+    // Expect: Open LoginWaitModal (because new tab is assumed not ready/login)
+    expect(mockLoginWaitModal.open).toHaveBeenCalled();
   });
 });

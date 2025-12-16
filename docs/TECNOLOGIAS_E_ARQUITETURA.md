@@ -93,7 +93,7 @@ Este projeto segue estritamente a filosofia **Local-First**.
 ├── sidepanel/       # Lógica e UI do painel lateral
 │   ├── components/  # Componentes reutilizáveis
 │   ├── logic/       # Controladores (Batch Scrapers, Managers)
-│   ├── services/    # Camada de Serviço (Business Logic)
+│   ├── services/    # Camada de Serviço (CourseService, BatchImportFlow)
 │   ├── views/       # Telas principais
 │   └── styles/      # CSS modular
 ├── scripts/         # Scripts de Background e Content

@@ -11,10 +11,15 @@ export class BatchImportModal extends Modal {
     this.foundTerms = []; // To store fetched terms
   }
 
-  open() {
+  /**
+   * @param {number} [targetTabId] - ID of the AVA tab to scrape. If not provided, tries current.
+   */
+  open(targetTabId) {
+    this.targetTabId = targetTabId;
+
     const content = `
             <p style="font-size: 13px; color: #666; margin-bottom: 15px;">
-                Identificando bimestres e cursos (via ID)...
+                Identificando bimestres e cursos...
             </p>
 
             <div id="batch-step-1" style="display: block;">
@@ -32,46 +37,53 @@ export class BatchImportModal extends Modal {
 
     const overlay = this.render(content);
     this.setupLogic(overlay);
-    this.autoLoadTerms(overlay);
+    this.loadTerms(overlay);
   }
 
-  async autoLoadTerms(overlay) {
+  async loadTerms(overlay) {
     const status = overlay.querySelector('#batchStatus');
     const termsList = overlay.querySelector('#terms-list');
     const btnRun = overlay.querySelector('#btnRunBatch');
 
-    status.textContent = 'Verificando aba...';
+    status.textContent = 'Acessando dados da página...';
 
-    const tab = await Tabs.getCurrentTab();
-    if (!tab) {
-      status.textContent = 'Erro ao acessar aba.';
+    // Use passed tabId or get current
+    let tabId = this.targetTabId;
+    if (!tabId) {
+      const currentForFallback = await Tabs.getCurrentTab();
+      if (currentForFallback) tabId = currentForFallback.id;
+    }
+
+    if (!tabId) {
+      status.textContent = 'Erro: Nenhuma aba identificada.';
+      status.style.color = 'red';
       return;
     }
 
-    if (!tab.url.includes('/ultra/course') && !tab.url.includes('bb_router')) {
-      status.textContent = 'Redirecionando para Cursos...';
-      chrome.tabs.update(tab.id, { url: 'https://ava.univesp.br/ultra/course' });
+    try {
+      const result = await scrapeAvailableTerms(tabId);
 
-      // Wait for reload
-      setTimeout(() => {
-        this.autoLoadTerms(overlay);
-      }, 4000);
-      return;
-    }
-
-    status.textContent = 'Lendo bimestres...';
-    const result = await scrapeAvailableTerms(tab.id);
-
-    if (result.success && result.terms) {
-      this.foundTerms = result.terms;
-      this.renderTerms(termsList);
-      status.textContent = 'Selecione as disciplinas que deseja importar.';
-      btnRun.disabled = false;
-    } else {
-      termsList.innerHTML = `<div style="color: red; text-align: center;">${result.message || 'Falha ao ler cursos.'}</div>`;
-      status.textContent = 'Tente recarregar a página e abrir novamente.';
+      if (result.success && result.terms) {
+        this.foundTerms = result.terms;
+        this.renderTerms(termsList);
+        status.textContent = 'Selecione as disciplinas que deseja importar.';
+        status.style.color = '#333';
+        btnRun.disabled = false;
+      } else {
+        // Just report error, no smart retry/confirmation here. The Controller handles pre-checks.
+        status.textContent = 'Falha ao ler cursos. A página mudou? Tente recarregar a aba.';
+        status.style.color = 'orange';
+        termsList.innerHTML =
+          '<div style="color:red; text-align:center;">Não foi possível ler os cursos.</div>';
+      }
+    } catch (e) {
+      console.error(e);
+      status.textContent = 'Erro de comunicação com a página.';
+      status.style.color = 'red';
     }
   }
+
+  // NOTE: showConfirmationUI removed as it is now handled by LoginWaitModal upstream.
 
   renderTerms(container) {
     container.innerHTML = '';
@@ -157,9 +169,10 @@ export class BatchImportModal extends Modal {
         });
 
         // Execute Deep Scrape
-        const tab = await Tabs.getCurrentTab();
-        if (tab) {
-          const processedList = await processSelectedCourses(tab.id, allCoursesToScrape);
+        // Use ID we already found
+        const tabId = this.targetTabId;
+        if (tabId) {
+          const processedList = await processSelectedCourses(tabId, allCoursesToScrape);
 
           status.textContent = `Processado! Salvando ${processedList.length} cursos...`;
 

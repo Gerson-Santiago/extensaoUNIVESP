@@ -7,17 +7,37 @@ import { FeedbackView } from './views/FeedbackView.js';
 import { Tabs } from '../shared/utils/Tabs.js';
 import { BatchImportModal } from './components/Modals/BatchImportModal.js';
 import { AddManualModal } from './components/Modals/AddManualModal.js';
+import { LoginWaitModal } from './components/Modals/LoginWaitModal.js';
 import { CourseService } from './services/CourseService.js';
+import { BatchImportFlow } from './services/BatchImportFlow.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const courseService = new CourseService();
 
-  // Inicialização das Views e Callbacks
+  // Initialization of Views and Callbacks
 
-  // Modais Compartilhados
+  // 1. Core Modals
   const batchImportModal = new BatchImportModal(() => {
-    // Ao terminar importação, recarregar cursos se estiver na view de cursos
     if (coursesView) coursesView.loadCourses();
+  });
+
+  // Flow Controller
+  let batchImportFlow; // Defined below after modals
+
+  const loginWaitModal = new LoginWaitModal({
+    onConfirm: () => {
+      // User clicked "Already Logged In". Retry flow.
+      if (batchImportFlow) batchImportFlow.start();
+    },
+    onCancel: () => {
+      console.warn('Import blocked by user (Login Wait Cancelled)');
+    },
+  });
+
+  // Instantiate Service
+  batchImportFlow = new BatchImportFlow({
+    batchImportModal,
+    loginWaitModal,
   });
 
   const addManualModal = new AddManualModal();
@@ -26,6 +46,9 @@ document.addEventListener('DOMContentLoaded', () => {
     onNavigate: (viewId) => {
       layout.topNav.setActive(viewId);
       layout.navigateTo(viewId);
+    },
+    onImportBatch: () => {
+      if (batchImportFlow) batchImportFlow.start();
     },
   });
 
@@ -39,7 +62,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
 
     onAddBatch: () => {
-      batchImportModal.open();
+      batchImportFlow.start();
     },
     onAddManual: () => {
       addManualModal.open();
