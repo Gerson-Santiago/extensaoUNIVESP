@@ -21,6 +21,7 @@ Para entender este sistema complexo, siga esta ordem de leitura.
 
 ### 🔴 Nível 3: Operação Avançada
 8.  **Este Documento**: O BPMN operacional e Teoria Unificada.
+9.  **[Guia de Forense Git](guia-forense-git.md)** new: Como investigar históricos perdidos e branches deletadas.
 
 ---
 
