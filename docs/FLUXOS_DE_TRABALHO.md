@@ -68,7 +68,11 @@ Para evitar que a árvore balance e caia (branches divergentes), siga este ritua
 1.  **Vá para a base:** `git switch dev`
 2.  **Balance a Árvore:** `git pull origin dev` (Garanta que você tem a verdade).
 3.  **Teste o Solo:** `npm test` (Nunca crie branch a partir de uma dev quebrada).
-4.  **Crie:** `git switch -c feat/sua-feature`.
+4.  **REGRA DE OURO (Zero Divergência):**
+    *   Verifique: `git diff main dev`
+    *   **Deve retornar vazio.** Se houver diferença, PARE.
+    *   *Solução:* Crie uma branch `chore/sync`, resolva a divergência, mergeie e só então comece sua feature.
+5.  **Crie:** `git switch -c feat/sua-feature`.
 
 ### 🛬 Pouso (Ao terminar)
 1.  **Merge Local:**
