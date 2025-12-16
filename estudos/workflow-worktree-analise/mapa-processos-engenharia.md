@@ -12,7 +12,7 @@ Para entender este sistema complexo, siga esta ordem de leitura. Cada documento 
 ### 🟡 Nível 2: Arquitetura e Padrões
 4.  **[TECNOLOGIAS_E_ARQUITETURA.md](../../docs/TECNOLOGIAS_E_ARQUITETURA.md)**: O mapa do território (MVC, Pastas).
 5.  **[PADROES_DO_PROJETO.md](../../docs/PADROES_DO_PROJETO.md)**: O guia de estilo (Linting, Commits).
-6.  **[estado-da-arte-arquitetura.md](../engenharia/estado-da-arte-arquitetura.md)**: A análise teórica da nossa prática.
+6.  **[manual-engenharia.md](../engenharia/manual-engenharia.md)**: A análise teórica da nossa prática.
 
 ### 🔴 Nível 3: Operação Avançada (SCM)
 7.  **Este Documento**: O BPMN operacional.

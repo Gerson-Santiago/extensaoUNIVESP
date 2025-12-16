@@ -24,6 +24,7 @@ Nosso fluxo segue um padrão simples de Feature Branch.
     - `bug/correcao-critica`
     - `refactor/limpeza-codigo`
     - `docs/atualizacao-readme`
+    - **Dica:** Use `git switch -c feat/nome` (Moderno) ao invés de `git checkout -b`.
     - **Dica:** Use os workflows automatizados (`.agent/workflows/`).
 
 ### 3. Codificação (Coding Rules)

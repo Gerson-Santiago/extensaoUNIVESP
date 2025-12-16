@@ -1,4 +1,4 @@
-# Estado da Arte: Análise de Engenharia da Codebase Atual
+# Manual de Engenharia da Codebase
 
 ## 🔍 Introdução
 
@@ -69,6 +69,32 @@ O arquivo `.cursorrules` e a pasta `.agent/workflows` funcionam como uma **"Cons
 ## ✅ Conclusão
 
 O projeto encontra-se em um nível de maturidade de **Software Engenheirado**, distanciando-se de scripts amadores. Ele prioriza:
-1.  **Manutenibilidade** (Arquitetura clara).
-2.  **Confiabilidade** (Testes automatizados e Linting estrito).
 3.  **Performance** (Vanilla JS otimizado).
+
+---
+
+## 5. Modern Git SCM (Switch/Restore)
+
+O comando legacy `git checkout` acumulava muitas responsabilidades. Adotamos os comandos modernos para maior segurança semântica:
+
+### A. Trocar de Branch (`git switch`)
+*   ❌ Antigo: `git checkout dev`
+*   ✅ **Novo:** `git switch dev`
+*   **Por que:** Garante que você está mudando de branch, sem risco de sobrescrever arquivos com nomes iguais.
+
+### B. Sobrescrever Arquivo (`git restore`)
+*   ❌ Antigo: `git checkout arquivo.js`
+*   ✅ **Novo:** `git restore arquivo.js`
+*   **Por que:** Explicita a ação destrutiva de descartar mudanças locais.
+
+### C. Navegação no Tempo
+*   ❌ Antigo: `git checkout a1b2c3d`
+*   ✅ **Novo:** `git switch --detach a1b2c3d`
+
+### Tabela de Migração Rápida
+| Ação | Comando Moderno 🚀 |
+| :--- | :--- |
+| **Trocar Branch** | `git switch branch` |
+| **Criar Branch** | `git switch -c nova` |
+| **Resetar Arquivo** | `git restore file` |
+

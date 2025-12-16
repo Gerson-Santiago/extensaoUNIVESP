@@ -38,6 +38,17 @@ Utilizamos Git Hooks para garantir a qualidade antes do código entrar no reposi
 
 ### 2.4 Padrão de Commits
 Utilizamos **Conventional Commits** estritamente em **Português Brasileiro**.
+
+### 2.5 Diretrizes Estritas de Tipagem e Linter
+Regras específicas para manter o "Zero Warnings":
+
+*   **HTML Elements:** Nunca acesse propriedades (ex: `.value`) diretamente de um `HTMLElement` genérico. Use `instanceof` para garantir o tipo (ex: `HTMLInputElement`).
+*   **Mocks Globais:** O TypeScript não reconhece mocks em objetos globais (`chrome`). Use JSDoc Cast:
+    ```javascript
+    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation(...);
+    ```
+*   **Console:** Logs de produção são proibidos (`no-console`).
+
 *   **Formato:** `<tipo>(<escopo opcional>): <descrição no imperativo>`
 *   **Tipos Permitidos:**
     *   `feat`: Nova funcionalidade.
