@@ -1,0 +1,108 @@
+Browser tool failed due to missing Chrome. Falling back to asking user for data.
+VM810:2 🕵️ [FBI] INICIANDO INVESTIGAÇÃO DE SCROLL
+VM810:16 📡 [RECON] Analisando estrutura da página...
+VM810:19 📏 Body: H=633, W=364
+VM810:20 📏 DocElement: H=633, ScrollTop=0
+VM810:24 🎞️ [RECON] Total Iframes encontrados: 2
+VM810:25    - Iframe #0: src="https://developer.blackboard.com/ltiStorage"
+VM810:25    - Iframe #1: src="https://notif-websockets-us-east-1.prod.notifications.api.blackboard.com/clientframe.html?origin=https://ava.univesp.br&ver=1765971604425"
+VM810:44 (index)elidclasshvisibleH(index)elidclasshvisibleH0div#side-menu.mode-light.hide-in-background.themed-background-primary-fill-only.left-off-canvas-men…'side-menu''mode-light hide-in-background themed-background-pr…ly left-off-canvas-menu color-selection-live-mode'6876331div#main-content-inner.hide-in-background'main-content-inner''hide-in-background'1147585Array(2)
+VM810:55 🎯 [ALVO] Encontrado #main-content-inner. Checando scroll...
+VM810:57 ✅ [ALVO] #main-content-inner tem scroll ativo!
+VM810:91 ⬇️ [ACTION] Tentando scrollar a partir de 0...
+VM810:107 ✅ [SUCESSO] Moveu 300 pixels.
+VM810:122 📊 [STATUS] H: 1147 -> 1147 | Bottom: false | Cursos Visíveis: 14
+VM810:135 ⏳ [AGUARDANDO] Sem mudança (1/5)...
+VM810:91 ⬇️ [ACTION] Tentando scrollar a partir de 300...
+40978-ba513af86452e1b1.js:683 Unsafe attempt to load URL https://ultra.content.blackboardcdn.com/ultra/uiv4000.4.0-rel.41_79c3b10 from frame with URL https://ava.univesp.br/ultra/course. Domains, protocols and ports must match.
+
+e7 @ 40978-ba513af86452e1b1.js:683
+(anonymous) @ 40978-ba513af86452e1b1.js:683
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ app-ba513af86452e1b1.js:1707
+(anonymous) @ 40978-ba513af86452e1b1.js:683
+eE @ 40978-ba513af86452e1b1.js:686
+e$ @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+e$ @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+e$ @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+r @ 40978-ba513af86452e1b1.js:686
+y @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:695
+$digest @ 40978-ba513af86452e1b1.js:693
+(anonymous) @ 40978-ba513af86452e1b1.js:694
+(anonymous) @ 40978-ba513af86452e1b1.js:695
+(anonymous) @ 40978-ba513af86452e1b1.js:685
+nrWrapper @ course:8
+setTimeout
+nrWrapper @ course:8
+(anonymous) @ 40978-ba513af86452e1b1.js:685
+$evalAsync @ 40978-ba513af86452e1b1.js:694
+(anonymous) @ app-ba513af86452e1b1.js:1496
+f @ 61485-ba513af86452e1b1.js:319
+y @ 61485-ba513af86452e1b1.js:319
+v @ 61485-ba513af86452e1b1.js:319
+nrWrapper @ course:8
+setTimeout
+nrWrapper @ course:8
+(anonymous) @ 61485-ba513af86452e1b1.js:317
+_ @ 61485-ba513af86452e1b1.js:319
+(anonymous) @ app-ba513af86452e1b1.js:1496
+(anonymous) @ app-ba513af86452e1b1.js:4130
+tu @ 61485-ba513af86452e1b1.js:317
+il @ 61485-ba513af86452e1b1.js:319
+(anonymous) @ 61485-ba513af86452e1b1.js:319
+e.741221.i.module.directive.controller.IntersectionObserver.root @ app-ba513af86452e1b1.js:4130
+40978-ba513af86452e1b1.js:683 Unsafe attempt to load URL https://ultra.content.blackboardcdn.com/ultra/uiv4000.4.0-rel.41_79c3b10 from frame with URL https://ava.univesp.br/ultra/course. Domains, protocols and ports must match.
+
+e7 @ 40978-ba513af86452e1b1.js:683
+(anonymous) @ 40978-ba513af86452e1b1.js:683
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ app-ba513af86452e1b1.js:1707
+(anonymous) @ 40978-ba513af86452e1b1.js:683
+eE @ 40978-ba513af86452e1b1.js:686
+e$ @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+e$ @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+e$ @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:686
+r @ 40978-ba513af86452e1b1.js:686
+y @ 40978-ba513af86452e1b1.js:686
+(anonymous) @ 40978-ba513af86452e1b1.js:695
+$digest @ 40978-ba513af86452e1b1.js:693
+(anonymous) @ 40978-ba513af86452e1b1.js:694
+(anonymous) @ 40978-ba513af86452e1b1.js:695
+(anonymous) @ 40978-ba513af86452e1b1.js:685
+nrWrapper @ course:8
+setTimeout
+nrWrapper @ course:8
+(anonymous) @ 40978-ba513af86452e1b1.js:685
+$evalAsync @ 40978-ba513af86452e1b1.js:694
+(anonymous) @ app-ba513af86452e1b1.js:1496
+f @ 61485-ba513af86452e1b1.js:319
+y @ 61485-ba513af86452e1b1.js:319
+v @ 61485-ba513af86452e1b1.js:319
+nrWrapper @ course:8
+setTimeout
+nrWrapper @ course:8
+(anonymous) @ 61485-ba513af86452e1b1.js:317
+_ @ 61485-ba513af86452e1b1.js:319
+(anonymous) @ app-ba513af86452e1b1.js:1496
+(anonymous) @ app-ba513af86452e1b1.js:4130
+tu @ 61485-ba513af86452e1b1.js:317
+il @ 61485-ba513af86452e1b1.js:319
+(anonymous) @ 61485-ba513af86452e1b1.js:319
+e.741221.i.module.directive.controller.IntersectionObserver.root @ app-ba513af86452e1b1.js:4130
+VM810:107 ✅ [SUCESSO] Moveu 262 pixels.
+VM810:122 📊 [STATUS] H: 1147 -> 1235 | Bottom: false | Cursos Visíveis: 14
+VM810:126 🌟 [NOVIDADE] Altura aumentou! Resetando retries.
+VM810:91 ⬇️ [ACTION] Tentando scrollar a partir de 562...
+VM810:107 ✅ [SUCESSO] Moveu 88 pixels.
+VM810:122 📊 [STATUS] H: 1235 -> 1235 | Bottom: true | Cursos Visíveis: 14
