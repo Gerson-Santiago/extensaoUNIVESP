@@ -1,5 +1,11 @@
+/* 
+ * ARQUIVO: Dropdown Styles
+ * QUEM USA: ActionMenu.js
+ * O QUE FAZ: Estiliza o menu flutuante de ações (canto superior direito).
+ */
 /* Action Menu (Generic Dropdown) */
 .action-menu-container {
+  /* Container relativo para posicionar o dropdown absolute */
   position: relative;
   display: inline-block;
 }
@@ -29,6 +35,7 @@
 }
 
 .action-menu-dropdown {
+  /* Menu flutuante (lista de opções) - Aparece ao clicar no botão */
   position: absolute;
   top: 100%;
   right: 0;

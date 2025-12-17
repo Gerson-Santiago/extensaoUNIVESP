@@ -1,3 +1,8 @@
+/* 
+ * ARQUIVO: Grouping Styles
+ * QUEM USA: CoursesView.js (Lógica de Agrupamento)
+ * O QUE FAZ: Estiliza os containers que agrupam matérias por bimestre/semestre.
+ */
 /* Estilos de Agrupamento de Disciplinas */
 
 .term-group {
@@ -19,6 +24,7 @@
 
 /* Ajustes para a lista dentro dos grupos */
 .term-group .item-list {
+  /* Lista não ordenada (ul) dentro do grupo */
   margin: 0;
   padding: 0;
 }
@@ -33,7 +39,8 @@
   border-radius: 0;
   border: none;
   border-bottom: 1px solid #f0f0f0;
-  box-shadow: none; /* Remove sombra individual para ficar flat dentro do grupo */
+  box-shadow: none;
+  /* Remove sombra individual para ficar flat dentro do grupo */
 }
 
 .term-group .item:last-child {
@@ -42,5 +49,6 @@
 
 .term-group .item:hover {
   background-color: #f9f9f9;
-  z-index: 1; /* Garante que hover fique sobre bordas */
+  z-index: 1;
+  /* Garante que hover fique sobre bordas */
 }

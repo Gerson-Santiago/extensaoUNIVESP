@@ -1,3 +1,8 @@
+/* 
+ * ARQUIVO: Card Styles
+ * QUEM USA: HomeView (Links rápidos) e outras listas
+ * O QUE FAZ: Estiliza cartões de link e ações rápidas.
+ */
 /* Componente: Cards */
 .link-card {
   background: var(--bg-white);

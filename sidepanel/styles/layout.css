@@ -1,16 +1,23 @@
+/* 
+ * ARQUIVO: Layout Styles
+ * QUEM USA: MainLayout.js
+ * O QUE FAZ: Define a estrutura esqueleto (App, Main Content) e o Footer.
+ */
 /* Estrutura Principal do Layout */
 #app {
+  /* Container Flex que ocupa toda a altura - Mantém footer embaixo */
   display: flex;
   flex-direction: column;
   height: 100%;
 }
 
 main#main-content {
+  /* Área de Scroll Principal - Onde as Views são renderizadas */
   flex: 1;
   overflow-y: auto;
   padding: 10px;
   padding-top: 70px;
-  /* Espaço para TopNav */
+  /* Espaço para TopNav (nav.css) evitar sobreposição */
 }
 
 /* Utilitários de Layout */

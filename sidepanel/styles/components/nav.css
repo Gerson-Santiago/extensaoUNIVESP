@@ -1,3 +1,8 @@
+/* 
+ * ARQUIVO: Navigation Styles
+ * QUEM USA: MainLayout.js (TopNav)
+ * O QUE FAZ: Estiliza a barra de navegação superior fixa.
+ */
 /* Barra de Navegação Superior */
 .top-nav {
   position: fixed;
@@ -13,6 +18,7 @@
 }
 
 .nav-item {
+  /* Botão/Ícone da Tab Bar (Home, Cursos, Config) */
   background: none;
   border: none;
   cursor: pointer;

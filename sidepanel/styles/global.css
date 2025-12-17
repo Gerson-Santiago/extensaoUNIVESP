@@ -1,19 +1,43 @@
+/* 
+ * ARQUIVO: Global Styles
+ * QUEM USA: Todo o projeto (via sidepanel.html)
+ * O QUE FAZ: Define variáveis de cores (Design System) e reset básico.
+ */
 /* Variáveis e Reset */
 :root {
+  /* Cores Principais - Usadas em Buttons, Headers e Links */
   --primary-color: #004b8d;
   --primary-hover: #00376b;
+
+  /* Tipografia Base */
   --text-color: #333;
   --text-secondary: #666;
+  /* Subtítulos e legendas */
   --text-light: #999;
+  /* Placeholders e ícones inativos */
+
+  /* Backgrounds */
   --bg-color: #f9f9f9;
+  /* Cor de fundo da aplicação (Body) */
   --bg-white: #ffffff;
+  /* Cor de fundo de Cards e Containers */
+
+  /* Bordas e Divisores */
   --border-color: #ddd;
   --border-light: #eee;
+
+  /* Cores de Estado - Feedback visual */
   --success-color: #28a745;
+  /* Checkmarks, Sucesso */
   --success-hover: #218838;
   --danger-color: #d9534f;
+  /* Erros, Botões de Delete */
+
+  /* Sombras (Material Design Lite) */
   --shadow-sm: 0 2px 4px rgba(0, 0, 0, 0.05);
   --shadow-md: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+  /* Fonte Padrão do Sistema */
   --font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 

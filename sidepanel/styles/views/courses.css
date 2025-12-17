@@ -1,3 +1,8 @@
+/* 
+ * ARQUIVO: Courses Styles
+ * QUEM USA: CoursesView.js e CourseDetailsView.js
+ * O QUE FAZ: Estiliza a lista de cursos e a tela de detalhes (semanas).
+ */
 /* View: Courses & Details */
 
 /* Legenda da lista */
@@ -14,6 +19,7 @@
 }
 
 .legend-right {
+  /* Container para os ícones "Olho" e "Lixeira" na legenda */
   display: contents;
 }
 
@@ -25,6 +31,7 @@
 }
 
 .item {
+  /* Card individual de Curso/Matéria (Container Principal) */
   background: var(--bg-white);
   border: 1px solid var(--border-color);
   margin-bottom: 8px;
@@ -66,7 +73,7 @@
   text-overflow: ellipsis;
 }
 
-/* View: Course Details */
+/* View: Course Details (Tela de Detalhes da Matéria) */
 .details-header {
   display: flex;
   align-items: center;
@@ -87,6 +94,7 @@
 }
 
 .weeks-container {
+  /* Lista de Semanas dentro de CourseDetails */
   background: var(--bg-white);
   border: 1px solid var(--border-color);
   border-radius: 6px;

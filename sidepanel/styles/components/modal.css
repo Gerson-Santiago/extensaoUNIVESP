@@ -1,3 +1,8 @@
+/* 
+ * ARQUIVO: Modal Styles
+ * QUEM USA: BatchImportModal.js, AddManualModal.js
+ * O QUE FAZ: Estiliza sobreposições (overlays) e janelas modais.
+ */
 /* Componente: Modais */
 
 /* A maioria dos modais está sendo criada via JS, mas se houver classes de overlay, devem ficar aqui. 
@@ -48,7 +53,7 @@
   color: var(--text-light);
 }
 
-/* Batch Import Styles */
+/* Batch Import Styles (Usado especificamente na lista de seleção de matérias para importar) */
 
 .course-item {
   padding: 8px 12px;

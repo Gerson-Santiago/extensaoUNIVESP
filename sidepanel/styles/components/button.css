@@ -1,5 +1,11 @@
+/* 
+ * ARQUIVO: Button Styles
+ * QUEM USA: Shared/components e várias Views
+ * O QUE FAZ: Botões genéricos (Salvar, Adicionar) e botões de ação do Grid.
+ */
 /* Componente: Botões */
 .btn-save {
+  /* Botão Primário (Azul) - Usado em SettingsView, Modais de Edição */
   width: 100%;
   padding: 8px;
   background-color: var(--primary-color);
@@ -15,6 +21,7 @@
 }
 
 .btn-reset {
+  /* Botão 'X' dentro de inputs - Usado em SettingsView (Domínio) */
   position: absolute;
   right: 5px;
   top: 50%;
@@ -30,8 +37,9 @@
   color: var(--text-color);
 }
 
-/* Botões do Grid */
+/* Botões do Grid (Usado em CoursesView) */
 .btn-grid-action {
+  /* Botões pequenos de ação (ex: 'Ver') dentro da lista de cursos */
   background: #eef3f8;
   border: 1px solid #cce;
   border-radius: 4px;
@@ -48,6 +56,7 @@
 }
 
 .btn-delete {
+  /* Ícone de Lixeira - Usado em CourseItem (Remover curso da lista) */
   background: none;
   border: none;
   color: var(--text-light);
@@ -63,7 +72,7 @@
 }
 
 .btn-add {
-  /* Botão verde padrão */
+  /* Botão Verde de Sucesso (+) - Usado em Modais de Criação */
   width: 100%;
   padding: 8px;
   background-color: var(--success-color);
@@ -79,6 +88,7 @@
 }
 
 .btn-back {
+  /* Botão de Voltar (<) - Usado em Headers de CourseDetailsView e FeedbackView */
   background: none;
   border: none;
   color: var(--text-secondary);
