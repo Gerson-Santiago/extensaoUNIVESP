@@ -18,15 +18,15 @@ O projeto **AutoPreencher UNIVESP** nasceu de uma necessidade real: simplificar 
 
 A extensão atua em três frentes principais para melhorar a experiência no AVA (Blackboard) e SEI.
 
-### 1. Autopreenchimento Inteligente (SEI)
-Detecta automaticamente os campos de login no Sistema Eletrônico de Informações (SEI) e preenche com o email institucional do aluno.
-*   **Filosofia**: Eliminar a fricção do login diário.
-
-### 2. Painel Lateral de Produtividade (Side Panel)
-Um "hub" central que acompanha o aluno durante a navegação.
+### 1. Painel Lateral de Produtividade (Side Panel)
+Um "hub" central que acompanha o aluno durante a navegação, focado em **Gestão e Organização**.
 *   **Importação em Lote**: Com um clique, o aluno traz todas as suas matérias do bimestre para o painel.
 *   **Deep Scraping**: A extensão "mergulha" na estrutura do curso para encontrar os links diretos das semanas de aula, ignorando banners e avisos irrelevantes.
 *   **Navegação Contextual**: Ao clicar em uma matéria, a extensão sabe se ela já está aberta em outra aba e leva o usuário até lá, evitando a desorganização de "1000 abas abertas".
+
+### 2. Autopreenchimento Inteligente (SEI)
+Detecta automaticamente os campos de login no Sistema Eletrônico de Informações (SEI) e preenche com o email institucional do aluno.
+*   **Filosofia**: Eliminar a fricção do login diário. Feature de conveniência.
 
 ### 3. Foco e Organização
 *   **Lista de Semanas**: As semanas de aula são extraídas e listadas de forma limpa. O aluno vê exatamente o que precisa estudar.

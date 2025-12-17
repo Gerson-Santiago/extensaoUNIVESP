@@ -1,7 +1,7 @@
 # AutoPreencher UNIVESP (Extensão Chrome)
 
 > **Versão Atual**: v2.6.0 (Stable)
-> **Ferramentas de produtividade para alunos UNIVESP: Autopreenchimento SEI, Gestão de Cursos e Navegação Inteligente no AVA.**
+> **Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos, Navegação Inteligente no AVA e Autopreenchimento SEI.**
 
 ![Version](https://img.shields.io/badge/version-2.6.0-blue) ![License](https://img.shields.io/badge/license-MIT-green)
 

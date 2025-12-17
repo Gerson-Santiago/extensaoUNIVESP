@@ -51,8 +51,9 @@ flowchart LR
 #### A. Side Panel (`/sidepanel`)
 O painel lateral é o coração da experiência do usuário.
 *   **Views**: Componentes visuais (`CoursesView.js`, `SettingsView.js`).
-*   **Logic**: Regras de negócio (`CourseService.js`, `batchScraper.js`).
-*   **Components**: Elementos UI reutilizáveis (`ActionMenu.js`, `Items/`).
+*   **Logic**: Controladores (`raManager.js`, `domainManager.js`).
+*   **Services**: Serviços de negócio (`CourseService.js`, `ScraperService.js`, `BatchImportFlow.js`).
+*   **Components**: Elementos UI organizados em `Forms`, `Layout`, `Modals` e `Shared`.
 *   **Shared**: Reutiliza utilitários de `/shared/utils/`.
 
 #### B. Content Scripts (`/scripts`)
@@ -93,19 +94,19 @@ Para mais detalhes jurídicos e técnicos sobre dados, veja:
 ├── assets/          # Ícones e imagens estáticas
 ├── popup/           # Interface do popup (ícone na barra)
 ├── sidepanel/       # Lógica e UI do painel lateral
-│   ├── components/  # Componentes reutilizáveis
+│   ├── components/  # Forms, Layout, Modals, Shared, Items
 │   ├── data/        # Dados estáticos/mock
-│   ├── logic/       # Controladores (Batch Scrapers, Managers)
-│   ├── services/    # Camada de Serviço (CourseService, BatchImportFlow)
+│   ├── logic/       # Controladores (raManager, domainManager, batchScraper)
+│   ├── services/    # Camada de Serviço (CourseService, ScraperService, BatchImportFlow)
 │   ├── styles/      # CSS modular
 │   ├── utils/       # Utilitários específicos do painel
-│   └── views/       # Telas principais
+│   └── views/       # Telas principais (CoursesView, SettingsView)
 ├── scripts/         # Scripts de Background e Content
 ├── shared/          # Utils compartilhados (Tabs, Settings, Browser)
 └── tests/           # Testes automatizados (Jest)
 ```
 
-> *Documento atualizado em: Dezembro 2025 (v2.5.4).*
+> *Documento atualizado em: Dezembro 2025 (v2.6.0).*
 
 ---
 
