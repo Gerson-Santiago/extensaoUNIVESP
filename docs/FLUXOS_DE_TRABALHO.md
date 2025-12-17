@@ -89,6 +89,41 @@ Para evitar que a árvore balance e caia (branches divergentes), siga este ritua
 
 ---
 
+## 🚀 7. Release & Deploy (Dev -> Main)
+
+Quando a `dev` está estável, testada e pronta para o público:
+
+### Checklist de Segurança Absoluta (Gatekeeper)
+Antes de rodar qualquer comando de merge para `main`, você **DEVE** garantir:
+1.  [ ] **Testes Verdes**: `npm test` passou sem erros.
+2.  [ ] **Lint Limpo**: `npm run lint` não acusa nada.
+3.  [ ] **Dev Atualizada**: Você deu `git pull origin dev` e não veio nada novo (ou se veio, você re-testou).
+
+### O Comando Sagrado (Release)
+Para evitar erros manuais, use o workflow: `/release-prod`.
+Ou manualmente:
+
+```bash
+# 1. Garanta que a dev tem a última versão
+git switch dev
+git pull origin dev
+
+# 2. Vá para a main e atualize (para evitar conflitos de base)
+git switch main
+git pull origin main
+
+# 3. O Grande Momento (Merge)
+git merge dev
+
+# 4. Envio para Produção
+git push origin main
+
+# 5. Volte para segurança
+git switch dev
+```
+
+---
+
 ## 🏛️ Governança e Regras de Segurança
 
 ### 4.1 Gate de Aprovação
