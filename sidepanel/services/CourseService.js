@@ -1,4 +1,4 @@
-import { CourseRepository } from '../data/repositories/CourseRepository.js';
+import { CourseRepository } from '../../features/courses/data/CourseRepository.js';
 import { ScraperService } from '../../features/courses/services/ScraperService.js';
 import { Tabs } from '../../shared/utils/Tabs.js';
 

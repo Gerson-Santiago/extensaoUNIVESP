@@ -1,6 +1,6 @@
 import { Modal } from '../../../sidepanel/components/Modals/Modal.js';
 import { scrapeAvailableTerms, processSelectedCourses } from '../services/BatchScraper.js';
-import { CourseRepository } from '../../../sidepanel/data/repositories/CourseRepository.js';
+import { CourseRepository } from '../../courses/data/CourseRepository.js';
 import { parseTerm } from '../../courses/logic/TermParser.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
 

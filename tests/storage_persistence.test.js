@@ -1,4 +1,4 @@
-import { CourseRepository } from '../sidepanel/data/repositories/CourseRepository.js';
+import { CourseRepository } from '@features/courses/data/CourseRepository.js';
 
 // Mock chrome.storage.sync
 const storageMock = {};

@@ -1,6 +1,6 @@
 import { createWeekElement } from '../../features/courses/components/WeekItem.js';
 import { ScraperService } from '../../features/courses/services/ScraperService.js';
-import { CourseRepository } from '../data/repositories/CourseRepository.js';
+import { CourseRepository } from '../../features/courses/data/CourseRepository.js';
 
 export class CourseDetailsView {
   constructor(callbacks) {
