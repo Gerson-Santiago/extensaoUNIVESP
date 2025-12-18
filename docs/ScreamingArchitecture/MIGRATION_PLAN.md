@@ -56,15 +56,15 @@ Escolhemos Importação pois é isolada e complexa.
 4.  [ ] Extrair UI de Importação para `features/import/components/`.
 
 ### Fase 3: Feature "Cursos" (O Core)
-1.  [ ] Criar `features/courses/`.
-2.  [ ] Mover `CoursesView.js` -> `features/courses/components/CourseList.js`.
-3.  [ ] Separar Lógica: Extrair regras de `CourseService.js` para `features/courses/logic/CourseDomain.js`.
-4.  [ ] Scraper: `ScraperService.js` vai para `features/courses/services/`.
+1.  [x] Criar `features/courses/`.
+2.  [x] Mover `CoursesView.js` -> `features/courses/components/CourseList.js`.
+3.  [x] Separar Lógica: Extrair regras de `CourseService.js` para `features/courses/logic/CourseDomain.js`.
+4.  [x] Scraper: `ScraperService.js` vai para `features/courses/services/`.
 
 ### Fase 4: Limpeza
-1.  [ ] Remover pastas antigas (`sidepanel/views`, `sidepanel/logic`) quando vazias.
-2.  [ ] Atualizar imports em todo o projeto.
-3.  [ ] Atualizar `manifest.json` com novos caminhos.
+1.  [x] Remover pastas antigas (`sidepanel/views`, `sidepanel/logic`) quando vazias.
+2.  [x] Atualizar imports em todo o projeto.
+3.  [x] Atualizar `manifest.json` com novos caminhos.
 
 ---
 
