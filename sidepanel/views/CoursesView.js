@@ -77,49 +77,51 @@ export class CoursesView {
     this.loadCourses();
   }
 
-  loadCourses() {
+  async loadCourses() {
     const container = document.getElementById('coursesListContainer');
     if (!container) return;
 
     container.innerHTML = '';
-    CourseRepository.loadItems((courses) => {
-      if (courses.length === 0) {
-        container.innerHTML =
-          '<div style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</div>';
-        return;
-      }
+    const courses = await CourseRepository.loadItems();
+    if (courses.length === 0) {
+      container.innerHTML =
+        '<div style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</div>';
+      return;
+    }
 
-      // Group courses by term using centralized logic
-      const grouped = groupCoursesByTerm(courses);
+    // Group courses by term using centralized logic
+    const grouped = groupCoursesByTerm(courses);
 
-      grouped.forEach((group) => {
-        // Create Group Container
-        const groupDiv = document.createElement('div');
-        groupDiv.className = 'term-group';
+    grouped.forEach((group) => {
+      // Create Group Container
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'term-group';
 
-        // Header (Term Name)
-        const header = document.createElement('header');
-        header.className = 'term-header';
-        header.textContent = group.title;
-        groupDiv.appendChild(header);
+      // Header (Term Name)
+      const header = document.createElement('header');
+      header.className = 'term-header';
+      header.textContent = group.title;
+      groupDiv.appendChild(header);
 
-        // List Container (UL)
-        const ul = document.createElement('ul');
-        ul.className = 'item-list';
+      // List Container (UL)
+      const ul = document.createElement('ul');
+      ul.className = 'item-list';
 
-        // Render Courses
-        group.courses.forEach((course) => {
-          const li = createCourseElement(course, {
-            onDelete: (id) => CourseRepository.delete(id, () => this.loadCourses()),
-            onClick: (url) => this.callbacks.onOpenCourse(url),
-            onViewDetails: (c) => this.callbacks.onViewDetails(c),
-          });
-          ul.appendChild(li);
+      // Render Courses
+      group.courses.forEach((course) => {
+        const li = createCourseElement(course, {
+          onDelete: async (id) => {
+            await CourseRepository.delete(id);
+            await this.loadCourses();
+          },
+          onClick: (url) => this.callbacks.onOpenCourse(url),
+          onViewDetails: (c) => this.callbacks.onViewDetails(c),
         });
-
-        groupDiv.appendChild(ul);
-        container.appendChild(groupDiv);
+        ul.appendChild(li);
       });
+
+      groupDiv.appendChild(ul);
+      container.appendChild(groupDiv);
     });
   }
 

@@ -1,44 +1,50 @@
+import { CourseStorage } from './CourseStorage.js';
+
+const storage = new CourseStorage();
+
 /**
- * Repositório para gerenciar a persistência de cursos.
- * Abstrai o acesso ao chrome.storage.sync.
+ * Repositório para gerenciar a persistência de cursos (Camada de Domínio).
+ * Usa CourseStorage para acesso a dados.
  */
 export class CourseRepository {
   /**
-   * Carrega a lista de matérias salvas do armazenamento.
-   * @param {Function} callback - Função de retorno com a lista de cursos.
+   * Carrega a lista de matérias salvas.
+   * @param {Function} [callback] - Legado (opcional). Se fornecer, funciona como antes.
+   * @returns {Promise<Array>}
    */
-  static loadItems(callback) {
-    chrome.storage.sync.get(['savedCourses'], (result) => {
-      const courses = result.savedCourses || [];
-      callback(courses);
-    });
+  static async loadItems(callback) {
+    try {
+      const courses = await storage.getAll();
+      if (callback) callback(courses);
+      return courses;
+    } catch (error) {
+      console.error('Erro ao carregar cursos:', error);
+      if (callback) callback([]);
+      return [];
+    }
   }
 
   /**
-   * Salva a lista de matérias no armazenamento.
-   * @param {Array} courses - Lista de objetos de cursos.
-   * @param {Function} [callback] - Função opcional a ser chamada após salvar.
+   * Salva a lista de matérias.
+   * @param {Array} courses
+   * @param {Function} [callback]
    */
-  static saveItems(courses, callback) {
-    chrome.storage.sync.set({ savedCourses: courses }, () => {
+  static async saveItems(courses, callback) {
+    try {
+      await storage.saveAll(courses);
       if (callback) callback();
-    });
+    } catch (error) {
+      console.error('Erro ao salvar cursos:', error);
+    }
   }
 
   /**
-   * Adiciona uma nova matéria à lista.
-   * Evita duplicação verificando a URL.
-   * @param {string} name - Nome da matéria.
-   * @param {string} url - URL da matéria.
-   * @param {Array} [weeks=[]] - Lista inicial de semanas.
-   * @param {Object|Function} [optionsOrCallback] - Objeto de opções OU callback.
-   * @param {Function} [extraCallback] - Callback se o 4º argumento for options.
+   * Adiciona uma nova matéria.
    */
-  static add(name, url, weeks = [], optionsOrCallback, extraCallback) {
+  static async add(name, url, weeks = [], optionsOrCallback, extraCallback) {
     let callback = optionsOrCallback;
     let termName = '';
 
-    // Check if 4th arg is options object
     if (
       typeof optionsOrCallback === 'object' &&
       optionsOrCallback !== null &&
@@ -48,8 +54,8 @@ export class CourseRepository {
       callback = extraCallback;
     }
 
-    this.loadItems((courses) => {
-      // Normaliza a URL para comparação
+    try {
+      const courses = await this.loadItems();
       const exists = courses.some((c) => c.url === url);
 
       if (exists) {
@@ -58,20 +64,22 @@ export class CourseRepository {
         return;
       }
 
-      courses.push({ id: Date.now(), name, url, weeks, termName: termName });
-      this.saveItems(courses, () => {
-        if (callback) callback(true, 'Matéria adicionada com sucesso!');
-      });
-    });
+      courses.push({ id: Date.now(), name, url, weeks, termName });
+      await this.saveItems(courses);
+
+      if (callback) callback(true, 'Matéria adicionada com sucesso!');
+    } catch (error) {
+      console.error(error);
+      if (callback) callback(false, 'Erro ao adicionar.');
+    }
   }
 
   /**
-   * Adiciona múltiplas matérias de uma vez.
-   * @param {Array} newItems - Lista de objetos {name, url, weeks, termName}.
-   * @param {Function} callback - Retorna (addedCount, totalIgnored).
+   * Adiciona em lote.
    */
-  static addBatch(newItems, callback) {
-    this.loadItems((courses) => {
+  static async addBatch(newItems, callback) {
+    try {
+      const courses = await this.loadItems();
       let addedCount = 0;
       let ignoredCount = 0;
 
@@ -79,7 +87,7 @@ export class CourseRepository {
         const exists = courses.some((c) => c.url === item.url);
         if (!exists) {
           courses.push({
-            id: Date.now() + Math.random(), // Ensure unique ID even in batch
+            id: Date.now() + Math.random(),
             name: item.name,
             url: item.url,
             weeks: item.weeks || [],
@@ -92,51 +100,43 @@ export class CourseRepository {
       });
 
       if (addedCount > 0) {
-        this.saveItems(courses, () => {
-          if (callback) callback(addedCount, ignoredCount);
-        });
-      } else {
-        if (callback) callback(0, ignoredCount);
+        await this.saveItems(courses);
       }
-    });
+
+      if (callback) callback(addedCount, ignoredCount);
+    } catch (error) {
+      console.error(error);
+      if (callback) callback(0, 0);
+    }
   }
 
-  /**
-   * Remove todas as matérias salvas.
-   * @param {Function} [callback] - Função de retorno após limpar.
-   */
-  static clear(callback) {
-    this.saveItems([], callback);
+  static async clear(callback) {
+    await this.saveItems([], callback);
   }
 
-  /**
-   * Remove uma matéria pelo ID.
-   * @param {number} id - ID da matéria a ser removida.
-   * @param {Function} [callback] - Função de retorno após remover.
-   */
-  static delete(id, callback) {
-    this.loadItems((courses) => {
+  static async delete(id, callback) {
+    try {
+      const courses = await this.loadItems();
       const newCourses = courses.filter((item) => item.id !== id);
-      this.saveItems(newCourses, callback);
-    });
+      await this.saveItems(newCourses, callback);
+    } catch (e) {
+      console.error(e);
+    }
   }
 
-  /**
-   * Atualiza propriedades de uma matéria específica.
-   * @param {number} id - ID da matéria a ser atualizada.
-   * @param {Object} updates - Objeto com as propriedades a serem atualizadas.
-   * @param {Function} [callback] - Função de retorno após atualizar.
-   */
-  static update(id, updates, callback) {
-    this.loadItems((courses) => {
+  static async update(id, updates, callback) {
+    try {
+      const courses = await this.loadItems();
       const index = courses.findIndex((c) => c.id === id);
       if (index !== -1) {
         courses[index] = { ...courses[index], ...updates };
-        this.saveItems(courses, callback);
+        await this.saveItems(courses, callback);
       } else {
         console.warn(`Item com id ${id} não encontrado para atualização.`);
         if (callback) callback();
       }
-    });
+    } catch (e) {
+      console.error(e);
+    }
   }
 }

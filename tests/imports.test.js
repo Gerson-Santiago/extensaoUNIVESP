@@ -8,7 +8,14 @@ describe('Verificação de Integridade de Links (Anti-Tela Branca)', () => {
   // Encontra todos os arquivos .js nas pastas relevantes
   const allJsFiles = glob.sync('**/*.js', {
     cwd: projectRoot,
-    ignore: ['node_modules/**', 'tests/**', 'coverage/**', 'dist/**', 'jest.config.js', 'babel.config.js'],
+    ignore: [
+      'node_modules/**',
+      'tests/**',
+      'coverage/**',
+      'dist/**',
+      'jest.config.js',
+      'babel.config.js',
+    ],
     absolute: true,
   });
 
@@ -18,7 +25,8 @@ describe('Verificação de Integridade de Links (Anti-Tela Branca)', () => {
 
     // Regex para capturar imports estáticos (import x from 'path' e import 'path')
     // e imports dinâmicos (import('path'))
-    const importRegex = /from\s+['"]([^'"]+)['"]|import\s*\(['"]([^'"]+)['"]\)|import\s+['"]([^'"]+)['"]/g;
+    const importRegex =
+      /from\s+['"]([^'"]+)['"]|import\s*\(['"]([^'"]+)['"]\)|import\s+['"]([^'"]+)['"]/g;
 
     let match;
     while ((match = importRegex.exec(content)) !== null) {
@@ -69,9 +77,9 @@ describe('Verificação de Integridade de Links (Anti-Tela Branca)', () => {
 
     // Verifica content scripts
     if (manifest.content_scripts) {
-      manifest.content_scripts.forEach(cs => {
+      manifest.content_scripts.forEach((cs) => {
         if (cs.js) {
-          cs.js.forEach(jsFile => {
+          cs.js.forEach((jsFile) => {
             const jsPath = path.join(projectRoot, jsFile);
             if (!fs.existsSync(jsPath)) {
               throw new Error(`MANIFEST LINK QUEBRADO: Content script '${jsFile}' não existe.`);
@@ -79,7 +87,7 @@ describe('Verificação de Integridade de Links (Anti-Tela Branca)', () => {
           });
         }
         if (cs.css) {
-          cs.css.forEach(cssFile => {
+          cs.css.forEach((cssFile) => {
             const cssPath = path.join(projectRoot, cssFile);
             if (!fs.existsSync(cssPath)) {
               throw new Error(`MANIFEST LINK QUEBRADO: CSS '${cssFile}' não existe.`);

@@ -38,13 +38,8 @@ export class CourseService {
       }
 
       // Adiciona ao storage
-      CourseRepository.add(name, tab.url, weeks, (success, msg) => {
-        if (success) {
-          if (onSuccess) onSuccess();
-        } else {
-          if (onError) onError(msg);
-        }
-      });
+      await CourseRepository.add(name, tab.url, weeks);
+      if (onSuccess) onSuccess('Matéria adicionada com sucesso!');
     } catch (error) {
       console.error('Erro ao adicionar curso da aba atual:', error);
       if (onError) onError('Erro interno ao processar aba.');

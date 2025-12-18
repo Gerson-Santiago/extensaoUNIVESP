@@ -27,7 +27,7 @@ describe('BatchImportModal Render Logic', () => {
     // Reset DOM
     document.body.innerHTML = '';
     container = document.createElement('div');
-    modal = new BatchImportModal(() => { });
+    modal = new BatchImportModal(() => {});
   });
 
   test('Should sort terms descending (newest first) and render courses with checkboxes', () => {

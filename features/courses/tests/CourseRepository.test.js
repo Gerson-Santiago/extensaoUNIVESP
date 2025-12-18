@@ -4,7 +4,7 @@ describe('Storage - CRUD de Cursos', () => {
   beforeEach(() => {
     jest.clearAllMocks();
     // Limpa console.warn para não poluir output
-    jest.spyOn(console, 'warn').mockImplementation(() => { });
+    jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
 
   afterEach(() => {
@@ -29,8 +29,8 @@ describe('Storage - CRUD de Cursos', () => {
   describe('loadItems()', () => {
     test('Deve carregar lista vazia por padrão', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({}); // Sem savedCourses
-    });
+        callback({}); // Sem savedCourses
+      });
 
       CourseRepository.loadItems((courses) => {
         expect(courses).toEqual([]);
@@ -57,8 +57,8 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve chamar callback com dados corretos', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [mockCourse1] });
-    });
+        callback({ savedCourses: [mockCourse1] });
+      });
 
       CourseRepository.loadItems((courses) => {
         expect(courses[0].name).toBe('Curso Teste 1');
@@ -86,8 +86,8 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve executar callback após salvar', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      callback();
-    });
+        callback();
+      });
 
       CourseRepository.saveItems([mockCourse1], () => {
         expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -97,8 +97,8 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve funcionar sem callback', () => {
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      callback();
-    });
+        callback();
+      });
 
       CourseRepository.saveItems([mockCourse1]);
       expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -117,11 +117,11 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve adicionar curso com sucesso', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [] });
-    });
+        callback({ savedCourses: [] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      callback();
-    });
+        callback();
+      });
 
       CourseRepository.add('Novo Curso', 'https://ava.univesp.br/new', [], (success, message) => {
         expect(success).toBe(true);
@@ -133,13 +133,13 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve gerar ID único usando Date.now()', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [] });
-    });
+        callback({ savedCourses: [] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      const savedCourses = data.savedCourses;
-      expect(savedCourses[0].id).toBe(1234567890);
-      callback();
-    });
+        const savedCourses = data.savedCourses;
+        expect(savedCourses[0].id).toBe(1234567890);
+        callback();
+      });
 
       CourseRepository.add('Curso', 'https://test.com', [], () => {
         done();
@@ -148,8 +148,8 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve rejeitar duplicata (mesma URL)', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [mockCourse1] });
-    });
+        callback({ savedCourses: [mockCourse1] });
+      });
 
       CourseRepository.add(
         'Duplicado',
@@ -169,13 +169,13 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve incluir weeks vazio por padrão', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [] });
-    });
+        callback({ savedCourses: [] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      const course = data.savedCourses[0];
-      expect(course.weeks).toEqual([]);
-      callback();
-    });
+        const course = data.savedCourses[0];
+        expect(course.weeks).toEqual([]);
+        callback();
+      });
 
       CourseRepository.add('Curso', 'https://test.com', undefined, () => {
         done();
@@ -200,13 +200,13 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve persistir termName passado via options', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [] });
-    });
+        callback({ savedCourses: [] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      const course = data.savedCourses[0];
-      expect(course.termName).toBe('2025/1 - 1º Bimestre');
-      callback();
-    });
+        const course = data.savedCourses[0];
+        expect(course.termName).toBe('2025/1 - 1º Bimestre');
+        callback();
+      });
 
       CourseRepository.add(
         'Curso Termo',
@@ -307,8 +307,8 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve lidar com lista vazia', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [] });
-    });
+        callback({ savedCourses: [] });
+      });
 
       CourseRepository.addBatch([], (addedCount, ignoredCount) => {
         expect(addedCount).toBe(0);
@@ -358,14 +358,14 @@ describe('Storage - CRUD de Cursos', () => {
   describe('deleteItem()', () => {
     test('Deve remover curso existente', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [mockCourse1, mockCourse2] });
-    });
+        callback({ savedCourses: [mockCourse1, mockCourse2] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      const courses = data.savedCourses;
-      expect(courses).toHaveLength(1);
-      expect(courses[0].id).toBe(1000000002);
-      callback();
-    });
+        const courses = data.savedCourses;
+        expect(courses).toHaveLength(1);
+        expect(courses[0].id).toBe(1000000002);
+        callback();
+      });
 
       CourseRepository.delete(1000000001, () => {
         done();
@@ -374,13 +374,13 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve lidar com ID inexistente', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [mockCourse1] });
-    });
+        callback({ savedCourses: [mockCourse1] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      const courses = data.savedCourses;
-      expect(courses).toHaveLength(1); // Nada removido
-      callback();
-    });
+        const courses = data.savedCourses;
+        expect(courses).toHaveLength(1); // Nada removido
+        callback();
+      });
 
       CourseRepository.delete(99999999, () => {
         done();
@@ -389,11 +389,11 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve executar callback', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [] });
-    });
+        callback({ savedCourses: [] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      callback();
-    });
+        callback();
+      });
 
       CourseRepository.delete(123, () => {
         expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -405,14 +405,14 @@ describe('Storage - CRUD de Cursos', () => {
   describe('updateItem()', () => {
     test('Deve atualizar curso existente', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [mockCourse1] });
-    });
+        callback({ savedCourses: [mockCourse1] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      const updated = data.savedCourses[0];
-      expect(updated.name).toBe('Nome Atualizado');
-      expect(updated.id).toBe(1000000001); // ID permanece
-      callback();
-    });
+        const updated = data.savedCourses[0];
+        expect(updated.name).toBe('Nome Atualizado');
+        expect(updated.id).toBe(1000000001); // ID permanece
+        callback();
+      });
 
       CourseRepository.update(1000000001, { name: 'Nome Atualizado' }, () => {
         done();
@@ -421,15 +421,15 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve mesclar updates com dados existentes', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [mockCourse1] });
-    });
+        callback({ savedCourses: [mockCourse1] });
+      });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      const updated = data.savedCourses[0];
-      expect(updated.name).toBe('Nome Atualizado');
-      expect(updated.url).toBe('https://ava.univesp.br/course1'); // URL original mantida
-      expect(updated.weeks).toEqual(mockCourse1.weeks); // Weeks mantidos
-      callback();
-    });
+        const updated = data.savedCourses[0];
+        expect(updated.name).toBe('Nome Atualizado');
+        expect(updated.url).toBe('https://ava.univesp.br/course1'); // URL original mantida
+        expect(updated.weeks).toEqual(mockCourse1.weeks); // Weeks mantidos
+        callback();
+      });
 
       CourseRepository.update(1000000001, { name: 'Nome Atualizado' }, () => {
         done();
@@ -438,8 +438,8 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve lidar com ID inexistente sem falhar', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [mockCourse1] });
-    });
+        callback({ savedCourses: [mockCourse1] });
+      });
 
       CourseRepository.update(99999999, { name: 'Teste' }, () => {
         expect(console.warn).toHaveBeenCalledWith(
@@ -452,8 +452,8 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve executar callback mesmo com ID inexistente', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: [] });
-    });
+        callback({ savedCourses: [] });
+      });
 
       CourseRepository.update(123, { name: 'Test' }, () => {
         done();
@@ -464,9 +464,9 @@ describe('Storage - CRUD de Cursos', () => {
   describe('clearItems()', () => {
     test('Deve limpar todos os cursos', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      expect(data.savedCourses).toEqual([]);
-      callback();
-    });
+        expect(data.savedCourses).toEqual([]);
+        callback();
+      });
 
       CourseRepository.clear(() => {
         done();
@@ -475,9 +475,9 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve chamar saveItems com array vazio', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      expect(data.savedCourses).toHaveLength(0);
-      callback();
-    });
+        expect(data.savedCourses).toHaveLength(0);
+        callback();
+      });
 
       CourseRepository.clear(() => {
         done();
@@ -486,8 +486,8 @@ describe('Storage - CRUD de Cursos', () => {
 
     test('Deve executar callback', (done) => {
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-      callback();
-    });
+        callback();
+      });
 
       CourseRepository.clear(() => {
         expect(chrome.storage.sync.set).toHaveBeenCalled();

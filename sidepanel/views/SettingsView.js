@@ -92,15 +92,14 @@ export class SettingsView {
     }
   }
 
-  handleClearAll() {
+  async handleClearAll() {
     if (
       confirm(
         'Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.'
       )
     ) {
-      CourseRepository.clear(() =>
-        this.feedback.show('Todas as matérias foram removidas.', 'success')
-      );
+      await CourseRepository.clear();
+      this.feedback.show('Todas as matérias foram removidas.', 'success');
     }
   }
 

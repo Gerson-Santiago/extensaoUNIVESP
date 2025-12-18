@@ -117,13 +117,12 @@ export class CourseDetailsView {
           const weeks = result.weeks || [];
 
           if (weeks && weeks.length > 0) {
-            CourseRepository.update(this.course.id, { weeks: weeks }, () => {
-              this.course.weeks = weeks;
-              alert(`${weeks.length} semanas atualizadas para "${this.course.name}"!`);
-              // Re-render only list
-              const weeksList = document.getElementById('weeksList');
-              this.renderWeeksList(weeksList);
-            });
+            await CourseRepository.update(this.course.id, { weeks: weeks });
+            this.course.weeks = weeks;
+            alert(`${weeks.length} semanas atualizadas para "${this.course.name}"!`);
+            // Re-render only list
+            const weeksList = document.getElementById('weeksList');
+            this.renderWeeksList(weeksList);
           } else {
             alert('Nenhuma semana encontrada nesta página.');
           }
