@@ -1,5 +1,5 @@
 import { CourseRepository } from '../data/repositories/CourseRepository.js';
-import { ScraperService } from './ScraperService.js';
+import { ScraperService } from '../../features/courses/services/ScraperService.js';
 import { Tabs } from '../../shared/utils/Tabs.js';
 
 export class CourseService {

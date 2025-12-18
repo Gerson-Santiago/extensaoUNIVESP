@@ -1,6 +1,6 @@
 import { CourseRepository } from '../data/repositories/CourseRepository.js';
-import { createCourseElement } from '../components/Items/CourseItem.js';
-import { groupCoursesByTerm } from '../utils/courseGrouper.js';
+import { createCourseElement } from '../../features/courses/components/CourseItem.js';
+import { groupCoursesByTerm } from '../../features/courses/logic/CourseGrouper.js';
 import { ActionMenu } from '../components/Shared/ActionMenu.js';
 
 export class CoursesView {

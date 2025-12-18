@@ -68,10 +68,19 @@ O método `handleAutoScroll()` dentro de `CoursesView.js` é enorme e contém l�
 *   **Ação**: Extrair para `features/courses/logic/AutoScroll.js`.
 *   **Benefício**: View fica limpa (só renderiza), Lógica fica testável isoladamente.
 
-## 4. Dependência Cruzada (Cross-Feature)
-O `BatchImportModal` (Feature Import) usa `CourseRepository`.
-*   **Solução**: Importará de `@features/courses/data/CourseRepository.js`.
-*   **Significado**: Feature "Import" depende do domínio "Courses". Aceitável.
+## 4. Dependência Cruzada e Arquitetura (ADR)
+
+### P: Por que `CourseRepository` não vai para `shared/`?
+O `CourseRepository` é usado pela feature de Importação, o que gera a dúvida: *"Se é compartilhado, não deveria estar em shared?"*.
+
+**Resposta**: Não. Na Screaming Architecture:
+1.  **Ownership**: O Repositório encapsula regras de negócio (ex: validação de curso, estrutura de dados). Isso pertence ao **Domínio Cursos**.
+2.  **Dependência Unidirecional**: A feature Import existe *para servir* a feature Cursos. É natural que `Import` dependa de `Courses`.
+    *   ✅ `Import` -> `Courses` (Importa dados PARA cursos).
+    *   ❌ `Courses` -> `Import` (Cursos não deve saber como foi importado).
+3.  **Shared**: Reservado para coisas que **não têm domínio específico** (ex: `Tabs.js`, `StorageDriver`, `Logger`).
+
+Portanto, manteremos em `features/courses/data` e faremos a Importação apontar para lá.
 
 ## 5. Passos (Ordem Segura)
 1.  **Infra**: Criar pastas.

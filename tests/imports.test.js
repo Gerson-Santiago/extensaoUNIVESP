@@ -20,15 +20,15 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
     'sidepanel/styles/views/home.css',
     'sidepanel/styles/views/courses.css',
     'sidepanel/styles/views/settings.css',
-    'sidepanel/services/ScraperService.js',
+    'features/courses/services/ScraperService.js', // [MOVED]
     'sidepanel/data/repositories/CourseRepository.js',
     'shared/utils/Tabs.js',
     'features/import/logic/BatchImportFlow.js',
     'features/import/components/BatchImportModal.js',
     'features/import/services/BatchScraper.js',
     'sidepanel/components/Modals/Modal.js', // 🆕
-    'sidepanel/components/Items/CourseItem.js',
-    'sidepanel/components/Items/WeekItem.js',
+    'features/courses/components/CourseItem.js', // [MOVED]
+    'features/courses/components/WeekItem.js', // [MOVED]
     'sidepanel/views/FeedbackView.js',
     'sidepanel/views/HomeView.js', // 🆕
     'sidepanel/views/CoursesView.js', // 🆕
@@ -47,12 +47,12 @@ describe('Verificação de Integridade de Arquivos e Imports', () => {
   // Teste de sintaxe/importação básica
   test('Deve conseguir importar módulos JS sem erro de sintaxe', async () => {
     const modulesToImport = [
-      '../sidepanel/services/ScraperService.js',
+      '../features/courses/services/ScraperService.js',
       '../sidepanel/data/repositories/CourseRepository.js',
       '../shared/utils/Tabs.js',
       '../features/import/services/BatchScraper.js',
-      '../sidepanel/components/Items/CourseItem.js',
-      '../sidepanel/components/Items/WeekItem.js',
+      '../features/courses/components/CourseItem.js',
+      '../features/courses/components/WeekItem.js',
       '../sidepanel/utils/statusManager.js',
       '../shared/utils/settings.js',
     ];
