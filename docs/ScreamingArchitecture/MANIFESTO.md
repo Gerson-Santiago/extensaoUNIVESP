@@ -71,7 +71,12 @@ Para cada arquivo, pergunte:
     *   Analise o impacto em **toda a base de código** antes de rodar `git mv`.
     *   Se quebrou, a prioridade absoluta é consertar (Green Build) antes de prosseguir.
 
-3.  **Smart Paths (No Hell)**
-    *   Proibido usar `../../../../`.
-    *   Use Aliases: `@features`, `@core`, `@shared`.
+4.  **Integridade de Links (Regra Anti-Tela Branca)**
+    *   **Browser != Jest**: O Node resolve coisas que o Browser não.
+    *   **Relativo é Lei**: Em produção (`.js`), imports DEVEM ser relativos e resolver no disco (`../../features/x.js`). Aliases (`@features`) são APENAS para testes.
+    *   **Link Checker**: Todo commit tem que passar pelo scanner de imports (`verify-links`). Se um arquivo aponta para o vazio, o build FALHA.
+
+5.  **Smart Paths (No Hell)**
+    *   Proibido usar `../../../../` cegamente.
+    *   Use Aliases: `@features`, `@core`, `@shared` **apenas em arquivos .test.js**.
     *   O código deve ser legível por humanos, não apenas por máquinas.

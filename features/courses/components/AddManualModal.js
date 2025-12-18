@@ -1,5 +1,5 @@
-import { Modal } from './Modal.js';
-import { CourseRepository } from '../../data/repositories/CourseRepository.js';
+import { Modal } from '../../../sidepanel/components/Modals/Modal.js';
+import { CourseRepository } from '../data/CourseRepository.js';
 
 export class AddManualModal extends Modal {
   constructor(onSuccess) {

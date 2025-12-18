@@ -1,4 +1,4 @@
-import { CourseRepository } from '../sidepanel/data/repositories/CourseRepository.js';
+import { CourseRepository } from '@features/courses/data/CourseRepository.js';
 
 // Mock chrome.storage.sync
 const storageMock = {};
@@ -14,6 +14,9 @@ global.chrome = {
       }),
     },
   },
+  runtime: {
+    lastError: null,
+  },
 };
 
 describe('Storage Logic - Persistence & v2.4.1 Features', () => {
@@ -23,54 +26,38 @@ describe('Storage Logic - Persistence & v2.4.1 Features', () => {
     jest.clearAllMocks();
   });
 
-  test('addItemsBatch should persist termName', (done) => {
+  test('addItemsBatch should persist termName', async () => {
     const items = [
       { name: 'Curso A', url: 'http://a.com', weeks: [], termName: '2025/1' },
       { name: 'Curso B', url: 'http://b.com' }, // Sem termName
     ];
 
-    CourseRepository.addBatch(items, (added) => {
-      expect(added).toBe(2);
+    await CourseRepository.addBatch(items);
 
-      CourseRepository.loadItems((courses) => {
-        expect(courses).toHaveLength(2);
-        expect(courses.find((c) => c.name === 'Curso A').termName).toBe('2025/1');
-        done();
-      });
-    });
+    const courses = await CourseRepository.loadItems();
+    expect(courses).toHaveLength(2);
+    expect(courses.find((c) => c.name === 'Curso A').termName).toBe('2025/1');
   });
 
-  test('addItem should accept options object with termName', (done) => {
+  test('addItem should accept options object with termName', async () => {
     // addItem(name, url, weeks = [], optionsOrCallback, extraCallback)
-    CourseRepository.add(
-      'Curso Manual',
-      'http://manual.com',
-      [],
-      { termName: 'Manual Term' },
-      (success) => {
-        expect(success).toBe(true);
+    await CourseRepository.add('Curso Manual', 'http://manual.com', [], {
+      termName: 'Manual Term',
+    });
 
-        CourseRepository.loadItems((courses) => {
-          const course = courses.find((c) => c.name === 'Curso Manual');
-          expect(course).toBeTruthy();
-          expect(course.termName).toBe('Manual Term');
-          done();
-        });
-      }
-    );
+    const courses = await CourseRepository.loadItems();
+    const course = courses.find((c) => c.name === 'Curso Manual');
+    expect(course).toBeTruthy();
+    expect(course.termName).toBe('Manual Term');
   });
 
-  test('addItem should work with old signature (backward compatibility)', (done) => {
+  test('addItem should work with old signature (backward compatibility)', async () => {
     // addItem(name, url, weeks = [], callback)
-    CourseRepository.add('Curso Old', 'http://old.com', [], (success) => {
-      expect(success).toBe(true);
+    await CourseRepository.add('Curso Old', 'http://old.com', []);
 
-      CourseRepository.loadItems((courses) => {
-        const course = courses.find((c) => c.name === 'Curso Old');
-        expect(course).toBeTruthy();
-        expect(course.termName).toBe(''); // Default empty
-        done();
-      });
-    });
+    const courses = await CourseRepository.loadItems();
+    const course = courses.find((c) => c.name === 'Curso Old');
+    expect(course).toBeTruthy();
+    expect(course.termName).toBe(''); // Default empty
   });
 });

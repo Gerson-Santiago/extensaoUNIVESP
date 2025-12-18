@@ -34,35 +34,40 @@ A extensão segue o padrão **MVC (Model-View-Controller)** adaptado para o cont
 flowchart LR
     subgraph "Navegador do Usuário"
         direction TB
-        UI["Side Panel / Popup (View)"]
-        Logic["CourseService / raManager.js (Logic)"]
-        Storage[(Chrome Storage (Model))]
+        UI["Side Panel (UI)"]
+        Feature["Features (Cursos/Import)"]
+        Global["Core Logic (Auth/RA)"]
+        Storage[(Chrome Storage)]
         Web[Página AVA/SEI]
     end
 
-    Web -->|Scraping| Logic
-    Logic -->|Persist| Storage
-    Storage -->|Load| UI
-    UI -->|User Action| Logic
+    Web -->|Scraping| Feature
+    Feature -->|Business Logic| Storage
+    Storage -->|Load| Feature
+    Feature -->|Render| UI
+    UI -->|User Action| Global
 ```
 
 ### Componentes Principais
 
-#### A. Side Panel (`/sidepanel`)
-O painel lateral é o coração da experiência do usuário.
-*   **Views**: Componentes visuais (`CoursesView.js`, `SettingsView.js`).
-*   **Logic**: Controladores (`raManager.js`, `domainManager.js`).
-*   **Services**: Serviços de negócio (`CourseService.js`, `ScraperService.js`, `BatchImportFlow.js`).
-*   **Components**: Elementos UI organizados em `Forms`, `Layout`, `Modals` e `Shared`.
-*   **Shared**: Reutiliza utilitários de `/shared/utils/`.
+#### A. Features (`/features`)
+Onde vivem as regras de negócio específicas, seguindo a **Screaming Architecture**. Se o código é sobre "Cursos", ele mora aqui.
+*   **Courses**: Gerencia listagem, detalhes, scraping e persistência de matérias.
+*   **Import**: Gerencia o fluxo de importação em lote do histórico escolar.
 
-#### B. Content Scripts (`/scripts`)
+#### B. Side Panel (`/sidepanel`)
+O painel lateral atua agora como um "Shell" (Container) e orquestrador global.
+*   **Views**: Telas genéricas (`HomeView`, `SettingsView`).
+*   **Logic**: Gerenciadores de Sessão (`raManager.js`, `domainManager.js`).
+*   **Components**: Layout base (`TopNav`, `MainLayout`).
+
+#### C. Content Scripts (`/scripts`)
 Scripts injetados na página alvo para ler o DOM.
 *   **Scraper**: Lê a estrutura HTML do Blackboard para identificar cursos.
 *   **Deep Access**: Utiliza `fetch` em background para acessar páginas internas do curso.
 *   **Isolamento**: Roda em um "mundo isolado" (Isolated World) para não conflitar com o JS da página.
 
-#### C. Background Service (`scripts/background.js`)
+#### D. Background Service (`scripts/background.js`)
 Gerenciador de eventos do Chrome.
 *   Responsável pela instalação, mensagens entre abas e o Side Panel.
 
@@ -89,22 +94,27 @@ Para mais detalhes jurídicos e técnicos sobre dados, veja:
 
 ## 📂 4. Estrutura de Diretórios
 
-```
 /
-├── assets/          # Ícones e imagens estáticas
-├── popup/           # Interface do popup (ícone na barra)
-├── sidepanel/       # Lógica e UI do painel lateral
-│   ├── components/  # Forms, Layout, Modals, Shared, Items
-│   ├── data/        # Dados estáticos/mock
-│   ├── logic/       # Controladores (raManager, domainManager, batchScraper)
-│   ├── services/    # Camada de Serviço (CourseService, ScraperService, BatchImportFlow)
-│   ├── styles/      # CSS modular
-│   ├── utils/       # Utilitários específicos do painel
-│   └── views/       # Telas principais (CoursesView, SettingsView)
-├── scripts/         # Scripts de Background e Content
-├── shared/          # Utils compartilhados (Tabs, Settings, Browser)
-└── tests/           # Testes automatizados (Jest)
-```
+├──  assets/          # Ícones e imagens estáticas
+├──  features/        # SCREAMING ARCHITECTURE (Features isoladas)
+│    ├── courses/     # Feature "Cursos" (Lista, Detalhes, Scraper, Storage)
+│    │   ├── components/
+│    │   ├── data/
+│    │   ├── logic/
+│    │   └── services/
+│    └── import/      # Feature "Importação em Lote"
+│        ├── components/
+│        ├── logic/
+│        └── services/
+├──  popup/           # Interface do popup (ícone na barra)
+├──  sidepanel/       # Lógica Global e UI do painel lateral
+│    ├── components/  # Layout, Modals Globais e Shared UI
+│    ├── logic/       # Gerenciadores Globais (raManager, domainManager)
+│    ├── utils/       # Utilitários globais de UI
+│    └── views/       # Telas genéricas (HomeView, SettingsView, FeedbackView)
+├──  scripts/         # Scripts de Background e Content
+├──  shared/          # Utils compartilhados (Tabs, Settings, Browser)
+└──  tests/           # Testes automatizados (Jest)
 
 > *Documento atualizado em: Dezembro 2025 (v2.6.0).*
 

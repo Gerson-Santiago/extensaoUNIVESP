@@ -1,4 +1,4 @@
-import { ScraperService } from '../sidepanel/services/ScraperService.js';
+import { ScraperService } from '@features/courses/services/ScraperService.js';
 
 describe('Testes de Lógica - Scraper', () => {
   beforeEach(() => {

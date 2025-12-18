@@ -1,4 +1,4 @@
-import { parseTerm } from '../../sidepanel/utils/termParser.js';
+import { parseTerm } from '@features/courses/logic/TermParser.js';
 
 describe('termParser Utility', () => {
   test('Should parse standard name format "2025/2 - 4º Bimestre"', () => {
