@@ -1,6 +1,6 @@
-import { CourseRepository } from '../../features/courses/data/CourseRepository.js';
-import { ScraperService } from '../../features/courses/services/ScraperService.js';
-import { Tabs } from '../../shared/utils/Tabs.js';
+import { CourseRepository } from '../data/CourseRepository.js';
+import { ScraperService } from '../services/ScraperService.js';
+import { Tabs } from '../../../shared/utils/Tabs.js';
 
 export class CourseService {
   /**

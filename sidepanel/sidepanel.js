@@ -1,6 +1,6 @@
 import { MainLayout } from './components/Layout/MainLayout.js';
 import { HomeView } from './views/HomeView.js';
-import { CoursesView } from './views/CoursesView.js';
+import { CoursesList } from '../features/courses/components/CoursesList.js';
 import { SettingsView } from './views/SettingsView.js';
 import { CourseDetailsView } from './views/CourseDetailsView.js';
 import { FeedbackView } from './views/FeedbackView.js';
@@ -8,7 +8,7 @@ import { Tabs } from '../shared/utils/Tabs.js';
 import { BatchImportModal } from '../features/import/components/BatchImportModal.js';
 import { AddManualModal } from './components/Modals/AddManualModal.js';
 import { LoginWaitModal } from './components/Modals/LoginWaitModal.js';
-import { CourseService } from './services/CourseService.js';
+import { CourseService } from '../features/courses/logic/CourseService.js';
 import { BatchImportFlow } from '../features/import/logic/BatchImportFlow.js';
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -52,8 +52,8 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  // Callbacks para CoursesView
-  const coursesView = new CoursesView({
+  // Callbacks para CoursesList
+  const coursesView = new CoursesList({
     onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
     onViewDetails: (course) => {
       // Navegação customizada para Detalhes

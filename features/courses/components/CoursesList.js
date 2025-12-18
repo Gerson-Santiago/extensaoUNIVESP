@@ -1,9 +1,9 @@
-import { CourseRepository } from '../../features/courses/data/CourseRepository.js';
-import { createCourseElement } from '../../features/courses/components/CourseItem.js';
-import { groupCoursesByTerm } from '../../features/courses/logic/CourseGrouper.js';
-import { ActionMenu } from '../components/Shared/ActionMenu.js';
+import { CourseRepository } from '../data/CourseRepository.js';
+import { createCourseElement } from './CourseItem.js';
+import { groupCoursesByTerm } from '../logic/CourseGrouper.js';
+import { ActionMenu } from '../../../sidepanel/components/Shared/ActionMenu.js';
 
-export class CoursesView {
+export class CoursesList {
   constructor(callbacks) {
     this.callbacks = callbacks;
   }
