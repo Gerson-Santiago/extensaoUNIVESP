@@ -1,6 +1,6 @@
-import { createWeekElement } from '../../features/courses/components/WeekItem.js';
-import { ScraperService } from '../../features/courses/services/ScraperService.js';
-import { CourseRepository } from '../../features/courses/data/CourseRepository.js';
+import { createWeekElement } from './WeekItem.js';
+import { ScraperService } from '../services/ScraperService.js';
+import { CourseRepository } from '../data/CourseRepository.js';
 
 export class CourseDetailsView {
   constructor(callbacks) {
@@ -84,7 +84,7 @@ export class CourseDetailsView {
 
   async handleRefresh(btn) {
     // Importa a função para abrir/trocar abas
-    const { Tabs } = await import('../../shared/utils/Tabs.js');
+    const { Tabs } = await import('../../../shared/utils/Tabs.js');
 
     // Primeiro, abre/troca para a aba da matéria correta
     Tabs.openOrSwitchTo(this.course.url);

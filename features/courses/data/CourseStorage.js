@@ -19,6 +19,7 @@ export class CourseStorage {
           if (chrome.runtime.lastError) {
             return reject(chrome.runtime.lastError);
           }
+          /** @type {Array<any>} */
           const courses = result[this.STORAGE_KEY] || [];
           resolve(courses);
         });

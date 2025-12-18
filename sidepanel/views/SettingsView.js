@@ -1,4 +1,4 @@
-import { AddManualModal } from '../components/Modals/AddManualModal.js';
+import { AddManualModal } from '../../features/courses/components/AddManualModal.js';
 // BatchImportModal removed (Delegated to Controller)
 import { CourseRepository } from '../../features/courses/data/CourseRepository.js';
 import { CourseService } from '../../features/courses/logic/CourseService.js';

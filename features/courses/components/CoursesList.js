@@ -137,11 +137,12 @@ export class CoursesList {
           const INTERVAL = 1500;
           const MAX_RETRIES = 5;
 
-          if (window._autoScrollRun) {
+          if (window['_autoScrollRun']) {
             alert('O carregamento automático já está em andamento.');
             return;
           }
 
+          /** @returns {HTMLElement | Window} */
           const getScrollElement = () => {
             const mainContainer = document.getElementById('main-content-inner');
             if (mainContainer && mainContainer.scrollHeight > mainContainer.clientHeight) {
@@ -149,11 +150,12 @@ export class CoursesList {
             }
 
             const allDivs = document.querySelectorAll('div');
-            for (const div of allDivs) {
+            // Convert NodeList to Array for safe iteration
+            for (const div of Array.from(allDivs)) {
               if (div.scrollHeight > div.clientHeight && div.clientHeight > 100) {
                 const style = window.getComputedStyle(div);
                 if (['auto', 'scroll'].includes(style.overflowY) || style.overflow === 'auto') {
-                  return div;
+                  return /** @type {HTMLElement} */ (div);
                 }
               }
             }
@@ -161,12 +163,12 @@ export class CoursesList {
           };
 
           const scrollTarget = getScrollElement();
-          window._autoScrollRun = true;
+          window['_autoScrollRun'] = true;
           let retries = 0;
           let lastHeight =
             scrollTarget === window
               ? document.documentElement.scrollHeight
-              : scrollTarget.scrollHeight;
+              : /** @type {HTMLElement} */ (scrollTarget).scrollHeight;
           const originalTitle = document.title;
           document.title = '[Carregando...] ' + originalTitle;
 
@@ -187,9 +189,8 @@ export class CoursesList {
               if (scrollTarget === window) {
                 isBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
               } else {
-                isBottom =
-                  scrollTarget.scrollTop + scrollTarget.clientHeight >=
-                  scrollTarget.scrollHeight - 50;
+                const el = /** @type {HTMLElement} */ (scrollTarget);
+                isBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 50;
               }
 
               if (currentHeight > lastHeight) {
@@ -205,7 +206,7 @@ export class CoursesList {
                 return;
               }
 
-              window._autoScrollRun = false;
+              window['_autoScrollRun'] = false;
               document.title = originalTitle;
               const count = document.querySelectorAll('.course-element-card, .element-card').length;
               alert(`Carregamento concluído! ${count} cursos encontrados.`);
