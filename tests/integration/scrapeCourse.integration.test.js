@@ -1,4 +1,4 @@
-import { SettingsView } from '../../sidepanel/views/SettingsView.js';
+import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 
 describe('Integration: Scrape Course Flow', () => {
   let settingsView;

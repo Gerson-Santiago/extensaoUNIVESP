@@ -1,5 +1,5 @@
-import { SettingsView } from '../../sidepanel/views/SettingsView.js';
-import { RaManager } from '../../sidepanel/logic/raManager.js';
+import { SettingsView } from '../../features/settings/ui/SettingsView.js';
+import { RaManager } from '../../features/settings/logic/raManager.js';
 
 describe('Integration: Config Form Feedback', () => {
   let settingsView;

@@ -1,4 +1,4 @@
-import { DomainManager } from '../sidepanel/logic/domainManager.js';
+import { DomainManager } from '../features/settings/logic/domainManager.js';
 import { CONSTANTS } from '../shared/utils/settings.js';
 
 describe('DomainManager', () => {

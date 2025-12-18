@@ -1,5 +1,5 @@
-import { RaManager } from '../../logic/raManager.js';
-import { DomainManager } from '../../logic/domainManager.js';
+import { RaManager } from '../../../features/settings/logic/raManager.js';
+import { DomainManager } from '../../../features/settings/logic/domainManager.js';
 
 export class ConfigForm {
   /**

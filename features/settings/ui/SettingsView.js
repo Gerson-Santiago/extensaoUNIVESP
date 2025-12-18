@@ -1,9 +1,9 @@
-import { AddManualModal } from '../../features/courses/components/AddManualModal.js';
+import { AddManualModal } from '../../courses/components/AddManualModal.js';
 // BatchImportModal removed (Delegated to Controller)
-import { CourseRepository } from '../../features/courses/data/CourseRepository.js';
-import { CourseService } from '../../features/courses/logic/CourseService.js';
-import { StatusManager } from '../utils/statusManager.js';
-import { ConfigForm } from '../components/Forms/ConfigForm.js';
+import { CourseRepository } from '../../courses/data/CourseRepository.js';
+import { CourseService } from '../../courses/logic/CourseService.js';
+import { StatusManager } from '../../../sidepanel/utils/statusManager.js';
+import { ConfigForm } from '../../../sidepanel/components/Forms/ConfigForm.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {

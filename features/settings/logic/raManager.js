@@ -1,4 +1,4 @@
-import { formatEmail, extractRa } from '../../shared/utils/settings.js';
+import { formatEmail, extractRa } from '../../../shared/utils/settings.js';
 
 export class RaManager {
   /**

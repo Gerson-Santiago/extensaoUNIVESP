@@ -1,4 +1,4 @@
-import { resolveDomain, CONSTANTS } from '../../shared/utils/settings.js';
+import { resolveDomain, CONSTANTS } from '../../../shared/utils/settings.js';
 
 export class DomainManager {
   /**

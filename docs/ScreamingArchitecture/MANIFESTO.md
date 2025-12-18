@@ -51,10 +51,10 @@ Para cada arquivo, pergunte:
 
 ## 🛠️ 3. Step-by-Step da Refatoração
 
-- [ ] 1.1. Mover `src/pages/courses` para `features/courses/ui`.
-- [ ] 1.2. Mover `src/pages/grades` para `features/grades/ui`.
-- [ ] 1.3. Mover `src/pages/login` para `features/login/ui`.
-- [ ] 1.4. Criar pasta `features/import/tests` (Colocation!).
+- [x] 1.1. Mover `src/pages/courses` para `features/courses/ui`.
+- [x] 1.2. Mover `src/pages/grades` para `features/grades/ui`.
+- [x] 1.3. Mover `src/pages/login` para `features/login/ui`.
+- [x] 1.4. Criar pasta `features/import/tests` (Colocation!).
 - [x] 1.5. Configurar Path Aliases (`@features`, etc) em `jsconfig` e `jest`.
 
 ---

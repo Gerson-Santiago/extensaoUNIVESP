@@ -1,9 +1,9 @@
 import { MainLayout } from '../../sidepanel/components/Layout/MainLayout.js';
-import { HomeView } from '../../sidepanel/views/HomeView.js';
+import { HomeView } from '../../features/home/ui/HomeView.js';
 // We can use mocks for other views to simplify dependencies if we just want to test navigation
 // But let's import real classes since it's an integration test
 import { CoursesList } from '../../features/courses/components/CoursesList.js';
-import { SettingsView } from '../../sidepanel/views/SettingsView.js';
+import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 
 describe('Integration: Navigation Flow', () => {
   let container;

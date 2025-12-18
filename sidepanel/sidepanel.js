@@ -1,9 +1,9 @@
 import { MainLayout } from './components/Layout/MainLayout.js';
-import { HomeView } from './views/HomeView.js';
+import { HomeView } from '../features/home/ui/HomeView.js';
 import { CoursesList } from '../features/courses/components/CoursesList.js';
-import { SettingsView } from './views/SettingsView.js';
+import { SettingsView } from '../features/settings/ui/SettingsView.js';
 import { CourseDetailsView } from '../features/courses/components/CourseDetailsView.js';
-import { FeedbackView } from './views/FeedbackView.js';
+import { FeedbackView } from '../features/feedback/ui/FeedbackView.js';
 import { Tabs } from '../shared/utils/Tabs.js';
 import { BatchImportModal } from '../features/import/components/BatchImportModal.js';
 import { AddManualModal } from '../features/courses/components/AddManualModal.js';

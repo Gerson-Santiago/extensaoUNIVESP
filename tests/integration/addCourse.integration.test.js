@@ -1,4 +1,4 @@
-import { SettingsView } from '../../sidepanel/views/SettingsView.js';
+import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 import { CoursesList } from '../../features/courses/components/CoursesList.js';
 
 describe('Integration: Add Course Manual Flow', () => {
