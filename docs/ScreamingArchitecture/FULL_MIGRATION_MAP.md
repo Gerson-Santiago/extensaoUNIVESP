@@ -65,9 +65,9 @@ Código reutilizável e sem regras de negócio complexas.
 
 ## 🚦 Status da Migração
 
-1.  **[ ] Features/Import**: Pronta para mover (Plano Piloto).
+1.  **[x] Features/Import**: Pronta para mover (Plano Piloto).
 2.  **[ ] Features/Auth**: Fácil (1 arquivo).
 3.  **[ ] Features/Settings**: Médio.
-4.  **[ ] Features/Courses**: Complexo (Muitas dependências).
+4.  **[x] Features/Courses**: Complexo (Muitas dependências).
 
 **Estratégia**: Executamos o **Piloto de Importação** primeiro porque ele é *autocontido*. Ele valida a estrutura de pastas e os testes sem explodir a complexidade de `Courses`.

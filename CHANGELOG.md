@@ -1,7 +1,14 @@
 # Changelog - Versão Beta
 
-## [2.6.0] - 2025-12-16
-### Arquitetura
+## [2.6.0] - 2025-12-18
+### Arquitetura (Screaming Architecture)
+- **Features Isoladas**: Implementação completa da Screaming Architecture. O código agora grita o que faz (`features/courses`, `features/import`).
+- **Refatoração Core (Cursos)**: Migração total da feature "Cursos" para domínio isolado.
+    - `UI`: Componentes React-like (`CoursesList`, `CourseDetailsView`) movidos para `features/courses/components`.
+    - `Data`: Repositório totalmente assíncrono (`CourseRepository`) e Driver de Storage (`CourseStorage`) em `features/courses/data`.
+    - **Performance**: Eliminação total de callbacks ("Callback Hell") em favor de `async/await`.
+
+### Feature Importação (Refatoração)
 - **Separação de Modais**: Divisão do fluxo de importação em dois estágios para maior estabilidade:
     - `LoginWaitModal`: Interface passiva que aguarda o login do usuário.
     - `BatchImportModal`: Focado exclusivamente na seleção e importação, sem lógica de navegação.
