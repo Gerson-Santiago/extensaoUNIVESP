@@ -1,5 +1,5 @@
-import { createWeekElement } from '../components/Items/WeekItem.js';
-import { ScraperService } from '../services/ScraperService.js';
+import { createWeekElement } from '../../features/courses/components/WeekItem.js';
+import { ScraperService } from '../../features/courses/services/ScraperService.js';
 import { CourseRepository } from '../data/repositories/CourseRepository.js';
 
 export class CourseDetailsView {
