@@ -4,7 +4,15 @@
     "target": "es6",
     "checkJs": true,
     "lib": ["es6", "dom"],
-    "types": ["chrome", "jest"]
+    "types": ["chrome", "jest"],
+    "baseUrl": ".",
+    "paths": {
+      "@features/*": ["features/*"],
+      "@core/*": ["core/*"],
+      "@shared/*": ["shared/*"],
+      "@tests/*": ["tests/*"],
+      "@sidepanel/*": ["sidepanel/*"]
+    }
   },
   "include": ["**/*"],
   "exclude": ["node_modules", "dist"]

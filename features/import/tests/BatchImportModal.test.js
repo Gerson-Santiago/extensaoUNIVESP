@@ -1,12 +1,12 @@
-import { BatchImportModal } from '../../sidepanel/components/Modals/BatchImportModal.js';
+import { BatchImportModal } from '@features/import/components/BatchImportModal.js';
 
 // Mocks
-jest.mock('../../sidepanel/logic/batchScraper.js', () => ({
+jest.mock('@features/import/services/BatchScraper.js', () => ({
   scrapeAvailableTerms: jest.fn(),
   processSelectedCourses: jest.fn(),
 }));
 
-jest.mock('../../sidepanel/data/repositories/CourseRepository.js', () => ({
+jest.mock('@sidepanel/data/repositories/CourseRepository.js', () => ({
   CourseRepository: {
     addBatch: jest.fn(),
   },

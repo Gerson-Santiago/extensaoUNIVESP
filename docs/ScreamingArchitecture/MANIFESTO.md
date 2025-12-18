@@ -47,4 +47,31 @@ Para cada arquivo, pergunte:
 *   Ajuda a importar? -> `features/import`
 *   É cola técnica (manifest, jest)? -> `core/` ou `root`
 
-> *"Se transformarmos essa extensão em um App Mobile amanhã, devemos conseguir levar a pasta `features/` inteira e reaproveitar 80% do código (a lógica)."*
+---
+
+## 🛠️ 3. Step-by-Step da Refatoração
+
+- [ ] 1.1. Mover `src/pages/courses` para `features/courses/ui`.
+- [ ] 1.2. Mover `src/pages/grades` para `features/grades/ui`.
+- [ ] 1.3. Mover `src/pages/login` para `features/login/ui`.
+- [ ] 1.4. Criar pasta `features/import/tests` (Colocation!).
+- [x] 1.5. Configurar Path Aliases (`@features`, etc) em `jsconfig` e `jest`.
+
+---
+
+## 🛡️ Regras de Ouro da Execução (The Law)
+
+1.  **O Conteúdo é Rei (Content > Filename)**
+    *   Nunca mova um arquivo baseando-se apenas no nome.
+    *   **Abra**. **Leia**. analise os **Imports**.
+    *   Se `teste_X.js` importa `arquivo_Y.js`, eles são siameses. Mova juntos.
+
+2.  **Visão Global (No Broken Windows)**
+    *   Não quebre nada sem ter o plano exato de como consertar em seguida.
+    *   Analise o impacto em **toda a base de código** antes de rodar `git mv`.
+    *   Se quebrou, a prioridade absoluta é consertar (Green Build) antes de prosseguir.
+
+3.  **Smart Paths (No Hell)**
+    *   Proibido usar `../../../../`.
+    *   Use Aliases: `@features`, `@core`, `@shared`.
+    *   O código deve ser legível por humanos, não apenas por máquinas.

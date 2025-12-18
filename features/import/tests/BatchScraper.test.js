@@ -1,4 +1,7 @@
-import { scrapeAvailableTerms, processSelectedCourses } from '../sidepanel/logic/batchScraper.js';
+import {
+  scrapeAvailableTerms,
+  processSelectedCourses,
+} from '@features/import/services/BatchScraper.js';
 
 describe('Lógica - Batch Scraper', () => {
   beforeEach(() => {

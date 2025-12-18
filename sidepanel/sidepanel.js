@@ -5,11 +5,11 @@ import { SettingsView } from './views/SettingsView.js';
 import { CourseDetailsView } from './views/CourseDetailsView.js';
 import { FeedbackView } from './views/FeedbackView.js';
 import { Tabs } from '../shared/utils/Tabs.js';
-import { BatchImportModal } from './components/Modals/BatchImportModal.js';
+import { BatchImportModal } from '../features/import/components/BatchImportModal.js';
 import { AddManualModal } from './components/Modals/AddManualModal.js';
 import { LoginWaitModal } from './components/Modals/LoginWaitModal.js';
 import { CourseService } from './services/CourseService.js';
-import { BatchImportFlow } from './services/BatchImportFlow.js';
+import { BatchImportFlow } from '../features/import/logic/BatchImportFlow.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   const courseService = new CourseService();
