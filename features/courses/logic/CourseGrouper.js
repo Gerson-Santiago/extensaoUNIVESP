@@ -1,4 +1,4 @@
-import { parseTerm } from './termParser.js';
+import { parseTerm } from './TermParser.js';
 
 /**
  * Agrupa uma lista de cursos por termo (Bimestre).

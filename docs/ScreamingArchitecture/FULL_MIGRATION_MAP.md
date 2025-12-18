@@ -38,10 +38,11 @@ Cada arquivo de negócio deve ir para uma dessas 4 casas.
 | `sidepanel/components/Items/WeekItem.js` | `features/courses/components/WeekItem.js` |
 | `sidepanel/utils/termParser.js` | `features/courses/logic/TermParser.js` |
 
-### 🔐 C. Features/Auth (Identidade)
+### 🛂 C. Features/Session (Suporte à Sessão)
+> **Nota**: Não é um sistema de login próprio. Dependemos do login no SEI/AVA.
 | Arquivo Original | Novo Destino |
 | :--- | :--- |
-| `sidepanel/logic/raManager.js` | `features/auth/logic/SessionManager.js` |
+| `sidepanel/logic/raManager.js` | `features/session/logic/SessionManager.js` |
 
 ### ⚙️ D. Features/Settings (Configurações)
 | Arquivo Original | Novo Destino |

@@ -4,6 +4,13 @@ Este documento descreve o "Esqueleto" da nova arquitetura e as etapas para migra
 
 ## 💀 O Novo Esqueleto (Target Structure)
 
+> **🚀 Protocolo de Git (Cloud Checkpoints)**
+> A cada Fase concluída (ex: Import, Courses):
+> 1.  Merge da Feature Branch -> `dev` (Local).
+> 2.  **PUSH imediato** para `origin/dev` (Remote).
+> 3.  Só então cria-se a branch da próxima fase.
+> *Isso garante que `origin/dev` seja sempre um "Save Point" seguro e funcional.*
+
 ```
 /
 ├── core/                  # O "Kernel" da extensão (Mecanismos puros)

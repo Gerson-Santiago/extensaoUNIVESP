@@ -2,7 +2,7 @@ import { MainLayout } from '../../sidepanel/components/Layout/MainLayout.js';
 import { HomeView } from '../../sidepanel/views/HomeView.js';
 // We can use mocks for other views to simplify dependencies if we just want to test navigation
 // But let's import real classes since it's an integration test
-import { CoursesView } from '../../sidepanel/views/CoursesView.js';
+import { CoursesList } from '../../features/courses/components/CoursesList.js';
 import { SettingsView } from '../../sidepanel/views/SettingsView.js';
 
 describe('Integration: Navigation Flow', () => {
@@ -25,7 +25,7 @@ describe('Integration: Navigation Flow', () => {
   test('should navigate between tabs using TopNav', () => {
     // 1. Setup Views & Layout
     const homeView = new HomeView({ onAddCurrentInfo: jest.fn() });
-    const coursesView = new CoursesView({ onOpenCourse: jest.fn(), onViewDetails: jest.fn() });
+    const coursesView = new CoursesList({ onOpenCourse: jest.fn(), onViewDetails: jest.fn() });
     const settingsView = new SettingsView({ onNavigate: jest.fn() });
 
     // Mock render methods to easily identify them if we wanted,
@@ -68,7 +68,7 @@ describe('Integration: Navigation Flow', () => {
 
   test('should handle programmatic navigation', () => {
     const homeView = new HomeView({});
-    const coursesView = new CoursesView({});
+    const coursesView = new CoursesList({});
 
     const views = {
       home: homeView,

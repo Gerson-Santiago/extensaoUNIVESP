@@ -1,7 +1,7 @@
-import { AddManualModal } from '../components/Modals/AddManualModal.js';
+import { AddManualModal } from '../../features/courses/components/AddManualModal.js';
 // BatchImportModal removed (Delegated to Controller)
-import { CourseRepository } from '../data/repositories/CourseRepository.js';
-import { CourseService } from '../services/CourseService.js';
+import { CourseRepository } from '../../features/courses/data/CourseRepository.js';
+import { CourseService } from '../../features/courses/logic/CourseService.js';
 import { StatusManager } from '../utils/statusManager.js';
 import { ConfigForm } from '../components/Forms/ConfigForm.js';
 
@@ -92,15 +92,14 @@ export class SettingsView {
     }
   }
 
-  handleClearAll() {
+  async handleClearAll() {
     if (
       confirm(
         'Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.'
       )
     ) {
-      CourseRepository.clear(() =>
-        this.feedback.show('Todas as matérias foram removidas.', 'success')
-      );
+      await CourseRepository.clear();
+      this.feedback.show('Todas as matérias foram removidas.', 'success');
     }
   }
 

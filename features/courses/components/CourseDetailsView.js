@@ -1,6 +1,6 @@
-import { createWeekElement } from '../components/Items/WeekItem.js';
+import { createWeekElement } from './WeekItem.js';
 import { ScraperService } from '../services/ScraperService.js';
-import { CourseRepository } from '../data/repositories/CourseRepository.js';
+import { CourseRepository } from '../data/CourseRepository.js';
 
 export class CourseDetailsView {
   constructor(callbacks) {
@@ -84,7 +84,7 @@ export class CourseDetailsView {
 
   async handleRefresh(btn) {
     // Importa a função para abrir/trocar abas
-    const { Tabs } = await import('../../shared/utils/Tabs.js');
+    const { Tabs } = await import('../../../shared/utils/Tabs.js');
 
     // Primeiro, abre/troca para a aba da matéria correta
     Tabs.openOrSwitchTo(this.course.url);
@@ -117,13 +117,12 @@ export class CourseDetailsView {
           const weeks = result.weeks || [];
 
           if (weeks && weeks.length > 0) {
-            CourseRepository.update(this.course.id, { weeks: weeks }, () => {
-              this.course.weeks = weeks;
-              alert(`${weeks.length} semanas atualizadas para "${this.course.name}"!`);
-              // Re-render only list
-              const weeksList = document.getElementById('weeksList');
-              this.renderWeeksList(weeksList);
-            });
+            await CourseRepository.update(this.course.id, { weeks: weeks });
+            this.course.weeks = weeks;
+            alert(`${weeks.length} semanas atualizadas para "${this.course.name}"!`);
+            // Re-render only list
+            const weeksList = document.getElementById('weeksList');
+            this.renderWeeksList(weeksList);
           } else {
             alert('Nenhuma semana encontrada nesta página.');
           }

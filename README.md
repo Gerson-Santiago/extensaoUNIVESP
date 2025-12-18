@@ -3,7 +3,7 @@
 > **Versão Atual**: v2.6.0 (Stable)
 > **Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos, Navegação Inteligente no AVA e Autopreenchimento SEI.**
 
-![Version](https://img.shields.io/badge/version-2.6.0-blue) ![License](https://img.shields.io/badge/license-MIT-green)
+![Version](https://img.shields.io/badge/version-2.6.0-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Architecture](https://img.shields.io/badge/architecture-screaming-orange)
 
 Esta extensão é uma ferramenta **Open Source** e **Local-First** para facilitar a vida do aluno UNIVESP, automatizando tarefas repetitivas e organizando o acesso ao conteúdo acadêmico.
 

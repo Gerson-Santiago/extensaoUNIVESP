@@ -1,9 +1,9 @@
-import { CourseRepository } from '../data/repositories/CourseRepository.js';
-import { createCourseElement } from '../components/Items/CourseItem.js';
-import { groupCoursesByTerm } from '../utils/courseGrouper.js';
-import { ActionMenu } from '../components/Shared/ActionMenu.js';
+import { CourseRepository } from '../data/CourseRepository.js';
+import { createCourseElement } from './CourseItem.js';
+import { groupCoursesByTerm } from '../logic/CourseGrouper.js';
+import { ActionMenu } from '../../../sidepanel/components/Shared/ActionMenu.js';
 
-export class CoursesView {
+export class CoursesList {
   constructor(callbacks) {
     this.callbacks = callbacks;
   }
@@ -77,49 +77,51 @@ export class CoursesView {
     this.loadCourses();
   }
 
-  loadCourses() {
+  async loadCourses() {
     const container = document.getElementById('coursesListContainer');
     if (!container) return;
 
     container.innerHTML = '';
-    CourseRepository.loadItems((courses) => {
-      if (courses.length === 0) {
-        container.innerHTML =
-          '<div style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</div>';
-        return;
-      }
+    const courses = await CourseRepository.loadItems();
+    if (courses.length === 0) {
+      container.innerHTML =
+        '<div style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</div>';
+      return;
+    }
 
-      // Group courses by term using centralized logic
-      const grouped = groupCoursesByTerm(courses);
+    // Group courses by term using centralized logic
+    const grouped = groupCoursesByTerm(courses);
 
-      grouped.forEach((group) => {
-        // Create Group Container
-        const groupDiv = document.createElement('div');
-        groupDiv.className = 'term-group';
+    grouped.forEach((group) => {
+      // Create Group Container
+      const groupDiv = document.createElement('div');
+      groupDiv.className = 'term-group';
 
-        // Header (Term Name)
-        const header = document.createElement('header');
-        header.className = 'term-header';
-        header.textContent = group.title;
-        groupDiv.appendChild(header);
+      // Header (Term Name)
+      const header = document.createElement('header');
+      header.className = 'term-header';
+      header.textContent = group.title;
+      groupDiv.appendChild(header);
 
-        // List Container (UL)
-        const ul = document.createElement('ul');
-        ul.className = 'item-list';
+      // List Container (UL)
+      const ul = document.createElement('ul');
+      ul.className = 'item-list';
 
-        // Render Courses
-        group.courses.forEach((course) => {
-          const li = createCourseElement(course, {
-            onDelete: (id) => CourseRepository.delete(id, () => this.loadCourses()),
-            onClick: (url) => this.callbacks.onOpenCourse(url),
-            onViewDetails: (c) => this.callbacks.onViewDetails(c),
-          });
-          ul.appendChild(li);
+      // Render Courses
+      group.courses.forEach((course) => {
+        const li = createCourseElement(course, {
+          onDelete: async (id) => {
+            await CourseRepository.delete(id);
+            await this.loadCourses();
+          },
+          onClick: (url) => this.callbacks.onOpenCourse(url),
+          onViewDetails: (c) => this.callbacks.onViewDetails(c),
         });
-
-        groupDiv.appendChild(ul);
-        container.appendChild(groupDiv);
+        ul.appendChild(li);
       });
+
+      groupDiv.appendChild(ul);
+      container.appendChild(groupDiv);
     });
   }
 
@@ -135,11 +137,12 @@ export class CoursesView {
           const INTERVAL = 1500;
           const MAX_RETRIES = 5;
 
-          if (window._autoScrollRun) {
+          if (window['_autoScrollRun']) {
             alert('O carregamento automático já está em andamento.');
             return;
           }
 
+          /** @returns {HTMLElement | Window} */
           const getScrollElement = () => {
             const mainContainer = document.getElementById('main-content-inner');
             if (mainContainer && mainContainer.scrollHeight > mainContainer.clientHeight) {
@@ -147,11 +150,12 @@ export class CoursesView {
             }
 
             const allDivs = document.querySelectorAll('div');
-            for (const div of allDivs) {
+            // Convert NodeList to Array for safe iteration
+            for (const div of Array.from(allDivs)) {
               if (div.scrollHeight > div.clientHeight && div.clientHeight > 100) {
                 const style = window.getComputedStyle(div);
                 if (['auto', 'scroll'].includes(style.overflowY) || style.overflow === 'auto') {
-                  return div;
+                  return /** @type {HTMLElement} */ (div);
                 }
               }
             }
@@ -159,12 +163,12 @@ export class CoursesView {
           };
 
           const scrollTarget = getScrollElement();
-          window._autoScrollRun = true;
+          window['_autoScrollRun'] = true;
           let retries = 0;
           let lastHeight =
             scrollTarget === window
               ? document.documentElement.scrollHeight
-              : scrollTarget.scrollHeight;
+              : /** @type {HTMLElement} */ (scrollTarget).scrollHeight;
           const originalTitle = document.title;
           document.title = '[Carregando...] ' + originalTitle;
 
@@ -185,9 +189,8 @@ export class CoursesView {
               if (scrollTarget === window) {
                 isBottom = window.innerHeight + window.scrollY >= document.body.offsetHeight - 50;
               } else {
-                isBottom =
-                  scrollTarget.scrollTop + scrollTarget.clientHeight >=
-                  scrollTarget.scrollHeight - 50;
+                const el = /** @type {HTMLElement} */ (scrollTarget);
+                isBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 50;
               }
 
               if (currentHeight > lastHeight) {
@@ -203,7 +206,7 @@ export class CoursesView {
                 return;
               }
 
-              window._autoScrollRun = false;
+              window['_autoScrollRun'] = false;
               document.title = originalTitle;
               const count = document.querySelectorAll('.course-element-card, .element-card').length;
               alert(`Carregamento concluído! ${count} cursos encontrados.`);

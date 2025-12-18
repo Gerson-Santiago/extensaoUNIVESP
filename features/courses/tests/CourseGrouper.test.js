@@ -1,4 +1,4 @@
-import { groupCoursesByTerm } from '../../sidepanel/utils/courseGrouper.js';
+import { groupCoursesByTerm } from '@features/courses/logic/CourseGrouper.js';
 
 describe('courseGrouper Utility', () => {
   test('Should group courses by term and sort groups descending', () => {

@@ -8,11 +8,19 @@ description: Executa a verificação completa do projeto (Lint + Testes) conform
 Execute os linters para garantir que o código está em conformidade.
 1. `npm run lint`
 
-# Passo 2: Testes Automatizados
+# Passo 2: Verificação de Tipos e Testes Automatizados
 @tests/
 // turbo
-Execute a suíte de testes para garantir que não há regressões.
-1. `npm test`
+1. **Verificação de Tipos (TypeScript/JSDoc)**
+   - Executa a validação de tipos baseada no JSDoc e jsconfig.json.
+   ```bash
+   npm run type-check
+   ```
+
+2. **Execução de Testes** para garantir que não há regressões.
+   ```bash
+   npm test
+   ```
 
 # Passo 3: Relatório
 Se algum passo acima falhou, não prossiga com commits ou PRs até corrigir.

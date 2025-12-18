@@ -1,5 +1,5 @@
 import { SettingsView } from '../../sidepanel/views/SettingsView.js';
-import { CoursesView } from '../../sidepanel/views/CoursesView.js';
+import { CoursesList } from '../../features/courses/components/CoursesList.js';
 
 describe('Integration: Add Course Manual Flow', () => {
   let settingsView;
@@ -80,7 +80,7 @@ describe('Integration: Add Course Manual Flow', () => {
     });
 
     // Initialize CoursesView
-    coursesView = new CoursesView({ onOpenCourse: jest.fn(), onViewDetails: jest.fn() });
+    coursesView = new CoursesList({ onOpenCourse: jest.fn(), onViewDetails: jest.fn() });
     const coursesEl = coursesView.render();
     container.innerHTML = ''; // Clear settings
     container.appendChild(coursesEl);
