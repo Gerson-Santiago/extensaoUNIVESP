@@ -27,13 +27,15 @@ Para refatorar, precisamos concordar com estas definições:
 
 ### 1. Telas Completas (Views)
 
-| View ID | Arquivo Atual | Responsabilidade | Gatilho Principal |
+> **Nota (v2.6.1)**: Todos os caminhos abaixo foram migrados para `features/`.
+
+| View ID | Novo Caminho (Features) | Responsabilidade | Gatilho Principal |
 | :--- | :--- | :--- | :--- |
-| `home` | `views/HomeView.js` | Landing Page / Boas Vindas | Início do App |
-| `courses` | `views/CoursesView.js` | Lista de Matérias do Aluno | Tab "Cursos" (BottomNav) |
-| `settings` | `views/SettingsView.js` | Configurações Gerais | Tab "Config" (BottomNav) |
-| `courseDetails` | `views/CourseDetailsView.js` | Detalhes de uma matéria específica | Clique em um Card de Curso |
-| `feedback` | `views/FeedbackView.js` | Enviar feedback/Bug report | Botão em Settings |
+| `home` | `features/home/ui/HomeView.js` | Landing Page / Boas Vindas | Início do App |
+| `courses` | `features/courses/components/CoursesList.js` | Lista de Matérias do Aluno | Tab "Cursos" (BottomNav) |
+| `settings` | `features/settings/ui/SettingsView.js` | Configurações Gerais | Tab "Config" (BottomNav) |
+| `courseDetails` | `features/courses/components/CourseDetailsView.js` | Detalhes de uma matéria específica | Clique em um Card de Curso |
+| `feedback` | `features/feedback/ui/FeedbackView.js` | Enviar feedback/Bug report | Botão em Settings |
 
 ### 2. Modais
 

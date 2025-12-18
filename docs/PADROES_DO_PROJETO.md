@@ -80,10 +80,10 @@ Utilizamos **Jest** (`jest`, `jest-environment-jsdom`) para testes unitários e 
 
 ## 4. Estrutura e Modularização
 *   **Módulos:** Uso estrito de ES Modules (`import`/`export`).
-*   **Separação:**
-    *   `logic/`: Regras de negócio puras (sem manipulação direta de DOM se possível).
-    *   `views/`: Manipulação de DOM e eventos de UI.
-    *   `utils/`: Funções auxiliares puras e reutilizáveis.
+*   **Separação (Screaming Architecture):**
+    *   `features/`: Cada pasta é um domínio (ex: `courses`, `import`). Contém sua própria UI (`ui/`), Lógica (`logic/`) e Serviços.
+    *   `shared/`: Utilitários realmente genéricos e Design System reutilizável.
+    *   `core/`: Mecanismos de base (Storage driver, Messaging) - se aplicável.
 *   **Tipagem:** Embora seja JavaScript, utilizamos verificação de tipos defensiva (Type Guards) para evitar erros em runtime (ex: `element instanceof HTMLInputElement`).
 
 ## 5. Hooks e Scripts

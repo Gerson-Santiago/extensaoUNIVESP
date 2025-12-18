@@ -35,6 +35,6 @@ export class HomeView {
   }
 
   afterRender() {
-    // Nada específico por enquanto na Home
+    // @TODO: Implementar funcionalidades específicas da Home
   }
 }

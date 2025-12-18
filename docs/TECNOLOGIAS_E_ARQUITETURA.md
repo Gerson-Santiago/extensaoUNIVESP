@@ -1,128 +1,138 @@
-# 🏗️ Tecnologias e Arquitetura do Sistema
+# 🏗️ Especificação de Arquitetura e Tecnologia
 
-> *Local-First, Privacy-Focused & Modern Web Standards.*
+> **Status**: Produção (v2.6.1)
+> **Arquitetura**: Screaming Architecture (Domain-Driven)
+> **Plataforma**: Google Chrome Extensions (Manifest V3)
 
-Este documento detalha o funcionamento interno da extensão, a stack utilizada e os protocolos de privacidade.
-
----
-
-## 🧱 1. Stack Tecnológica
-
-### Core
-*   **Plataforma**: Google Chrome Extensions (Manifest V3).
-*   **Linguagem**: JavaScript Puro (ES Modules), focado em performance e sem transpilação pesada (exceto testes).
-*   **Estilização**: CSS Modular (sem frameworks como Tailwind ou Bootstrap para manter o bundle leve).
-
-### Qualidade & Testes
-*   **Node.js**: Ambiente de desenvolvimento (Scripts e Testes).
-*   **Jest (v30+)**: Framework de testes (Unitários e Integração), com provider V8 para cobertura.
-*   **jest-webextension-mock**: Simulação robusta da API `chrome.*`.
-*   **ESLint**: Análise estática de código (Linter).
-*   **Prettier**: Formatador de código.
-*   **Husky + Lint-Staged**: Automação de hooks de pré-commit (Garantia de Qualidade).
-*   **JSDoc**: Documentação e Tipagem "Soft".
+Este documento atua como a **Fonte da Verdade Arquitetural** do projeto. Ele define as restrições, padrões e fronteiras que garantem a longevidade e manutenibilidade do software.
 
 ---
 
-## 🏛️ 2. Visão Geral da Arquitetura
+## 1. Princípios Arquiteturais (The Axioms)
 
-A extensão segue o padrão **MVC (Model-View-Controller)** adaptado para o contexto de Browser Extension.
+### 1.1 Screaming Architecture (A Arquitetura que Grita)
+A estrutura de diretórios do projeto reflete **o que o sistema faz**, não de que o sistema é feito.
+*   **Intenção > Ferramenta**: Ao abrir a raiz do projeto, um desenvolvedor deve ver *Casos de Uso* (Cursos, Importação), não *Frameworks* (Controllers, Views).
+*   **Regra**: Se uma nova funcionalidade de negócio for adicionada, uma nova pasta em `features/` deve nascer.
 
-### Diagrama de Fluxo (Data Flow)
+### 1.2 Local-First & Zero-Backend
+O sistema opera sob o princípio de soberania de dados do usuário.
+*   **Persistência**: Todo dado reside estritamente no `chrome.storage` local.
+*   **Sincronização**: Ocorre apenas através do mecanismo nativo do Chrome (Google Account), sem servidores intermediários proprietários.
+*   **Offline-Capable**: A lógica de negócio independe de conectividade constante, salvo para operações de scraping (AVA/SEI).
+
+### 1.3 Dependências Mínimas (Vanilla First)
+A longevidade do projeto é priorizada sobre a conveniência imediata.
+*   **Sem Frameworks de UI**: Uso de HTML/CSS/JS nativos e Custom Elements (se necessário) para evitar *framework fatigue* e obsolescência.
+*   **Sem Transpilação em Runtime**: O código em produção é ES Modules nativo, suportado diretamente pela V8 engine moderna.
+
+---
+
+## 2. Anatomia do Sistema (Manifest V3)
+
+O sistema é dividido em três camadas concêntricas de responsabilidade.
 
 ```mermaid
-flowchart LR
-    subgraph "Navegador do Usuário"
-        direction TB
-        UI["Side Panel (UI)"]
-        Feature["Features (Cursos/Import)"]
-        Global["Core Logic (Auth/RA)"]
-        Storage[(Chrome Storage)]
-        Web[Página AVA/SEI]
+graph TD
+    User((Usuário))
+    
+    subgraph "Shell (Side Panel)"
+        Orchestrator[sidepanel.js]
+        GlobalUI[Layout & Nav]
     end
 
-    Web -->|Scraping| Feature
-    Feature -->|Business Logic| Storage
-    Storage -->|Load| Feature
-    Feature -->|Render| UI
-    UI -->|User Action| Global
+    subgraph "Features (Domain Layer)"
+        Courses[Feature: Cursos]
+        Import[Feature: Importação]
+        Settings[Feature: Configurações]
+        Session[Feature: Sessão/Auth]
+    end
+
+    subgraph "Core & Infrastructure"
+        StorageAdapter[Storage Driver]
+        MsgBus[Messaging Bus]
+        BgWorker[Background Service Worker]
+        ContentScripts[Content Injectors]
+    end
+
+    User --> GlobalUI
+    GlobalUI --> Orchestrator
+    Orchestrator --> Courses & Import & Settings
+    
+    Courses & Import --> StorageAdapter
+    Import --> BgWorker
+    BgWorker --> ContentScripts
 ```
 
-### Componentes Principais
+### 2.1 Camada de Features (`/features`)
+O coração do software. Cada pasta aqui é um *Bounded Context* autônomo.
+*   **Estrutura Canônica de uma Feature**:
+    *   `ui/`: Componentes visuais (burros). Renderizam dados e emitem eventos.
+    *   `logic/`: Regras de negócio puras (testáveis unitariamente, agnósticas de DOM).
+    *   `data/`: Repositórios e DTOs. Responsáveis pela persistência e hidratação de dados.
+    *   `services/`: Integração com o mundo externo (Scrapers, Parsers).
+    *   `tests/`: Testes unitários e de integração colocalizados.
 
-#### A. Features (`/features`)
-Onde vivem as regras de negócio específicas, seguindo a **Screaming Architecture**. Se o código é sobre "Cursos", ele mora aqui.
-*   **Courses**: Gerencia listagem, detalhes, scraping e persistência de matérias.
-*   **Import**: Gerencia o fluxo de importação em lote do histórico escolar.
+### 2.2 Camada Shell (`/sidepanel`)
+O container "burro" que hospeda as features.
+*   **Responsabilidade**: Boot do sistema, roteamento básico e layout global.
+*   **Restrição**: O Shell *não conhece* regras de negócio. Ele apenas instancia a Feature solicitada.
 
-#### B. Side Panel (`/sidepanel`)
-O painel lateral atua agora como um "Shell" (Container) e orquestrador global.
-*   **Views**: Telas genéricas (`HomeView`, `SettingsView`).
-*   **Logic**: Gerenciadores de Sessão (`raManager.js`, `domainManager.js`).
-*   **Components**: Layout base (`TopNav`, `MainLayout`).
-
-#### C. Content Scripts (`/scripts`)
-Scripts injetados na página alvo para ler o DOM.
-*   **Scraper**: Lê a estrutura HTML do Blackboard para identificar cursos.
-*   **Deep Access**: Utiliza `fetch` em background para acessar páginas internas do curso.
-*   **Isolamento**: Roda em um "mundo isolado" (Isolated World) para não conflitar com o JS da página.
-
-#### D. Background Service (`scripts/background.js`)
-Gerenciador de eventos do Chrome.
-*   Responsável pela instalação, mensagens entre abas e o Side Panel.
+### 2.3 Camada Core (`/core`, `/scripts`, `/shared`)
+Mecanismos de baixo nível e infraestrutura.
+*   **Background Service Worker**: Gerencia ciclo de vida, eventos de sistema e comunicação cross-context.
+*   **Content Scripts**: Atuam como sensores e atuadores na página do AVA/SEI. Executam em *Isolated World*.
 
 ---
 
-## 🔒 3. Protocolo de Privacidade e Dados (Data Handling)
+## 3. Regras de Fronteira (Boundaries)
 
-Este projeto segue estritamente a filosofia **Local-First**.
+### 3.1 A Regra de Dependência
+O sentido das dependências deve apontar sempre em direção à estabilidade.
+1.  **Features dependem de Core/Shared**: ✅ Permitido.
+2.  **Core depende de Features**: ❌ PROIBIDO. O Background Worker não deve importar lógica de cálculo de média.
+3.  **Feature depende de Feature**: ⚠️ EVITAR.
+    *   Se `Import` precisa criar um curso, ele deve usar o `CourseRepository` (interface pública) ou emitir um evento. Nunca importar a View de Cursos.
 
-### Soberania de Dados
-*   **Zero Backend**: Não possuímos servidores. Não coletamos dados.
-*   **Armazenamento Local**: Todos os dados (RA, Lista de Matérias) ficam salvos no navegador do usuário (`chrome.storage`), sincronizados apenas com a conta Google dele (se ativado).
-
-### Estratégia de Segurança
-1.  **Permissões Mínimas**: O `manifest.json` só solicita acesso aos domínios estritamente necessários (`*.univesp.br`).
-2.  **Sem Analytics**: Não usamos Google Analytics, Mixpanel ou qualquer rastreador.
-3.  **Auditoria Pública**: O código é aberto para que qualquer um possa verificar que não há envio de dados oculto.
-
-Para mais detalhes jurídicos e técnicos sobre dados, veja:
-*   **[📜 Protocolo de Privacidade e Dados (DATA_HANDLING.md)](./DATA_HANDLING.md)**: Regras completas.
-*   **[🏗️ Manual de Engenharia](../estudos/engenharia/manual-engenharia.md)**: Detalhes de implementação.
+### 3.2 Isolamento de CSS
+Para evitar colisão de estilos em um ambiente sem Shadow DOM obrigatório:
+*   **Namespacing BEM**: `.feature-name__component--modifier` (ex: `.courses-list__item--active`).
+*   **CSS Variables**: Definição global de tokens em `global.css`, consumo local nas features.
 
 ---
 
-## 📂 4. Estrutura de Diretórios
+## 4. Stack Tecnológica Detalhada
 
-/
-├──  assets/          # Ícones e imagens estáticas
-├──  features/        # SCREAMING ARCHITECTURE (Features isoladas)
-│    ├── courses/     # Feature "Cursos" (Lista, Detalhes, Scraper, Storage)
-│    │   ├── components/
-│    │   ├── data/
-│    │   ├── logic/
-│    │   └── services/
-│    └── import/      # Feature "Importação em Lote"
-│        ├── components/
-│        ├── logic/
-│        └── services/
-├──  popup/           # Interface do popup (ícone na barra)
-├──  sidepanel/       # Lógica Global e UI do painel lateral
-│    ├── components/  # Layout, Modals Globais e Shared UI
-│    ├── logic/       # Gerenciadores Globais (raManager, domainManager)
-│    ├── utils/       # Utilitários globais de UI
-│    └── views/       # Telas genéricas (HomeView, SettingsView, FeedbackView)
-├──  scripts/         # Scripts de Background e Content
-├──  shared/          # Utils compartilhados (Tabs, Settings, Browser)
-└──  tests/           # Testes automatizados (Jest)
-
-> *Documento atualizado em: Dezembro 2025 (v2.6.0).*
+| Contexto | Tecnologia | Decisão / Justificativa |
+| :--- | :--- | :--- |
+| **Language** | IPv6 / ES2022+ | Uso de recursos modernos (Classes, Async/Await, Modules) nativos. |
+| **Module System** | ES Modules (ESM) | Padrão web. Permite imports estáticos e análise de árvore (Tree Shaking se necessário). |
+| **Testing** | Jest + JSDOM | Standard da indústria. Alta performance e cobertura. |
+| **Mocking** | jest-webextension-mock | Simulação fidedigna do ambiente hostil da Chrome API. |
+| **Linting** | ESLint (Flat Config) | Controle de qualidade estático rigoroso (Zero Warnings Policy). |
+| **Formatting** | Prettier | Consistência visual automatizada. |
+| **Versioning** | SemVer | Controle semântico de mudanças (Major.Minor.Patch). |
 
 ---
 
-### Documentação
-<!-- Documentação do projeto -->
-**[README.md](../README.md)**            Documentação do projeto.             
-<!-- Histórico de versões e atualizações -->
-**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
+## 5. Diretrizes de Desenvolvimento
 
+### 5.1 Adicionando Nova Funcionalidade
+Processo obrigatório para expansão do sistema:
+1.  **Definir Domínio**: A nova funcionalidade pertence a um domínio existente?
+    *   *Sim* -> Adicionar a `features/<dominio>`.
+    *   *Não* -> Criar nova `features/<novo-dominio>`.
+2.  **Criar Estrutura**: Replicar a anatomia canônica (`ui`, `logic`, `data`, `tests`).
+3.  **Test-First**: Escrever o teste de integração da regra de negócio principal.
+4.  **Implementar**: Codificar a lógica agnóstica de UI.
+5.  **Conectar**: Criar a UI e conectar os eventos no `index.js` da feature.
+6.  **Expor**: Exportar apenas o necessário (Facade) no `index.js` para o Shell consumir.
+
+### 5.2 Gerenciamento de Estado
+*   **Efêmero (UI State)**: Mantido em memória nas classes de Controller/View enquanto o Sidepanel está aberto.
+*   **Persistente (User Data)**: Gravado imediatamente no `chrome.storage`.
+*   **Reatividade**: Atualizações de UI ocorrem via re-renderização explícita ou observadores de eventos, evitando a complexidade de Virtual DOM para esta escala de aplicação.
+
+---
+
+> *Este documento deve ser revisado a cada Major Release para garantir que a implementação não divergiu da arquitetura.*

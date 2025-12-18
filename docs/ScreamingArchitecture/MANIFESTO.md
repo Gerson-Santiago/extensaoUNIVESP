@@ -56,6 +56,9 @@ Para cada arquivo, pergunte:
 - [x] 1.3. Mover `src/pages/login` para `features/login/ui`.
 - [x] 1.4. Criar pasta `features/import/tests` (Colocation!).
 - [x] 1.5. Configurar Path Aliases (`@features`, etc) em `jsconfig` e `jest`.
+- [x] 1.6. Migrar `SettingsView` e lógicas para `features/settings`.
+- [x] 1.7. Migrar `HomeView` para `features/home`.
+- [x] 1.8. Migrar `FeedbackView` para `features/feedback`.
 
 ---
 

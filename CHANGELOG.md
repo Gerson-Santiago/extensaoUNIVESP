@@ -1,5 +1,11 @@
 # Changelog - Versão Beta
 
+## [2.6.1] - 2025-12-18
+### Arquitetura & Limpeza
+- **Conclusão da Migração**: View `Settings`, `Home` e `Feedback` movidas para suas respectivas pastas em `features/`.
+- **Limpeza**: Remoção definitiva das pastas legadas `sidepanel/views` e `sidepanel/logic`.
+- **Qualidade**: Ajuste de todos os testes de integração para refletir a nova estrutura de pastas.
+
 ## [2.6.0] - 2025-12-18
 ### Arquitetura (Screaming Architecture)
 - **Features Isoladas**: Implementação completa da Screaming Architecture. O código agora grita o que faz (`features/courses`, `features/import`).

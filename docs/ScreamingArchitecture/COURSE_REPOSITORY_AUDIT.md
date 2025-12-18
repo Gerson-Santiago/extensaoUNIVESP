@@ -1,4 +1,4 @@
-# 🏎️ Relatório de Auditoria: CourseRepository (F1 Engineering)
+# 🏎️ Relatório de Auditoria: CourseRepository
 
 **Data:** 17/12/2025
 **Objeto:** `sidepanel/data/repositories/CourseRepository.js`
@@ -36,7 +36,7 @@ Referência: `estudos/juridico/relatorio_conformidade.md`
 
 ---
 
-## 3. Estratégia de Migração (F1 Pitstop)
+## 3. Estratégia de Migração
 
 Para realizar a migração "estilo Fórmula 1" (Rápida, Precisa, Segura), não faremos refatoração profunda de lógica agora (ex: mudar para Promises), para respeitar o princípio **"Move First, Refactor Later"** e manter o Green Build.
 
@@ -52,8 +52,8 @@ Para realizar a migração "estilo Fórmula 1" (Rápida, Precisa, Segura), não 
 
 ## 4. Checklist de Aprovação
 
-- [ ] Arquivo movido para `features/courses/data/`.
-- [ ] Testes movidos e passando.
-- [ ] `sidepanel.js` atualizado.
-- [ ] `Import` feature atualizada.
-- [ ] Nenhum erro de `chrome is not defined` (garantir mock nos testes).
+- [x] Arquivo movido para `features/courses/data/`.
+- [x] Testes movidos e passando.
+- [x] `sidepanel.js` atualizado.
+- [x] `Import` feature atualizada.
+- [x] Nenhum erro de `chrome is not defined` (garantir mock nos testes).
