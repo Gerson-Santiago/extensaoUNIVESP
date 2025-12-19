@@ -1,7 +1,12 @@
 .
 ├── assets
 │   ├── icon_blackboard.png
-│   └── icon.png
+│   ├── icon.png
+│   └── styles
+│       ├── components
+│       ├── global.css
+│       ├── layout.css
+│       └── views
 ├── CHANGELOG.md
 ├── coverage
 │   ├── clover.xml
@@ -93,6 +98,7 @@
 │   │   ├── components
 │   │   └── logic
 │   └── settings
+│       ├── components
 │       ├── logic
 │       └── ui
 ├── jest.config.js
@@ -114,24 +120,16 @@
 │   │   └── AutoScroll.js
 │   ├── ui
 │   │   ├── ActionMenu.js
+│   │   ├── feedback
+│   │   ├── layout
 │   │   └── Modal.js
 │   └── utils
 │       ├── BrowserUtils.js
 │       ├── settings.js
 │       └── Tabs.js
 ├── sidepanel
-│   ├── components
-│   │   ├── Forms
-│   │   └── Layout
 │   ├── sidepanel.html
-│   ├── sidepanel.js
-│   ├── styles
-│   │   ├── components
-│   │   ├── global.css
-│   │   ├── layout.css
-│   │   └── views
-│   └── utils
-│       └── statusManager.js
+│   └── sidepanel.js
 └── tests
     ├── components
     │   └── ActionMenu.test.js
@@ -151,4 +149,4 @@
     ├── storage_persistence.test.js
     └── tabs.test.js
 
-55 directories, 97 files
+54 directories, 96 files

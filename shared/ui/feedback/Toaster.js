@@ -1,7 +1,7 @@
 /**
  * Gerencia a exibição de mensagens de status (toasts) na interface.
  */
-export class StatusManager {
+export class Toaster {
   /**
    * @param {string} elementId - ID do elemento onde o status será exibido.
    */

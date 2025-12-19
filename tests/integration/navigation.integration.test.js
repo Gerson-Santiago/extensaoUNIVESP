@@ -1,4 +1,4 @@
-import { MainLayout } from '../../sidepanel/components/Layout/MainLayout.js';
+import { MainLayout } from '../../shared/ui/layout/MainLayout.js';
 import { HomeView } from '../../features/home/ui/HomeView.js';
 // We can use mocks for other views to simplify dependencies if we just want to test navigation
 // But let's import real classes since it's an integration test

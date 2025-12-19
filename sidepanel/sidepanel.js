@@ -1,4 +1,4 @@
-import { MainLayout } from './components/Layout/MainLayout.js';
+import { MainLayout } from '../shared/ui/layout/MainLayout.js';
 import { HomeView } from '../features/home/ui/HomeView.js';
 import { CoursesList } from '../features/courses/components/CoursesList.js';
 import { SettingsView } from '../features/settings/ui/SettingsView.js';

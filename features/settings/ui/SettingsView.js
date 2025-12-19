@@ -2,15 +2,15 @@ import { AddManualModal } from '../../courses/components/AddManualModal.js';
 // BatchImportModal removed (Delegated to Controller)
 import { CourseRepository } from '../../courses/data/CourseRepository.js';
 import { CourseService } from '../../courses/logic/CourseService.js';
-import { StatusManager } from '../../../sidepanel/utils/statusManager.js';
-import { ConfigForm } from '../../../sidepanel/components/Forms/ConfigForm.js';
+import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
+import { ConfigForm } from '../components/ConfigForm.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {
     this.onNavigate = callbacks.onNavigate;
     this.onImportBatch = callbacks.onImportBatch; // New Callback
-    this.feedback = new StatusManager('settingsFeedback');
-    this.configForm = new ConfigForm(new StatusManager('configFeedback'));
+    this.feedback = new Toaster('settingsFeedback');
+    this.configForm = new ConfigForm(new Toaster('configFeedback'));
     this.courseService = new CourseService();
 
     this.addManualModal = new AddManualModal(() =>

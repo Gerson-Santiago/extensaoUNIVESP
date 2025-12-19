@@ -3,7 +3,7 @@ import { DomainManager } from '../../../features/settings/logic/domainManager.js
 
 export class ConfigForm {
   /**
-   * @param {Object} statusManager - Instância do StatusManager
+   * @param {Object} statusManager - Instância do Toaster
    */
   constructor(statusManager) {
     this.feedback = statusManager;
