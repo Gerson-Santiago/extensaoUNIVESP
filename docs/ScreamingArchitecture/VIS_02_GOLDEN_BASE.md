@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🏆 The Golden Base (A Base de Ouro)
 
 > "O que temos agora? Uma base sólida para qualquer nova feature. Se quiser adicionar 'Notas', 'Agenda' ou 'Chat', o caminho está pavimentado."
@@ -44,3 +48,13 @@ Com esta base, as seguintes features tornam-se triviais de implementar:
 
 ---
 **Status Atual**: 🏁 A Dívida Técnica da Feature Courses foi integralmente paga. O código está limpo, modular e pronto para crescer.
+
+---
+
+## 🛡️ Ferramentas de Verificação (Refactoring Police)
+
+Para garantir que a base de ouro permaneça pura, use estas ferramentas rápidas (Cheat Sheet completo em `REF_03_REFACTORING_CHEATSHEET.md`):
+
+1.  **Auditoria Geral**: `grep -RIn --include="*.js" -E "import .* from |require\(" .`
+2.  **Dependência Reversa**: `grep -RIn --include="*.js" "CourseRepository" .`
+3.  **Dependência Direta**: `grep -In -E "import .* from |require\(" caminho/do/arquivo.js`

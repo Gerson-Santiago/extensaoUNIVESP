@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # ⚠️ Pontos Cegos (Blind Spots): O que pode dar errado?
 
 > *"O diabo mora nos detalhes... e no CSS global."*

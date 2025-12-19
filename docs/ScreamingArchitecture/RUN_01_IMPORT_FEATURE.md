@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 👣 Passo a Passo: Execução Piloto (Importação)
 
 Este documento quebra a "Fase 2" em micro-tarefas executáveis. Cada passo deve ser validado antes de ir para o próximo.
@@ -13,19 +17,21 @@ Este documento quebra a "Fase 2" em micro-tarefas executáveis. Cada passo deve 
 - [x] 1.4. Criar pasta `features/import/tests` (Colocation!).
 
 ## 🚚 2. Movimentação (The Move)
-> *Nota: Usar `git mv` para preservar histórico.*
+> *Status: JÁ REALIZADO (Arquivos detectados em `features/import`)*
 
 - [x] 2.1. Mover `BatchImportModal.js` -> `features/import/components/`.
 - [x] 2.2. Mover `BatchImportFlow.js` -> `features/import/logic/`.
-- [x] 2.3. Mover `batchScraper.js` -> `features/import/services/BatchScraper.js` (Renomear para PascalCase).
+- [x] 2.3. Mover `batchScraper.js` -> `features/import/services/BatchScraper.js`.
 - [x] 2.4. Mover `batchScraper.test.js` -> `features/import/tests/BatchScraper.test.js`.
 - [x] 2.5. Mover `BatchImportModal_Render.test.js` -> `features/import/tests/BatchImportModal.test.js`.
 
 ## 🩹 3. Cirurgia (Refactoring Imports)
-- [x] 3.1. Ajustar imports dentro de `BatchImportFlow.js` (apontando para novo service e modal).
-- [x] 3.2. Ajustar imports dentro de `BatchImportModal.js` (apontando para novo logic).
-- [x] 3.3. Ajustar imports dentro de `BatchScraper.js` (se houver).
-- [x] 3.4. **CRÍTICO:** Ajustar imports nos arquivos de TESTE (`features/import/tests/*.test.js`).
+> *Status: CRÍTICO (Atualmente quebrado)*
+
+- [ ] 3.1. Ajustar imports dentro de `BatchImportFlow.js` (apontando para novo service e modal).
+- [ ] 3.2. Ajustar imports dentro de `BatchImportModal.js` (apontando para novo logic).
+- [ ] 3.3. Ajustar imports dentro de `BatchScraper.js` (se houver).
+- [ ] 3.4. **CRÍTICO:** Ajustar imports nos arquivos de TESTE (`features/import/tests/*.test.js`).
 
 ## 🧪 4. Validação (Green Check)
 - [x] 4.1. Rodar `npm test features/import`.

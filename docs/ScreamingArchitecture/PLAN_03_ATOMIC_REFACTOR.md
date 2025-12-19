@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🧪 Plano de Refatoração Atômica: "Uma Tela por Vez"
 
 > *"Como comer um elefante? Um pedaço de cada vez."*

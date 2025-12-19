@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🗺️ Screaming Architecture: O Mapa Completo (Macro View)
 
 Este documento define o destino final de **CADA ARQUIVO** do projeto. O objetivo é garantir que o "Piloto" da Importação não seja uma ilha isolada, mas a primeira peça de um plano coerente.
@@ -63,7 +67,7 @@ Código reutilizável e sem regras de negócio complexas.
 
 ---
 
-## 🚦 Status da Migração
+## 🚦 Status da Migração (Atualizado)
 
 1.  **[x] Features/Import**: Pronta para mover (Plano Piloto).
 2.  **[x] Features/Auth**: Fácil (Feature simples de Login).
@@ -71,5 +75,15 @@ Código reutilizável e sem regras de negócio complexas.
 4.  **[x] Features/Home**: Simples (Concluído).
 5.  **[x] Features/Feedback**: Simples (Concluído).
 6.  **[x] Features/Courses**: Complexo (Refatorado).
+7.  **[/] Cleanup**: A pasta `sidepanel` foi renomeada para `sidepanel_old`.
 
-**Estratégia**: Executamos o **Piloto de Importação** primeiro porque ele é *autocontido*. Ele valida a estrutura de pastas e os testes sem explodir a complexidade de `Courses`.
+### O Plano Final (The Finale)
+*   **Fase 1**: Resgatar componentes órfãos (`Modal`, `ActionMenu`) de `sidepanel_old` para `shared`.
+*   **Fase 2**: Corrigir imports quebrados (ver `REF_05_LEGACY_DEPS.md`).
+*   **Fase 3**: Deletar `sidepanel_old`.
+*   **Fase 4**: Manter `sidepanel` e `popup` apenas como entry points.
+
+> Consulte a sequência:
+> 1. `RUN_03_SHARED_FEATURE.md`
+> 2. `RUN_04_SETTINGS_FEATURE.md`
+> 3. `RUN_06_CLEANUP.md`

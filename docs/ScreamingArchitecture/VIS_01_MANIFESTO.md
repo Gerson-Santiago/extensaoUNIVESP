@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🗣️ Screaming Architecture: O Manifesto
 
 > *"Se você olhar a planta baixa de uma biblioteca, você sabe que é uma biblioteca. O software deve ser igual."* — Robert C. Martin

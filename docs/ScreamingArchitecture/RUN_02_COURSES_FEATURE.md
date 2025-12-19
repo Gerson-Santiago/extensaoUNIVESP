@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 👣 Step-by-Step: Feature Cursos (O Core)
 
 > **Branch**: `refactor/courses-feature`

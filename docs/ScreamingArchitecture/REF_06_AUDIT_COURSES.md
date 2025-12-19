@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🏎️ Relatório de Auditoria: CourseRepository
 
 **Data:** 17/12/2025

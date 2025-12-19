@@ -1,0 +1,42 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
+# 📚 Screaming Architecture Documentation
+
+Bem-vindo à documentação oficial da arquitetura do projeto `extensaoUNIVESP`.
+Para facilitar a navegação, adotamos um sistema de **Prefixos Semânticos**:
+
+## 🗂️ Estrutura de Arquivos
+
+### 🔭 VIS_ (Vision / Visão)
+> *Para onde vamos e por quê.*
+*   `VIS_01_MANIFESTO.md`: A filosofia "Screaming".
+*   `VIS_02_GOLDEN_BASE.md`: O padrão ouro de implementação.
+*   `VIS_03_PREREQUISITES.md`: O que você precisa saber antes de codar.
+
+### 📖 REF_ (Reference / Referência)
+> *Mapas, Auditorias e Glossários.*
+*   `REF_01_UI_MAP.md`: Mapeamento de telas e componentes.
+*   `REF_02_GLOSSARY.md`: Dicionário de termos do projeto.
+*   `REF_03_REFACTORING_CHEATSHEET.md`: Guia de comandos grep.
+*   `REF_04_BLIND_SPOTS.md`: Pontos cegos da arquitetura.
+*   `REF_05_LEGACY_DEPS.md`: Auditoria de dependências antigas.
+*   `REF_06_AUDIT_COURSES.md`: Auditoria do repositório de cursos.
+*   `REF_07_LEGACY_TREE.txt`: Log da estrutura antiga.
+*   `REF_08_SIDEPANEL_ERRORS.txt`: Log de erros da migração.
+
+### 🗺️ PLAN_ (Planning / Planejamento)
+> *Estratégias de longo prazo.*
+*   `PLAN_01_MIGRATION_MAP.md`: Visão macro da migração.
+*   `PLAN_03_ATOMIC_REFACTOR.md`: Metodologia de refatoração tela-a-tela.
+
+### ⚖️ ADR_ (Decisions / Decisões)
+> *Architecture Decision Records (ADRs).*
+*   `ADR_001_AUTH_STRATEGY.md`: Por que não fazemos login.
+
+### ▶️ RUN_ (Runbooks / Execução)
+> *Guias passo-a-passo para execução.*
+*   `RUN_01_IMPORT_FEATURE.md`: Guia da Feature Import.
+*   `RUN_02_COURSES_FEATURE.md`: Guia da Feature Cursos.
+*   ...

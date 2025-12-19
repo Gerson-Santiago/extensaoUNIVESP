@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🗺️ Mapa de UI e Navegação
 
 Este documento mapeia a interface atual para guiar a refatoração modular.

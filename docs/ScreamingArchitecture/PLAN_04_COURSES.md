@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🗺️ Plano Detalhado: Feature Cursos (O Coração)
 
 A feature `courses` é o núcleo da extensão. Ela gerencia a listagem, persistência, agrupamento e adição de matérias.

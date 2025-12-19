@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🗺️ Plano Detalhado: Piloto de Importação (Full Screaming Package)
 
 Este documento detalha a migração da feature "Importação" com **Nomes Explícitos** e **Testes Integrados** (Colocation).

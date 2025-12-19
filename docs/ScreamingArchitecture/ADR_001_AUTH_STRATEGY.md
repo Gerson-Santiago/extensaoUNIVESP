@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🔐 Estratégia de Sessão e Limites de Login
 
 > **Regra de Ouro**: A Extensão NÃO faz login. A Extensão SUPORTA a sessão do usuário.
@@ -24,3 +28,15 @@ Se não faz login, o que a pasta `features/session` (antiga `auth`) faz?
 1.  `SessionManager` verifica cookies/DOM da aba ativa.
 2.  SE (Logado) -> Libera funcionalidades (Extrai RA).
 3.  SE (Deslogado) -> Pede para usuário navegar até a página de login oficial.
+
+## 5. Status da Implementação (Audit 2025)
+
+Atualmente, existe uma divergência entre a Estratégia e o Código:
+
+1.  **Divergência**: O código de `RaManager` foi movido para `features/settings/logic/raManager.js`.
+    *   *Ideal*: Deveria estar em `features/session/logic/SessionManager.js`.
+2.  **Legado**: `LoginWaitModal` ainda está em `sidepanel/components/Modals`.
+    *   *Ideal*: Deveria estar em `features/session/components/LoginWaitModal.js`.
+
+**Plano de Correção**:
+Isso será resolvido na criação da pasta `features/session` (passo futuro). Por enquanto, funciona onde está, mas viola a separação de conceitos.

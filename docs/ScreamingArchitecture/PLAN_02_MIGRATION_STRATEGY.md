@@ -1,3 +1,7 @@
+> Status: Active
+> Last Update: 2025-12-18
+> Owner: Gerson Santiago
+
 # 🗺️ Plano de Migração: Screaming Architecture
 
 Este documento descreve o "Esqueleto" da nova arquitetura e as etapas para migrar o projeto atual (`sidepanel/`, `scripts/`) para o novo modelo orientado a domínios.
