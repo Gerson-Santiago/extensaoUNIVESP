@@ -1,6 +1,6 @@
-import { RaManager } from '../features/session/logic/SessionManager.js';
+import { RaManager } from '../logic/SessionManager.js';
 
-describe('RaManager', () => {
+describe('SessionManager (RaManager)', () => {
   describe('getRaFromEmail', () => {
     test('Should extract RA from email', () => {
       expect(RaManager.getRaFromEmail('123456@aluno.univesp.br')).toBe('123456');

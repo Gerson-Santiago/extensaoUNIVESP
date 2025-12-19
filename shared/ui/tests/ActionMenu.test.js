@@ -1,4 +1,4 @@
-import { ActionMenu } from '../../shared/ui/ActionMenu.js';
+import { ActionMenu } from '../ActionMenu.js';
 
 describe('ActionMenu Component', () => {
   let actionMenu;

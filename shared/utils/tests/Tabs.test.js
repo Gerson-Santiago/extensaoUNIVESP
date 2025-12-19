@@ -1,4 +1,4 @@
-import { Tabs } from '../shared/utils/Tabs.js';
+import { Tabs } from '../Tabs.js';
 
 describe('Lógica - Troca de Abas', () => {
   beforeEach(() => {

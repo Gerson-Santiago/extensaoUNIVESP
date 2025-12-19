@@ -1,5 +1,5 @@
 import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import { AutoScroll } from '../../shared/logic/AutoScroll';
+import { AutoScroll } from '../AutoScroll.js';
 
 describe('AutoScroll Logic', () => {
   let autoScroll;

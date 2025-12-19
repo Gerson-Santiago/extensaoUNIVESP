@@ -1,4 +1,9 @@
-import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../shared/utils/settings.js';
+import {
+  formatEmail,
+  extractRa,
+  resolveDomain,
+  CONSTANTS,
+} from '../../../shared/utils/settings.js';
 
 describe('Settings - Formatação de Email e Domínio', () => {
   describe('formatEmail()', () => {

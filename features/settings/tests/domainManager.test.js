@@ -1,5 +1,5 @@
-import { DomainManager } from '../features/settings/logic/domainManager.js';
-import { CONSTANTS } from '../shared/utils/settings.js';
+import { DomainManager } from '../logic/domainManager.js';
+import { CONSTANTS } from '../../../shared/utils/settings.js';
 
 describe('DomainManager', () => {
   describe('getCurrentDomain', () => {
