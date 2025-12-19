@@ -28,7 +28,70 @@ A longevidade do projeto é priorizada sobre a conveniência imediata.
 
 ---
 
-## 2. Anatomia do Sistema (Manifest V3)
+## 2. Entry Points da Extensão (Manifest V3)
+
+A extensão possui **4 pontos de entrada** principais, cada um com responsabilidades distintas definidas no `manifest.json`:
+
+### 2.1 Background Service Worker (`scripts/background.js`)
+**Contexto de Execução**: Isolado, sem acesso direto ao DOM.
+**Ciclo de Vida**: Event-driven (dorme quando não há eventos, acorda sob demanda).
+**Responsabilidades**:
+- Gerenciar evento de instalação/atualização da extensão
+- Escutar cliques no ícone da extensão (action)
+- Coordenar comunicação entre diferentes contexts (content scripts, sidepanel, popup)
+- Persistir e sincronizar dados via `chrome.storage`
+
+### 2.2 Side Panel (`sidepanel/sidepanel.html` + `sidepanel.js`)
+**Contexto de Execução**: Frame próprio, DOM isolado.
+**Ciclo de Vida**: Persiste enquanto está aberto; fechado = destruído.
+**Responsabilidades**:
+- **Entry point principal da UI** da extensão
+- `sidepanel.js` atua como **Orchestrator**, instanciando todas as features:
+  ```javascript
+  const layout = new MainLayout({
+    home: new HomeView(...),
+    courses: new CoursesList(...),
+    settings: new SettingsView(...)
+  });
+  ```
+- Gerenciar navegação entre views (`home`, `courses`, `settings`, etc.)
+- Carregar CSS global (`assets/styles/`)
+
+### 2.3 Popup (`popup/popup.html` + `popup.js`)
+**Contexto de Execução**: Frame efêmero, destruído ao fechar.
+**Ciclo de Vida**: Abre ao clicar no ícone (se configurado), fechado = destruído.
+**Responsabilidades**:
+- Interface alternativa rápida (opcional, desativada por padrão)
+- Links rápidos para portais (SEI, AVA, Provas)
+- Configurável via `chrome.storage.sync.clickBehavior` (popup vs sidepanel)
+
+### 2.4 Content Script (`scripts/content.js`)
+**Contexto de Execução**: Injeta-se na página `https://sei.univesp.br/*`.
+**Ciclo de Vida**: Carregado quando o usuário navega para o domínio permitido.
+**Responsabilidades**:
+- Autopreencher campo de email no formulário de login do SEI
+- Lê configuração de `chrome.storage.sync.userEmail`
+- Executa em **Isolated World** (acessa DOM da página, mas variáveis JS ficam isoladas)
+
+### 2.5 Fluxo de Carregamento (Sidepanel)
+```
+[Chrome abre sidepanel]
+  ↓
+sidepanel.html (carrega)
+  ↓ <link rel="stylesheet" href="../assets/styles/...">
+  ↓ <script type="module" src="sidepanel.js">
+  ↓
+sidepanel.js (executa)
+  ↓ import { MainLayout } from '../shared/ui/layout/MainLayout.js'
+  ↓ import { HomeView } from '../features/home/ui/HomeView.js'
+  ↓ ... (demais features)
+  ↓
+Instancia MainLayout(views) → Renderiza UI
+```
+
+---
+
+## 3. Anatomia do Sistema (Manifest V3)
 
 O sistema é dividido em três camadas concêntricas de responsabilidade.
 
