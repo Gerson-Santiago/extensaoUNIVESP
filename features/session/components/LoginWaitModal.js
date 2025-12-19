@@ -1,4 +1,4 @@
-import { Modal } from './Modal.js';
+import { Modal } from '../../../shared/ui/Modal.js';
 
 export class LoginWaitModal extends Modal {
   /**

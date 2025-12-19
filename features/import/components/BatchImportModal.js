@@ -1,4 +1,4 @@
-import { Modal } from '../../../sidepanel/components/Modals/Modal.js';
+import { Modal } from '../../../shared/ui/Modal.js';
 import { scrapeAvailableTerms, processSelectedCourses } from '../services/BatchScraper.js';
 import { CourseRepository } from '../../courses/data/CourseRepository.js';
 import { parseTerm } from '../../courses/logic/TermParser.js';

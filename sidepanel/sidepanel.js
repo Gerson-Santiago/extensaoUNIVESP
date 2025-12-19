@@ -7,7 +7,7 @@ import { FeedbackView } from '../features/feedback/ui/FeedbackView.js';
 import { Tabs } from '../shared/utils/Tabs.js';
 import { BatchImportModal } from '../features/import/components/BatchImportModal.js';
 import { AddManualModal } from '../features/courses/components/AddManualModal.js';
-import { LoginWaitModal } from './components/Modals/LoginWaitModal.js';
+import { LoginWaitModal } from '../features/session/components/LoginWaitModal.js';
 import { CourseService } from '../features/courses/logic/CourseService.js';
 import { BatchImportFlow } from '../features/import/logic/BatchImportFlow.js';
 

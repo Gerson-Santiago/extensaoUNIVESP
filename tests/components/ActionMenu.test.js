@@ -1,4 +1,4 @@
-import { ActionMenu } from '../../sidepanel/components/Shared/ActionMenu.js';
+import { ActionMenu } from '../../shared/ui/ActionMenu.js';
 
 describe('ActionMenu Component', () => {
   let actionMenu;

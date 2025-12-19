@@ -1,7 +1,7 @@
 import { CourseRepository } from '../data/CourseRepository.js';
 import { createCourseElement } from './CourseItem.js';
 import { groupCoursesByTerm } from '../logic/CourseGrouper.js';
-import { ActionMenu } from '../../../sidepanel/components/Shared/ActionMenu.js';
+import { ActionMenu } from '../../../shared/ui/ActionMenu.js';
 
 export class CoursesList {
   constructor(callbacks) {

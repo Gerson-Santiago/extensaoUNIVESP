@@ -1,4 +1,4 @@
-import { RaManager } from '../features/settings/logic/raManager.js';
+import { RaManager } from '../features/session/logic/SessionManager.js';
 
 describe('RaManager', () => {
   describe('getRaFromEmail', () => {

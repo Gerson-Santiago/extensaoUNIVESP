@@ -1,4 +1,4 @@
-import { Modal } from '../../../sidepanel/components/Modals/Modal.js';
+import { Modal } from '../../../shared/ui/Modal.js';
 import { CourseRepository } from '../data/CourseRepository.js';
 
 export class AddManualModal extends Modal {
