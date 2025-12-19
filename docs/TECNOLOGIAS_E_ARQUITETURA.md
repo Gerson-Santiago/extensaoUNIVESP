@@ -38,7 +38,14 @@ graph TD
     
     subgraph "Shell (Side Panel)"
         Orchestrator[sidepanel.js]
-        GlobalUI[Layout & Nav]
+        HTML[sidepanel.html]
+    end
+
+    subgraph "Shared Components"
+        SharedUI[shared/ui]
+        Layout[Layout & TopNav]
+        Modal[Modal & ActionMenu]
+        Toaster[Toaster]
     end
 
     subgraph "Features (Domain Layer)"
@@ -46,22 +53,27 @@ graph TD
         Import[Feature: Importação]
         Settings[Feature: Configurações]
         Session[Feature: Sessão/Auth]
+        Home[Feature: Home]
+        Feedback[Feature: Feedback]
     end
 
     subgraph "Core & Infrastructure"
         StorageAdapter[Storage Driver]
-        MsgBus[Messaging Bus]
+        Assets[assets/styles]
         BgWorker[Background Service Worker]
         ContentScripts[Content Injectors]
     end
 
-    User --> GlobalUI
-    GlobalUI --> Orchestrator
-    Orchestrator --> Courses & Import & Settings
+    User --> HTML
+    HTML --> Orchestrator
+    Orchestrator --> SharedUI
+    SharedUI --> Layout & Modal & Toaster
+    Orchestrator --> Courses & Import & Settings & Session
     
     Courses & Import --> StorageAdapter
     Import --> BgWorker
     BgWorker --> ContentScripts
+    HTML --> Assets
 ```
 
 ### 2.1 Camada de Features (`/features`)
@@ -74,14 +86,76 @@ O coração do software. Cada pasta aqui é um *Bounded Context* autônomo.
     *   `tests/`: Testes unitários e de integração colocalizados.
 
 ### 2.2 Camada Shell (`/sidepanel`)
-O container "burro" que hospeda as features.
-*   **Responsabilidade**: Boot do sistema, roteamento básico e layout global.
+O container minimalista que hospeda as features.
+*   **Responsabilidade**: Boot do sistema e orquestração de features.
+*   **Conteúdo Atual**: Apenas `sidepanel.html` (entry point) e `sidepanel.js` (orchestrator).
 *   **Restrição**: O Shell *não conhece* regras de negócio. Ele apenas instancia a Feature solicitada.
+*   **Nota**: Após a refatoração Screaming Architecture (Fases 2-3), components, utils e styles foram migrados para `shared/` e `features/`.
 
-### 2.3 Camada Core (`/core`, `/scripts`, `/shared`)
-Mecanismos de baixo nível e infraestrutura.
+### 2.3 Camada Shared & Infrastructure (`/shared`, `/scripts`, `/assets`)
+Mecanismos reutilizáveis e infraestrutura.
+*   **`shared/ui`**: Componentes de interface reutilizáveis (Modal, ActionMenu, Layout, Toaster).
+*   **`shared/utils`**: Utilitários genéricos (Tabs, BrowserUtils, Settings).
+*   **`shared/logic`**: Lógica compartilhada entre features (AutoScroll).
+*   **`assets/styles`**: CSS global e componentes visuais centralizados.
 *   **Background Service Worker**: Gerencia ciclo de vida, eventos de sistema e comunicação cross-context.
 *   **Content Scripts**: Atuam como sensores e atuadores na página do AVA/SEI. Executam em *Isolated World*.
+
+### 2.4 Estrutura Física Atual
+
+Após a conclusão das Fases 2 e 3 da refatoração Screaming Architecture (Dez/2025):
+
+```
+extensaoUNIVESP/
+├── assets/
+│   ├── styles/              # CSS centralizado (global, layout, components, views)
+│   └── *.png                # Ícones da extensão
+├── features/
+│   ├── courses/             # Gestão de Cursos
+│   │   ├── components/      # CoursesList, CourseItem, AddManualModal
+│   │   ├── data/            # CourseRepository
+│   │   ├── logic/           # CourseService, TermParser, CourseGrouper
+│   │   ├── services/        # CourseDetector
+│   │   └── tests/
+│   ├── import/              # Importação em Lote
+│   │   ├── components/      # BatchImportModal
+│   │   ├── logic/           # BatchImportFlow
+│   │   ├── services/        # BatchScraper
+│   │   └── tests/
+│   ├── session/             # Autenticação e Sessão (Nova - Phase 2)
+│   │   ├── components/      # LoginWaitModal
+│   │   └── logic/           # SessionManager (ex-RaManager)
+│   ├── settings/            # Configurações do Usuário
+│   │   ├── components/      # ConfigForm (Nova - Phase 3)
+│   │   ├── logic/           # DomainManager
+│   │   └── ui/              # SettingsView
+│   ├── home/                # Tela Inicial
+│   │   └── ui/              # HomeView
+│   └── feedback/            # Feedback do Usuário
+│       └── ui/              # FeedbackView
+├── shared/
+│   ├── ui/                  # Componentes reutilizáveis (Nova - Phase 2/3)
+│   │   ├── layout/          # MainLayout, TopNav
+│   │   ├── feedback/        # Toaster (ex-StatusManager)
+│   │   ├── Modal.js
+│   │   └── ActionMenu.js
+│   ├── utils/               # Utilitários genéricos
+│   │   ├── Tabs.js
+│   │   ├── BrowserUtils.js
+│   │   └── settings.js
+│   └── logic/
+│       └── AutoScroll.js
+├── sidepanel/               # Shell minimalist (Phase 3 cleanup)
+│   ├── sidepanel.html       # Entry point HTML
+│   └── sidepanel.js         # Orchestrator
+├── scripts/
+│   ├── background.js        # Service Worker
+│   └── content.js           # Content Script
+├── popup/                   # Popup alternativo (opcional)
+└── tests/                   # Testes globais e de integração
+```
+
+**Nota Histórica**: Antes da refatoração (pré-Dez/2025), todo o código vivia em `sidepanel/components`, `sidepanel/utils` e `sidepanel/styles`. A migração para a estrutura atual foi concluída em 3 fases, priorizando features de negócio primeiro, depois componentes compartilhados, e finalmente assets.
 
 ---
 

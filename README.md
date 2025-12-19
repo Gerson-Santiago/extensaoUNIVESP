@@ -15,6 +15,7 @@ Para entender como usamos, como construímos e no que acreditamos:
 | :--- | :--- |
 | **[🎓 Identidade do Projeto](./docs/IDENTIDADE_DO_PROJETO.md)** | Nossa filosofia, visão e funcionalidades principais. Comece por aqui! |
 | **[🏗️ Tecnologias & Arquitetura](./docs/TECNOLOGIAS_E_ARQUITETURA.md)** | A "Bíblia Técnica": Stack, Diagramas e Protocolo de Privacidade. |
+| **[📐 Screaming Architecture](./docs/ScreamingArchitecture/)** | Documentação completa da refatoração: Visão, Planos, Runbooks e ADRs. |
 | **[⚙️ Fluxos de Trabalho](./docs/FLUXOS_DE_TRABALHO.md)** | Guia para Desenvolvedores: Como contribuir, padrões e regras ("Zero Divergência"). |
 | **[📜 Regras de Negócio](./docs/REGRAS_DE_NEGOCIO.md)** | Especificação funcional do sistema e lógica de negócios. |
 | **[📘 Manual de Engenharia](./docs/manual-engenharia.md)** | Estado da Arte técnico: Análise de Workflows e Git Moderno. |
