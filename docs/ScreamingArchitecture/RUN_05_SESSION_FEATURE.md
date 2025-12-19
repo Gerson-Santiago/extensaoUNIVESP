@@ -16,15 +16,15 @@
 *   **Origin**: `features/settings/logic/raManager.js`
 *   **Target**: `features/session/logic/SessionManager.js`
 *   **Action**:
-    - [ ] `git mv features/settings/logic/raManager.js features/session/logic/SessionManager.js`
-    - [ ] Refactor class name: `RaManager` -> `SessionManager` (Optional, but better).
-    - [ ] Update usages in `ConfigForm.js`, `SettingsView.js`, `batchImport.integration.test.js`.
+    - [x] `git mv features/settings/logic/raManager.js features/session/logic/SessionManager.js`
+    - [x] Refactor class name: `RaManager` -> `SessionManager` (Optional, but better).
+    - [x] Update usages in `ConfigForm.js`, `SettingsView.js`, `batchImport.integration.test.js`.
 
 ## 6.3. Migrate LoginWaitModal
 
 *   **Origin**: `sidepanel/components/Modals/LoginWaitModal.js`
 *   **Target**: `features/session/components/LoginWaitModal.js`
 *   **Action**:
-    - [ ] `git mv sidepanel/components/Modals/LoginWaitModal.js features/session/components/LoginWaitModal.js`
-    - [ ] Update usages in `sidepanel.js` (or `BatchImportFlow.js`).
-    - [ ] Verify `npm test`.
+    - [x] `git mv sidepanel/components/Modals/LoginWaitModal.js features/session/components/LoginWaitModal.js`
+    - [x] Update usages in `sidepanel.js` (or `BatchImportFlow.js`).
+    - [x] Verify `npm test`.

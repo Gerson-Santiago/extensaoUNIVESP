@@ -70,7 +70,7 @@ Código reutilizável e sem regras de negócio complexas.
 ## 🚦 Status da Migração (Atualizado)
 
 1.  **[x] Features/Import**: Pronta para mover (Plano Piloto).
-2.  **[x] Features/Auth**: Fácil (Feature simples de Login).
+2.  **[x] Features/Session**: Concluído (Antiga Auth).
 3.  **[x] Features/Settings**: Médio (Concluído).
 4.  **[x] Features/Home**: Simples (Concluído).
 5.  **[x] Features/Feedback**: Simples (Concluído).

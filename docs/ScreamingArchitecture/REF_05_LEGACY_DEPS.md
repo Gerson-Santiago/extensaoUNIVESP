@@ -15,9 +15,6 @@ Estes arquivos tentam acessar `../../../sidepanel/...`.
 | :--- | :--- | :--- |
 | `features/settings/ui/SettingsView.js` | `utils/statusManager.js` | Mover para `shared/utils`? |
 | `features/settings/ui/SettingsView.js` | `components/Forms/ConfigForm.js` | Mover para `features/settings/components` |
-| `features/import/components/BatchImportModal.js` | `components/Modals/Modal.js` | Já existe `shared/ui/Modal.js`? |
-| `features/courses/components/CoursesList.js` | `components/Shared/ActionMenu.js` | Mover para `shared/ui/ActionMenu.js` |
-| `features/courses/components/AddManualModal.js` | `components/Modals/Modal.js` | Já existe `shared/ui/Modal.js`? |
 
 ## 🧪 2. Testes Quebrados (Jest)
 Baseado na execução do `npm test`:

@@ -12,12 +12,12 @@
 *   **Target**: `shared/ui/Modal.js`
 
 ### 📋 Checklist
-- [ ] **Rescue**: `git mv sidepanel.bak/components/Modals/Modal.js shared/ui/Modal.js`
-- [ ] **Fix Self**: Update internal imports in `shared/ui/Modal.js` (e.g., CSS paths).
-- [ ] **Fix Consumers**:
+- [x] **Rescue**: `git mv sidepanel.bak/components/Modals/Modal.js shared/ui/Modal.js`
+- [x] **Fix Self**: Update internal imports in `shared/ui/Modal.js` (e.g., CSS paths).
+- [x] **Fix Consumers**:
     - Update `features/import/components/BatchImportModal.js`
     - Update `features/courses/components/AddManualModal.js`
-- [ ] **Verify**: Run `npm test features/import features/courses`
+- [x] **Verify**: Run `npm test features/import features/courses`
 
 ---
 
@@ -27,8 +27,8 @@
 *   **Target**: `shared/ui/ActionMenu.js`
 
 ### 📋 Checklist
-- [ ] **Rescue**: `git mv sidepanel.bak/components/Shared/ActionMenu.js shared/ui/ActionMenu.js`
-- [ ] **Fix Self**: Update internal imports in `shared/ui/ActionMenu.js`.
-- [ ] **Fix Consumers**:
+- [x] **Rescue**: `git mv sidepanel.bak/components/Shared/ActionMenu.js shared/ui/ActionMenu.js`
+- [x] **Fix Self**: Update internal imports in `shared/ui/ActionMenu.js`.
+- [x] **Fix Consumers**:
     - Update `features/courses/components/CoursesList.js`
-- [ ] **Verify**: Run `npm test tests/components/ActionMenu.test.js`
+- [x] **Verify**: Run `npm test tests/components/ActionMenu.test.js`
