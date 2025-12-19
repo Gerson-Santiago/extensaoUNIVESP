@@ -29,7 +29,11 @@ Nosso fluxo segue um padrão simples de Feature Branch.
 
 ### 3. Codificação (Coding Rules)
 - **Javascript Moderno**: Use ES6+, `const`/`let`, Arrow Functions.
-- **Modularização**: Siga a arquitetura de pastas (`shared/`, `logic/`, `views/`).
+- **Modularização (Screaming Architecture)**: 
+  - `features/`: Organize por domínio de negócio (ex: `courses`, `import`, `session`)
+  - Cada feature contém: `ui/`, `logic/`, `data/`, `services/`, `tests/`
+  - `shared/`: Componentes reutilizáveis (`shared/ui`, `shared/utils`, `shared/logic`)
+  - `assets/`: Recursos estáticos (CSS, imagens)
 - **Padrões**: Consulte `PADROES_DO_PROJETO.md`.
 - **Linting Contínuo**: VS Code deve estar sem sublinhados vermelhos.
 

@@ -75,7 +75,9 @@ Utilizamos **Jest** (`jest`, `jest-environment-jsdom`) para testes unitários e 
 *   **Mocks de Browser:** Utilizamos `jest-webextension-mock` para simular a API `chrome.*`.
     *   Não mockar `chrome` manualmente nos arquivos de teste; usar o ambiente global configurado.
     *   **Tipagem (JSDoc):** Para métodos mockados (ex: `.mockImplementation`), usar cast explicito: `/** @type {jest.Mock} */ (chrome.api.method).mock...`.
-*   **Localização:** Todos os testes devem estar na pasta `tests/`.
+*   **Localização**: Testes unitários e de integração devem estar:
+    - Colocalizados com o código em `features/*/tests/` (preferencial para testes de feature)
+    - Na pasta global `tests/` (para testes de integração cross-feature ou utilitários globais)
 *   **Cobertura:** O objetivo é cobrir lógica de negócios (`logic/`), utils e views críticas.
 
 ## 4. Estrutura e Modularização
