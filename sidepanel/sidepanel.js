@@ -1,47 +1,74 @@
+/**
+ * SIDEPANEL - Ponto de Entrada Principal
+ *
+ * Responsabilidades:
+ * - Inicializar componentes (views, modais, serviços)
+ * - Conectar callbacks entre componentes
+ * - Configurar navegação entre views
+ *
+ * Arquitetura: Feature-based + Dependency Injection + Fluxo Unidirecional
+ */
+
+// ========== IMPORTAÇÕES ==========
+
+// Layout
 import { MainLayout } from '../shared/ui/layout/MainLayout.js';
+
+// Views
 import { HomeView } from '../features/home/ui/HomeView.js';
 import { CoursesList } from '../features/courses/components/CoursesList.js';
 import { SettingsView } from '../features/settings/ui/SettingsView.js';
 import { CourseDetailsView } from '../features/courses/components/CourseDetailsView.js';
 import { FeedbackView } from '../features/feedback/ui/FeedbackView.js';
+
+// Utilitários
 import { Tabs } from '../shared/utils/Tabs.js';
-import { BatchImportModal } from '../features/import/components/BatchImportModal.js';
-import { AddManualModal } from '../features/courses/components/AddManualModal.js';
-import { LoginWaitModal } from '../features/session/components/LoginWaitModal.js';
+
+// Modais
+import { BatchImportModal } from '../features/import/components/BatchImportModal.js'; // Usado por: BatchImportFlow
+import { AddManualModal } from '../features/courses/components/AddManualModal.js'; // Usado por: CoursesList
+import { LoginWaitModal } from '../features/session/components/LoginWaitModal.js'; // Usado por: BatchImportFlow
+
+// Serviços
 import { CourseService } from '../features/courses/logic/CourseService.js';
 import { BatchImportFlow } from '../features/import/logic/BatchImportFlow.js';
 
+// ========== INICIALIZAÇÃO ==========
+
 document.addEventListener('DOMContentLoaded', () => {
-  const courseService = new CourseService();
+  // --- Serviços ---
+  const courseService = new CourseService(); // CRUD de cursos
 
-  // Initialization of Views and Callbacks
-
-  // 1. Core Modals
+  // --- Modais ---
+  // Modal de importação em lote (exibe formulário e progresso)
   const batchImportModal = new BatchImportModal(() => {
     if (coursesView) coursesView.loadCourses();
   });
 
-  // Flow Controller
-  let batchImportFlow; // Defined below after modals
+  // Declarado aqui, instanciado depois (evita dependência circular)
+  let batchImportFlow;
 
+  // Modal de espera de login (exibido quando usuário precisa fazer login no AVA)
   const loginWaitModal = new LoginWaitModal({
     onConfirm: () => {
-      // User clicked "Already Logged In". Retry flow.
+      // Usuário clicou em "Já Fiz Login". Reinicia o fluxo de importação.
       if (batchImportFlow) batchImportFlow.start();
     },
     onCancel: () => {
-      console.warn('Import blocked by user (Login Wait Cancelled)');
+      console.warn('Importação bloqueada pelo usuário (Login Wait Cancelado)');
     },
   });
 
-  // Instantiate Service
+  // Controlador de fluxo: verificação de login → modais → importação
   batchImportFlow = new BatchImportFlow({
     batchImportModal,
     loginWaitModal,
   });
 
+  // Modal de adição manual (formulário)
   const addManualModal = new AddManualModal();
 
+  // --- Views ---
   const settingsView = new SettingsView({
     onNavigate: (viewId) => {
       layout.topNav.setActive(viewId);
@@ -52,15 +79,13 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  // Callbacks para CoursesList
   const coursesView = new CoursesList({
     onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
     onViewDetails: (course) => {
-      // Navegação customizada para Detalhes
+      // Navegação customizada: atualiza dados do componente antes de navegar
       courseDetailsView.setCourse(course);
       layout.navigateTo('courseDetails');
     },
-
     onAddBatch: () => {
       batchImportFlow.start();
     },
@@ -72,15 +97,17 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
+  // Handler: adiciona página atual como curso
   const handleAddCurrentPage = () => {
     courseService.addFromCurrentTab(
       () => {
-        // Success callback
+        // Callback de sucesso
         layout.topNav.setActive('courses');
         layout.navigateTo('courses');
         coursesView.loadCourses();
       },
       (errorMsg) => {
+        // Callback de erro
         console.error(errorMsg);
         alert(errorMsg);
       }
@@ -101,12 +128,12 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const feedbackView = new FeedbackView({
     onBack: () => {
-      layout.topNav.setActive('settings'); // Voltar para settings faz sentido
+      layout.topNav.setActive('settings');
       layout.navigateTo('settings');
     },
   });
 
-  // Mapeamento de Views
+  // --- Mapeamento de Views ---
   const views = {
     home: homeView,
     courses: coursesView,
@@ -115,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     feedback: feedbackView,
   };
 
-  // Inicialização do Layout
+  // Inicializa layout (renderiza estrutura base e gerencia navegação)
   const layout = new MainLayout(views);
   layout.init();
 });

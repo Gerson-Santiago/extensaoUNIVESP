@@ -1,49 +1,74 @@
 # AutoPreencher UNIVESP (Extensão Chrome)
 
-> **Versão Atual**: v2.6.1 (Stable)
-> **Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos, Navegação Inteligente no AVA e Autopreenchimento SEI.**
+> **Versão Atual**: v2.6.1
+> **Descrição**: Ferramenta de produtividade Open Source para alunos da UNIVESP.
 
-![Version](https://img.shields.io/badge/version-2.6.1-blue) ![License](https://img.shields.io/badge/license-MIT-green) ![Architecture](https://img.shields.io/badge/architecture-screaming-orange)
+![Version](https://img.shields.io/badge/version-2.6.1-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-stable-success)
 
-Esta extensão é uma ferramenta **Open Source** e **Local-First** para facilitar a vida do aluno UNIVESP, automatizando tarefas repetitivas e organizando o acesso ao conteúdo acadêmico.
+## 🎯 Sobre o Projeto
 
-## 📚 Documentação Oficial
+O **AutoPreencher UNIVESP** é uma extensão de navegador desenvolvida **de aluno para aluno** com o objetivo de otimizar a rotina acadêmica. A extensão centraliza ferramentas de produtividade, facilita a navegação no Ambiente Virtual de Aprendizagem (AVA) e automatiza tarefas repetitivas.
 
-Para entender como usamos, como construímos e no que acreditamos:
+---
+
+## ✨ Funcionalidades Principais
+
+### 🔐 Autopreenchimento & Acesso
+*   **Login Facilitado**: Configuração de RA e domínio para preenchimento automático no SEI e outros sistemas.
+*   **Acesso Rápido**: Links diretos para Portal SEI, AVA, Área do Aluno e Sistema de Provas via Popup.
+
+### 📚 Gestão de Cursos (Painel Lateral)
+*   **Side Panel Dedicado**: Navegue pelos seus cursos sem sair da página atual.
+*   **Organização Personalizada**: Adicione, remova e organize sua lista de matérias.
+*   **Importação Inteligente**:
+    *   **Em Lote**: Importe múltiplos cursos de uma vez.
+    *   **Manual**: Adicione cursos específicos manualmente.
+    *   **Aba Atual**: Salve o curso que você está navegando com um clique.
+
+### ⚡ Produtividade
+*   **Navegação Otimizada**: Interface limpa e focada no conteúdo.
+*   **Foco no Aluno**: Ferramentas pensadas para reduzir o atrito no uso das plataformas da universidade.
+
+---
+
+## 🚀 Como Instalar (Modo Desenvolvedor)
+
+1.  **Clone este repositório** ou baixe o código fonte:
+    ```bash
+    git clone https://github.com/Gerson-Santiago/extensaoUNIVESP.git
+    ```
+2.  Abra o navegador (Chrome, Edge, Brave) e acesse: `chrome://extensions/`
+3.  Ative o **"Modo do desenvolvedor"** no canto superior direito.
+4.  Clique no botão **"Carregar sem compactação"** (Load unpacked).
+5.  Selecione a **pasta raiz** do projeto baixado.
+
+---
+
+## 📖 Documentação do Projeto
+
+Mantemos uma documentação rigorosa e detalhada para garantir a qualidade e a continuidade do projeto.
 
 | Documento | Descrição |
 | :--- | :--- |
-| **[🎓 Identidade do Projeto](./docs/IDENTIDADE_DO_PROJETO.md)** | Nossa filosofia, visão e funcionalidades principais. Comece por aqui! |
-| **[🏗️ Tecnologias & Arquitetura](./docs/TECNOLOGIAS_E_ARQUITETURA.md)** | A "Bíblia Técnica": Stack, Diagramas e Protocolo de Privacidade. |
-| **[📐 Screaming Architecture](./docs/ScreamingArchitecture/)** | Documentação completa da refatoração: Visão, Planos, Runbooks e ADRs. |
-| **[⚙️ Fluxos de Trabalho](./docs/FLUXOS_DE_TRABALHO.md)** | Guia para Desenvolvedores: Como contribuir, padrões e regras ("Zero Divergência"). |
-| **[📜 Regras de Negócio](./docs/REGRAS_DE_NEGOCIO.md)** | Especificação funcional do sistema e lógica de negócios. |
-| **[📘 Manual de Engenharia](./docs/manual-engenharia.md)** | Estado da Arte técnico: Análise de Workflows e Git Moderno. |
-| **[🧪 Estudos & Workflow](./docs/estudos/workflow_resumo.md)** | Resumo consolidado dos estudos de Engenharia de Processos. |
-| **[⚖️ Conformidade Jurídica](./estudos/juridico/relatorio_conformidade.md)** | Relatório de conformidade legal e privacidade. |
-| **[📝 Log de Mudanças (Changelog)](./CHANGELOG.md)** | Histórico de versões e atualizações. |
+| **[🎓 Identidade](./docs/IDENTIDADE_DO_PROJETO.md)** | Visão geral, filosofia e objetivos do projeto. |
+| **[🏗️ Arquitetura](./docs/TECNOLOGIAS_E_ARQUITETURA.md)** | Stack tecnológica, diagramas e decisões de arquitetura. |
+| **[⚙️ Workflow](./docs/FLUXOS_DE_TRABALHO.md)** | Guia de contribuição, padrões de Git e Code Review. |
+| **[📜 Regras](./docs/REGRAS_DE_NEGOCIO.md)** | Especificações funcionais e lógica de negócios detalhada. |
+| **[📏 Padrões](./docs/PADROES_DO_PROJETO.md)** | Style guides, linter, padrões de commit e qualidade de código. |
 
 ---
 
-## 🚀 Instalação Rápida (Desenvolvimento)
+## 🛠️ Comandos para Desenvolvimento
 
-1.  Clone este repositório.
-2.  Acesse `chrome://extensions/` no seu navegador Chrome/Brave/Edge.
-3.  Ative o **"Modo do desenvolvedor"** (Canto superior direito).
-4.  Clique em **"Carregar sem compactação"** (Load unpacked).
-5.  Selecione a pasta raiz deste projeto.
-
----
-
-## 🛠️ Comandos Úteis
-
-Para desenvolvedores que desejam contribuir:
+Este projeto utiliza **Node.js** e **npm** para scripts de qualidade e automação.
 
 ```bash
 # Instalar dependências
 npm install
 
-# Rodar testes automatizados (Jest)
+# Rodar testes (Jest)
 npm test
 
 # Verificar estilo de código (Lint)
@@ -53,4 +78,12 @@ npm run lint
 npm run format
 ```
 
-> *Projeto desenvolvido de aluno para aluno. Não possui vínculo oficial com a UNIVESP.*
+> **Nota:** Seguimos a metodologia **"Screaming Architecture"** e **"Zero Warnings"** no Linter.
+
+---
+
+## 📄 Licença & Aviso Legal
+
+Este projeto é distribuído sob a licença **MIT**.
+
+> ⚠️ **Aviso:** Este é um projeto independente desenvolvido por alunos e **NÃO possui vínculo oficial** com a Universidade Virtual do Estado de São Paulo (UNIVESP).
