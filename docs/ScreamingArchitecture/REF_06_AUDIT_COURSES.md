@@ -47,7 +47,7 @@ Para realizar a migração "estilo Fórmula 1" (Rápida, Precisa, Segura), não 
 ### Plano de Voo:
 1.  **Isolamento**: Mover arquivo físico.
 2.  **Blindagem**: Atualizar imports globais usando `grep` cirúrgico.
-3.  **Teste de Carga**: O teste `storage.test.js` (agora `CourseRepository.test.js`) deve garantir que INSERIR, LER e DELETAR continue funcionando.
+3.  **Teste de Carga**: Os testes em `features/courses/tests/CourseRepository/` devem garantir que INSERIR, LER e DELETAR continuem funcionando.
 
 ### 📝 Regra de Ouro (Screaming Arch)
 > "O CourseRepository é o Guardião dos Dados do Curso. Ninguém toca no `chrome.storage.savedCourses` sem passar por ele."

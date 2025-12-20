@@ -38,7 +38,7 @@ Para refatorar, precisamos concordar com estas definições:
 | `home` | `features/home/ui/HomeView.js` | Landing Page / Boas Vindas | Início do App |
 | `courses` | `features/courses/components/CoursesList.js` | Lista de Matérias do Aluno | Tab "Cursos" (BottomNav) |
 | `settings` | `features/settings/ui/SettingsView.js` | Configurações Gerais | Tab "Config" (BottomNav) |
-| `courseDetails` | `features/courses/components/CourseDetailsView.js` | Detalhes de uma matéria específica | Clique em um Card de Curso |
+| `courseDetails` | `features/courses/components/CourseDetailsView.js` | Detalhes de uma matéria (delegação para `CourseRefresher`) | Clique em um Card de Curso |
 | `feedback` | `features/feedback/ui/FeedbackView.js` | Enviar feedback/Bug report | Botão em Settings |
 
 ### 2. Modais
