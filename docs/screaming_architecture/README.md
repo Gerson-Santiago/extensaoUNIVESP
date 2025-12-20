@@ -1,5 +1,5 @@
 > Status: Active
-> Last Update: 2025-12-18
+> Last Update: 2025-12-20
 > Owner: Gerson Santiago
 
 # 📚 Screaming Architecture Documentation
@@ -27,6 +27,7 @@ Para facilitar a navegação, adotamos um sistema de **Prefixos Semânticos**:
 *   `REF_08_SIDEPANEL_ERRORS.txt`: Log de erros da migração.
 *   `REF_09_CURRENT_ARCH_TREE.txt`: Estrutura atual de arquivos.
 *   `REF_10_TAB_MANAGEMENT.md`: Padrões de gerenciamento de abas.
+*   `REF_11_IMPORT_GLOSSARY.md`: Glossário da feature de Importação.
 
 ### 🗺️ PLAN_ (Planning / Planejamento)
 > *Estratégias de longo prazo.*
@@ -39,6 +40,7 @@ Para facilitar a navegação, adotamos um sistema de **Prefixos Semânticos**:
 ### ⚖️ ADR_ (Decisions / Decisões)
 > *Architecture Decision Records (ADRs).*
 *   `ADR_001_AUTH_STRATEGY.md`: Por que não fazemos login.
+*   `ADR_002_SIDEPANEL_CONSTRAINT.md`: Por que a pasta sidepanel/ não pode ser renomeada.
 
 ### ▶️ RUN_ (Runbooks / Execução)
 > *Guias passo-a-passo para execução.*

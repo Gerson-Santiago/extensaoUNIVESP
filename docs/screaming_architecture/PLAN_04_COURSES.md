@@ -1,5 +1,5 @@
 > **Status**: Concluído (Dez/2025) - v2.6.3
-> **Nota**: Este plano foi executado. A implementação final possui pequenas variações (uso de `views/` para componentes de tela cheia).
+> **Nota**: Este plano foi executado. A implementação final possui pequenas variações: telas completas foram organizadas em `views/` (ex: `views/CoursesList`) em vez de `components/`, seguindo convenção de Screaming Architecture para separar Views (telas) de Components (widgets reutilizáveis).
 > **Legado**: Consulte `TECNOLOGIAS_E_ARQUITETURA.md` para a verdade atual.
 
 # 🗺️ Plano Detalhado: Feature Cursos (O Coração)
