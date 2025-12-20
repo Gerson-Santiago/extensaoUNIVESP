@@ -7,6 +7,30 @@ Esta pasta contém as **funcionalidades de negócio** do projeto, organizadas po
 
 ---
 
+## 🧠 Por Que 6 Features (não 3)?
+
+**Você pode estar pensando**: "TopNav tem 3 tabs (Home, Cursos, Configurações). Por que 6 pastas?"
+
+**Resposta**: Screaming Architecture organiza por **domínio de negócio**, não por hierarquia de UI.
+
+### 📊 Categorias
+
+As 6 features estão divididas em 3 categorias:
+
+| Categoria | Features | Explicação |
+|:---|:---|:---|
+| 🏆 **CORE** | `courses`, `import` | Núcleo do negócio (gestão de matérias) |
+| 🔧 **INFRA** | `session`, `settings` | Infraestrutura transversal (auth, config) |
+| 📦 **UTILITY** | `home`, `feedback` | Utilidades auxiliares (dashboard, reports) |
+
+**Princípio-chave**: O fato de `home`, `courses`, `settings` serem **tabs do TopNav** é um **detalhe de UI**, não define a arquitetura.
+
+**Exemplo**: Amanhã `import` pode virar um tab no TopNav. Mas o domínio "importação em lote" continuará o mesmo.
+
+> **Screaming Architecture grita "o que o sistema FAZ", não "como a UI está organizada".**
+
+---
+
 ## 📂 Estrutura de uma Feature
 
 Cada feature segue este padrão:
@@ -59,8 +83,10 @@ features/
 
 ## 🗺️ Mapa das Features
 
-### 🎓 `courses/` - Gestão de Matérias
+### 🏆 `courses/` - Gestão de Matérias (CORE)
 **Responsabilidade**: Listar, adicionar, atualizar e navegar nas matérias do aluno.
+
+**📍 View Principal do TopNav** (junto com Home e Settings)
 
 **Estrutura**:
 - `views/CoursesView/` - Lista principal de cursos
@@ -78,7 +104,7 @@ features/
 
 ---
 
-### 📥 `import/` - Importação em Lote
+### 🏆 `import/` - Importação em Lote (CORE)
 **Responsabilidade**: Importar múltiplos cursos do AVA de uma vez.
 
 **Estrutura**:
@@ -90,8 +116,10 @@ features/
 
 ---
 
-### 🏠 `home/` - Tela Inicial
+### 📦 `home/` - Tela Inicial (UTILITY)
 **Responsabilidade**: Dashboard com atalhos rápidos.
+
+**📍 View Principal do TopNav** (junto com Courses e Settings)
 
 **Estrutura**:
 - `ui/HomeView.js` - Tela inicial simples
@@ -100,7 +128,7 @@ features/
 
 ---
 
-### 💬 `feedback/` - Envio de Feedback
+### 📦 `feedback/` - Envio de Feedback (UTILITY)
 **Responsabilidade**: Formulário de bug report e sugestões.
 
 **Estrutura**:
@@ -110,7 +138,7 @@ features/
 
 ---
 
-### 🔐 `session/` - Autenticação e Sessão
+### 🔧 `session/` - Autenticação e Sessão (INFRA)
 **Responsabilidade**: Gerenciar estado de login (AVA/SEI).
 
 **Estrutura**:
@@ -121,7 +149,7 @@ features/
 
 ---
 
-### ⚙️ `settings/` - Configurações
+### 🔧 `settings/` - Configurações (INFRA)
 **Responsabilidade**: Gerenciar RA, domínio de email, preferências.
 
 **📍 View Principal do TopNav** (junto com Home e Courses)
