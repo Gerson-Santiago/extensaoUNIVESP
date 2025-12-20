@@ -4,6 +4,10 @@ Este documento explica a organização das features em 3 categorias: CORE, INFRA
 
 ---
 
+> Para entender a estrutura de pastas detalhada, veja o [README das Features](./README.md).
+
+---
+
 ## 🏆 CORE (Núcleo do Negócio)
 
 **Definição**: Features que implementam o **domínio central** do projeto.

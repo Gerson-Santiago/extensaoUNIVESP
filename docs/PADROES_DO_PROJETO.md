@@ -80,13 +80,18 @@ Utilizamos **Jest** (`jest`, `jest-environment-jsdom`) para testes unitários e 
     - Na pasta global `tests/` (para testes de integração cross-feature ou utilitários globais)
 *   **Cobertura:** O objetivo é cobrir lógica de negócios (`logic/`), utils e views críticas.
 
-## 4. Estrutura e Modularização
+## 5. Estrutura e Modularização
 *   **Módulos:** Uso estrito de ES Modules (`import`/`export`).
 *   **Separação (Screaming Architecture):**
-    *   `features/`: Cada pasta é um domínio (ex: `courses`, `session`). Contém sua própria UI (`ui/`), Lógica (`logic/`) e Serviços.
-    *   `shared/`: Utilitários realmente genéricos e Design System reutilizável.
-    *   `core/`: Mecanismos de base (Storage driver, Messaging) - se aplicável.
-*   **Tipagem:** Embora seja JavaScript, utilizamos verificação de tipos defensiva (Type Guards) para evitar erros em runtime (ex: `element instanceof HTMLInputElement`).
+    *   `features/`: Cada pasta é um domínio.
+    *   `models/`: (DENTRO DE FEATURES) Definições de Tipos colocalizadas.
+*   **Tipagem (Vanilla JS + JSDoc Strict):**
+    *   **Filosofia:** Segurança de tipos em tempo de desenvolvimento, sem transpilação.
+    *   **Regras de Ouro:**
+        1.  **Models Obrigatórios:** Entidades de domínio (ex: `Course`) DEVEM ter arquivos de definição em `features/*/models/*.js`.
+        2.  **JSDoc Completo:** Todo método exportado deve ter `@param` e `@return`.
+        3.  **Zero Errors:** O comando `npm run type-check` deve retornar vazio.
+        4.  **Type Guards:** Use `instanceof` para tratar `HTMLElement` genéricos.
 
 ## 5. Hooks e Scripts
 *   **package.json:**

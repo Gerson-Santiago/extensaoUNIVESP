@@ -101,6 +101,7 @@ describe('BatchImportModal Interactions', () => {
     const overlay = document.querySelector('.modal-overlay');
 
     // 3. Find Reload Button
+    /** @type {HTMLButtonElement} */
     const reloadBtn = overlay.querySelector('.btn-refresh');
     expect(reloadBtn).not.toBeNull();
     expect(reloadBtn.title).toBe('Recarregar Cursos');

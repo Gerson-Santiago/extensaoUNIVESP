@@ -4,7 +4,7 @@
     "target": "es2020",
     "checkJs": true,
     "lib": ["es2020", "dom", "dom.iterable"],
-    "types": ["chrome", "jest"],
+    "types": ["chrome", "jest", "node"],
     "baseUrl": ".",
     "paths": {
       "@features/*": ["features/*"],

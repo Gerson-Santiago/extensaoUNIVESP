@@ -1,5 +1,9 @@
 import { formatEmail, extractRa } from '../../../shared/utils/settings.js';
 
+/**
+ * @typedef {import('../models/Session.js').SessionValidationResult} SessionValidationResult
+ */
+
 export class RaManager {
   /**
    * Obtém o RA formatado do email completo.
@@ -14,7 +18,7 @@ export class RaManager {
    * Formata e valida o RA e Domínio para salvamento.
    * @param {string} ra
    * @param {string} domain
-   * @returns {{isValid: boolean, fullEmail: string, cleanDomain: string, error?: string}}
+   * @returns {SessionValidationResult}
    */
   static prepareCredentials(ra, domain) {
     if (!ra || !ra.trim()) {

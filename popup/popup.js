@@ -3,24 +3,29 @@ import { BrowserUtils } from '../shared/utils/BrowserUtils.js';
 import { Tabs } from '../shared/utils/Tabs.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-  /** @type {HTMLInputElement} */
-  const raInput = document.getElementById('raInput');
-  /** @type {HTMLInputElement} */
-  const domainInput = document.getElementById('domainInput');
+  /** @type {HTMLInputElement | null} */
+  const raInput = document.querySelector('#raInput');
+  /** @type {HTMLInputElement | null} */
+  const domainInput = document.querySelector('#domainInput');
   const resetDomainBtn = document.getElementById('resetDomainBtn');
   const saveBtn = document.getElementById('saveBtn');
   const status = document.getElementById('status');
   const openSidePanelBtn = document.getElementById('openSidePanelBtn');
 
+  if (!raInput || !domainInput || !saveBtn || !status) return;
+
   // 1. CARREGAR: Recupera o que estava salvo
   chrome.storage.sync.get(['userEmail', 'customDomain'], (result) => {
     // Resolve e preenche o domínio
-    const domain = resolveDomain(result.userEmail, result.customDomain);
+    const domain = resolveDomain(
+      /** @type {string} */ (result.userEmail),
+      /** @type {string} */ (result.customDomain)
+    );
     domainInput.value = domain;
 
     // Extrai e preenche o RA
-    if (result.userEmail) {
-      raInput.value = extractRa(result.userEmail);
+    if (result.userEmail && raInput) {
+      raInput.value = extractRa(/** @type {string} */ (result.userEmail));
     }
   });
 

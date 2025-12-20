@@ -30,6 +30,21 @@ Disciplina acadêmica (ex: "Cálculo I"). No código, representado pela classe/o
 
 ---
 
+## 💻 Engenharia de Software (Tecnologia)
+
+### Model
+**Definição**: Representação formal de uma entidade de dados (ex: `Course`, `Session`).
+**Implementação**: Arquivos com `@typedef` JSDoc que não geram código em runtime, apenas tipos.
+
+### JSDoc Strict
+**Definição**: Padrão de documentação que o TypeScript entende e valida.
+**Regra**: Todo método deve ter `@param` e `@return` definidos.
+
+### Zero Warnings Policy
+**Definição**: Política de qualidade onde o projeto não pode ter *nenhum* aviso de lint ou erro de tipo. Build quebra se houver 1 aviso.
+
+---
+
 ## 🏗️ Arquitetura (Screaming Architecture)
 
 ### Feature

@@ -42,12 +42,41 @@ features/
     ├── ui/             # Telas simples (alternativa a views/)
     ├── views/          # Telas complexas (componentes maiores)
     ├── logic/          # Regras de negócio puras
+    ├── models/         # Definições de Tipo (JSDoc)
     ├── data/           # Repositories (acesso a dados)
     ├── services/       # Integrações externas (scraping, HTTP)
     └── tests/          # Testes colocalizados
 ```
 
 **Regra**: Nem toda feature tem todas as pastas. Use apenas o necessário.
+
+---
+
+## 🧩 Padrões de Código & Tecnologias
+
+Aqui usamos tecnologias nativas com padrões rigorosos para manter a qualidade.
+
+### 1. Tipagem Híbrida (Vanilla JS + JSDoc)
+Não usamos TypeScript compilado, mas **escrevemos como se fosse**.
+- **Models (`models/*.js`)**: Definimos a "forma" dos dados usando `@typedef`.
+- **Validação**: O VS Code e o comando `npm run type-check` garantem que não estamos acessando propriedades inexistentes.
+- **Benefício**: Zero build step, 100% de segurança de tipo em desenvolvimento.
+
+### 2. Fluxo de Dados (Unidirectional Data Flow)
+O dados fluem de forma previsível dentro de uma feature:
+
+```mermaid
+graph LR
+    UI[View/UI] -->|Eventos| Service[Logic/Service]
+    Service -->|Dados| UI
+    Service -->|Persistência| Repo[Repository]
+    Repo -->|JSON| Storage[(Chrome Storage)]
+```
+
+1.  **UI** é "burra": Só exibe dados e dispara eventos.
+2.  **Logic/Service** é o cérebro: Processa regras e cordena.
+3.  **Repository** é o acesso a dados: Fala com o Chrome Storage.
+4.  **Models** são o contrato: Garantem que todos falem a mesma língua.
 
 ---
 
@@ -61,6 +90,7 @@ features/
 | **`views/`** | Telas complexas, uma pasta por View | `CoursesView/index.js`, `CourseDetails/index.js` |
 | **`components/`** | Widgets reutilizáveis dentro da feature | `CourseItem.js`, `WeekItem.js`, `AddManualModal/` |
 | **`logic/`** | Regras de negócio puras, **SEM** DOM/API | `TermParser.js`, `CourseGrouper.js` |
+| **`models/`** | Definições de Tipos (JSDoc @typedef) | `Course.js`, `Week.js` |
 | **`data/`** | Repositories (CRUD de dados) | `CourseRepository.js`, `CourseStorage.js` |
 | **`services/`** | Scraping, HTTP, integrações externas | `ScraperService.js`, `BatchScraper.js` |
 | **`tests/`** | Testes unitários e integração da feature | `*.test.js`, subpastas por contexto |

@@ -2,12 +2,16 @@
  * Classe responsável por gerenciar a rolagem automática da página.
  * Ideal para carregar conteúdo via lazy loading (infinite scroll).
  */
+/**
+ * @typedef {Object} AutoScrollOptions
+ * @property {number} [interval=800] - Intervalo em ms entre os scrolls
+ * @property {number} [step=300] - Píxeis para rolar a cada passo
+ * @property {number} [maxRetries=5] - Tentativas antes de desistir se a altura não mudar
+ */
+
 export class AutoScroll {
   /**
-   * @param {Object} options Configurações do AutoScroll
-   * @param {number} options.interval Intervalo em ms entre os scrolls (default: 800)
-   * @param {number} options.step Píxeis para rolar a cada passo (default: 300)
-   * @param {number} options.maxRetries Tentativas antes de desistir se a altura não mudar (default: 5)
+   * @param {AutoScrollOptions} [options] - Configurações do AutoScroll
    */
   constructor({ interval = 800, step = 300, maxRetries = 5 } = {}) {
     this.interval = interval;

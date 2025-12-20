@@ -2,12 +2,16 @@ import { ScraperService } from './ScraperService.js';
 import { CourseRepository } from '../data/CourseRepository.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
 
+/**
+ * @typedef {import('../models/Course.js').Course} Course
+ */
+
 export class CourseRefresher {
   /**
    * Tenta atualizar as semanas de um curso
-   * @param {Object} course - Objeto do curso
+   * @param {Course} course - Objeto do curso
    * @param {HTMLButtonElement|null} btn - Botão de refresh para feedback visual
-   * @returns {Promise<{success: boolean, weeks: Array}>}
+   * @returns {Promise<{success: boolean, weeks: Array, error?: any}>}
    */
   static async refreshCourse(course, btn = null) {
     if (btn && btn instanceof HTMLButtonElement) {

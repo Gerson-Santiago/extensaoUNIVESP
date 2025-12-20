@@ -13,16 +13,16 @@ describe('AutoScrollService Logic (Injected)', () => {
     // Mock Scroll Methods
     mockScrollTo = jest.fn();
     mockScrollBy = jest.fn();
-    global.window.scrollTo = mockScrollTo;
-    global.window.scrollBy = mockScrollBy;
+    window.scrollTo = mockScrollTo;
+    window.scrollBy = mockScrollBy;
 
     // Mock Element Scroll Methods
     Element.prototype.scrollBy = mockScrollBy;
 
     // Mock Dimensions
-    Object.defineProperty(global.window, 'innerHeight', { value: 600, writable: true });
-    Object.defineProperty(global.document.body, 'offsetHeight', { value: 1000, writable: true });
-    Object.defineProperty(global.document.documentElement, 'scrollHeight', {
+    Object.defineProperty(window, 'innerHeight', { value: 600, writable: true });
+    Object.defineProperty(document.body, 'offsetHeight', { value: 1000, writable: true });
+    Object.defineProperty(document.documentElement, 'scrollHeight', {
       value: 2000,
       writable: true,
       configurable: true,
@@ -30,7 +30,7 @@ describe('AutoScrollService Logic (Injected)', () => {
 
     jest.useFakeTimers();
     jest.spyOn(global, 'setTimeout');
-    jest.spyOn(global, 'alert').mockImplementation(() => {});
+    jest.spyOn(window, 'alert').mockImplementation(() => {});
   });
 
   afterEach(() => {

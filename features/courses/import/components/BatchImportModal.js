@@ -190,7 +190,9 @@ export class BatchImportModal extends Modal {
             name: c.name,
             url: c.url,
             weeks: c.weeks || [],
-            termName: c.original ? c.original._termName : c._termName || '',
+            termName: c.original
+              ? /** @type {any} */ (c.original)._termName
+              : /** @type {any} */ (c)._termName || '',
           }));
 
           CourseRepository.addBatch(itemsToAdd, (added, _total) => {

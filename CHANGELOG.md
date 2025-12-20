@@ -1,27 +1,23 @@
 # Changelog - Versão Beta
 
-## [2.7.0] - 2025-12-20
+## [2.7.1] - 2025-12-20
+### Engenharia de Software & Qualidade (Standardization)
+- **Padronização de Tipagem (Vanilla JS + JSDoc)**:
+  - Implementação de sistema híbrido (flexibilidade JS + segurança TS).
+  - Criação de modelos formais em `models/` e pipeline de validação `npm run type-check`.
+  - **Zero Errors Policy**: Eliminação total de erros de tipagem no código de produção.
+- **Testes Robustos**: Ajuste de toda a suíte (200+ testes) para suportar validação de tipos e módulos híbridos.
+
 ### Arquitetura (Screaming Architecture - Fase 2)
-- **Reestruturação de Features**: Reorganização da estrutura de pastas para refletir acoplamento real do código.
-  - **Movido**: `features/import/` → `features/courses/import/` (agora é submódulo de courses)
-  - **Motivação**: A feature `import` depende 100% de `courses` (CourseRepository, TermParser). A nova estrutura grita essa dependência.
-  - **Benefício**: Desenvolvimento `courses/` agora é auto-contido. Tudo relacionado a matérias está em um único lugar.
-- **Desacoplamento (Settings)**:
-  - Implementado **Event-Driven Architecture** para `features/settings/`.
-  - Settings agora emite eventos (`request:add-manual`, `request:scrape`, `request:clear`) e não conhece mais `features/courses`.
-  - Orquestração centralizada no `sidepanel.js`.
+- **Reestruturação de Features**: Reorganização da estrutura de pastas para refletir acoplamento real.
+  - `features/courses/import/`: Agora submódulo de `courses`.
+  - **Desacoplamento de Settings**: Implementada Event-Driven Architecture.
+- **Modelos Colocalizados**: Adoção do padrão `models/` dentro de cada feature (`Course.js`, `Week.js`, `Session.js`).
 
 ### Documentação
-- **Categorização de Features**: Documentação expandida com sistema de badges (🏆 CORE, 🔧 INFRA, 📦 UTILITY).
-  - Criado `features/_CATEGORIES.md` com framework de decisão para novas features.
-  - Seção explicativa "Por Que 6 Features?" em `features/README.md`.
-- **Glossário Expandido**: `docs/GLOSSARIO.md` ampliado de 18 para 149 linhas com definições detalhadas de termos arquiteturais.
-- **Navegação Centralizada**: Criado `docs/README.md` como hub de navegação da documentação.
-- **Nomenclatura Consistente**: Renomeado `CoursesList` → `CoursesView` para padrão uniforme (HomeView, SettingsView, CoursesView).
-
-### Engenharia
-- **200 Testes Passando**: Todas as 200 testes unitários e de integração validados após refatoração.
-- **Limpeza de Código**: Remoção de 6 documentos obsoletos/redundantes.
+- **Categorização de Features**: Novo sistema de badges (🏆 CORE, 🔧 INFRA, 📦 UTILITY).
+- **Navegação Centralizada**: Hub de documentação `docs/README.md`.
+- **Glossário Expandido**: Definições detalhadas de termos arquiteturais.
 
 ## [2.6.3] - 2025-12-20
 ### Engenharia & Qualidade

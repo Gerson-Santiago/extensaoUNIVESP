@@ -1,6 +1,6 @@
 # 🏗️ Especificação de Arquitetura e Tecnologia
 
-> **Status**: Produção (v2.7.0) - Atualizado: 2025-12-20
+> **Status**: Produção (v2.7.1) - Atualizado: 2025-12-20
 > **Arquitetura**: Screaming Architecture (Domain-Driven)
 > **Plataforma**: Google Chrome Extensions (Manifest V3)
 
@@ -144,6 +144,7 @@ O coração do software. Cada pasta aqui é um *Bounded Context* autônomo.
 *   **Estrutura Canônica de uma Feature**:
     *   `ui/`: Componentes visuais (burros). Renderizam dados e emitem eventos.
     *   `logic/`: Regras de negócio puras (testáveis unitariamente, agnósticas de DOM).
+    *   `models/`: Definições de tipos (DTOs) via JSDoc.
     *   `data/`: Repositórios e DTOs. Responsáveis pela persistência e hidratação de dados.
     *   `services/`: Integração com o mundo externo (Scrapers, Parsers).
     *   `tests/`: Testes unitários e de integração colocalizados.
@@ -177,6 +178,7 @@ extensaoUNIVESP/
 │   ├── courses/             # Gestão de Cursos
 │   │   ├── components/      # CourseItem, WeekItem, AddManualModal
 │   │   ├── views/           # CoursesList, CourseDetails
+│   │   ├── models/          # Course.js, Week.js (Type Definitions)
 │   │   ├── data/            # CourseRepository
 │   │   ├── logic/           # CourseService, TermParser, CourseGrouper
 │   │   ├── services/        # CourseDetector, CourseRefresher
@@ -187,6 +189,7 @@ extensaoUNIVESP/
 │   │   │   └── tests/
 │   │   └── tests/
 │   ├── session/             # Autenticação e Sessão (Nova - Phase 2)
+│   │   ├── models/          # Session.js
 │   │   ├── components/      # LoginWaitModal
 │   │   └── logic/           # SessionManager (ex-RaManager)
 │   ├── settings/            # Configurações do Usuário
@@ -245,6 +248,7 @@ Para evitar colisão de estilos em um ambiente sem Shadow DOM obrigatório:
 | Contexto | Tecnologia | Decisão / Justificativa |
 | :--- | :--- | :--- |
 | **Language** | ES2022+ / Web Standards | Uso de recursos modernos (Classes, Async/Await, Modules) nativos. |
+| **Typing System** | Vanilla JS + JSDoc (Strict) | Tipagem estática via comentários (`@typedef`) e `checkJs: true`. Sem build step. |
 | **Module System** | ES Modules (ESM) | Padrão web. Permite imports estáticos e análise de árvore (Tree Shaking se necessário). |
 | **Testing** | Jest + JSDOM | Standard da indústria. Alta performance e cobertura. |
 | **Mocking** | jest-webextension-mock | Simulação fidedigna do ambiente hostil da Chrome API. |

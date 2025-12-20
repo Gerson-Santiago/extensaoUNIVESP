@@ -44,24 +44,33 @@ export async function DOM_scanTermsAndCourses_Injected() {
 
     const scrollTarget = getScrollElement();
     let lastHeight =
-      scrollTarget === window ? document.documentElement.scrollHeight : scrollTarget.scrollHeight;
+      scrollTarget === window
+        ? document.documentElement.scrollHeight
+        : /** @type {HTMLElement} */ (scrollTarget).scrollHeight;
     let attempts = 0;
 
     while (attempts < 10) {
-      if (scrollTarget === window) window.scrollTo(0, document.body.scrollHeight);
-      else scrollTarget.scrollTop = scrollTarget.scrollHeight;
+      if (scrollTarget === window) {
+        window.scrollTo(0, document.body.scrollHeight);
+      } else {
+        /** @type {HTMLElement} */ (scrollTarget).scrollTop = /** @type {HTMLElement} */ (
+          scrollTarget
+        ).scrollHeight;
+      }
 
       await new Promise((r) => setTimeout(r, 1500));
 
       const newHeight =
-        scrollTarget === window ? document.documentElement.scrollHeight : scrollTarget.scrollHeight;
+        scrollTarget === window
+          ? document.documentElement.scrollHeight
+          : /** @type {HTMLElement} */ (scrollTarget).scrollHeight;
 
       if (newHeight === lastHeight) {
         await new Promise((r) => setTimeout(r, 1000)); // Double-check
         const retryHeight =
           scrollTarget === window
             ? document.documentElement.scrollHeight
-            : scrollTarget.scrollHeight;
+            : /** @type {HTMLElement} */ (scrollTarget).scrollHeight;
         if (retryHeight === lastHeight) break;
         lastHeight = retryHeight;
       } else {
@@ -91,6 +100,7 @@ export async function DOM_scanTermsAndCourses_Injected() {
     if (!card) return;
 
     // Link e ID
+    /** @type {HTMLAnchorElement} */
     const linkEl = titleEl.closest('a')
       ? titleEl.closest('a')
       : card.querySelector('a[href*="course_id="], a[href*="/launcher"]');

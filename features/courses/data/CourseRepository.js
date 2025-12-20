@@ -1,5 +1,9 @@
 import { CourseStorage } from './CourseStorage.js';
 
+/**
+ * @typedef {import('../models/Course.js').Course} Course
+ */
+
 const storage = new CourseStorage();
 
 /**
@@ -10,7 +14,7 @@ export class CourseRepository {
   /**
    * Carrega a lista de matérias salvas.
    * @param {Function} [callback] - Legado (opcional). Se fornecer, funciona como antes.
-   * @returns {Promise<Array>}
+   * @returns {Promise<Course[]>}
    */
   static async loadItems(callback) {
     try {
@@ -26,7 +30,7 @@ export class CourseRepository {
 
   /**
    * Salva a lista de matérias.
-   * @param {Array} courses
+   * @param {Course[]} courses
    * @param {Function} [callback]
    */
   static async saveItems(courses, callback) {
@@ -40,6 +44,11 @@ export class CourseRepository {
 
   /**
    * Adiciona uma nova matéria.
+   * @param {string} name
+   * @param {string} url
+   * @param {import('../models/Week.js').Week[]} [weeks]
+   * @param {Object|Function} [optionsOrCallback]
+   * @param {Function} [extraCallback]
    */
   static async add(name, url, weeks = [], optionsOrCallback, extraCallback) {
     let callback = optionsOrCallback;
@@ -64,7 +73,16 @@ export class CourseRepository {
         return;
       }
 
-      courses.push({ id: Date.now(), name, url, weeks, termName });
+      /** @type {Course} */
+      const newCourse = {
+        id: Date.now(),
+        name,
+        url,
+        weeks,
+        termName,
+      };
+
+      courses.push(newCourse);
       await this.saveItems(courses);
 
       if (callback) callback(true, 'Matéria adicionada com sucesso!');
@@ -76,6 +94,8 @@ export class CourseRepository {
 
   /**
    * Adiciona em lote.
+   * @param {Partial<Course>[]} newItems
+   * @param {Function} [callback]
    */
   static async addBatch(newItems, callback) {
     try {
@@ -86,13 +106,15 @@ export class CourseRepository {
       newItems.forEach((item) => {
         const exists = courses.some((c) => c.url === item.url);
         if (!exists) {
-          courses.push({
+          /** @type {Course} */
+          const newCourse = {
             id: Date.now() + Math.random(),
-            name: item.name,
-            url: item.url,
+            name: item.name || 'Sem nome',
+            url: item.url || '',
             weeks: item.weeks || [],
             termName: item.termName || '',
-          });
+          };
+          courses.push(newCourse);
           addedCount++;
         } else {
           ignoredCount++;
@@ -124,6 +146,11 @@ export class CourseRepository {
     }
   }
 
+  /**
+   * @param {number} id
+   * @param {Partial<Course>} updates
+   * @param {Function} [callback]
+   */
   static async update(id, updates, callback) {
     try {
       const courses = await this.loadItems();

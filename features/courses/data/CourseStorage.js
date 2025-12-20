@@ -1,4 +1,8 @@
 /**
+ * @typedef {import('../models/Course.js').Course} Course
+ */
+
+/**
  * Driver de Armazenamento para Cursos (Camada de Infraestrutura).
  * Responsável por comunicar com o Chrome Storage e retornar Promises.
  * Isolamento total da API proprietária do navegador.
@@ -10,7 +14,7 @@ export class CourseStorage {
 
   /**
    * Recupera todos os cursos salvos.
-   * @returns {Promise<Array>} Lista de cursos.
+   * @returns {Promise<Course[]>} Lista de cursos.
    */
   getAll() {
     return new Promise((resolve, reject) => {
@@ -19,8 +23,8 @@ export class CourseStorage {
           if (chrome.runtime.lastError) {
             return reject(chrome.runtime.lastError);
           }
-          /** @type {Array<any>} */
-          const courses = result[this.STORAGE_KEY] || [];
+          /** @type {Course[]} */
+          const courses = /** @type {any} */ (result[this.STORAGE_KEY]) || [];
           resolve(courses);
         });
       } catch (error) {
@@ -31,7 +35,7 @@ export class CourseStorage {
 
   /**
    * Salva a lista completa de cursos.
-   * @param {Array} courses Lista de cursos para salvar.
+   * @param {Course[]} courses Lista de cursos para salvar.
    * @returns {Promise<void>}
    */
   saveAll(courses) {

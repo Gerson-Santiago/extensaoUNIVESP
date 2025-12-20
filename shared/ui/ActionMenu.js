@@ -1,13 +1,25 @@
 /**
+ * @typedef {Object} ActionMenuAction
+ * @property {string} label
+ * @property {string} icon
+ * @property {Function} [onClick]
+ * @property {'action'|'danger'} [type]
+ */
+
+/**
+ * @typedef {Object} ActionMenuOptions
+ * @property {ActionMenuAction[]} [actions]
+ * @property {string} [icon]
+ * @property {string} [title]
+ */
+
+/**
  * @file ActionMenu.js
  * @description Componente de Menu de Ações (Dropdown).
  */
 export class ActionMenu {
   /**
-   * @param {Object} options
-   * @param {Array<{label: string, icon: string, onClick: Function, type?: 'action'|'danger'}>} options.actions
-   * @param {string} [options.icon='+'] - Ícone do botão principal
-   * @param {string} [options.title='Ações'] - Title do botão
+   * @param {ActionMenuOptions} [options]
    */
   constructor({ actions = [], icon = '+', title = 'Ações' } = {}) {
     this.actions = actions;
@@ -55,7 +67,7 @@ export class ActionMenu {
 
     // Close on click outside
     document.addEventListener('click', (e) => {
-      if (!container.contains(e.target)) {
+      if (e.target instanceof Node && !container.contains(e.target)) {
         this.closeMenu(menu);
       }
     });
@@ -65,11 +77,17 @@ export class ActionMenu {
     return container;
   }
 
+  /**
+   * @param {HTMLElement} menu
+   */
   toggleMenu(menu) {
     this.isOpen = !this.isOpen;
     menu.classList.toggle('hidden', !this.isOpen);
   }
 
+  /**
+   * @param {HTMLElement} menu
+   */
   closeMenu(menu) {
     this.isOpen = false;
     menu.classList.add('hidden');

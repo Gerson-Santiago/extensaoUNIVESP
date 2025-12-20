@@ -59,7 +59,9 @@ export class Modal {
     });
 
     const closeBtn = card.querySelector('.btn-close-modal');
-    if (closeBtn) closeBtn.onclick = () => this.close();
+    if (closeBtn) {
+      /** @type {HTMLElement} */ (closeBtn).onclick = () => this.close();
+    }
 
     this.element = overlay;
     document.body.appendChild(overlay);

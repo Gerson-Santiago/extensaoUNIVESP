@@ -1,9 +1,9 @@
 # AutoPreencher UNIVESP (Extensão Chrome)
 
-> **Versão Atual**: v2.7.0
+> **Versão Atual**: v2.7.1
 > **Descrição**: Ferramenta de produtividade Open Source para alunos da UNIVESP.
 
-![Version](https://img.shields.io/badge/version-2.7.0-blue)
+![Version](https://img.shields.io/badge/version-2.7.1-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 
@@ -30,6 +30,10 @@ O **AutoPreencher UNIVESP** é uma extensão de navegador desenvolvida **de alun
 ### ⚡ Produtividade
 *   **Navegação Otimizada**: Interface limpa e focada no conteúdo.
 *   **Foco no Aluno**: Ferramentas pensadas para reduzir o atrito no uso das plataformas da universidade.
+
+### 🛡️ Segurança e Qualidade
+*   **Tipagem Estática (Sem TypeScript)**: Utilizamos **JSDoc Strict** para garantir segurança de tipos em tempo de desenvolvimento, sem a complexidade de transpiladores.
+*   **Zero Erros**: Política de 0 erros de lint e 0 erros de tipagem em código de produção.
 
 ---
 

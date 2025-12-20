@@ -17,6 +17,7 @@ Esta extensão interage com os portais da UNIVESP para oferecer funcionalidades 
   - **Carregamento Automático de Semanas (Deep Feature)**: Ao selecionar matérias para importar, a extensão faz o "trabalho pesado" para você. Ela acessa silenciosamente a página de cada matéria selecionada para identificar e salvar os links das semanas. Assim, quando você abre o painel lateral, tudo já está pronto para uso.
   - **Leitura de Semanas**: Ao clicar em "Atualizar Semanas", a extensão lê o DOM da aba ativa para listar os links de aula.
   - **Armazenamento**: Todos os dados (nomes de cursos, links) são salvos **apenas localmente** no navegador (`chrome.storage.sync` para sincronização entre dispositivos do mesmo usuário). Nenhuma informação é enviada para servidores externos.
+  - **Schema de Dados**: A estrutura dos dados salvos é definida formalmente via JSDoc em `features/courses/models/`.
   - **Detalhes Técnicos**: Consulte o [Protocolo de Privacidade](./TECNOLOGIAS_E_ARQUITETURA.md).
 
 
