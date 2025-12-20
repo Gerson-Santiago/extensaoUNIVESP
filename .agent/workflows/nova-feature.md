@@ -25,5 +25,8 @@ Execute o workflow de verificação:
 # 5. Entrega
 @CHANGELOG.md
 - [ ] Atualize `docs/TECNOLOGIAS_E_ARQUITETURA.md` se mudou estrutura.
+- [ ] **Check de Arquivos**: Rode `git status` e verifique se há arquivos novos (docs, tests) não rastreados.
 - [ ] Adicione ao `CHANGELOG.md` (Não Publicado).
-- [ ] Proponha commit (ex: `feat: adiciona login`).
+- [ ] Proponha commit seguindo a **Regra de Ouro**:
+    - `feat: adiciona login` (✅ Português Inválido? Não! É Válido!)
+    - `feat: add login` (❌ Inglês Proibido!)

@@ -23,4 +23,8 @@ Este workflow realiza o processo de release da `dev` para a `main` de forma segu
 5. Retorna para dev
    - `git switch dev`
 
+6. Cria Tag de Versão
+   - `git tag -a vX.Y.Z -m "Release vX.Y.Z: ..."`
+   - `git push origin vX.Y.Z`
+
 > **Nota:** Se houver conflitos no passo 3, o comando falhará e você deverá resolver manualmente.
