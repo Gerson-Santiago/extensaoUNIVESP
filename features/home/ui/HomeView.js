@@ -1,3 +1,5 @@
+import { Tabs } from '../../../shared/utils/Tabs.js';
+
 export class HomeView {
   constructor(callbacks) {
     this.addCurrentPageCallback = callbacks.onAddCurrentInfo;
@@ -11,17 +13,21 @@ export class HomeView {
             <div class="quick-access-section">
                 <h3>Acesso Rápido</h3>
                 <div class="quick-links-grid">
-                    <a href="https://sei.univesp.br/index.xhtml" target="_blank" class="link-card">
+                    <a href="https://sei.univesp.br/index.xhtml" 
+                       data-match-pattern="sei.univesp.br"
+                       class="link-card js-smart-link">
                         Portal SEI
                     </a>
-                    <a href="https://ava.univesp.br/ultra/course" target="_blank" class="link-card blackboard-card">
+                    <a href="https://ava.univesp.br/ultra/course" 
+                       data-match-pattern="ava.univesp.br"
+                       class="link-card blackboard-card js-smart-link">
                         <img src="../assets/icon_blackboard.png" alt="Blackboard" class="bb-icon">
                         AVA (Cursos)
                     </a>
-                    <a href="https://univesp.br/acesso_aluno.html" target="_blank" class="link-card">
+                    <a href="https://univesp.br/acesso_aluno.html" class="link-card js-smart-link">
                         Área do Aluno
                     </a>
-                    <a href="https://prova.univesp.br/" target="_blank" class="link-card">
+                    <a href="https://prova.univesp.br/" class="link-card js-smart-link">
                         Sistema de Provas
                     </a>
                 </div>
@@ -35,6 +41,17 @@ export class HomeView {
   }
 
   afterRender() {
-    // @TODO: Implementar funcionalidades específicas da Home
+    // Intercepta cliques nos links inteligentes para usar o gerenciador de abas
+    const smartLinks = document.querySelectorAll('.js-smart-link');
+    smartLinks.forEach((link) => {
+      link.addEventListener('click', (e) => {
+        e.preventDefault();
+        const url = link.getAttribute('href');
+        const matchPattern = link.getAttribute('data-match-pattern');
+        if (url) {
+          Tabs.openOrSwitchTo(url, matchPattern);
+        }
+      });
+    });
   }
 }

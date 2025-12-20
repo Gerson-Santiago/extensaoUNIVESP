@@ -1,5 +1,11 @@
 # Changelog - Versão Beta
 
+## [2.6.2] - 2025-12-19
+### Feature: Singleton Tab Pattern (Standardization)
+- **Consistência Arquitetural**: A View `Home` foi padronizada para seguir o mesmo comportamento de navegação já existente em `CoursesList` e `WeekItem`.
+- **Gerenciamento Inteligente**: Links de acesso rápido (Portal SEI, AVA) agora verificam abas abertas antes de criar novas, resolvendo a poluição de contexto.
+- **Match Pattern**: Atualização do utilitário `Tabs.js` para suportar detecção de portais (regex/domínio), essencial para suportar URLs dinâmicas do SEI/AVA.
+
 ## [2.6.1] - 2025-12-18
 ### Arquitetura & Limpeza
 - **Conclusão da Migração**: View `Settings`, `Home` e `Feedback` movidas para suas respectivas pastas em `features/`.

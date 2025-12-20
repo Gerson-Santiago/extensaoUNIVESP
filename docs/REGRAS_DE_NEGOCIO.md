@@ -13,9 +13,9 @@ Este documento detalha o comportamento funcional e as decisões lógicas do sist
 
 **Comportamento**:
 - O sistema DEVE verificar se já existe uma aba aberta correspondente ao conteúdo solicitado.
-- **Match por ID**: Se a URL alvo contém `course_id` e `content_id`, o sistema busca uma aba que contenha *ambos* os parâmetros.
-- **Match Parcial**: Se a URL alvo contém apenas `course_id`, busca qualquer aba daquele curso.
-- **Fallback**: Se não houver match de ID, tenta buscar pelo prefixo da URL.
+- **Match por Pattern (Prioritário)**: Se o componente fornecer um padrão (ex: `sei.univesp.br`), qualquer aba do domínio satisfaz a requisição (ignora subcaminhos).
+- **Match por ID**: Se a URL alvo contém `course_id`/`content_id`, busca a aba específica.
+- **Fallback**: Busca exata ou por prefixo.
 
 **Decisão**:
 - **Se encontrar**: Foca na janela e ativa a aba existente. NÃO recarrega a página (preserva estado).

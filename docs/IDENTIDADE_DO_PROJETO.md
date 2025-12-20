@@ -4,50 +4,58 @@
 
 ## 🌟 Visão e Filosofia
 
-O projeto **AutoPreencher UNIVESP** nasceu de uma necessidade real: simplificar a rotina acadêmica dos alunos da UNIVESP. Acreditamos que o tempo do aluno deve ser gasto **estudando**, não navegando em menus complexos ou preenchendo formulários repetitivos.
+O projeto **AutoPreencher UNIVESP** evoluiu. Mais do que um facilitador de login, somos hoje uma **Suíte de Produtividade Acadêmica** completa. Acreditamos que a tecnologia deve ser invisible e trabalhar *para* o aluno, eliminando a carga cognitiva de navegar em sistemas legados.
 
-### Nossos Pilares
+### Nossos Pilares (The Axioms)
 
-1.  **Produtividade Ética**: Criamos ferramentas para agilizar processos, nunca para burlar o sistema. Não automatizamos o consumo de conteúdo (o aluno deve assistir as aulas), automatizamos o *acesso* ao conteúdo.
-2.  **Transparência Total**: Como lidamos com dados sensíveis (RA, navegação), nosso código é aberto e nossa arquitetura é *Local-First*. O aluno é dono dos seus dados.
-3.  **Simplicidade Radical**: A interface deve ser "invisível". Se o aluno precisa de um tutorial para usar a extensão, falhamos no design.
+1.  **Soberania dos Dados (Local-First)**:
+    *   Nenhum dado sai do computador do aluno.
+    *   Não existe backend proprietário.
+    *   O aluno é o único dono do seu RA, suas configurações e seu histórico de navegação.
+
+2.  **Produtividade Ética**:
+    *   Automatizamos o *acesso* ao conteúdo, jamais o *consumo* dele.
+    *   Facilitamos o login e a organização, mas o estudo depende 100% do aluno.
+
+3.  **Excelência Técnica**:
+    *   Nossa arquitetura (**Screaming Architecture**) reflete domínios acadêmicos, não frameworks.
+    *   Nosso código é testado, lintado e padronizado. Qualidade de software industrial para um projeto estudantil.
 
 ---
 
-## 🚀 Funcionalidades Chave
+## 🚀 Funcionalidades Chave (v2.6)
 
-A extensão atua em três frentes principais para melhorar a experiência no AVA (Blackboard) e SEI.
+### 1. Painel Lateral de Gestão (Domain-Driven UI)
+Um "hub" persistente que centraliza a vida acadêmica:
+*   **Gestão de Cursos**: Importação automática de matérias e organização por Bimestre/Ano.
+*   **Foco na Semana**: O sistema varre a estrutura complexa do Blackboard e entrega links diretos para a semana atual.
+*   **Navegação Inteligente (Singleton Pattern)**: Acabou a poluição de abas. O sistema detecta se o AVA ou SEI já estão abertos e foca na aba existente, mantendo seu navegador limpo.
 
-### 1. Painel Lateral de Produtividade (Side Panel)
-Um "hub" central que acompanha o aluno durante a navegação, focado em **Gestão e Organização**.
-*   **Importação em Lote**: Com um clique, o aluno traz todas as suas matérias do bimestre para o painel.
-*   **Deep Scraping**: A extensão "mergulha" na estrutura do curso para encontrar os links diretos das semanas de aula, ignorando banners e avisos irrelevantes.
-*   **Navegação Contextual**: Ao clicar em uma matéria, a extensão sabe se ela já está aberta em outra aba e leva o usuário até lá, evitando a desorganização de "1000 abas abertas".
+### 2. Autopreenchimento & Acesso Rápido
+*   **Zero Fricção**: Login automático no SEI (apenas email).
+*   **Portal Unificado**: Acesso rápido às ferramentas essenciais (Provas, Área do Aluno) direto da Home.
 
-### 2. Autopreenchimento Inteligente (SEI)
-Detecta automaticamente os campos de login no Sistema Eletrônico de Informações (SEI) e preenche com o email institucional do aluno.
-*   **Filosofia**: Eliminar a fricção do login diário. Feature de conveniência.
-
-### 3. Foco e Organização
-*   **Lista de Semanas**: As semanas de aula são extraídas e listadas de forma limpa. O aluno vê exatamente o que precisa estudar.
-*   **Privacidade**: O RA e as configurações ficam salvas apenas no navegador do usuário.
+### 3. Arquitetura Robusta
+*   **Zero Redirect Loops**: Algoritmos de navegação seguros.
+*   **Smart Link Detection**: O sistema entende redirecionamentos de login e leva você ao destino final.
 
 ---
 
 ## 🎯 Público Alvo
 
-*   **O Aluno UNIVESP**: Principalmente aqueles que trabalham e estudam, e precisam otimizar cada minuto do seu tempo disponível.
-*   **A Comunidade Open Source**: Desenvolvedores que querem aprender sobre Chrome Extensions, Arquitetura Local-First e Scrapers éticos.
+*   **O Aluno UNIVESP**: Que trabalha, cuida da família e tem pouco tempo. Cada segundo economizado é convertido em estudo.
+*   **Desenvolvedores**: Que buscam referência em **Clean Architecture** e **Manifest V3** no ecossistema Chrome.
 
 ---
 
 ## 🤝 Cultura de Desenvolvimento
 
-Para quem contribui com o código:
-*   **Código Limpo**: Mantemos um padrão rigoroso. Se não está testado, não existe.
-*   **Documentação Viva**: Este projeto é mantido por pessoas. Documentamos nossas decisões para que futuros mantenedores entendam o "porquê" das coisas.
-*   **Zero Gambiarra**: Preferimos refatorar a arquitetura a fazer um "patch" sujo.
+Este não é um projeto de "fim de semana". É um produto de software mantido com rigor.
+
+*   **Documentação First**: Nada é implementado sem antes ser desenhado (`docs/`).
+*   **Test-Driven**: Se não tem teste, a feature não existe.
+*   **Refatoração Contínua**: Não temos medo de reescrever módulos inteiros (como fizemos na v2.6.0) para melhorar a manutenibilidade.
 
 ---
 
-> *Este projeto não possui vínculo oficial com a UNIVESP. É uma iniciativa de alunos para alunos.*
+> *Este projeto é Open Source (MIT), mantido pela comunidade e independente da UNIVESP.*

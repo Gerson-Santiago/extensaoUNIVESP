@@ -1,6 +1,6 @@
 # 🏗️ Especificação de Arquitetura e Tecnologia
 
-> **Status**: Produção (v2.6.1)
+> **Status**: Produção (v2.6.2)
 > **Arquitetura**: Screaming Architecture (Domain-Driven)
 > **Plataforma**: Google Chrome Extensions (Manifest V3)
 
@@ -158,7 +158,7 @@ O container minimalista que hospeda as features.
 ### 2.3 Camada Shared & Infrastructure (`/shared`, `/scripts`, `/assets`)
 Mecanismos reutilizáveis e infraestrutura.
 *   **`shared/ui`**: Componentes de interface reutilizáveis (Modal, ActionMenu, Layout, Toaster).
-*   **`shared/utils`**: Utilitários genéricos (Tabs, BrowserUtils, Settings).
+*   **`shared/utils`**: Utilitários genéricos (Tabs [REF-10], BrowserUtils, Settings).
 *   **`shared/logic`**: Lógica compartilhada entre features (AutoScroll).
 *   **`assets/styles`**: CSS global e componentes visuais centralizados.
 *   **Background Service Worker**: Gerencia ciclo de vida, eventos de sistema e comunicação cross-context.

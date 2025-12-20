@@ -142,4 +142,43 @@ describe('Lógica - Troca de Abas', () => {
     expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl });
     expect(chrome.tabs.update).not.toHaveBeenCalled();
   });
+
+  test('Deve priorizar match exato sobre startsWith quando ambos existem', () => {
+    const targetUrl = 'https://site.com/app';
+
+    // Ordem: Aba com sub-rota vem PRIMEIRO na lista.
+    // Se a lógica não priorizar, pegaria a primeira (sub-rota) em vez da exata.
+    const mockTabs = [
+      { id: 901, url: 'https://site.com/app/deep', windowId: 111 },
+      { id: 902, url: 'https://site.com/app', windowId: 111 }, // EXATO
+    ];
+
+    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+      callback(mockTabs);
+    });
+
+    Tabs.openOrSwitchTo(targetUrl);
+
+    // Deve escolher o id 902 (Exato) e não o 901
+    expect(chrome.tabs.update).toHaveBeenCalledWith(902, { active: true });
+  });
+
+  test('Deve usar matchPattern opcional quando fornecido', () => {
+    const targetUrl = 'https://sei.univesp.br/index.xhtml';
+    const matchPattern = 'sei.univesp.br';
+
+    // Cenário: Usuário já logado no SEI (controlador.php), link da home aponta para index.xhtml
+    // Sem o pattern, isso falharia pois index.xhtml != controlador.php e não é prefixo
+    const mockTabs = [
+      { id: 701, url: 'https://sei.univesp.br/sei/controlador.php?acao=x', windowId: 444 },
+    ];
+
+    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+      callback(mockTabs);
+    });
+
+    Tabs.openOrSwitchTo(targetUrl, matchPattern);
+
+    expect(chrome.tabs.update).toHaveBeenCalledWith(701, { active: true });
+  });
 });

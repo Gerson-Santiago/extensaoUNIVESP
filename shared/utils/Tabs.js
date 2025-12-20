@@ -4,8 +4,9 @@ export class Tabs {
   /**
    * Abre uma nova aba ou troca para uma existente se a URL corresponder a um curso/conteúdo alvo.
    * @param {string} url
+   * @param {string|RegExp} [matchPattern] Pattern opcional para identificar a aba (ex: ignora query params ou sub-rotas)
    */
-  static openOrSwitchTo(url) {
+  static openOrSwitchTo(url, matchPattern = null) {
     if (!url) {
       return;
     }
@@ -19,22 +20,39 @@ export class Tabs {
     chrome.tabs.query({}, (tabs) => {
       let existingTab = null;
 
-      // Busca aba que contenha AMBOS: course_id E content_id (página específica)
-      if (targetCourseId && targetContentId) {
+      // 0. Prioridade Absoluta: Match Pattern Customizado (se fornecido)
+      if (matchPattern) {
+        existingTab = tabs.find((t) => {
+          if (!t.url) return false;
+          // Se for RegExp
+          if (matchPattern instanceof RegExp) {
+            return matchPattern.test(t.url);
+          }
+          // Se for string, usa includes (mais abrangente que startsWith para domínios)
+          return t.url.includes(matchPattern);
+        });
+      }
+
+      // 1. Busca aba que contenha AMBOS: course_id E content_id (página específica)
+      if (!existingTab && targetCourseId && targetContentId) {
         existingTab = tabs.find(
           (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
         );
-      } else if (targetCourseId) {
-        // Fallback: apenas course_id (para páginas principais sem content_id)
+      }
+      // 2. Busca apenas course_id (para páginas principais sem content_id)
+      else if (!existingTab && targetCourseId) {
         existingTab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
       }
 
-      // Fallback adicional: tenta por URL exata
+      // 3. Fallback: Procura por URL exata ou prefixo (para links gerais como Home/AVA/SEI)
       if (!existingTab) {
-        const cleanUrl = url.split('&mode=')[0];
-        existingTab = tabs.find(
-          (t) => t.url && (t.url.startsWith(url) || t.url.startsWith(cleanUrl))
-        );
+        // Prioridade 1: Match Exato
+        existingTab = tabs.find((t) => t.url === url);
+
+        // Prioridade 2: Match Hierárquico (se não achou exato)
+        if (!existingTab) {
+          existingTab = tabs.find((t) => t.url && t.url.startsWith(url));
+        }
       }
 
       if (existingTab) {

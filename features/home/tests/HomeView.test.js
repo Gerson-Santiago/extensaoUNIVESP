@@ -73,4 +73,16 @@ describe('HomeView - Renderização', () => {
     expect(() => homeView.afterRender()).not.toThrow();
     document.body.innerHTML = '';
   });
+
+  test('Links devem ter classe js-smart-link e atributos data-match-pattern corretos', () => {
+    const element = homeView.render();
+
+    const seiLink = element.querySelector('a[href*="sei.univesp.br"]');
+    expect(seiLink.classList.contains('js-smart-link')).toBe(true);
+    expect(seiLink.getAttribute('data-match-pattern')).toBe('sei.univesp.br');
+
+    const avaLink = element.querySelector('a[href*="ava.univesp.br"]');
+    expect(avaLink.classList.contains('js-smart-link')).toBe(true);
+    expect(avaLink.getAttribute('data-match-pattern')).toBe('ava.univesp.br');
+  });
 });
