@@ -1,6 +1,6 @@
-> Status: Active
-> Last Update: 2025-12-18
-> Owner: Gerson Santiago
+> **Status**: Concluído (Dez/2025) - v2.6.3
+> **Nota**: Este plano foi executado.
+> **Legado**: Consulte `TECNOLOGIAS_E_ARQUITETURA.md`.
 
 # 🗺️ Plano Detalhado: Feature Cursos (O Coração)
 
