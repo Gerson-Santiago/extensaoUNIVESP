@@ -15,7 +15,7 @@ Este documento explica a organização das features em 3 categorias: CORE, INFRA
 
 **Features atuais**:
 1. **`courses/`** - Gestão de matérias acadêmicas
-2. **`import/`** - Importação em lote de cursos
+   - Submódulo: `courses/import/` - Importação em lote de cursos
 
 **Quando criar uma CORE feature**:
 - Se implementa um novo domínio de negócio

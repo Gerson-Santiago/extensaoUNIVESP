@@ -37,7 +37,7 @@ Disciplina acadêmica (ex: "Cálculo I"). No código, representado pela classe/o
 
 **Estrutura**: Cada feature contém `ui/`, `logic/`, `data/`, `services/`, `tests/`.
 
-**Exemplo**: `features/courses/`, `features/import/`, `features/settings/`.
+**Exemplo**: `features/courses/` (com submódulo `import/`), `features/settings/`.
 
 **Regra**: Features não conhecem detalhes de implementação de outras features (baixo acoplamento).
 

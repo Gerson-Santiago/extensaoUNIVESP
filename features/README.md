@@ -91,6 +91,10 @@ features/
 **Estrutura**:
 - `views/CoursesView/` - Lista principal de cursos
 - `views/CourseDetails/` - Detalhes de um curso específico
+- **`import/`** - 🎯 **Submódulo:** Importação em lote de cursos do AVA
+  - `import/components/BatchImportModal.js`
+  - `import/logic/BatchImportFlow.js`
+  - `import/services/BatchScraper.js`
 - `components/CourseItem.js` - Card individual de curso
 - `components/WeekItem.js` - Item de semana de aula
 - `components/AddManualModal/` - Modal de adição manual
@@ -100,21 +104,9 @@ features/
 - `data/CourseRepository.js` - CRUD de cursos no storage
 - `services/ScraperService.js` - Extrai dados do AVA
 
-**Quando mexer**: Adicionar/editar matérias, mudar agrupamento, scraping do AVA.
+**Quando mexer**: Adicionar/editar matérias, mudar agrupamento, scraping do AVA, **importação em lote**.
 
----
 
-### 🏆 `import/` - Importação em Lote (CORE)
-**Responsabilidade**: Importar múltiplos cursos do AVA de uma vez.
-
-**Estrutura**:
-- `components/BatchImportModal.js` - Modal de seleção de cursos
-- `logic/BatchImportFlow.js` - Orquestra fluxo (login → seleção → importação)
-- `services/BatchScraper.js` - Scraping da lista de cursos + auto-scroll
-
-**Quando mexer**: Melhorar UX de importação, ajustar scraping do AVA.
-
----
 
 ### 📦 `home/` - Tela Inicial (UTILITY)
 **Responsabilidade**: Dashboard com atalhos rápidos.
