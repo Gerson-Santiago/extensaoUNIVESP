@@ -1,7 +1,7 @@
 # Relatório de Conformidade Técnica e Privacidade
 
-**Data:** 15/12/2025
-**Escopo:** Extensão Chrome "AutoPreencher UNIVESP" (v2.5.4)
+**Data:** 20/12/2025
+**Escopo:** Extensão Chrome "AutoPreencher UNIVESP" (v2.7.0)
 
 ## 1. Resumo Executivo
 A análise técnica do código fonte indica que a extensão opera sob o princípio de **Local-First**, não possuindo infraestrutura de backend própria. Todos os dados processados permanecem no ambiente do navegador do usuário ou nos servidores da instituição (quando acessados legitimamente via sessão ativa do aluno).

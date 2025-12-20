@@ -1,6 +1,6 @@
 # 🏗️ Especificação de Arquitetura e Tecnologia
 
-> **Status**: Produção (v2.6.3) - Atualizado: 2025-12-20
+> **Status**: Produção (v2.7.0) - Atualizado: 2025-12-20
 > **Arquitetura**: Screaming Architecture (Domain-Driven)
 > **Plataforma**: Google Chrome Extensions (Manifest V3)
 
