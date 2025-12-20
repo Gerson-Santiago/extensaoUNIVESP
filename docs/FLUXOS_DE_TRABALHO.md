@@ -30,7 +30,7 @@ Nosso fluxo segue um padrão simples de Feature Branch.
 ### 3. Codificação (Coding Rules)
 - **Javascript Moderno**: Use ES6+, `const`/`let`, Arrow Functions.
 - **Modularização (Screaming Architecture)**: 
-  - `features/`: Organize por domínio de negócio (ex: `courses`, `import`, `session`)
+  - `features/`: Organize por domínio de negócio (ex: `courses`, `session`)
   - Cada feature contém: `ui/`, `logic/`, `data/`, `services/`, `tests/`
   - `shared/`: Componentes reutilizáveis (`shared/ui`, `shared/utils`, `shared/logic`)
   - `assets/`: Recursos estáticos (CSS, imagens)

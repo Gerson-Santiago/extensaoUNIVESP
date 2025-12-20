@@ -1,22 +1,15 @@
-import { AddManualModal } from '../../courses/components/AddManualModal/index.js';
-// BatchImportModal removed (Delegated to Controller)
-import { CourseRepository } from '../../courses/data/CourseRepository.js';
-import { CourseService } from '../../courses/logic/CourseService.js';
+// Courses imports removed - Event-Driven Decoupling
+// Events emitted: 'request:add-manual-course', 'request:scrape-current-tab'
 import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
 import { ConfigForm } from '../components/ConfigForm.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {
     this.onNavigate = callbacks.onNavigate;
-    this.onImportBatch = callbacks.onImportBatch; // New Callback
+    this.onImportBatch = callbacks.onImportBatch; // Callback for Batch Import
     this.feedback = new Toaster('settingsFeedback');
     this.configForm = new ConfigForm(new Toaster('configFeedback'));
-    this.courseService = new CourseService();
-
-    this.addManualModal = new AddManualModal(() =>
-      this.feedback.show('Matéria adicionada com sucesso!', 'success')
-    );
-    // BatchImportModal extracted to Controller (sidepanel.js)
+    // Removed: CourseService, AddManualModal - delegated via events
   }
 
   render() {
@@ -76,7 +69,16 @@ export class SettingsView {
     const btnFeedback = document.getElementById('btnFeedback');
     const btnClear = document.getElementById('btnClearAll');
 
-    if (btnManual) btnManual.onclick = () => this.addManualModal.open();
+    if (btnManual) {
+      btnManual.onclick = () => {
+        // Emit event instead of opening modal directly
+        window.dispatchEvent(
+          new CustomEvent('request:add-manual-course', {
+            detail: { source: 'settings' },
+          })
+        );
+      };
+    }
     if (btnBatch)
       btnBatch.onclick = () => {
         if (this.onImportBatch) this.onImportBatch();
@@ -98,25 +100,18 @@ export class SettingsView {
         'Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.'
       )
     ) {
-      await CourseRepository.clear();
-      this.feedback.show('Todas as matérias foram removidas.', 'success');
+      window.dispatchEvent(new CustomEvent('request:clear-all-courses'));
+      // Feedback will be handled by the orchestrator (sidepanel)
+      // or we can expect a global reload.
     }
   }
 
   handleAddCurrent() {
-    const feedbackEl = document.getElementById('settingsFeedback');
-    if (feedbackEl) {
-      feedbackEl.textContent = 'Analisando página...';
-      feedbackEl.style.display = 'block';
-    }
-
-    this.courseService.addFromCurrentTab(
-      () => {
-        this.feedback.show('Página atual adicionada com sucesso!', 'success');
-      },
-      (msg) => {
-        this.feedback.show(`Erro: ${msg}`, 'error');
-      }
+    // Emit event instead of calling CourseService directly
+    window.dispatchEvent(
+      new CustomEvent('request:scrape-current-tab', {
+        detail: { source: 'settings' },
+      })
     );
   }
 }

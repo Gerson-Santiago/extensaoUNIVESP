@@ -1,4 +1,5 @@
 import { SettingsView } from '../../features/settings/ui/SettingsView.js';
+import { CourseService } from '../../features/courses/logic/CourseService.js'; // Added import
 
 describe('Integration: Scrape Course Flow', () => {
   let settingsView;
@@ -56,6 +57,16 @@ describe('Integration: Scrape Course Flow', () => {
     container.appendChild(settingsView.render());
     settingsView.afterRender();
 
+    // Mock Sidepanel Orchestrator for Scrape
+    const courseService = new CourseService();
+    window.addEventListener('request:scrape-current-tab', () => {
+      // We replicate what sidepanel handles
+      courseService.addFromCurrentTab(
+        () => (document.getElementById('settingsFeedback').textContent = 'sucesso'),
+        (msg) => console.error(msg)
+      );
+    });
+
     const btnAddCurrent = document.getElementById('btnAddCurrent');
     expect(btnAddCurrent).toBeTruthy();
 
@@ -96,6 +107,15 @@ describe('Integration: Scrape Course Flow', () => {
     settingsView = new SettingsView({ onNavigate: mockNavigate });
     container.appendChild(settingsView.render());
     settingsView.afterRender();
+
+    // Mock Sidepanel Orchestrator (Again for new instance)
+    const courseService = new CourseService();
+    window.addEventListener('request:scrape-current-tab', () => {
+      courseService.addFromCurrentTab(
+        () => {},
+        (msg) => {}
+      );
+    });
 
     const btnAddCurrent = document.getElementById('btnAddCurrent');
     btnAddCurrent.click();

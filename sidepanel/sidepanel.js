@@ -32,6 +32,7 @@ import { LoginWaitModal } from '../features/session/components/LoginWaitModal.js
 // Serviços
 import { CourseService } from '../features/courses/logic/CourseService.js';
 import { BatchImportFlow } from '../features/courses/import/logic/BatchImportFlow.js';
+import { CourseRepository } from '../features/courses/data/CourseRepository.js'; // Added for Clear All listener
 
 // ========== INICIALIZAÇÃO ==========
 
@@ -66,7 +67,10 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   // Modal de adição manual (formulário)
-  const addManualModal = new AddManualModal();
+  const addManualModal = new AddManualModal(() => {
+    // Callback sucesso: recarrega lista se estivermos na view de cursos
+    if (coursesView) coursesView.loadCourses();
+  });
 
   // --- Views ---
   const settingsView = new SettingsView({
@@ -145,4 +149,31 @@ document.addEventListener('DOMContentLoaded', () => {
   // Inicializa layout (renderiza estrutura base e gerencia navegação)
   const layout = new MainLayout(views);
   layout.init();
+
+  // --- Global Event Listeners (Decoupling) ---
+
+  // 1. Add Manual Course (Settings -> Modal)
+  window.addEventListener('request:add-manual-course', () => {
+    addManualModal.open();
+  });
+
+  // 2. Scrape Current Tab (Settings -> Logic)
+  window.addEventListener('request:scrape-current-tab', () => {
+    handleAddCurrentPage();
+  });
+
+  // 3. Clear All Courses (Settings -> Repository)
+  window.addEventListener('request:clear-all-courses', async () => {
+    try {
+      await CourseRepository.clear();
+      // Atualizar views afetadas
+      coursesView.loadCourses();
+      // Feedback simples (pode ser melhorado com Toaster Global)
+      // Como estamos no Orchestrator, o contexto de onde veio o clique pode ser Settings.
+      // Recarregamos a view ativa se necessário?
+      // Por simplicidade, alert por enquanto, ou apenas reload.
+    } catch (err) {
+      console.error('Erro ao limpar cursos:', err);
+    }
+  });
 });

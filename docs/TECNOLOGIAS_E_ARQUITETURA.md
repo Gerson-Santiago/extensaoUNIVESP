@@ -180,11 +180,11 @@ extensaoUNIVESP/
 │   │   ├── data/            # CourseRepository
 │   │   ├── logic/           # CourseService, TermParser, CourseGrouper
 │   │   ├── services/        # CourseDetector, CourseRefresher
-│   │   └── tests/
-│   ├── import/              # Importação em Lote
-│   │   ├── components/      # BatchImportModal
-│   │   ├── logic/           # BatchImportFlow
-│   │   ├── services/        # BatchScraper
+│   │   ├── import/          # Submódulo: Importação em Lote
+│   │   │   ├── components/  # BatchImportModal
+│   │   │   ├── logic/       # BatchImportFlow
+│   │   │   ├── services/    # BatchScraper
+│   │   │   └── tests/
 │   │   └── tests/
 │   ├── session/             # Autenticação e Sessão (Nova - Phase 2)
 │   │   ├── components/      # LoginWaitModal
@@ -230,7 +230,8 @@ O sentido das dependências deve apontar sempre em direção à estabilidade.
 1.  **Features dependem de Core/Shared**: ✅ Permitido.
 2.  **Core depende de Features**: ❌ PROIBIDO. O Background Worker não deve importar lógica de cálculo de média.
 3.  **Feature depende de Feature**: ⚠️ EVITAR.
-    *   Se `Import` precisa criar um curso, ele deve usar o `CourseRepository` (interface pública) ou emitir um evento. Nunca importar a View de Cursos.
+    *   `courses/import` faz parte do domínio `courses`, então pode usar `CourseRepository`.
+    *   Mas `settings` não deve importar diretamente a View de Cursos (use eventos).
 
 ### 3.2 Isolamento de CSS
 Para evitar colisão de estilos em um ambiente sem Shadow DOM obrigatório:

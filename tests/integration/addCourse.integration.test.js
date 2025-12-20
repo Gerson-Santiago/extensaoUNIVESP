@@ -1,5 +1,6 @@
 import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 import { CoursesView } from '../../features/courses/views/CoursesView/index.js';
+import { AddManualModal } from '../../features/courses/components/AddManualModal/index.js'; // Added import
 
 describe('Integration: Add Course Manual Flow', () => {
   let settingsView;
@@ -28,6 +29,12 @@ describe('Integration: Add Course Manual Flow', () => {
     const settingsEl = settingsView.render();
     container.appendChild(settingsEl);
     settingsView.afterRender();
+
+    // Mock Sidepanel Orchestrator
+    window.addEventListener('request:add-manual-course', () => {
+      const modal = new AddManualModal();
+      modal.open();
+    });
 
     // 2. Open "Add Manual" Modal
     const btnManual = document.getElementById('btnManualAdd');

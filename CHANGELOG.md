@@ -6,6 +6,10 @@
   - **Movido**: `features/import/` → `features/courses/import/` (agora é submódulo de courses)
   - **Motivação**: A feature `import` depende 100% de `courses` (CourseRepository, TermParser). A nova estrutura grita essa dependência.
   - **Benefício**: Desenvolvimento `courses/` agora é auto-contido. Tudo relacionado a matérias está em um único lugar.
+- **Desacoplamento (Settings)**:
+  - Implementado **Event-Driven Architecture** para `features/settings/`.
+  - Settings agora emite eventos (`request:add-manual`, `request:scrape`, `request:clear`) e não conhece mais `features/courses`.
+  - Orquestração centralizada no `sidepanel.js`.
 
 ### Documentação
 - **Categorização de Features**: Documentação expandida com sistema de badges (🏆 CORE, 🔧 INFRA, 📦 UTILITY).

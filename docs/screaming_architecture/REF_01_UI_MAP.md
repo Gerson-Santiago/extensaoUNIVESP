@@ -45,9 +45,9 @@ Para refatorar, precisamos concordar com estas definições:
 
 | Modal Name | Arquivo Atual | Responsabilidade | Gatilho |
 | :--- | :--- | :--- | :--- |
-| `BatchImportModal` | `Modals/BatchImportModal.js` | Importar várias matérias do AVA | Botão "Importar" (Courses) |
+| `BatchImportModal` | `features/courses/import/components/BatchImportModal.js` | Importar várias matérias do AVA | Botão "Importar" (Courses) |
 | `AddManualModal` | `features/courses/components/AddManualModal/index.js` | Adicionar matéria manualmente | Menu Ações > "Manual" |
-| `LoginWaitModal` | `Modals/LoginWaitModal.js` | Bloqueia tela enquanto loga no AVA | Callback do BatchImport |
+| `LoginWaitModal` | `features/session/components/LoginWaitModal.js` | Bloqueia tela enquanto loga no AVA | Callback do BatchImport |
 
 ### 3. Menus e Atalhos
 
