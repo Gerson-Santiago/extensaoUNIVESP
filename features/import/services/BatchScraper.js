@@ -27,22 +27,63 @@ export async function DOM_scanTermsAndCourses_Injected() {
   }
 
   // 2. Auto-Scroll para carregar "Infinite Scroll"
+  // 2. Auto-Scroll para carregar "Infinite Scroll" (Lógica Robusta v2.0)
   try {
-    let lastHeight = document.body.scrollHeight;
-    let attempts = 0;
-    while (attempts < 10) {
-      // Limite de tentativas para não travar
-      window.scrollTo(0, document.body.scrollHeight);
-      await new Promise((r) => setTimeout(r, 1500)); // Aguarda 1.5s carregar
+    // Helper para achar o elemento que tem scroll
+    const getScrollElement = () => {
+      const mainContainer = document.getElementById('main-content-inner');
+      if (mainContainer && mainContainer.scrollHeight > mainContainer.clientHeight) {
+        return mainContainer;
+      }
+      // Tenta achar qualquer div grande com scroll
+      const allDivs = document.querySelectorAll('div');
+      for (const div of Array.from(allDivs)) {
+        if (div.scrollHeight > div.clientHeight && div.clientHeight > 100) {
+          const style = window.getComputedStyle(div);
+          if (['auto', 'scroll'].includes(style.overflowY) || style.overflow === 'auto') {
+            return div;
+          }
+        }
+      }
+      return window;
+    };
 
-      const newHeight = document.body.scrollHeight;
-      if (newHeight === lastHeight) break; // Chegou ao fim
-      lastHeight = newHeight;
+    const scrollTarget = getScrollElement();
+    let lastHeight =
+      scrollTarget === window ? document.documentElement.scrollHeight : scrollTarget.scrollHeight;
+
+    let attempts = 0;
+    const MAX_RETRIES = 10;
+
+    while (attempts < MAX_RETRIES) {
+      if (scrollTarget === window) {
+        window.scrollTo(0, document.body.scrollHeight);
+      } else {
+        scrollTarget.scrollTop = scrollTarget.scrollHeight;
+      }
+
+      await new Promise((r) => setTimeout(r, 1500)); // Aguarda carga
+
+      const newHeight =
+        scrollTarget === window ? document.documentElement.scrollHeight : scrollTarget.scrollHeight;
+
+      if (newHeight === lastHeight) {
+        // Tenta mais uma vez antes de desistir (rede lenta)
+        await new Promise((r) => setTimeout(r, 1000));
+        const retryHeight =
+          scrollTarget === window
+            ? document.documentElement.scrollHeight
+            : scrollTarget.scrollHeight;
+
+        if (retryHeight === lastHeight) break; // Realmente acabou
+        lastHeight = retryHeight;
+      } else {
+        lastHeight = newHeight;
+      }
       attempts++;
     }
   } catch (e) {
     console.error('Erro no auto-scroll:', e);
-    // Continua mesmo se falhar o scroll
   }
 
   // 3. Encontrar todos os elementos (H4 é o título do curso no card)

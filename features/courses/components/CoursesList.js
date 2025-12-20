@@ -183,7 +183,7 @@ export class CoursesList {
               const currentHeight =
                 scrollTarget === window
                   ? document.documentElement.scrollHeight
-                  : scrollTarget.scrollHeight;
+                  : /** @type {HTMLElement} */ (scrollTarget).scrollHeight;
 
               let isBottom = false;
               if (scrollTarget === window) {

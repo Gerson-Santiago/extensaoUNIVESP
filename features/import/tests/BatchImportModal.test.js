@@ -83,3 +83,32 @@ describe('BatchImportModal Render Logic', () => {
     expect(container.textContent).toContain('Nenhum termo encontrado');
   });
 });
+
+describe('BatchImportModal Interactions', () => {
+  let modal;
+
+  beforeEach(() => {
+    document.body.innerHTML = '';
+    modal = new BatchImportModal(() => {});
+  });
+
+  test('Should have a reload button that triggers loadTerms', () => {
+    // 1. Spy on loadTerms (the method we want to re-trigger)
+    const loadTermsSpy = jest.spyOn(modal, 'loadTerms').mockImplementation(() => {});
+
+    // 2. Open the modal (renders UI)
+    modal.open();
+    const overlay = document.querySelector('.modal-overlay');
+
+    // 3. Find Reload Button
+    const reloadBtn = overlay.querySelector('.btn-refresh');
+    expect(reloadBtn).not.toBeNull();
+    expect(reloadBtn.title).toBe('Recarregar Cursos');
+
+    // 4. Click it
+    reloadBtn.click();
+
+    // 5. Assert loadTerms was called twice (once by open(), once by click)
+    expect(loadTermsSpy).toHaveBeenCalledTimes(2);
+  });
+});

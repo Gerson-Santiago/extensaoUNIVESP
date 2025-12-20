@@ -1,5 +1,9 @@
 # Changelog - Versão Beta
 
+## [Unreleased]
+### UX
+- **Importação**: Adicionado botão de recarregar (↻) que executa o **scroll inteligente** (mesma lógica da lista de cursos) para garantir que todas as matérias sejam encontradas.
+
 ## [2.6.2] - 2025-12-19
 ### Feature: Singleton Tab Pattern (Standardization)
 - **Consistência Arquitetural**: A View `Home` foi padronizada para seguir o mesmo comportamento de navegação já existente em `CoursesList` e `WeekItem`.

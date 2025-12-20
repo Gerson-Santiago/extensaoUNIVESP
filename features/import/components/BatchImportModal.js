@@ -27,9 +27,14 @@ export class BatchImportModal extends Modal {
                     <div style="text-align: center; color: #999;">Aguarde, lendo...</div>
                 </div>
                 
-                <button id="btnRunBatch" class="btn-save" style="width: 100%; background-color: #28a745;" disabled>
-                    Importar Selecionados
-                </button>
+                <div style="display: flex; gap: 10px;">
+                    <button id="btnRunBatch" class="btn-save" style="flex: 1; background-color: #28a745;" disabled>
+                        Importar Selecionados
+                    </button>
+                    <button class="btn-refresh" title="Recarregar Cursos" style="width: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid #ccc; background: #fff; border-radius: 4px;">
+                        ↻
+                    </button>
+                </div>
             </div>
             
             <div id="batchStatus" style="margin-top: 15px; font-size: 12px; color: #333; min-height: 20px;"></div>
@@ -205,6 +210,14 @@ export class BatchImportModal extends Modal {
         }
       }
     };
+
+    // Reload Button Logic
+    const btnRefresh = overlay.querySelector('.btn-refresh');
+    if (btnRefresh) {
+      btnRefresh.onclick = () => {
+        this.loadTerms(overlay);
+      };
+    }
   }
 
   finish(added, total, statusElement) {
