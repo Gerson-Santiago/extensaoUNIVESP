@@ -1,0 +1,173 @@
+> Status: Active
+> Last Update: 2025-12-20
+
+# 🎯 Features (Screaming Architecture)
+
+Esta pasta contém as **funcionalidades de negócio** do projeto, organizadas por domínio. Cada pasta aqui representa um caso de uso independente.
+
+---
+
+## 📂 Estrutura de uma Feature
+
+Cada feature segue este padrão:
+
+```
+features/
+└── <feature-name>/
+    ├── components/      # Widgets reutilizáveis (opcionais)
+    ├── ui/             # Telas simples (alternativa a views/)
+    ├── views/          # Telas complexas (componentes maiores)
+    ├── logic/          # Regras de negócio puras
+    ├── data/           # Repositories (acesso a dados)
+    ├── services/       # Integrações externas (scraping, HTTP)
+    └── tests/          # Testes colocalizados
+```
+
+**Regra**: Nem toda feature tem todas as pastas. Use apenas o necessário.
+
+---
+
+## 📖 Mini-Glossário (Complemento ao `/docs/GLOSSARIO.md`)
+
+### 🗂️ Pastas
+
+| Pasta | Quando Usar | O Que Vai Aqui |
+|:---|:---|:---|
+| **`ui/`** | Telas simples, uma View por arquivo | `HomeView.js`, `SettingsView.js`, `FeedbackView.js` |
+| **`views/`** | Telas complexas, uma pasta por View | `CoursesList/index.js`, `CourseDetails/index.js` |
+| **`components/`** | Widgets reutilizáveis dentro da feature | `CourseItem.js`, `WeekItem.js`, `AddManualModal/` |
+| **`logic/`** | Regras de negócio puras, **SEM** DOM/API | `TermParser.js`, `CourseGrouper.js` |
+| **`data/`** | Repositories (CRUD de dados) | `CourseRepository.js`, `CourseStorage.js` |
+| **`services/`** | Scraping, HTTP, integrações externas | `ScraperService.js`, `BatchScraper.js` |
+| **`tests/`** | Testes unitários e integração da feature | `*.test.js`, subpastas por contexto |
+
+### 🔑 Diferenças Importantes
+
+**`ui/` vs `views/`**  
+- `ui/`: Telas simples, arquivo único (ex: `HomeView.js`)  
+- `views/`: Telas complexas, pasta com `index.js` + possíveis auxiliares
+
+**`components/` vs `shared/ui/`**  
+- `components/`: Usado **só dentro desta feature**  
+- `shared/ui/`: Usado em **múltiplas features**
+
+**`logic/` vs `services/`**  
+- `logic/`: Regras puras, testável sem mocks (ex: parse de string)  
+- `services/`: Depende de mundo externo (DOM, chrome.*, HTTP)
+
+---
+
+## 🗺️ Mapa das Features
+
+### 🎓 `courses/` - Gestão de Matérias
+**Responsabilidade**: Listar, adicionar, atualizar e navegar nas matérias do aluno.
+
+**Estrutura**:
+- `views/CoursesList/` - Lista principal de cursos
+- `views/CourseDetails/` - Detalhes de um curso específico
+- `components/CourseItem.js` - Card individual de curso
+- `components/WeekItem.js` - Item de semana de aula
+- `components/AddManualModal/` - Modal de adição manual
+- `logic/CourseGrouper.js` - Agrupa cursos por bimestre
+- `logic/TermParser.js` - Extrai ano/bimestre de strings
+- `logic/CourseService.js` - Orquestração de operações de curso
+- `data/CourseRepository.js` - CRUD de cursos no storage
+- `services/ScraperService.js` - Extrai dados do AVA
+
+**Quando mexer**: Adicionar/editar matérias, mudar agrupamento, scraping do AVA.
+
+---
+
+### 📥 `import/` - Importação em Lote
+**Responsabilidade**: Importar múltiplos cursos do AVA de uma vez.
+
+**Estrutura**:
+- `components/BatchImportModal.js` - Modal de seleção de cursos
+- `logic/BatchImportFlow.js` - Orquestra fluxo (login → seleção → importação)
+- `services/BatchScraper.js` - Scraping da lista de cursos + auto-scroll
+
+**Quando mexer**: Melhorar UX de importação, ajustar scraping do AVA.
+
+---
+
+### 🏠 `home/` - Tela Inicial
+**Responsabilidade**: Dashboard com atalhos rápidos.
+
+**Estrutura**:
+- `ui/HomeView.js` - Tela inicial simples
+
+**Quando mexer**: Adicionar cards de atalhos, mudar layout inicial.
+
+---
+
+### 💬 `feedback/` - Envio de Feedback
+**Responsabilidade**: Formulário de bug report e sugestões.
+
+**Estrutura**:
+- `ui/FeedbackView.js` - Formulário de feedback
+
+**Quando mexer**: Ajustar campos do formulário, integração com GitHub Issues.
+
+---
+
+### 🔐 `session/` - Autenticação e Sessão
+**Responsabilidade**: Gerenciar estado de login (AVA/SEI).
+
+**Estrutura**:
+- `components/LoginWaitModal.js` - Modal de espera de login
+- `logic/SessionManager.js` - Gerencia estado de sessão
+
+**Quando mexer**: Detectar login, validar sessão ativa.
+
+---
+
+### ⚙️ `settings/` - Configurações
+**Responsabilidade**: Gerenciar RA, domínio de email, preferências.
+
+**📍 View Principal do TopNav** (junto com Home e Courses)
+
+**Estrutura**:
+- `ui/SettingsView.js` - **Tela de configurações** (acessível via TopNav)
+- `components/ConfigForm.js` - Formulário de configurações
+- `logic/domainManager.js` - Gerencia domínio de email customizado
+
+**Quando mexer**: Adicionar novas configurações, persistência de preferências.
+
+---
+
+## ✅ Checklist: "Onde Coloco Meu Código?"
+
+```
+└─ Pergunta                                    Resposta
+   ├─ É uma tela completa?                    → ui/ ou views/
+   ├─ É um widget reutilizável?               → components/ (ou shared/ui se for global)
+   ├─ É lógica de negócio pura?              → logic/
+   ├─ É acesso a dados (CRUD)?               → data/
+   ├─ É scraping ou HTTP?                    → services/
+   └─ É um teste?                            → tests/
+```
+
+---
+
+## 🚫 O Que NÃO Fazer
+
+❌ **Não misture lógica de negócio em `views/`**  
+✅ Extraia para `logic/` e importe na View
+
+❌ **Não acesse `chrome.storage` diretamente em `logic/`**  
+✅ Use `data/Repository` e injete na lógica
+
+❌ **Não crie arquivos globais em `features/`**  
+✅ Use `shared/` para código verdadeiramente reutilizável
+
+---
+
+## 📚 Saiba Mais
+
+- **Glossário Completo**: [`/docs/GLOSSARIO.md`](../docs/GLOSSARIO.md)
+- **Arquitetura**: [`/docs/TECNOLOGIAS_E_ARQUITETURA.md`](../docs/TECNOLOGIAS_E_ARQUITETURA.md)
+- **Decisões**: [`/docs/screaming_architecture/`](../docs/screaming_architecture/)
+
+---
+
+> **Dica**: Se você não sabe em qual feature colocar código, pergunte: "Este código serve a qual caso de uso de negócio?" A resposta é o nome da feature.
