@@ -38,8 +38,11 @@ describe('BatchScraper DOM Logic', () => {
 
     const promise = DOM_scanTermsAndCourses_Injected();
 
-    // Fast-forward timers for the scroll loop
-    jest.runAllTimers();
+    // Advance time repeatedly to handle the async loop
+    for (let i = 0; i < 15; i++) {
+      await Promise.resolve();
+      jest.advanceTimersByTime(2000);
+    }
 
     // We expect it to eventually fail finding courses (since we didn't add h4s)
     // but we want to check if it tried to scroll
@@ -60,15 +63,28 @@ describe('BatchScraper DOM Logic', () => {
                  <a href="https://ava.univesp.br/ultra/course_id=_123_1">Link</a>
                  <h4 class="js-course-title-element">Engenharia de Software</h4>
                  <span id="course-id-1">COM100-2025S1B1-T01</span>
+                 <div id="main-content-inner" style="overflow:auto; height: 500px"></div>
+                 <div style="overflow:auto; height: 500px"></div> 
             </div>
         </li>
       </ul>
     `;
+    // Add mock scroll element to avoid window scroll issues in JSDOM
+    const mainContent = document.getElementById('main-content-inner');
+    if (mainContent) {
+      Object.defineProperty(mainContent, 'scrollHeight', { value: 2000, writable: true });
+      Object.defineProperty(mainContent, 'clientHeight', { value: 1000, writable: true });
+    }
 
     // Skip scroll wait
     jest.useFakeTimers();
     const promise = DOM_scanTermsAndCourses_Injected();
-    jest.runAllTimers();
+
+    for (let i = 0; i < 15; i++) {
+      await Promise.resolve();
+      jest.advanceTimersByTime(2000);
+    }
+
     const result = await promise;
     jest.useRealTimers();
 

@@ -1,9 +1,9 @@
 # AutoPreencher UNIVESP (Extensão Chrome)
 
-> **Versão Atual**: v2.6.1
+> **Versão Atual**: v2.6.3
 > **Descrição**: Ferramenta de produtividade Open Source para alunos da UNIVESP.
 
-![Version](https://img.shields.io/badge/version-2.6.1-blue)
+![Version](https://img.shields.io/badge/version-2.6.3-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 

@@ -36,16 +36,15 @@ Esta métrica representa o esforço real de engenharia aplicada ao projeto.
 ---
 
 ## 3. Hotspots de Complexidade
-
-Arquivos que demandam atenção devido ao tamanho ou responsabilidade centralizada:
+(Atualizado Pós-Refatoração)
 
 ### Código de Produção
-1.  **`features/import/services/BatchScraper.js`** (~380 linhas): Centraliza a lógica de interação com o DOM do AVA (Context Script). É natural que seja complexo devido à natureza instável de scraping.
-2.  **`features/courses/services/ScraperService.js`** (~190 linhas): Outro ponto de scraping, indicando que a extração de dados é o "core" da complexidade técnica.
-3.  **`features/courses/components/CourseDetailsView.js`** (~140 linhas): UI rica com muitas interações.
+1.  **`features/import/services/BatchScraper.js`**: Refatorado para simplificar a lógica de Auto-Scroll e parsing. A complexidade foi reduzida, mas ainda é um ponto crítico por lidar com DOM externo.
+2.  **`features/courses/services/ScraperService.js`**: Extração de dados continua sendo o core da complexidade.
+3.  **`features/courses/services/CourseRefresher.js`**: [NOVO] Herdou a complexidade de refresh que estava na View. Centraliza a lógica de scraping sob demanda.
 
 ### Testes
-1.  **`features/courses/tests/CourseRepository.test.js`** (~500 linhas): O maior arquivo do projeto. Justificável pois garante a integridade dos dados, que é crítica (Local-First).
+1.  **`features/courses/tests/CourseRepository/`**: A antiga suite monolítica foi dividida em múltiplos arquivos (`load`, `save`, `add`, `update_delete`), resolvendo o problema de manutenibilidade.
 
 ---
 
@@ -57,11 +56,11 @@ Arquivos que demandam atenção devido ao tamanho ou responsabilidade centraliza
 - **Confiabilidade**: Testes automatizados cobrem os fluxos principais de importação e persistência.
 
 **Pontos de Atenção:**
-- **Scraping**: A lógica de scraping é o ponto mais frágil (depende do layout de terceiros). Manter esses serviços isolados (como já estão em `services/`) é vital.
-- **Serviços "God Class"**: Monitorar `CourseRepository` e `BatchScraper` para que não cresçam indefinidamente. (Obs: A refatoração recente de `CoursesList` foi um ótimo exemplo de mitigação).
+- **Scraping**: A lógica de scraping é o ponto mais frágil (depende do layout de terceiros).
+- **Evolução da UI**: A componentização de `CourseDetailsView` melhorou a separação de responsabilidades.
 
 ---
 
 ## 5. Conclusão
 
-O projeto apresenta uma **saúde técnica robusta**. O volume de código é justificado pela complexidade das features e a "obesidade" de documentação é, na verdade, um ativo estratégico para a manutenção a longo prazo.
+O projeto apresenta uma **saúde técnica robusta**. As refatorações recentes (Dez/2025) eliminaram os principais "God Files" identificados anteriormente (`CourseRepository.test.js` e a complexidade de `BatchScraper.js` e `CourseDetailsView.js`). A arquitetura se mantém fiel aos princípios de separação de responsabilidades.

@@ -27,55 +27,42 @@ export async function DOM_scanTermsAndCourses_Injected() {
   }
 
   // 2. Auto-Scroll para carregar "Infinite Scroll"
-  // 2. Auto-Scroll para carregar "Infinite Scroll" (Lógica Robusta v2.0)
+  // 2. Auto-Scroll para carregar "Infinite Scroll" (Lógica Simplificada)
   try {
-    // Helper para achar o elemento que tem scroll
     const getScrollElement = () => {
-      const mainContainer = document.getElementById('main-content-inner');
-      if (mainContainer && mainContainer.scrollHeight > mainContainer.clientHeight) {
-        return mainContainer;
-      }
-      // Tenta achar qualquer div grande com scroll
-      const allDivs = document.querySelectorAll('div');
-      for (const div of Array.from(allDivs)) {
-        if (div.scrollHeight > div.clientHeight && div.clientHeight > 100) {
+      const main = document.getElementById('main-content-inner');
+      if (main && main.scrollHeight > main.clientHeight) return main;
+
+      return (
+        Array.from(document.querySelectorAll('div')).find((div) => {
+          if (div.scrollHeight <= div.clientHeight || div.clientHeight <= 100) return false;
           const style = window.getComputedStyle(div);
-          if (['auto', 'scroll'].includes(style.overflowY) || style.overflow === 'auto') {
-            return div;
-          }
-        }
-      }
-      return window;
+          return ['auto', 'scroll'].includes(style.overflowY) || style.overflow === 'auto';
+        }) || window
+      );
     };
 
     const scrollTarget = getScrollElement();
     let lastHeight =
       scrollTarget === window ? document.documentElement.scrollHeight : scrollTarget.scrollHeight;
-
     let attempts = 0;
-    const MAX_RETRIES = 10;
 
-    while (attempts < MAX_RETRIES) {
-      if (scrollTarget === window) {
-        window.scrollTo(0, document.body.scrollHeight);
-      } else {
-        scrollTarget.scrollTop = scrollTarget.scrollHeight;
-      }
+    while (attempts < 10) {
+      if (scrollTarget === window) window.scrollTo(0, document.body.scrollHeight);
+      else scrollTarget.scrollTop = scrollTarget.scrollHeight;
 
-      await new Promise((r) => setTimeout(r, 1500)); // Aguarda carga
+      await new Promise((r) => setTimeout(r, 1500));
 
       const newHeight =
         scrollTarget === window ? document.documentElement.scrollHeight : scrollTarget.scrollHeight;
 
       if (newHeight === lastHeight) {
-        // Tenta mais uma vez antes de desistir (rede lenta)
-        await new Promise((r) => setTimeout(r, 1000));
+        await new Promise((r) => setTimeout(r, 1000)); // Double-check
         const retryHeight =
           scrollTarget === window
             ? document.documentElement.scrollHeight
             : scrollTarget.scrollHeight;
-
-        if (retryHeight === lastHeight) break; // Realmente acabou
+        if (retryHeight === lastHeight) break;
         lastHeight = retryHeight;
       } else {
         lastHeight = newHeight;
@@ -244,18 +231,18 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
         nameToUse = cleanTitle;
       }
 
-      if (match && href) {
-        const weekNum = parseInt(match[1], 10);
-        if (weekNum >= 1 && weekNum <= 15) {
-          if (!href.startsWith('javascript:')) {
-            weeks.push({ name: nameToUse, url: href });
-          } else if (a.onclick) {
-            const onClickText = a.getAttribute('onclick');
-            const urlMatch = onClickText && onClickText.match(/'(\/webapps\/.*?)'/);
-            if (urlMatch && urlMatch[1]) {
-              weeks.push({ name: nameToUse, url: baseUrl + urlMatch[1] });
-            }
-          }
+      if (!match || !href) return;
+
+      const weekNum = parseInt(match[1], 10);
+      if (weekNum < 1 || weekNum > 15) return;
+
+      if (!href.startsWith('javascript:')) {
+        weeks.push({ name: nameToUse, url: href });
+      } else if (a.onclick) {
+        const onClickText = a.getAttribute('onclick');
+        const urlMatch = onClickText && onClickText.match(/'(\/webapps\/.*?)'/);
+        if (urlMatch && urlMatch[1]) {
+          weeks.push({ name: nameToUse, url: baseUrl + urlMatch[1] });
         }
       }
     });

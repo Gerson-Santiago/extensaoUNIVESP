@@ -178,7 +178,7 @@ extensaoUNIVESP/
 │   │   ├── components/      # CoursesList, CourseItem, AddManualModal
 │   │   ├── data/            # CourseRepository
 │   │   ├── logic/           # CourseService, TermParser, CourseGrouper
-│   │   ├── services/        # CourseDetector
+│   │   ├── services/        # CourseDetector, CourseRefresher
 │   │   └── tests/
 │   ├── import/              # Importação em Lote
 │   │   ├── components/      # BatchImportModal

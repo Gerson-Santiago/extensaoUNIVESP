@@ -25,11 +25,16 @@ Para facilitar a navegação, adotamos um sistema de **Prefixos Semânticos**:
 *   `REF_06_AUDIT_COURSES.md`: Auditoria do repositório de cursos.
 *   `REF_07_LEGACY_TREE.txt`: Log da estrutura antiga.
 *   `REF_08_SIDEPANEL_ERRORS.txt`: Log de erros da migração.
+*   `REF_09_CURRENT_ARCH_TREE.txt`: Estrutura atual de arquivos.
+*   `REF_10_TAB_MANAGEMENT.md`: Padrões de gerenciamento de abas.
 
 ### 🗺️ PLAN_ (Planning / Planejamento)
 > *Estratégias de longo prazo.*
 *   `PLAN_01_MIGRATION_MAP.md`: Visão macro da migração.
+*   `PLAN_02_MIGRATION_STRATEGY.md`: Estratégia detalhada de movimentação.
 *   `PLAN_03_ATOMIC_REFACTOR.md`: Metodologia de refatoração tela-a-tela.
+*   `PLAN_04_COURSES.md`: Planejamento da feature de Cursos.
+*   `PLAN_05_PILOT_IMPORT.md`: Piloto da feature de Importação.
 
 ### ⚖️ ADR_ (Decisions / Decisões)
 > *Architecture Decision Records (ADRs).*
@@ -39,4 +44,7 @@ Para facilitar a navegação, adotamos um sistema de **Prefixos Semânticos**:
 > *Guias passo-a-passo para execução.*
 *   `RUN_01_IMPORT_FEATURE.md`: Guia da Feature Import.
 *   `RUN_02_COURSES_FEATURE.md`: Guia da Feature Cursos.
-*   ...
+*   `RUN_03_SHARED_FEATURE.md`: Guia de Componentes Compartilhados.
+*   `RUN_04_SETTINGS_FEATURE.md`: Guia da Feature Configurações.
+*   `RUN_05_SESSION_FEATURE.md`: Guia da Feature Sessão.
+*   `RUN_06_CLEANUP.md`: Procedimentos de Limpeza Final.

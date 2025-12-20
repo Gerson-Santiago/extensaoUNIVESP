@@ -1,8 +1,13 @@
 # Changelog - Versão Beta
 
-## [Unreleased]
+## [2.6.3] - 2025-12-20
+### Engenharia & Qualidade
+- **Refatoração do Scraper**: Simplificação da lógica de "Auto-Scroll" em `BatchScraper.js` para maior robustez e legibilidade. Eliminação de complexidade desnecessária.
+- **Suite de Testes**: Divisão do monolito `CourseRepository.test.js` em arquivos menores (`load`, `save`, `add`, `update_delete`), facilitando a manutenção.
+- **CourseRefresher**: Extração da lógica de atualização de semanas do `CourseDetailsView` para um serviço dedicado, respeitando o Princípio de Responsabilidade Única (SRP).
+
 ### UX
-- **Importação**: Adicionado botão de recarregar (↻) que executa o **scroll inteligente** (mesma lógica da lista de cursos) para garantir que todas as matérias sejam encontradas.
+- **Importação**: Adicionado botão de recarregar (↻) que executa o **scroll inteligente** para garantir que todas as matérias sejam encontradas.
 
 ## [2.6.2] - 2025-12-19
 ### Feature: Singleton Tab Pattern (Standardization)

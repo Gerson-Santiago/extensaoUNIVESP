@@ -1,6 +1,5 @@
 import { createWeekElement } from './WeekItem.js';
-import { ScraperService } from '../services/ScraperService.js';
-import { CourseRepository } from '../data/CourseRepository.js';
+import { CourseRefresher } from '../services/CourseRefresher.js';
 
 export class CourseDetailsView {
   constructor(callbacks) {
@@ -56,9 +55,11 @@ export class CourseDetailsView {
 
     if (refreshWeeksBtn instanceof HTMLButtonElement) {
       refreshWeeksBtn.onclick = async () => {
-        refreshWeeksBtn.disabled = true;
-        refreshWeeksBtn.textContent = '...';
-        await this.handleRefresh(refreshWeeksBtn);
+        const result = await CourseRefresher.refreshCourse(this.course, refreshWeeksBtn);
+        if (result.success) {
+          this.course.weeks = result.weeks;
+          this.renderWeeksList(weeksList);
+        }
       };
     }
 
@@ -80,62 +81,5 @@ export class CourseDetailsView {
       weeksList.innerHTML =
         '<div style="padding:15px; text-align:center; color:#999;">Nenhuma semana detectada.</div>';
     }
-  }
-
-  async handleRefresh(btn) {
-    // Importa a função para abrir/trocar abas
-    const { Tabs } = await import('../../../shared/utils/Tabs.js');
-
-    // Primeiro, abre/troca para a aba da matéria correta
-    Tabs.openOrSwitchTo(this.course.url);
-
-    // Aguarda um pouco para a aba trocar/abrir
-    // Aguarda um pouco para a aba trocar/abrir
-    setTimeout(async () => {
-      const activeTab = await Tabs.getCurrentTab();
-      if (activeTab) {
-        // Verifica se a aba ativa é realmente da matéria correta
-        const courseMatch = activeTab.url && activeTab.url.match(/course_id=(_.+?)(&|$)/);
-        const expectedCourseMatch =
-          this.course.url && this.course.url.match(/course_id=(_.+?)(&|$)/);
-        const activeCourseId = courseMatch ? courseMatch[1] : null;
-        const expectedCourseId = expectedCourseMatch ? expectedCourseMatch[1] : null;
-
-        if (!activeCourseId || activeCourseId !== expectedCourseId) {
-          alert(
-            `Por favor, aguarde a página da matéria "${this.course.name}" carregar e tente novamente.`
-          );
-          if (btn && btn instanceof HTMLButtonElement) {
-            btn.disabled = false;
-            btn.textContent = '↻';
-          }
-          return;
-        }
-
-        try {
-          const result = await ScraperService.scrapeWeeksFromTab(activeTab.id);
-          const weeks = result.weeks || [];
-
-          if (weeks && weeks.length > 0) {
-            await CourseRepository.update(this.course.id, { weeks: weeks });
-            this.course.weeks = weeks;
-            alert(`${weeks.length} semanas atualizadas para "${this.course.name}"!`);
-            // Re-render only list
-            const weeksList = document.getElementById('weeksList');
-            this.renderWeeksList(weeksList);
-          } else {
-            alert('Nenhuma semana encontrada nesta página.');
-          }
-        } catch (error) {
-          console.error(error);
-          alert('Erro ao buscar semanas.');
-        } finally {
-          if (btn && btn instanceof HTMLButtonElement) {
-            btn.disabled = false;
-            btn.textContent = '↻';
-          }
-        }
-      }
-    }, 1000); // 1 segundo para dar tempo da aba trocar/carregar
   }
 }
