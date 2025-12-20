@@ -36,7 +36,7 @@ Para refatorar, precisamos concordar com estas definições:
 | View ID | Novo Caminho (Features) | Responsabilidade | Gatilho Principal |
 | :--- | :--- | :--- | :--- |
 | `home` | `features/home/ui/HomeView.js` | Landing Page / Boas Vindas | Início do App |
-| `courses` | `features/courses/views/CoursesList/index.js` | Lista de Matérias do Aluno | Tab "Cursos" (BottomNav) |
+| `courses` | `features/courses/views/CoursesView/index.js` | Lista de Matérias do Aluno | Tab "Cursos" (BottomNav) |
 | `settings` | `features/settings/ui/SettingsView.js` | Configurações Gerais | Tab "Config" (BottomNav) |
 | `courseDetails` | `features/courses/views/CourseDetails/index.js` | Detalhes de uma matéria (delegação para `CourseRefresher`) | Clique em um Card de Curso |
 | `feedback` | `features/feedback/ui/FeedbackView.js` | Enviar feedback/Bug report | Botão em Settings |

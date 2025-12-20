@@ -16,7 +16,7 @@ import { MainLayout } from '../shared/ui/layout/MainLayout.js';
 
 // Views
 import { HomeView } from '../features/home/ui/HomeView.js';
-import { CoursesList } from '../features/courses/views/CoursesList/index.js';
+import { CoursesView } from '../features/courses/views/CoursesView/index.js';
 import { SettingsView } from '../features/settings/ui/SettingsView.js';
 import { CourseDetailsView } from '../features/courses/views/CourseDetails/index.js';
 import { FeedbackView } from '../features/feedback/ui/FeedbackView.js';
@@ -26,7 +26,7 @@ import { Tabs } from '../shared/utils/Tabs.js';
 
 // Modais
 import { BatchImportModal } from '../features/import/components/BatchImportModal.js'; // Usado por: BatchImportFlow
-import { AddManualModal } from '../features/courses/components/AddManualModal/index.js'; // Usado por: CoursesList
+import { AddManualModal } from '../features/courses/components/AddManualModal/index.js'; // Usado por: CoursesView
 import { LoginWaitModal } from '../features/session/components/LoginWaitModal.js'; // Usado por: BatchImportFlow
 
 // Serviços
@@ -79,7 +79,7 @@ document.addEventListener('DOMContentLoaded', () => {
     },
   });
 
-  const coursesView = new CoursesList({
+  const coursesView = new CoursesView({
     onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
     onViewDetails: (course) => {
       // Navegação customizada: atualiza dados do componente antes de navegar

@@ -1,7 +1,13 @@
 /**
- * @file CoursesList.js
- * @description View principal que lista as matérias (Courses).
- * Localizada em: features/courses/views/CoursesList/index.js
+ * @file CoursesView.js
+ * @description View principal de listagem de cursos (TopNav: "Cursos")
+ * Localizada em: features/courses/views/CoursesView/index.js
+ * Responsabilidade: Renderizar a lista de matérias do aluno, agrupadas por período letivo.
+ *
+ * @architecture Screaming Architecture - View Layer
+ * @dependencies CourseRepository, CourseGrouper, ActionMenu, BottomNav
+ * @author Gerson Santiago
+ * @date 2025-12-20
  */
 
 import { CourseRepository } from '../../data/CourseRepository.js';
@@ -10,7 +16,7 @@ import { groupCoursesByTerm } from '../../logic/CourseGrouper.js';
 import { ActionMenu } from '../../../../shared/ui/ActionMenu.js';
 import { AutoScrollService } from '../../logic/AutoScrollService.js';
 
-export class CoursesList {
+export class CoursesView {
   constructor(callbacks) {
     this.callbacks = callbacks;
   }

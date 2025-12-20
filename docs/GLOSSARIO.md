@@ -50,7 +50,7 @@ Disciplina acadêmica (ex: "Cálculo I"). No código, representado pela classe/o
 
 **Diferença de Component**: Uma View é uma tela inteira. Um Component é um widget reutilizável.
 
-**Exemplo**: `CoursesList` (View que lista cursos), `HomeView` (tela inicial), `SettingsView` (tela de configurações).
+**Exemplo**: `CoursesView` (View que lista cursos), `HomeView` (tela inicial), `SettingsView` (tela de configurações).
 
 ---
 

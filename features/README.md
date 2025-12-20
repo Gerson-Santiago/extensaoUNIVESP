@@ -34,7 +34,7 @@ features/
 | Pasta | Quando Usar | O Que Vai Aqui |
 |:---|:---|:---|
 | **`ui/`** | Telas simples, uma View por arquivo | `HomeView.js`, `SettingsView.js`, `FeedbackView.js` |
-| **`views/`** | Telas complexas, uma pasta por View | `CoursesList/index.js`, `CourseDetails/index.js` |
+| **`views/`** | Telas complexas, uma pasta por View | `CoursesView/index.js`, `CourseDetails/index.js` |
 | **`components/`** | Widgets reutilizáveis dentro da feature | `CourseItem.js`, `WeekItem.js`, `AddManualModal/` |
 | **`logic/`** | Regras de negócio puras, **SEM** DOM/API | `TermParser.js`, `CourseGrouper.js` |
 | **`data/`** | Repositories (CRUD de dados) | `CourseRepository.js`, `CourseStorage.js` |
@@ -63,7 +63,7 @@ features/
 **Responsabilidade**: Listar, adicionar, atualizar e navegar nas matérias do aluno.
 
 **Estrutura**:
-- `views/CoursesList/` - Lista principal de cursos
+- `views/CoursesView/` - Lista principal de cursos
 - `views/CourseDetails/` - Detalhes de um curso específico
 - `components/CourseItem.js` - Card individual de curso
 - `components/WeekItem.js` - Item de semana de aula
