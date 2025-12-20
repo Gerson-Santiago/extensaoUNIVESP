@@ -15,6 +15,7 @@ description: Planeja e implementa nova feature (TDD).
 
 # 3. Implementação
 @docs/PADROES_DO_PROJETO.md @docs/LINTING_RULES.md
+- [ ] Defina **Models** JSDoc explícitos em `models/` antes da lógica.
 - [ ] Codifique usando ES Modules e Tipagem defensiva.
 
 # 4. Validação

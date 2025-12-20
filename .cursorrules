@@ -11,16 +11,20 @@
 - **Testes:** Jest + `jest-webextension-mock`.
 - **Estilo:** ESLint (Flat Config) + Prettier.
 
-## 🏗️ Arquitetura e Modularização
-- `logic/`: Regras de negócio puras (Sem DOM direto).
-- `views/`: Manipulação de DOM e eventos de UI.
-- `utils/`: Helpers reutilizáveis.
-- **Type Safety:** CODIFICAÇÃO DEFENSIVA. Sempre verifique tipos antes do acesso.
-  - ❌ `el.value`
-  - ✅ `if (el instanceof HTMLInputElement) el.value`
+## 🏗️ Arquitetura e Modularização (Screaming Architecture)
+- **features/**: Domínio de negócio (ex: `courses`, `session`).
+  - `ui/`: Telas e Componentes Burros.
+  - `logic/`: Regras de Negócio Puras (No DOM).
+  - `models/`: Definições de Tipos (`.js` com `@typedef`).
+  - `data/`: Repositórios (Storage Access).
+- **shared/**: Utilitários e UI Genérica.
+- **Type Safety:**
+  - JSDoc Strict (`@param`, `@return`) obrigatório.
+  - Definições de modelos em `features/*/models/`.
+  - Type Guards (`instanceof`) para DOM elements.
 
 ## 📏 Linting e Qualidade (Tolerância Zero)
-- **Política:** Zero Warnings. Qualquer aviso de lint = Build Quebrada.
+- **Política:** Zero Warnings. Qualquer aviso de lint ou erro de tipo (`type-check`) = Build Quebrada.
 - **Formatação:** Aspas simples (`'`), Ponto e vírgula (`;`), largura 100 chars.
 - **Console:** `console.log` PROIBIDO em produção. Use `warn`/`error` ou `disable` explícito.
 - **Variáveis:** Variáveis não usadas são PROIBIDAS (exceto prefixadas com `_`).

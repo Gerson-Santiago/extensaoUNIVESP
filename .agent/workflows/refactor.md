@@ -12,7 +12,8 @@ description: Refatora código mantendo comportamento (Green-Green).
 
 # 2. Refatoração
 @docs/PADROES_DO_PROJETO.md
-- [ ] Extraia funções/classes ou melhore tipos.
+- [ ] Extraia funções/classes ou melhore tipos (JSDoc Strict).
+- [ ] Crie/Atualize **Models** se necessário.
 - [ ] Mantenha comportamento inalterado.
 
 # 3. Validação
