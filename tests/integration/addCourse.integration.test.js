@@ -1,5 +1,5 @@
 import { SettingsView } from '../../features/settings/ui/SettingsView.js';
-import { CoursesList } from '../../features/courses/components/CoursesList.js';
+import { CoursesList } from '../../features/courses/views/CoursesList/index.js';
 
 describe('Integration: Add Course Manual Flow', () => {
   let settingsView;

@@ -1,8 +1,14 @@
-import { CourseRepository } from '../data/CourseRepository.js';
-import { createCourseElement } from './CourseItem.js';
-import { groupCoursesByTerm } from '../logic/CourseGrouper.js';
-import { ActionMenu } from '../../../shared/ui/ActionMenu.js';
-import { AutoScrollService } from '../logic/AutoScrollService.js';
+/**
+ * @file CoursesList.js
+ * @description View principal que lista as matérias (Courses).
+ * Localizada em: features/courses/views/CoursesList/index.js
+ */
+
+import { CourseRepository } from '../../data/CourseRepository.js';
+import { createCourseElement } from '../../components/CourseItem.js';
+import { groupCoursesByTerm } from '../../logic/CourseGrouper.js';
+import { ActionMenu } from '../../../../shared/ui/ActionMenu.js';
+import { AutoScrollService } from '../../logic/AutoScrollService.js';
 
 export class CoursesList {
   constructor(callbacks) {

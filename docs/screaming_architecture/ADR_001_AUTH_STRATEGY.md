@@ -33,10 +33,9 @@ Se não faz login, o que a pasta `features/session` (antiga `auth`) faz?
 
 Atualmente, existe uma divergência entre a Estratégia e o Código:
 
-1.  **Divergência**: O código de `RaManager` foi movido para `features/settings/logic/raManager.js`.
-    *   *Ideal*: Deveria estar em `features/session/logic/SessionManager.js`.
-2.  **Legado**: `LoginWaitModal` ainda está em `sidepanel/components/Modals`.
-    *   *Ideal*: Deveria estar em `features/session/components/LoginWaitModal.js`.
-
-**Plano de Correção**:
-Isso será resolvido na criação da pasta `features/session` (passo futuro). Por enquanto, funciona onde está, mas viola a separação de conceitos.
+36: 1.  **Divergência**: O código de `RaManager` foi movido para `features/settings/logic/raManager.js`.
+37:     *   *Ideal*: Deveria estar em `features/session/logic/SessionManager.js`.
+38: 2.  **Concluído**: `LoginWaitModal` está corretamente em `features/session/components/LoginWaitModal.js`.
+39: 
+40: **Plano de Correção**:
+41: A reestruturação da sessão (Phase 2) já resolveu a localização dos modais.

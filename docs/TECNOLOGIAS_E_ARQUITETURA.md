@@ -1,6 +1,6 @@
 # 🏗️ Especificação de Arquitetura e Tecnologia
 
-> **Status**: Produção (v2.6.2)
+> **Status**: Produção (v2.6.3) - Atualizado: 2025-12-20
 > **Arquitetura**: Screaming Architecture (Domain-Driven)
 > **Plataforma**: Google Chrome Extensions (Manifest V3)
 
@@ -175,7 +175,8 @@ extensaoUNIVESP/
 │   └── *.png                # Ícones da extensão
 ├── features/
 │   ├── courses/             # Gestão de Cursos
-│   │   ├── components/      # CoursesList, CourseItem, AddManualModal
+│   │   ├── components/      # CourseItem, WeekItem, AddManualModal
+│   │   ├── views/           # CoursesList, CourseDetails
 │   │   ├── data/            # CourseRepository
 │   │   ├── logic/           # CourseService, TermParser, CourseGrouper
 │   │   ├── services/        # CourseDetector, CourseRefresher
@@ -242,7 +243,7 @@ Para evitar colisão de estilos em um ambiente sem Shadow DOM obrigatório:
 
 | Contexto | Tecnologia | Decisão / Justificativa |
 | :--- | :--- | :--- |
-| **Language** | IPv6 / ES2022+ | Uso de recursos modernos (Classes, Async/Await, Modules) nativos. |
+| **Language** | ES2022+ / Web Standards | Uso de recursos modernos (Classes, Async/Await, Modules) nativos. |
 | **Module System** | ES Modules (ESM) | Padrão web. Permite imports estáticos e análise de árvore (Tree Shaking se necessário). |
 | **Testing** | Jest + JSDOM | Standard da indústria. Alta performance e cobertura. |
 | **Mocking** | jest-webextension-mock | Simulação fidedigna do ambiente hostil da Chrome API. |

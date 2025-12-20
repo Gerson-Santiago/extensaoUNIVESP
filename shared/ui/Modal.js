@@ -1,3 +1,8 @@
+/**
+ * @file Modal.js
+ * @description Componente Base de Layout para Modais.
+ * Gerencia overlay, card, título e botão de fechar.
+ */
 export class Modal {
   constructor(id, title) {
     this.id = id;

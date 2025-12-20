@@ -1,5 +1,10 @@
-import { Modal } from '../../../shared/ui/Modal.js';
-import { CourseRepository } from '../data/CourseRepository.js';
+/**
+ * @file AddManualModal.js
+ * @description Modal para adicionar matéria manualmente.
+ * Localizada em: features/courses/components/AddManualModal/index.js
+ */
+import { Modal } from '../../../../shared/ui/Modal.js';
+import { CourseRepository } from '../../data/CourseRepository.js';
 
 export class AddManualModal extends Modal {
   constructor(onSuccess) {

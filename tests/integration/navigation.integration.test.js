@@ -2,7 +2,7 @@ import { MainLayout } from '../../shared/ui/layout/MainLayout.js';
 import { HomeView } from '../../features/home/ui/HomeView.js';
 // We can use mocks for other views to simplify dependencies if we just want to test navigation
 // But let's import real classes since it's an integration test
-import { CoursesList } from '../../features/courses/components/CoursesList.js';
+import { CoursesList } from '../../features/courses/views/CoursesList/index.js';
 import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 
 describe('Integration: Navigation Flow', () => {

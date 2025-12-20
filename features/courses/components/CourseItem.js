@@ -1,5 +1,6 @@
 /**
- * Componente de Item de Curso
+ * @file features/courses/components/CourseItem.js
+ * @description Componente de Item de Curso
  */
 export function createCourseElement(course, callbacks) {
   const li = document.createElement('li');

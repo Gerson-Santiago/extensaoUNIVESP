@@ -1,0 +1,200 @@
+sant@penguin:~/extensaoUNIVESP (dev)$ date
+Sat Dec 20 08:08:31 AM -03 2025
+sant@penguin:~/extensaoUNIVESP (dev)$ tree -I "node_modules|coverage"
+.
+├── assets
+│   ├── icon_blackboard.png
+│   ├── icon.png
+│   └── styles
+│       ├── components
+│       │   ├── button.css
+│       │   ├── card.css
+│       │   ├── dropdown.css
+│       │   ├── grouping.css
+│       │   ├── modal.css
+│       │   └── nav.css
+│       ├── global.css
+│       ├── layout.css
+│       └── views
+│           ├── courses.css
+│           ├── home.css
+│           └── settings.css
+├── CHANGELOG.md
+├── docs
+│   ├── CHANGELOG_ARCHIVE.md
+│   ├── DATA_HANDLING.md
+│   ├── estudos
+│   │   ├── GERENCIAMENTO_DE_ABAS.md
+│   │   ├── guia-forense-git.md
+│   │   └── workflow_resumo.md
+│   ├── FLUXOS_DE_TRABALHO.md
+│   ├── IDENTIDADE_DO_PROJETO.md
+│   ├── investigação
+│   │   ├── investigation_log.txt
+│   │   ├── log_agente.md
+│   │   ├── relatorio_investigacao_scroll.md
+│   │   └── scroll.js
+│   ├── MAPA_DA_IMPORTACAO.md
+│   ├── metrics.md
+│   ├── PADROES_DO_PROJETO.md
+│   ├── REGRAS_DE_NEGOCIO.md
+│   ├── ScreamingArchitecture
+│   │   ├── ADR_001_AUTH_STRATEGY.md
+│   │   ├── PLAN_01_MIGRATION_MAP.md
+│   │   ├── PLAN_02_MIGRATION_STRATEGY.md
+│   │   ├── PLAN_03_ATOMIC_REFACTOR.md
+│   │   ├── PLAN_04_COURSES.md
+│   │   ├── PLAN_05_PILOT_IMPORT.md
+│   │   ├── README.md
+│   │   ├── REF_01_UI_MAP.md
+│   │   ├── REF_02_GLOSSARY.md
+│   │   ├── REF_03_REFACTORING_CHEATSHEET.md
+│   │   ├── REF_04_BLIND_SPOTS.md
+│   │   ├── REF_05_LEGACY_DEPS.md
+│   │   ├── REF_06_AUDIT_COURSES.md
+│   │   ├── REF_07_LEGACY_TREE.txt
+│   │   ├── REF_08_SIDEPANEL_ERRORS.txt
+│   │   ├── REF_09_CURRENT_ARCH_TREE.txt
+│   │   ├── REF_10_TAB_MANAGEMENT.md
+│   │   ├── RUN_01_IMPORT_FEATURE.md
+│   │   ├── RUN_02_COURSES_FEATURE.md
+│   │   ├── RUN_03_SHARED_FEATURE.md
+│   │   ├── RUN_04_SETTINGS_FEATURE.md
+│   │   ├── RUN_05_SESSION_FEATURE.md
+│   │   ├── RUN_06_CLEANUP.md
+│   │   ├── VIS_01_MANIFESTO.md
+│   │   ├── VIS_02_GOLDEN_BASE.md
+│   │   └── VIS_03_PREREQUISITES.md
+│   └── TECNOLOGIAS_E_ARQUITETURA.md
+├── eslint.config.mjs
+├── estudos
+│   ├── juridico
+│   │   └── relatorio_conformidade.md
+│   ├── privacidade
+│   ├── termos-de-uso
+│   └── workflow-worktree-analise
+│       ├── analise-workflow-atual.md
+│       ├── mapa-processos-engenharia.md
+│       ├── resumo-estudo.md
+│       └── RESUMO_GERAL_STUDY.md
+├── features
+│   ├── courses
+│   │   ├── components
+│   │   │   ├── AddManualModal
+│   │   │   │   └── index.js
+│   │   │   ├── CourseItem.js
+│   │   │   └── WeekItem.js
+│   │   ├── data
+│   │   │   ├── CourseRepository.js
+│   │   │   └── CourseStorage.js
+│   │   ├── logic
+│   │   │   ├── AutoScrollService.js
+│   │   │   ├── CourseGrouper.js
+│   │   │   ├── CourseService.js
+│   │   │   └── TermParser.js
+│   │   ├── services
+│   │   │   ├── CourseRefresher.js
+│   │   │   └── ScraperService.js
+│   │   ├── tests
+│   │   │   ├── AutoScrollService.test.js
+│   │   │   ├── CourseGrouper.test.js
+│   │   │   ├── CourseRepository
+│   │   │   │   ├── add.test.js
+│   │   │   │   ├── load.test.js
+│   │   │   │   ├── save.test.js
+│   │   │   │   └── update_delete.test.js
+│   │   │   ├── ScraperService.test.js
+│   │   │   └── TermParser.test.js
+│   │   └── views
+│   │       ├── CourseDetails
+│   │       │   └── index.js
+│   │       └── CoursesList
+│   │           └── index.js
+│   ├── feedback
+│   │   ├── tests
+│   │   │   └── FeedbackView.test.js
+│   │   └── ui
+│   │       └── FeedbackView.js
+│   ├── home
+│   │   ├── tests
+│   │   │   └── HomeView.test.js
+│   │   └── ui
+│   │       └── HomeView.js
+│   ├── import
+│   │   ├── components
+│   │   │   └── BatchImportModal.js
+│   │   ├── logic
+│   │   │   └── BatchImportFlow.js
+│   │   ├── services
+│   │   │   └── BatchScraper.js
+│   │   └── tests
+│   │       ├── BatchImportModal.test.js
+│   │       ├── BatchScraper_DOM.test.js
+│   │       └── BatchScraper.test.js
+│   ├── session
+│   │   ├── components
+│   │   │   └── LoginWaitModal.js
+│   │   ├── logic
+│   │   │   └── SessionManager.js
+│   │   └── tests
+│   │       └── SessionManager.test.js
+│   └── settings
+│       ├── components
+│       │   └── ConfigForm.js
+│       ├── logic
+│       │   └── domainManager.js
+│       ├── tests
+│       │   ├── domainManager.test.js
+│       │   └── settings.test.js
+│       └── ui
+│           └── SettingsView.js
+├── jest.config.js
+├── jest.setup.js
+├── jsconfig.json
+├── manifest.json
+├── package.json
+├── package-lock.json
+├── popup
+│   ├── popup.css
+│   ├── popup.html
+│   └── popup.js
+├── README.md
+├── scripts
+│   ├── background.js
+│   └── content.js
+├── shared
+│   ├── logic
+│   │   ├── AutoScroll.js
+│   │   └── tests
+│   │       └── AutoScroll.test.js
+│   ├── ui
+│   │   ├── ActionMenu.js
+│   │   ├── feedback
+│   │   │   └── Toaster.js
+│   │   ├── layout
+│   │   │   ├── MainLayout.js
+│   │   │   └── TopNav.js
+│   │   ├── Modal.js
+│   │   └── tests
+│   │       └── ActionMenu.test.js
+│   └── utils
+│       ├── BrowserUtils.js
+│       ├── settings.js
+│       ├── Tabs.js
+│       └── tests
+│           └── Tabs.test.js
+├── sidepanel
+│   ├── sidepanel.html
+│   └── sidepanel.js
+└── tests
+    ├── imports.test.js
+    ├── integration
+    │   ├── addCourse.integration.test.js
+    │   ├── batchImport.integration.test.js
+    │   ├── configForm.integration.test.js
+    │   ├── navigation.integration.test.js
+    │   └── scrapeCourse.integration.test.js
+    ├── privacy.test.js
+    └── storage_persistence.test.js
+
+60 directories, 135 files

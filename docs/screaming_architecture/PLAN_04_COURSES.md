@@ -1,6 +1,6 @@
 > **Status**: Concluído (Dez/2025) - v2.6.3
-> **Nota**: Este plano foi executado.
-> **Legado**: Consulte `TECNOLOGIAS_E_ARQUITETURA.md`.
+> **Nota**: Este plano foi executado. A implementação final possui pequenas variações (uso de `views/` para componentes de tela cheia).
+> **Legado**: Consulte `TECNOLOGIAS_E_ARQUITETURA.md` para a verdade atual.
 
 # 🗺️ Plano Detalhado: Feature Cursos (O Coração)
 

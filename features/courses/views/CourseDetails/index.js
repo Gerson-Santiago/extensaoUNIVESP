@@ -1,5 +1,11 @@
-import { createWeekElement } from './WeekItem.js';
-import { CourseRefresher } from '../services/CourseRefresher.js';
+/**
+ * @file CourseDetailsView.js
+ * @description View de Detalhes da Matéria.
+ * Localizada em: features/courses/views/CourseDetails/index.js
+ */
+
+import { createWeekElement } from '../../components/WeekItem.js';
+import { CourseRefresher } from '../../services/CourseRefresher.js';
 
 export class CourseDetailsView {
   constructor(callbacks) {

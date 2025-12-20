@@ -1,5 +1,6 @@
 /**
- * Componente de Item de Semana
+ * @file WeekItem.js
+ * @description Componente de Item de Semana. Filho de CourseDetailsView.
  */
 export function createWeekElement(week, callbacks) {
   const div = document.createElement('div');

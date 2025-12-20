@@ -1,3 +1,7 @@
+/**
+ * @file ActionMenu.js
+ * @description Componente de Menu de Ações (Dropdown).
+ */
 export class ActionMenu {
   /**
    * @param {Object} options

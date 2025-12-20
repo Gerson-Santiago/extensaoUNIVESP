@@ -1,5 +1,5 @@
 > Status: Active
-> Last Update: 2025-12-18
+> Last Update: 2025-12-20
 > Owner: Gerson Santiago
 
 # 🗺️ Mapa de UI e Navegação
@@ -36,9 +36,9 @@ Para refatorar, precisamos concordar com estas definições:
 | View ID | Novo Caminho (Features) | Responsabilidade | Gatilho Principal |
 | :--- | :--- | :--- | :--- |
 | `home` | `features/home/ui/HomeView.js` | Landing Page / Boas Vindas | Início do App |
-| `courses` | `features/courses/components/CoursesList.js` | Lista de Matérias do Aluno | Tab "Cursos" (BottomNav) |
+| `courses` | `features/courses/views/CoursesList/index.js` | Lista de Matérias do Aluno | Tab "Cursos" (BottomNav) |
 | `settings` | `features/settings/ui/SettingsView.js` | Configurações Gerais | Tab "Config" (BottomNav) |
-| `courseDetails` | `features/courses/components/CourseDetailsView.js` | Detalhes de uma matéria (delegação para `CourseRefresher`) | Clique em um Card de Curso |
+| `courseDetails` | `features/courses/views/CourseDetails/index.js` | Detalhes de uma matéria (delegação para `CourseRefresher`) | Clique em um Card de Curso |
 | `feedback` | `features/feedback/ui/FeedbackView.js` | Enviar feedback/Bug report | Botão em Settings |
 
 ### 2. Modais
@@ -46,7 +46,7 @@ Para refatorar, precisamos concordar com estas definições:
 | Modal Name | Arquivo Atual | Responsabilidade | Gatilho |
 | :--- | :--- | :--- | :--- |
 | `BatchImportModal` | `Modals/BatchImportModal.js` | Importar várias matérias do AVA | Botão "Importar" (Courses) |
-| `AddManualModal` | `Modals/AddManualModal.js` | Adicionar matéria manualmente | Menu Ações > "Manual" |
+| `AddManualModal` | `features/courses/components/AddManualModal/index.js` | Adicionar matéria manualmente | Menu Ações > "Manual" |
 | `LoginWaitModal` | `Modals/LoginWaitModal.js` | Bloqueia tela enquanto loga no AVA | Callback do BatchImport |
 
 ### 3. Menus e Atalhos
