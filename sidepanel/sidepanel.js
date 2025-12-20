@@ -25,13 +25,13 @@ import { FeedbackView } from '../features/feedback/ui/FeedbackView.js';
 import { Tabs } from '../shared/utils/Tabs.js';
 
 // Modais
-import { BatchImportModal } from '../features/import/components/BatchImportModal.js'; // Usado por: BatchImportFlow
+import { BatchImportModal } from '../features/courses/import/components/BatchImportModal.js'; // Usado por: BatchImportFlow
 import { AddManualModal } from '../features/courses/components/AddManualModal/index.js'; // Usado por: CoursesView
 import { LoginWaitModal } from '../features/session/components/LoginWaitModal.js'; // Usado por: BatchImportFlow
 
 // Serviços
 import { CourseService } from '../features/courses/logic/CourseService.js';
-import { BatchImportFlow } from '../features/import/logic/BatchImportFlow.js';
+import { BatchImportFlow } from '../features/courses/import/logic/BatchImportFlow.js';
 
 // ========== INICIALIZAÇÃO ==========
 

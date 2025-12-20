@@ -1,7 +1,7 @@
-import { BatchImportModal } from '@features/import/components/BatchImportModal.js';
+import { BatchImportModal } from '@features/courses/import/components/BatchImportModal.js';
 
 // Mocks
-jest.mock('@features/import/services/BatchScraper.js', () => ({
+jest.mock('@features/courses/import/services/BatchScraper.js', () => ({
   scrapeAvailableTerms: jest.fn(),
   processSelectedCourses: jest.fn(),
 }));

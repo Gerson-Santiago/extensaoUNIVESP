@@ -1,8 +1,8 @@
-import { Modal } from '../../../shared/ui/Modal.js';
+import { Modal } from '../../../../shared/ui/Modal.js';
 import { scrapeAvailableTerms, processSelectedCourses } from '../services/BatchScraper.js';
-import { CourseRepository } from '../../courses/data/CourseRepository.js';
-import { parseTerm } from '../../courses/logic/TermParser.js';
-import { Tabs } from '../../../shared/utils/Tabs.js';
+import { CourseRepository } from '../../data/CourseRepository.js';
+import { parseTerm } from '../../logic/TermParser.js';
+import { Tabs } from '../../../../shared/utils/Tabs.js';
 
 export class BatchImportModal extends Modal {
   constructor(onSuccess) {

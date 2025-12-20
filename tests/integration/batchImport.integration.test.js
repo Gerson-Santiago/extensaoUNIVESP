@@ -1,4 +1,4 @@
-import { BatchImportFlow } from '@features/import/logic/BatchImportFlow.js';
+import { BatchImportFlow } from '@features/courses/import/logic/BatchImportFlow.js';
 
 describe('Integration: Batch Import Flow (Split Architecture)', () => {
   let mockBatchModal;
