@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "module": "esnext",
-    "target": "es2020",
+    "target": "es2024",
     "checkJs": true,
-    "lib": ["es2020", "dom", "dom.iterable"],
+    "lib": ["es2024", "dom", "dom.iterable"],
     "types": ["chrome", "jest", "node"],
     "baseUrl": ".",
     "paths": {

@@ -18,22 +18,31 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
       loginWaitModal: mockLoginWaitModal,
     });
 
-    // Default Chrome Mocks
-    chrome.tabs.create = jest.fn().mockImplementation(({ url }, cb) => {
-      const tab = { id: 888, url, active: true };
-      if (cb) cb(tab);
-      return Promise.resolve(tab);
-    });
-    chrome.tabs.update = jest.fn().mockResolvedValue({});
-    chrome.windows = { update: jest.fn().mockResolvedValue({}) };
+    /** @type {any} */
+    const chromeMock = {
+      tabs: {
+        query: jest.fn(),
+        create: jest.fn().mockImplementation(({ url }, cb) => {
+          const tab = { id: 888, url, active: true };
+          if (cb) cb(tab);
+          return Promise.resolve(tab);
+        }),
+        update: jest.fn().mockResolvedValue({}),
+      },
+      windows: { update: jest.fn().mockResolvedValue({}) },
+    };
+    global.chrome = chromeMock;
   });
 
   test('Should open BatchImportModal directly if AVA course tab is found', async () => {
     // Setup: Existing Tab on Course Page
+    // @ts-ignore
     chrome.tabs.query = jest.fn((q, cb) => {
+      /** @type {any[]} */
       const result = [
         { id: 123, url: 'https://ava.univesp.br/ultra/course', active: false, windowId: 1 },
       ];
+      // @ts-ignore
       if (cb) cb(result);
       return Promise.resolve(result);
     });
@@ -50,8 +59,11 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
 
   test('Should open LoginWaitModal if AVA tab is found but NOT on course page', async () => {
     // Setup: Existing Tab on Login Page
+    // @ts-ignore
     chrome.tabs.query = jest.fn((q, cb) => {
+      /** @type {any[]} */
       const result = [{ id: 123, url: 'https://ava.univesp.br/login', active: false }];
+      // @ts-ignore
       if (cb) cb(result);
       return Promise.resolve(result);
     });
@@ -68,8 +80,11 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
 
   test('Should create new tab and open LoginWaitModal if no AVA tab found', async () => {
     // Setup: No AVA tabs
+    // @ts-ignore
     chrome.tabs.query = jest.fn((q, cb) => {
+      /** @type {any[]} */
       const result = [];
+      // @ts-ignore
       if (cb) cb(result);
       return Promise.resolve(result);
     });

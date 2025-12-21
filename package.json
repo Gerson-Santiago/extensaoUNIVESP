@@ -9,16 +9,18 @@
     "test:coverage": "jest --coverage",
     "test:watch": "jest --watch",
     "test:integration": "jest tests/integration",
-    "lint": "eslint .",
+    "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "precommit": "lint-staged"
+    "precommit": "npm run type-check && npm run test && lint-staged"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "@babel/preset-env": "^7.24.0",
+    "@commitlint/cli": "^20.2.0",
+    "@commitlint/config-conventional": "^20.2.0",
     "@eslint/js": "^9.39.1",
     "@types/chrome": "^0.1.32",
     "@types/glob": "^8.1.0",
@@ -50,7 +52,8 @@
   "lint-staged": {
     "*.{js,mjs}": [
       "eslint --fix",
-      "prettier --write"
+      "prettier --write",
+      "jest --findRelatedTests"
     ],
     "*.{json,css,md}": [
       "prettier --write"

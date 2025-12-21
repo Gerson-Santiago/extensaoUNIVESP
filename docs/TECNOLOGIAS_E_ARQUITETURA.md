@@ -1,6 +1,6 @@
 # 🏗️ Especificação de Arquitetura e Tecnologia
 
-> **Status**: Produção (v2.7.1) - Atualizado: 2025-12-20
+> **Status**: Produção (v2.7.1) - Atualizado: 2025-12-21
 > **Arquitetura**: Screaming Architecture (Domain-Driven)
 > **Plataforma**: Google Chrome Extensions (Manifest V3)
 
@@ -247,7 +247,7 @@ Para evitar colisão de estilos em um ambiente sem Shadow DOM obrigatório:
 
 | Contexto | Tecnologia | Decisão / Justificativa |
 | :--- | :--- | :--- |
-| **Language** | ES2022+ / Web Standards | Uso de recursos modernos (Classes, Async/Await, Modules) nativos. |
+| **Language** | ES2024+ / Web Standards | Uso de recursos modernos (Classes, Async/Await, Modules) nativos. |
 | **Typing System** | Vanilla JS + JSDoc (Strict) | Tipagem estática via comentários (`@typedef`) e `checkJs: true`. Sem build step. |
 | **Module System** | ES Modules (ESM) | Padrão web. Permite imports estáticos e análise de árvore (Tree Shaking se necessário). |
 | **Testing** | Jest + JSDOM | Standard da indústria. Alta performance e cobertura. |

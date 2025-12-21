@@ -31,7 +31,7 @@ describe('CourseRepository - Add Operations', () => {
     });
 
     afterEach(() => {
-      Date.now.mockRestore();
+      /** @type {jest.Mock} */ (Date.now).mockRestore();
     });
 
     test('Deve adicionar curso com sucesso', (done) => {
@@ -96,7 +96,7 @@ describe('CourseRepository - Add Operations', () => {
         callback();
       });
 
-      CourseRepository.add('Curso', 'https://test.com', undefined, () => {
+      CourseRepository.add('Curso', 'https://test.com', /** @type {any} */ (undefined), () => {
         done();
       });
     });

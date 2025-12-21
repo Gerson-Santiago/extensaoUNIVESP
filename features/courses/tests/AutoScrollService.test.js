@@ -1,4 +1,4 @@
-import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+// import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { DOM_autoScroll_Injected } from '../logic/AutoScrollService.js';
 
 describe('AutoScrollService Logic (Injected)', () => {
@@ -36,7 +36,7 @@ describe('AutoScrollService Logic (Injected)', () => {
   afterEach(() => {
     jest.clearAllMocks();
     jest.useRealTimers();
-    delete window['_autoScrollRun'];
+    /** @type {any} */ (window)['_autoScrollRun'] = undefined;
   });
 
   it('deve iniciar o scroll e chamar scrollBy', () => {
@@ -50,7 +50,7 @@ describe('AutoScrollService Logic (Injected)', () => {
   });
 
   it('deve parar se já estiver rodando', () => {
-    window['_autoScrollRun'] = true;
+    /** @type {any} */ (window)['_autoScrollRun'] = true;
     DOM_autoScroll_Injected();
     expect(global.alert).toHaveBeenCalledWith(expect.stringContaining('já está em andamento'));
     expect(mockScrollBy).not.toHaveBeenCalled();
@@ -89,6 +89,6 @@ describe('AutoScrollService Logic (Injected)', () => {
     jest.advanceTimersByTime(1500);
 
     expect(global.alert).toHaveBeenCalledWith(expect.stringContaining('Carregamento concluído'));
-    expect(window['_autoScrollRun']).toBe(false);
+    expect(/** @type {any} */ (window)['_autoScrollRun']).toBe(false);
   });
 });

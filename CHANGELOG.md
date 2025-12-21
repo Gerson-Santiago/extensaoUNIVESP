@@ -1,6 +1,12 @@
 # Changelog - Versão Beta
 
-## [2.7.1] - 2025-12-20
+## [2.7.1] - 2025-12-21
+### Infraestrutura & Tecnologia (ES2024 Update)
+- **ES2024 Ready**: Atualização da configuração do compilador (`jsconfig.json`) para suportar nativamente funcionalidades do ES2024 (como `Object.groupBy`).
+- **Conventional Commits**: Implementação do **Commitlint** no pipeline de hooks do git (`.husky`) para garantir padronização rigorosa das mensagens de commit.
+- **Verificação Total**: Auditoria completa de tipos, testes e linting confirmando 100% de compatibilidade com Node.js v24 (Krypton).
+- **Documentação**: Atualização do artefato `TECNOLOGIAS_E_ARQUITETURA.md` refletindo a nova stack tecnológica.
+
 ### Engenharia de Software & Qualidade (Standardization)
 - **Padronização de Tipagem (Vanilla JS + JSDoc)**:
   - Implementação de sistema híbrido (flexibilidade JS + segurança TS).

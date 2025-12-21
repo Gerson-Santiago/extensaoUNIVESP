@@ -113,7 +113,7 @@ describe('Integration: Scrape Course Flow', () => {
     window.addEventListener('request:scrape-current-tab', () => {
       courseService.addFromCurrentTab(
         () => {},
-        (msg) => {}
+        (_msg) => {}
       );
     });
 

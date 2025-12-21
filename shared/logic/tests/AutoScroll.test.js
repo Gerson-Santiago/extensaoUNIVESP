@@ -1,4 +1,4 @@
-import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+// import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
 import { AutoScroll } from '../AutoScroll.js';
 
 describe('AutoScroll Logic', () => {
@@ -10,6 +10,7 @@ describe('AutoScroll Logic', () => {
     // Mock window.scrollTo
     mockScrollTo = jest.fn();
     global.window.scrollTo = mockScrollTo;
+    /** @type {any} */ (global.window).scrollTo = mockScrollTo;
 
     // Mock document.documentElement.scrollHeight
     // Usamos defineProperty para poder alterar o valor durante o teste

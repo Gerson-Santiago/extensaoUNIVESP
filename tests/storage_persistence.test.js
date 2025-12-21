@@ -2,7 +2,7 @@ import { CourseRepository } from '@features/courses/data/CourseRepository.js';
 
 // Mock chrome.storage.sync
 const storageMock = {};
-global.chrome = {
+global.chrome = /** @type {any} */ ({
   storage: {
     sync: {
       get: jest.fn((keys, callback) => {
@@ -17,7 +17,7 @@ global.chrome = {
   runtime: {
     lastError: null,
   },
-};
+});
 
 describe('Storage Logic - Persistence & v2.4.1 Features', () => {
   beforeEach(() => {
