@@ -1,409 +1,941 @@
-# 🚀 Feature Spec: Gestão Acadêmica v2.8.0 (Unified)
+# 🚀 Feature Spec: Gestão de Tarefas v2.8.0
 
-> **Status**: Rascunho / Planejamento
-> **Objetivo**: Implementar granularidade de acompanhamento de estudo (Tasks) e monitoramento de desempenho (Performance).
-> **Referência Arquitetural**: [Screaming Architecture](../TECNOLOGIAS_E_ARQUITETURA.md), [Categorias](../features/_CATEGORIES.md).
-
----
-
-## 1. Visão Geral do Negócio
-A versão 2.8.0 expande o domínio da extensão para cobrir o **nível micro** do aprendizado (Tarefas/Semana) e o **nível estratégico** (Progresso/Notas).
-
-O escopo define duas novas **Features**:
-1.  **`features/tasks`** (Gestão de Tarefas): Controle operacional (Visualização Semanal).
-2.  **`features/performance`** (Gestão de Desempenho): Gamificação e Notas (XP & Grades).
-
-### 1.1 Princípio de Preservação (Non-Breaking UI) 🛡️
-> **Regra de Ouro**: Nenhuma **View** atual será removida ou alterada drasticamente.
-As funcionalidades da v2.8.0 são estritamente **aditivas**.
-*   **`CoursesView`**: Permanece idêntica, recebendo apenas pequenos **Components** (Badges) injetados.
-*   **Nova Experiência**: O drill-down para a semana abre uma nova **View** dedicada, preservando a navegação principal.
+> **Status**: Planejamento  
+> **Objetivo**: Adicionar gestão de tarefas acadêmicas com visualização de status por semana  
+> **Filosofia**: MVP-First - Reutilizar código existente, fazer funcionar com TDD, desacoplar quando necessário  
+> **Referência Arquitetural**: [Screaming Architecture](../TECNOLOGIAS_E_ARQUITETURA.md)
 
 ---
 
-## 2. Feature A: `features/task-week` (Gestão Semanal)
-*Categoria: 🏆 CORE (Alta complexidade de regras e dados)*
+## 1. Visão Geral
 
-### 2.1 UX: O Conceito de "Acesso Duplo"
-O usuário pode interagir com suas tarefas por dois caminhos distintos, atendendo a momentos diferentes:
+### 1.1 Problema a Resolver
+Estudantes da UNIVESP precisam acompanhar tarefas semanais de cada matéria, mas atualmente:
+- ❌ Não há visão rápida do que foi feito
+- ❌ Não há indicador de progresso por semana
+- ❌ Precisa entrar no AVA toda vez para verificar
 
-1.  **Caminho Hierárquico (Gestão)**:
-    *   Fluxo: `TopNav(Cursos) > Lista de Cursos > [Matéria] > Lista de Semanas > [Semana Detalhe]`
-    *   Uso: Organização profunda, marcar tarefas, ver detalhes.
-2.  **Caminho Dashboard (Resumo)**:
-    *   Fluxo: `TopNav(Início) > Widget "Meu Progresso" > [Semana Detalhe]`
-    *   Uso: Visão rápida do dia ("O que falta fazer?").
+### 1.2 Solução Proposta (MVP)
+Adicionar sistema de status de tarefas com 3 estados visuais:
+- 🟢 **DONE** (Feito)
+- 🔵 **DOING** (Fazendo)
+- ⚪ **TODO** (A fazer)
 
-### 2.2 Arquitetura de Pastas (Inspired by `courses/`)
-Devido à complexidade de captura (Scraping vs Manual vs Cache), a estrutura deve ser robusta:
+### 1.3 Princípios de Implementação
 
-```
-features/task-week/
-├── components/          # Widgets Visuais
-│   ├── StatusIcon.css   # 🟢🔵⚪
-│   ├── TaskItem.js
-│   ├── WeekList.js
-│   └── WeekCard.js      # Usado na Home e Cursos
-├── views/
-│   └── WeekDetailView.js # A tela principal de gestão
-├── logic/
-│   ├── TaskStateMachine.js # (TODO -> DOING -> DONE)
-│   └── ProgressCalculator.js # % de conclusão da semana
-├── services/            # Camada de Integração (Externo)
-│   ├── WeekScraper.js   # Extrai tarefas do HTML do AVA
-│   └── TaskSyncer.js    # Decide se usa Cache ou Scraper novo
-├── data/
-│   └── TaskRepository.js # CRUD com chrome.storage
-└── models/
-    ├── Task.js          # @typedef
-    └── Week.js          # @typedef
-```
+> [!IMPORTANT]
+> **MVP-First**: Começar modificando código existente, não criar features/ isoladas desde o início.
 
-### 2.3 Fluxo de Dados Inteligente (Sync & Cache)
-Assim como em `courses/import`, não podemos confiar apenas no scraping tempo real (lento).
-1.  **Read Strategy**: `TaskRepository` tenta ler do cache local primeiro.
-2.  **Stale-While-Revalidate**: Se o cache for antigo (> 24h) ou usuário pedir "Refresh", chama `WeekScraper`.
-3.  **User Override**: Se usuário marcou manual (🟢), isso tem precedência sobre o Scraper na próxima sincronização.
+> [!NOTE]
+> **Status das Tarefas**: A extensão LÊ o status do AVA ("Revisto" = 🟢 / "Marca Revista" = 🔵), não cria sistema próprio de marcação.
+
+1. **Reutilizar** código existente (Week.js, WeekItem.js, WeeksCourseView)
+2. **Fazer funcionar** com funcionalidade mínima
+3. **TDD rigoroso** em cada passo
+4. **Ler status do AVA** (não criar próprio)
+5. **Desacoplar** apenas quando código ficar complexo demais
+
+> [!NOTE]
+> Features de gamificação e notas foram movidas para versões futuras. Ver [ROADMAP_FEATURES.md](../ROADMAP_FEATURES.md).
 
 ---
 
-## 3. Feature B: `features/performance` (Gamificação)
-*Categoria: 📦 UTILITY (Focado em Engajamento)*
+## 2. Código Existente para Reutilizar
 
-### 3.1 Sub-domínio: Grade Manager (Notas)
-*   **Service**: `GradeScraper` (Extração de dados do DOM da página de notas).
-*   **Logic**: `GradeCalculator` (Projeção de notas baseada em regras da UNIVESP).
-*   **UI**: Injeção de componentes `GradeBadge` nos cards de curso existentes.
+### 2.1 Models (features/courses/models/)
 
-### 3.2 Sub-domínio: Gamification (XP System)
-*   **Logic**: `XPEngine`. Escuta eventos de mudança de estado em `features/tasks`.
-    *   Transition ⚪ -> 🔵 : +10 XP
-    *   Transition 🔵 -> 🟢 : +50 XP
-*   **UI**: `XPBarComponent`. Barra de progresso global injetada no `MainLayout`.
-
----
-
-## 4. Arquitetura de Pastas (Screaming Arch)
-
-```
-features/
-├── tasks/                 # [NOVO] CORE
-│   ├── components/
-│   │   ├── StatusIcon.css # Estilos isolados dos indicadores
-│   │   ├── TaskItem.js    # Widget de tarefa
-│   │   └── TaskList.js    # Container da lista
-│   ├── logic/
-│   │   └── TaskStateMachine.js # Lógica de transição de estados
-│   ├── models/
-│   │   └── Task.js        # @typedef {Object} Task
-│   ├── data/
-│   │   └── TaskRepository.js   # Persistência de status
-│   └── views/
-│       └── WeekDetailView.js   # Tela principal da semana
-│
-├── performance/           # [NOVO] UTILITY
-│   ├── logic/
-│   │   ├── GradeCalculator.js
-│   │   └── XPEngine.js    # Observer de eventos
-│   ├── services/
-│   │   └── GradeScraper.js
-│   ├── data/
-│   │   └── PerformanceStorage.js
-│   └── ui/
-│       └── XPBar.js       # Componente injetável
-```
-
-### 4.1 Desacoplamento
-*   **`performance` depende de `tasks`?**: Não diretamente.
-*   **Comunicação**: Via **Event Bus** ou **Storage Observer**.
-    *   Quando `TaskRepository` salva uma mudança, `XPEngine` detecta a mudança no storage e recalcula o XP. Isso evita importação direta entre features.
-
----
-
-## 6. Código Base Reutilizável (Referências de Implementação)
-
-Esta seção mapeia componentes existentes que servem como **base de código** para implementar as novas features. Reutilizar estes padrões garante consistência arquitetural.
-
-### 6.1 Services de Scraping
-**Base**: [ScraperService.js](file:///home/sant/extensaoUNIVESP/features/courses/services/ScraperService.js)
-*   **Métodos Reutilizáveis**:
-    *   `extractWeeksFromDoc(doc, baseUrl)`: Parsing do DOM usando seletores CSS.
-    *   `scrapeWeeksFromTab(tabId)`: Injeção via `chrome.scripting.executeScript()`.
-*   **Aplicação**: `WeekScraper` (features/tasks/services/) pode adaptar a lógica existente para extrair **tarefas** ao invés de semanas. A estrutura de regex e filtragem deve ser mantida.
-
-### 6.2 Repositories de Persistência
-**Base**: [CourseRepository.js](file:///home/sant/extensaoUNIVESP/features/courses/data/CourseRepository.js)
-*   **Padrão CRUD**: `loadItems()`, `saveItems()`, `add()`, `delete()`, `update()`.
-*   **Aplicação**: `TaskRepository` (features/tasks/data/) **DEVE** seguir a mesma assinatura de métodos para facilitar manutenção futura.
-*   **Storage Layer**: Utiliza `CourseStorage` como abstração. `TaskRepository` deve criar `TaskStorage` análogo.
-
-### 6.3 Components Visuais
-**Base**: [CourseItem.js](file:///home/sant/extensaoUNIVESP/features/courses/components/CourseItem.js)
-*   **Padrão de UI**: Elemento `<li class="item">` com callbacks (`onClick`, `onDelete`, `onViewDetails`).
-*   **Aplicação**:
-    *   `TaskItem.js`: Estrutura idêntica, mas com callback adicional `onStatusChange(status)`.
-    *   `WeekCard.js`: Card compacto para widget da Home.
-
-### 6.4 Modal Reutilizável
-**Base**: [Modal.js](file:///home/sant/extensaoUNIVESP/shared/ui/Modal.js)
-*   **API**: `render(contentHtml)`, `close()`, `setOnClose(callback)`.
-*   **Aplicação**: Se necessário criar modal para detalhes de semana/tarefa, herdar desta classe base.
-
-### 6.5 Gerenciamento de Abas
-**Base**: [Tabs.js](file:///home/sant/extensaoUNIVESP/shared/utils/Tabs.js)
-*   **Regra de Unicidade**: Método `openOrSwitchTo(url, matchPattern)` implementa a [Regra de Unicidade de Aba](file:///home/sant/extensaoUNIVESP/docs/REGRAS_DE_NEGOCIO.md#L11-L23).
-*   **CRÍTICO**: `WeekDetailView` (se abrir em nova aba) **DEVE** usar este serviço:
-    ```javascript
-    import { Tabs } from '../../../shared/utils/Tabs.js';
-    Tabs.openOrSwitchTo(weekUrl, /content_id=_\d+/);
-    ```
-
-### 6.6 Feedback Visual
-**Base**: [Toaster.js](file:///home/sant/extensaoUNIVESP/shared/ui/feedback/Toaster.js)
-*   **API**: `show(message, type, duration)` onde `type` = `'success'|'error'|'info'`.
-*   **Aplicação**: Feedback de ações do usuário:
-    *   Marcar tarefa: `toaster.show('Tarefa concluída!', 'success')`
-    *   Salvar XP: `toaster.show('+50 XP ganhos!', 'info')`
-
-### 6.7 Lógica de Agrupamento
-**Base**: [CourseGrouper.js](file:///home/sant/extensaoUNIVESP/features/courses/logic/CourseGrouper.js)
-*   **Padrão**: Função pura que agrupa array de objetos por critério (ano/bimestre).
-*   **Aplicação**: `TaskGrouper.js` pode agrupar tarefas por status (🟢/🔵/⚪) ou por semana.
-
-### 6.8 Models (Type Definitions)
-**Base**: [Course.js](file:///home/sant/extensaoUNIVESP/features/courses/models/Course.js), [Week.js](file:///home/sant/extensaoUNIVESP/features/courses/models/Week.js)
-*   **Padrão**: Arquivos de pura tipagem JSDoc (`@typedef`).
-*   **Aplicação**: Criar `features/tasks/models/Task.js`:
-    ```javascript
-    /**
-     * @typedef {Object} Task
-     * @property {string} id - Identificador único
-     * @property {string} name - Nome da tarefa
-     * @property {'TODO'|'DOING'|'DONE'} status - Estado atual
-     * @property {number} lastModifiedAt - Timestamp da última alteração
-     */
-    ```
-
----
-
-## 7. Pontos de Integração com Código Existente
-
-Esta seção documenta como as novas features se **integram** com o código atual **sem modificá-lo diretamente** (princípio Open/Closed).
-
-### 7.1 Injeção de Badges em `CourseItem`
-**Arquivo Alvo**: [CourseItem.js](file:///home/sant/extensaoUNIVESP/features/courses/components/CourseItem.js)
-
-**Estratégia (Non-Invasive)**:
-*   **SEM MODIFICAÇÃO** do componente original.
-*   **Injeção via View**: Em `CoursesView`, após renderizar a lista, injeta badges dinamicamente:
-    ```javascript
-    // Pseudocódigo em features/courses/views/CoursesView/index.js
-    const courseItems = container.querySelectorAll('.item');
-    courseItems.forEach(item => {
-      const badge = document.createElement('span');
-      badge.className = 'task-status-badge';
-      badge.textContent = '🟢'; // Obtido de TaskRepository
-      item.querySelector('.item-name').appendChild(badge);
-    });
-    ```
-
-**CSS**: Criar `assets/styles/components/task-status-badge.css` com estilos isolados.
-
-### 7.2 Event Bus para Comunicação `tasks ↔ performance`
-**Requisito**: Features desacopladas (Seção 4.1).
-
-**Solução**: Usar `chrome.storage.onChanged` como Event Bus nativo:
+#### Course.js (JÁ EXISTE)
 ```javascript
-// Em features/performance/logic/XPEngine.js
-chrome.storage.onChanged.addListener((changes, area) => {
-  if (area === 'local' && changes.tasks) {
-    const oldTasks = changes.tasks.oldValue || [];
-    const newTasks = changes.tasks.newValue || [];
-    // Detecta transições de estado e calcula XP
-    this.calculateXPDelta(oldTasks, newTasks);
-  }
+{
+  id: number,
+  name: string,           // "Cálculo I"
+  url: string,
+  termName: string,       // "Bimestre 1"
+  weeks: Week[]
+}
+```
+
+#### Week.js (JÁ EXISTE) ✨
+```javascript
+{
+  name: string,           // "Semana 1"
+  url: string,
+  date: string,           // "01/09 a 07/09"
+  items: [                // ← TAREFAS JÁ EXISTEM AQUI!
+    {
+      name: string,       // "Assistir videoaula 1.1"
+      url: string,
+      type: string        // "video", "pdf", "forum"
+    }
+  ]
+}
+```
+
+**Modificação Necessária**: Adicionar propriedade `status` em cada item.
+
+---
+
+### 2.2 Views (features/courses/views/)
+
+#### MyCoursesView/ (JÁ EXISTE)
+- **O que faz**: Lista todas as matérias do aluno
+- **TopNav**: 📚 Cursos
+- **Não modificar**: Funciona perfeitamente
+
+#### WeeksCourseView/ (JÁ EXISTE)
+- **O que faz**: Lista semanas de UMA matéria
+- **Navegação**: MyCoursesView → (clica em 👁️) → WeeksCourseView
+- **Modificação mínima**: Chamar nova view ao clicar em [Tarefas]
+
+---
+
+### 2.3 Components (features/courses/components/)
+
+#### WeekItem.js (JÁ EXISTE) ⚠️
+**Código Atual**:
+```javascript
+// Renderiza: Semana 1  ›
+export function createWeekElement(week, callbacks) {
+  const div = document.createElement('div');
+  div.className = 'week-item';
+  
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = week.name;
+  
+  const arrow = document.createElement('span');
+  arrow.innerHTML = '›';
+  
+  div.appendChild(nameSpan);
+  div.appendChild(arrow);
+  return div;
+}
+```
+
+**Modificação Necessária**: Adicionar botão `[📋 Tarefas]`
+
+---
+
+### 2.4 Serviço de Scraping (features/courses/services/)
+
+#### WeekContentScraper.js (NOVO - CRÍTICO)
+
+**O que faz**: Extrai tarefas/conteúdos de uma semana do AVA
+
+**Quando executa**: Lazy loading - ao clicar na semana (› ou [📋 Tarefas])
+
+**Fonte dos dados**: **LÊ status do AVA** (não cria próprio)
+
+**Estrutura do DOM do AVA**:
+```html
+<!-- Tarefa REVISADA (verde 🟢) -->
+<li id="contentListItem:_ID_" class="clearfix liItem read">
+  <h3>Videoaula 1 - Inglês sem mistério</h3>
+  <a href="javascript:markUnreviewed('...')" class="button-5">
+    <img src=".../reviewed_li.gif"> Revisto
+  </a>
+</li>
+
+<!-- Tarefa NÃO REVISADA (azul 🔵) -->
+<li id="contentListItem:_ID_" class="clearfix liItem read">
+  <h3>Semana 1 - Quiz</h3>
+  <a href="javascript:markReviewed('...')" class="button-5">
+    <img src=".../needsreview_li.gif"> Marca Revista
+  </a>
+</li>
+```
+
+**Mapeamento de Status AVA → Extensão**:
+- `Revisto` → 🟢 **DONE**
+- `Marca Revista` → 🔵 **TODO**
+- *(Não há "DOING" no AVA - usar dedução lógica ou definir no piloto)*
+
+---
+
+## 3. Plano de Implementação MVP-First
+
+### Fase 1: MVP - Modificar Código Existente 🎯
+
+#### 3.1.1 Estender Model Week.js
+**Arquivo**: `features/courses/models/Week.js`
+
+**Modificação**:
+```javascript
+/**
+ * @typedef {Object} WeekItem
+ * @property {string} name
+ * @property {string} url
+ * @property {string} type
+ * @property {'TODO'|'DOING'|'DONE'} [status] - Status da tarefa (novo!)
+ */
+
+/**
+ * @typedef {Object} Week
+ * @property {string} name
+ * @property {string} [url]
+ * @property {string} [date]
+ * @property {WeekItem[]} [items] - Tarefas da semana
+ */
+```
+
+**Teste (TDD)**:
+```javascript
+// features/courses/models/Week.test.js
+describe('Week Model', () => {
+  it('should support status in items', () => {
+    const week = {
+      name: 'Semana 1',
+      items: [
+        { name: 'Tarefa 1', status: 'DONE' },
+        { name: 'Tarefa 2', status: 'TODO' }
+      ]
+    };
+    expect(week.items[0].status).toBe('DONE');
+  });
 });
 ```
 
-**Vantagem**: Zero importação direta entre features. `tasks` não conhece `performance`.
-
-### 7.3 Reutilização de Estilos CSS
-**Base**: [assets/styles/components/](file:///home/sant/extensaoUNIVESP/assets/styles/components/)
-
-**Reutilizar Diretamente**:
-*   `button.css`: Botões de ação (marcar tarefa).
-*   `card.css`: Cards de semana.
-*   `modal.css`: Modais de detalhes.
-
-**Criar Novos**:
-*   `task-status-icon.css`: Estilos para 🟢🔵⚪.
-*   `xp-bar.css`: Barra de progresso de XP.
-
-**Naming Convention (BEM)**:
-```css
-/* task-status-icon.css */
-.task-status-badge {}
-.task-status-badge--done { color: green; }
-.task-status-badge--doing { color: blue; }
-.task-status-badge--todo { color: gray; }
-```
-
-### 7.4 Navegação e Routing
-**Integração com**: [MainLayout.js](file:///home/sant/extensaoUNIVESP/shared/ui/layout/MainLayout.js)
-
-**Cenário**: Adicionar navegação para `WeekDetailView`.
-
-**Estratégia**:
-1.  **NÃO** adicionar botão no `TopNav` (preservação de UI).
-2.  **Navegação drill-down**: Clicar em `WeekCard` (na Home ou Cursos) abre `WeekDetailView` via `MainLayout.showView('weekDetail', data)`.
-
 ---
 
-## 8. Validação e Testes
+#### 3.1.2 Modificar WeekItem.js (Adicionar Botão)
+**Arquivo**: `features/courses/components/WeekItem.js`
 
-### 8.1 Testes de Referência
-As novas features devem seguir o padrão de testes existentes.
-
-**Testes Unitários** (Referência):
-*   [CourseRepository/](file:///home/sant/extensaoUNIVESP/features/courses/tests/CourseRepository/) - Suite completa para CRUD.
-*   [ScraperService.test.js](file:///home/sant/extensaoUNIVESP/features/courses/tests/ScraperService.test.js) - Mocking de DOM.
-
-**Testes de Components** (Referência):
-*   [ActionMenu.test.js](file:///home/sant/extensaoUNIVESP/shared/ui/tests/ActionMenu.test.js) - Testes de interação UI.
-
-**Aplicação**:
-*   `features/tasks/tests/TaskRepository.test.js`: Espelhar estrutura de CourseRepository tests.
-*   `features/tasks/tests/TaskStateMachine.test.js`: Testar transições TODO→DOING→DONE.
-*   `features/performance/tests/XPEngine.test.js`: Testar cálculo de XP baseado em eventos.
-
-### 8.2 Comandos de Validação
-Antes de commitar **qualquer** implementação desta SPEC:
-
-```bash
-npm run type-check   # Zero Errors (JSDoc Strict)
-npm run lint         # Zero Warnings (ESLint Policy)
-npm test             # All Passing (Jest)
-npm run format:check # All Formatted (Prettier)
-```
-
-Conforme [PADROES_DO_PROJETO.md](file:///home/sant/extensaoUNIVESP/docs/PADROES_DO_PROJETO.md#L10-L50).
-
-### 8.3 Cobertura Esperada
-*   **`features/tasks/logic/`**: **100%** (State Machine é crítica).
-*   **`features/tasks/data/`**: **100%** (CRUD deve ser confiável).
-*   **`features/performance/logic/`**: **90%+** (XP Engine).
-*   **`features/tasks/services/`**: **80%+** (Scraping tem edge cases de DOM).
-
-### 8.4 Integração com Workflows
-Usar workflows existentes para desenvolvimento:
-*   `/nova-feature`: Iniciar implementação com TDD.
-*   `/verificar`: Executar suite completa de validação.
-*   `/bug-fix`: Corrigir problemas encontrados em testes.
-
-Conforme [FLUXOS_DE_TRABALHO.md](file:///home/sant/extensaoUNIVESP/docs/FLUXOS_DE_TRABALHO.md).
-
----
-
-## 9. Regras Adicionais de Negócio
-
-Esta seção complementa as [Regras de Negócio](file:///home/sant/extensaoUNIVESP/docs/REGRAS_DE_NEGOCIO.md) existentes com especificações da v2.8.0.
-
-### 9.1 Regra de Precedência de Dados (User Override)
-**QUANDO**: Scraper detecta tarefa como ⚪ (não feita), mas usuário marcou manualmente como 🟢 (feita).
-
-**DECISÃO**:
-1.  **Manual SEMPRE vence scraper** (linha 66 da SPEC).
-2.  **Timestamp**: Toda mudança manual grava `lastModifiedAt` no `TaskRepository`.
-3.  **Sincronização**: `TaskSyncer` compara `lastModifiedAt` vs `lastScraperRun`.
-
-**Implementação (Pseudocódigo)**:
+**Modificação**:
 ```javascript
-// Em features/tasks/services/TaskSyncer.js
-syncTask(taskId) {
-  const localTask = await TaskRepository.getById(taskId);
-  const scrapedTask = await WeekScraper.scrapeTask(taskId);
+export function createWeekElement(week, callbacks) {
+  const div = document.createElement('div');
+  div.className = 'week-item';
   
-  if (localTask.lastModifiedAt > this.lastScraperRun) {
-    return localTask; // Ignora scraper, manual tem precedência
+  const nameSpan = document.createElement('span');
+  nameSpan.textContent = week.name;
+  
+  // NOVO: Botão de Tarefas
+  const tasksBtn = document.createElement('button');
+  tasksBtn.className = 'btn-tasks';
+  tasksBtn.textContent = '📋 Tarefas';
+  tasksBtn.onclick = (e) => {
+    e.stopPropagation(); // Não acionar onClick do div
+    if (callbacks.onViewTasks) callbacks.onViewTasks(week);
+  };
+  
+  const arrow = document.createElement('span');
+  arrow.innerHTML = '›';
+  
+  div.appendChild(nameSpan);
+  div.appendChild(tasksBtn); // ← NOVO
+  div.appendChild(arrow);
+  
+  return div;
+}
+```
+
+**Resultado Visual**:
+```
+┌──────────────────────────────┐
+│ Semana 1  [📋 Tarefas]    ›  │
+│ Semana 2  [📋 Tarefas]    ›  │
+└──────────────────────────────┘
+```
+
+**Teste (TDD)**:
+```javascript
+// features/courses/components/WeekItem.test.js
+describe('WeekItem with Tasks Button', () => {
+  it('should render tasks button', () => {
+    const week = { name: 'Semana 1', items: [] };
+    const callbacks = { onViewTasks: jest.fn() };
+    
+    const element = createWeekElement(week, callbacks);
+    const btn = element.querySelector('.btn-tasks');
+    
+    expect(btn).toBeTruthy();
+    expect(btn.textContent).toContain('Tarefas');
+  });
+  
+  it('should call onViewTasks when button clicked', () => {
+    const week = { name: 'Semana 1', items: [] };
+    const callbacks = { onViewTasks: jest.fn() };
+    
+    const element = createWeekElement(week, callbacks);
+    const btn = element.querySelector('.btn-tasks');
+    btn.click();
+    
+    expect(callbacks.onViewTasks).toHaveBeenCalledWith(week);
+  });
+});
+```
+
+---
+
+#### 3.1.3 Criar WeekTasksView (Nova View Simples)
+**Arquivo**: `features/courses/views/WeekTasksView/index.js` (NOVO)
+
+**Implementação Mínima**:
+```javascript
+export class WeekTasksView {
+  constructor(callbacks) {
+    this.callbacks = callbacks; // { onBack }
+    this.week = null;
+  }
+
+  setWeek(week) {
+    this.week = week;
+  }
+
+  render() {
+    if (!this.week) return document.createElement('div');
+
+    const div = document.createElement('div');
+    div.className = 'view-week-tasks';
+    div.innerHTML = `
+      <div class="details-header">
+        <button id="backBtn" class="btn-back">← Voltar</button>
+        <h2>${this.week.name} - Tarefas</h2>
+      </div>
+      <div id="tasksList" class="tasks-container"></div>
+    `;
+    return div;
+  }
+
+  afterRender() {
+    const backBtn = document.getElementById('backBtn');
+    if (backBtn) {
+      backBtn.onclick = () => this.callbacks.onBack();
+    }
+    
+    this.renderTasks();
+  }
+
+  renderTasks() {
+    const container = document.getElementById('tasksList');
+    if (!container) return;
+
+    container.innerHTML = '';
+    
+    if (!this.week.items || this.week.items.length === 0) {
+      container.innerHTML = '<p style="color:#999;">Nenhuma tarefa encontrada.</p>';
+      return;
+    }
+
+    this.week.items.forEach(item => {
+      const taskDiv = document.createElement('div');
+      taskDiv.className = 'task-item';
+      
+      const statusIcon = this.getStatusIcon(item.status || 'TODO');
+      
+      taskDiv.innerHTML = `
+        <span class="task-status">${statusIcon}</span>
+        <span class="task-name">${item.name}</span>
+      `;
+      
+      container.appendChild(taskDiv);
+    });
+  }
+
+  getStatusIcon(status) {
+    const icons = {
+      'DONE': '🟢',
+      'DOING': '🔵',
+      'TODO': '⚪'
+    };
+    return icons[status] || '⚪';
+  }
+}
+```
+
+**Teste (TDD)**:
+```javascript
+// features/courses/views/WeekTasksView/WeekTasksView.test.js
+describe('WeekTasksView', () => {
+  let view;
+  
+  beforeEach(() => {
+    view = new WeekTasksView({ onBack: jest.fn() });
+    document.body.innerHTML = '';
+  });
+
+  it('should render week name', () => {
+    view.setWeek({ name: 'Semana 1', items: [] });
+    const element = view.render();
+    
+    expect(element.textContent).toContain('Semana 1');
+  });
+
+  it('should render tasks with status icons', () => {
+    const week = {
+      name: 'Semana 1',
+      items: [
+        { name: 'Tarefa 1', status: 'DONE' },
+        { name: 'Tarefa 2', status: 'TODO' }
+      ]
+    };
+    
+    view.setWeek(week);
+    const element = view.render();
+    document.body.appendChild(element);
+    view.afterRender();
+    
+    const tasks = document.querySelectorAll('.task-item');
+    expect(tasks.length).toBe(2);
+    expect(tasks[0].textContent).toContain('🟢');
+    expect(tasks[1].textContent).toContain('⚪');
+  });
+});
+```
+
+---
+
+#### 3.1.4 Integrar com WeeksCourseView
+**Arquivo**: `features/courses/views/WeeksCourseView/index.js` (MODIFICAR)
+
+**Modificação no método `renderWeeksList`**:
+```javascript
+renderWeeksList(weeksList) {
+  if (!weeksList) return;
+  weeksList.innerHTML = '';
+  
+  if (this.course.weeks && this.course.weeks.length > 0) {
+    this.course.weeks.forEach((week) => {
+      const wDiv = createWeekElement(week, {
+        onClick: (url) => this.callbacks.onOpenCourse(url),
+        onViewTasks: (w) => this.callbacks.onViewTasks(w) // ← NOVO
+      });
+      weeksList.appendChild(wDiv);
+    });
+  }
+}
+```
+
+**Checklist Fase 1**:
+- [ ] Week.js com status (typedef + teste)
+- [ ] WeekItem.js com botão [Tarefas] (código + teste)
+- [ ] WeekContentScraper (scraping do AVA - código + teste)
+- [ ] WeekTasksView básica (código + teste)
+- [ ] Mini preview em WeeksCourseView (código + teste)
+- [ ] Integração WeeksCourseView (código + teste)
+- [ ] `npm test` - All Passing
+
+---
+
+### Fase 2: Funcionalidades - Interatividade e Persistência 🔄
+
+#### 3.2.1 Adicionar Click Handler para Mudar Status
+**Arquivo**: `features/courses/views/WeekTasksView/index.js` (MODIFICAR)
+
+**Adicionar no `renderTasks()`**:
+```javascript
+taskDiv.onclick = () => {
+  const currentStatus = item.status || 'TODO';
+  item.status = this.getNextStatus(currentStatus);
+  this.renderTasks(); // Re-render
+  this.saveWeekStatus(); // Persistir
+};
+```
+
+**Adicionar método**:
+```javascript
+getNextStatus(current) {
+  const cycle = { 'TODO': 'DOING', 'DOING': 'DONE', 'DONE': 'TODO' };
+  return cycle[current] || 'TODO';
+}
+```
+
+**Teste (TDD)**:
+```javascript
+it('should cycle status on click: TODO → DOING → DONE → TODO', () => {
+  const week = {
+    name: 'Semana 1',
+    items: [{ name: 'Tarefa 1', status: 'TODO' }]
+  };
+  
+  view.setWeek(week);
+  const element = view.render();
+  document.body.appendChild(element);
+  view.afterRender();
+  
+  const taskItem = document.querySelector('.task-item');
+  
+  // Inicial: TODO (⚪)
+  expect(taskItem.textContent).toContain('⚪');
+  
+  // Click 1: DOING (🔵)
+  taskItem.click();
+  expect(week.items[0].status).toBe('DOING');
+  
+  // Click 2: DONE (🟢)
+  taskItem.click();
+  expect(week.items[0].status).toBe('DONE');
+  
+  // Click 3: TODO (⚪)
+  taskItem.click();
+  expect(week.items[0].status).toBe('TODO');
+});
+```
+
+---
+
+#### 3.2.2 Persistir Status no chrome.storage
+**Arquivo**: `features/courses/views/WeekTasksView/index.js` (MODIFICAR)
+
+**Adicionar método**:
+```javascript
+async saveWeekStatus() {
+  // Salvar apenas status das tarefas (não todo o course)
+  const storageKey = `week_status_${this.week.url}`;
+  const statusMap = {};
+  
+  this.week.items.forEach((item, index) => {
+    statusMap[index] = item.status || 'TODO';
+  });
+  
+  await chrome.storage.local.set({ [storageKey]: statusMap });
+}
+
+async loadWeekStatus() {
+  const storageKey = `week_status_${this.week.url}`;
+  const result = await chrome.storage.local.get(storageKey);
+  const statusMap = result[storageKey] || {};
+  
+  // Aplicar status salvo aos items
+  this.week.items.forEach((item, index) => {
+    item.status = statusMap[index] || 'TODO';
+  });
+}
+```
+
+**Chamar no `afterRender()`**:
+```javascript
+afterRender() {
+  // ... código existente ...
+  
+  this.loadWeekStatus().then(() => {
+    this.renderTasks();
+  });
+}
+```
+
+**Teste (TDD)**:
+```javascript
+// Mock chrome.storage
+global.chrome = {
+  storage: {
+    local: {
+      get: jest.fn((key) => Promise.resolve({})),
+      set: jest.fn(() => Promise.resolve())
+    }
+  }
+};
+
+it('should save status to chrome.storage', async () => {
+  const week = {
+    name: 'Semana 1',
+    url: 'http://test.com/week1',
+    items: [{ name: 'Tarefa 1', status: 'DONE' }]
+  };
+  
+  view.setWeek(week);
+  await view.saveWeekStatus();
+  
+  expect(chrome.storage.local.set).toHaveBeenCalledWith({
+    'week_status_http://test.com/week1': { 0: 'DONE' }
+  });
+});
+```
+
+---
+
+#### 3.2.3 Calcular e Exibir Progresso
+**Arquivo**: `features/courses/views/WeekTasksView/index.js` (MODIFICAR)
+
+**Adicionar método**:
+```javascript
+calculateProgress() {
+  if (!this.week.items || this.week.items.length === 0) {
+    return { percent: 0, done: 0, total: 0 };
   }
   
-  return scrapedTask; // Atualiza com dados do AVA
+  const total = this.week.items.length;
+  const done = this.week.items.filter(i => i.status === 'DONE').length;
+  const doing = this.week.items.filter(i => i.status === 'DOING').length;
+  
+  // DONE = 100%, DOING = 50%
+  const percent = Math.round(((done + doing * 0.5) / total) * 100);
+  
+  return { percent, done, total };
 }
 ```
 
-### 9.2 Regra de Unicidade de Aba (Integração com Tabs.js)
-**QUANDO**: Usuário clica em "Ver Semana Detalhe" de duas formas:
-1.  Via `CoursesView > Lista de Semanas > [Semana X]`
-2.  Via `HomeView > Widget "Meu Progresso" > [Semana Detalhe]`
-
-**PROBLEMA**: Sem controle, cada clique abrirá nova aba, poluindo o navegador.
-
-**SOLUÇÃO**: Usar [`Tabs.openOrSwitchTo()`](file:///home/sant/extensaoUNIVESP/shared/utils/Tabs.js#L9-L65)
+**Modificar `render()` para incluir barra de progresso**:
 ```javascript
-// Em features/tasks/views/WeekDetailView.js (se abrir em aba)
-import { Tabs } from '../../../shared/utils/Tabs.js';
-
-openWeekDetail(weekUrl) {
-  // Match pattern ignora query params, foca em content_id
-  Tabs.openOrSwitchTo(weekUrl, /content_id=_\d+/);
+render() {
+  // ... código existente ...
+  
+  const progress = this.calculateProgress();
+  
+  div.innerHTML = `
+    <div class="details-header">
+      <button id="backBtn" class="btn-back">← Voltar</button>
+      <h2>${this.week.name} - Tarefas</h2>
+    </div>
+    
+    <div class="progress-container">
+      <div class="progress-bar">
+        <div class="progress-fill" style="width: ${progress.percent}%"></div>
+      </div>
+      <p class="progress-text">
+        Progresso: ${progress.percent}% (${progress.done}/${progress.total} concluídas)
+      </p>
+    </div>
+    
+    <div id="tasksList" class="tasks-container"></div>
+  `;
+  return div;
 }
 ```
 
-**Comportamento**:
-*   **Se aba já existe**: Foca na aba existente (preserva estado do usuário).
-*   **Se não existe**: Cria nova aba.
+**Teste (TDD)**:
+```javascript
+it('should calculate progress correctly', () => {
+  const week = {
+    name: 'Semana 1',
+    items: [
+      { name: 'T1', status: 'DONE' },  // 100%
+      { name: 'T2', status: 'DOING' }, // 50%
+      { name: 'T3', status: 'TODO' }   // 0%
+    ]
+  };
+  
+  view.setWeek(week);
+  const progress = view.calculateProgress();
+  
+  expect(progress.percent).toBe(50); // (1 + 0.5) / 3 = 50%
+  expect(progress.done).toBe(1);
+  expect(progress.total).toBe(3);
+});
+```
 
-Conforme [REGRAS_DE_NEGOCIO.md - Regra de Unicidade de Aba](file:///home/sant/extensaoUNIVESP/docs/REGRAS_DE_NEGOCIO.md#L11-L23).
-
-### 9.3 Regra de Gamificação (XP Calculation)
-**QUANDO**: Usuário muda status de tarefa.
-
-**DECISÃO (XP Rewards)**:
-*   Transição ⚪ → 🔵 (Iniciou tarefa): **+10 XP**
-*   Transição 🔵 → 🟢 (Concluiu tarefa): **+50 XP**
-*   Transição direta ⚪ → 🟢 (Concluiu sem "Doing"): **+60 XP** (bônus de 10 XP)
-*   Reversão 🟢 → ⚪ (Desmarcou): **-50 XP** (penalidade)
-
-**Verificação de Integridade**:
-*   XP não pode ser negativo (mínimo: 0).
-*   Toda mudança de XP gera evento visual (Toaster).
+**Checklist Fase 2**:
+- [ ] Click handler para mudar status (código + teste)
+- [ ] Persistência chrome.storage (código + teste)
+- [ ] Cálculo de progresso (código + teste)
+- [ ] Barra de progresso visual (código + teste)
+- [ ] `npm test` - All Passing
+- [ ] `/verificar` - Lint + Type-check
 
 ---
 
+### Fase 3: Refatoração - Organizar Código (Opcional/Futuro) 🔧
 
-## 10. Plano de Implementação
+> [!NOTE]
+> Esta fase só deve ser executada SE o código da Fase 2 ficar complexo demais ou difícil de manter.
 
-### Fases de Desenvolvimento
+#### Quando Refatorar?
+- ✅ `WeekTasksView` passar de 300 linhas
+- ✅ Lógica de status ficar duplicada em múltiplos lugares
+- ✅ Adicionar nova feature que precise da mesma lógica
 
-1.  **Fase 1 (Core - Tasks)**: Implementar `features/tasks` com `WeekDetailView` e persistência básica.
-    *   Criar models (`Task.js`, `Week.js`).
-    *   Implementar `TaskRepository` baseado em `CourseRepository`.
-    *   Desenvolver `TaskStateMachine` com testes 100%.
-    *   Validação: `npm test -- features/tasks/`
+#### Como Refatorar (com TDD)? ✨
 
-2.  **Fase 2 (UI - Visual)**: Implementar estilos visuais e UX de check/uncheck.
-    *   Criar `TaskItem`, `WeekCard`, `StatusIcon` components.
-    *   Adicionar CSS (`task-status-icon.css`).
-    *   Injetar badges em `CourseItem` via `CoursesView`.
-    *   Validação: Inspeção visual + testes de componentes.
+> [!IMPORTANT]
+> Refatoração permanece DENTRO de `features/courses/` - tarefas são parte natural de cursos!
 
-3.  **Fase 3 (Performance - Gamification)**: Implementar `features/performance` (Scraper e XP).
-    *   Criar `GradeScraper` baseado em `ScraperService`.
-    *   Desenvolver `XPEngine` com event listener de `chrome.storage.onChanged`.
-    *   Implementar `XPBar` component.
-    *   Validação: `npm test -- features/performance/`
+**3.3.1 Extrair Lógica para WeekProgress**
+```javascript
+// features/courses/logic/WeekProgress.js (NOVO)
+export class WeekProgress {
+  static getNextStatus(current) {
+    const cycle = { 'TODO': 'DOING', 'DOING': 'DONE', 'DONE': 'TODO' };
+    return cycle[current] || 'TODO';
+  }
+  
+  static getStatusIcon(status) {
+    const icons = { 'DONE': '🟢', 'DOING': '🔵', 'TODO': '⚪' };
+    return icons[status] || '⚪';
+  }
+  
+  static calculateProgress(items) {
+    if (!items || items.length === 0) {
+      return { percent: 0, done: 0, total: 0 };
+    }
+    
+    const total = items.length;
+    const done = items.filter(i => i.status === 'DONE').length;
+    const doing = items.filter(i => i.status === 'DOING').length;
+    const percent = Math.round(((done + doing * 0.5) / total) * 100);
+    
+    return { percent, done, total };
+  }
+}
 
-4.  **Fase 4 (Integration - Sync)**: Ligar o motor de XP aos eventos de tarefa.
-    *   Implementar `TaskSyncer` com regra de precedência (Seção 9.1).
-    *   Integrar `Tabs.openOrSwitchTo()` em navegação (Seção 9.2).
-    *   Testes de integração cross-feature.
-    *   Validação: `/verificar` (suite completa).
+// Teste antes de refatorar
+// Teste depois de refatorar
+// Garantir que nada quebrou
+```
 
-### Checklist Pré-Commit (Cada Fase)
+**3.3.2 Extrair Storage para WeekStorage**
+```javascript
+// features/courses/data/WeekStorage.js (NOVO)
+export class WeekStorage {
+  static async saveTaskStatus(weekUrl, statusMap) {
+    const key = `week_status_${weekUrl}`;
+    await chrome.storage.local.set({ [key]: statusMap });
+  }
+  
+  static async loadTaskStatus(weekUrl) {
+    const key = `week_status_${weekUrl}`;
+    const result = await chrome.storage.local.get(key);
+    return result[key] || {};
+  }
+}
+```
 
+**3.3.3 Organizar Estrutura Final em courses/**
+```
+features/courses/
+├── views/
+│   ├── MyCoursesView/
+│   ├── WeeksCourseView/
+│   └── WeekTasksView/          (já existe)
+├── components/
+│   ├── CourseItem.js
+│   └── WeekItem.js         (já modificado)
+├── logic/
+│   ├── CourseGrouper.js    (já existe)
+│   ├── AutoScrollService.js (já existe)
+│   └── WeekProgress.js     (novo - extraído)
+├── data/
+│   ├── CourseRepository.js (já existe)
+│   └── WeekStorage.js      (novo - extraído)
+└── models/
+    ├── Course.js
+    └── Week.js             (já modificado com status)
+```
+
+**Checklist Fase 3** (só se necessário):
+- [ ] Extrair lógica para WeekProgress (TDD)
+- [ ] Extrair storage para WeekStorage (TDD)
+- [ ] Organizar imports em WeekTasksView
+- [ ] Todos os testes ainda passando
+- [ ] Zero regressões
+
+---
+
+## 4. Estilos CSS
+
+### 4.1 Botão de Tarefas (WeekItem)
+**Arquivo**: `assets/styles/components/week-item.css` (MODIFICAR)
+
+```css
+.btn-tasks {
+  padding: 4px 12px;
+  background: #4CAF50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin: 0 8px;
+}
+
+.btn-tasks:hover {
+  background: #45a049;
+}
+```
+
+### 4.2 Lista de Tarefas
+**Arquivo**: `assets/styles/views/week-tasks.css` (NOVO)
+
+```css
+.task-item {
+  display: flex;
+  align-items: center;
+  padding: 12px;
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.task-item:hover {
+  background: #f5f5f5;
+}
+
+.task-status {
+  font-size: 20px;
+  margin-right: 12px;
+}
+
+.task-name {
+  flex: 1;
+  font-size: 14px;
+}
+
+.progress-container {
+  padding: 15px;
+  background: #f9f9f9;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.progress-bar {
+  width: 100%;
+  height: 8px;
+  background: #e0e0e0;
+  border-radius: 4px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, #4CAF50, #8BC34A);
+  transition: width 0.3s ease;
+}
+
+.progress-text {
+  margin-top: 8px;
+  font-size: 13px;
+  color: #666;
+  text-align: center;
+}
+```
+
+---
+
+## 5. Fluxo de Navegação Completo
+
+```
+📚 TopNav: Cursos
+    ↓
+MyCoursesView (Lista de Matérias)
+    ↓ clica em 👁️ de "Cálculo I"
+WeeksCourseView (Lista de Semanas)
+    ↓ clica em [📋 Tarefas] de "Semana 1"
+WeekTasksView (Lista de Tarefas da Semana 1)
+    ↓ clica em tarefa
+    Status muda: ⚪ → 🔵 → 🟢 → ⚪
+```
+
+---
+
+## 6. Checklist Pré-Commit (Cada Fase)
+
+### Validação Técnica
 - [ ] `npm run type-check` - Zero Errors
-- [ ] `npm run lint` - Zero Warnings
+- [ ] `npm run lint` - Zero Warnings  
 - [ ] `npm test` - All Passing
 - [ ] `npm run format:check` - All Formatted
-- [ ] Documentação atualizada (se aplicável)
-- [ ] Testes cobrindo ≥90% da lógica de negócio
+
+### Cobertura de Testes
+- [ ] **Models**: 100% (typedef)
+- [ ] **Components**: ≥90% (WeekItem)
+- [ ] **Views**: ≥90% (WeekTasksView)
+- [ ] **Lógica**: 100% (status cycle, progress calc)
+
+### Funcionalidade
+- [ ] Botão [Tarefas] aparece em cada semana
+- [ ] WeekTasksView abre corretamente
+- [ ] Status muda ao clicar: ⚪ → 🔵 → 🟢
+- [ ] Status persiste após fechar e reabrir
+- [ ] Progresso calcula corretamente
+- [ ] Botão ← Voltar funciona
+
+---
+
+## 7. Decisões Arquiteturais
+
+### 7.1 Por que manter tudo em features/courses/?
+
+**Razão**: Coesão de domínio 🎯
+- Tarefas SÃO parte de semanas
+- Semanas SÃO parte de cursos
+- Não há indicação de que tarefas existirão fora desse contexto
+- YAGNI (You Aren't Gonna Need It) - não criar abstração antes da hora
+
+**Estrutura Natural**:
+```
+Curso → Semanas → Tarefas
+```
+
+**Quando criar features/tasks/ separada?**
+- ❌ NUNCA fazer agora (over-engineering)
+- ✅ APENAS se tarefas aparecerem fora de cursos no futuro
+- ✅ APENAS se múltiplas features precisarem compartilhar lógica de tarefas
+
+Enquanto isso, `features/courses/` é o lar natural! 🏠
+
+### 7.2 Por que NÃO criar estrutura complexa desde o início?
+
+**Problema**: Over-engineering prematuro
+- Código fica em 3+ arquivos antes de funcionar
+- Dificulta TDD (precisa mockar tudo)
+- Adiciona complexidade desnecessária
+
+**Solução MVP-First**:
+- Tudo em `WeekTasksView` inicialmente
+- Funciona em ~200 linhas
+- Fácil de testar
+- Refatora DEPOIS se crescer (Fase 3)
+
+### 7.3 Por que Week.items em vez de Task.js separado?
+
+**Razão**: Reutilizar estrutura existente
+- Week.items já tem 90% da estrutura necessária
+- Só falta adicionar propriedade `status`
+- Criar model separado é trabalho extra sem benefício
+
+**Quando criar Task.js?**
+- Se tarefas precisarem existir fora de semanas
+- Se houver lógica complexa de validação de tarefa
+- Se múltiplas features precisarem compartilhar Task
+
+### 7.4 Por que storage por week.url em vez de global?
+
+**Razão**: Simplicidade e isolamento
+- Cada semana tem seu próprio storage
+- Fácil limpar dados de uma semana
+- Não precisa sincronizar com Course
+
+**Desvantagem**: Se mudar URL, perde status
+- Mitigação: Usar hash da URL ou ID único (Fase 3)
+
+---
+
+## 8. Workflows de Desenvolvimento
+
+### 8.1 Iniciar Nova Feature (Fase 1)
+```bash
+/nova-feature
+# Cria testes primeiro
+# Implementa para passar os testes
+```
+
+### 8.2 Validar Antes de Commit
+```bash
+/verificar
+# Roda lint + type-check + tests
+```
+
+### 8.3 Corrigir Bugs
+```bash
+/bug-fix
+# TDD: escreve teste que reproduz o bug
+# Corrige até teste passar
+```
+
+---
+
+## 9. Próximos Passos
+
+### Após v2.8.0 Funcionar
+1. Coletar feedback de uso real
+2. Medir complexidade do código
+3. Decidir se refatoração (Fase 3) é necessária
+
+### Features Futuras (Roadmap)
+- Gamificação (XP por tarefa concluída)
+- Gestão de notas
+- Sincronização com AVA (scraping automático)
+
+Ver [ROADMAP_FEATURES.md](../ROADMAP_FEATURES.md) para detalhes.
+
+---
+
+**Filosofia Final**: Faça funcionar, faça certo, faça rápido - nessa ordem, com TDD sempre! 🚀
