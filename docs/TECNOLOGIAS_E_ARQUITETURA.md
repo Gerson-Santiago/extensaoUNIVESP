@@ -177,7 +177,7 @@ extensaoUNIVESP/
 ├── features/
 │   ├── courses/             # Gestão de Cursos
 │   │   ├── components/      # CourseItem, WeekItem, AddManualModal
-│   │   ├── views/           # CoursesList, CourseDetails
+│   │   ├── views/           # CoursesList, CourseWeeksView
 │   │   ├── models/          # Course.js, Week.js (Type Definitions)
 │   │   ├── data/            # CourseRepository
 │   │   ├── logic/           # CourseService, TermParser, CourseGrouper
