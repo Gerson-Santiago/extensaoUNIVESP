@@ -17,11 +17,11 @@ Modificar componente `WeekItem.js` para incluir botão `[📋 Tarefas]` ao lado 
 
 ## 🎯 Acceptance Criteria
 
-- [ ] Botão `[📋 Tarefas]` aparece em cada `WeekItem`
-- [ ] Botão aciona callback `onViewTasks(week)`
-- [ ] Click no botão NÃO aciona click do div (stopPropagation)
-- [ ] Layout visual correto: `Semana 1  [📋 Tarefas]  ›`
-- [ ] Testes atualizados
+- [x] Botão `[📋 Tarefas]` aparece em cada `WeekItem`
+- [x] Botão aciona callback `onViewTasks(week)`
+- [x] Click no botão NÃO aciona click do div (stopPropagation)
+- [x] Layout visual correto: `Semana 1  [📋 Tarefas]  ›`
+- [x] Testes atualizados
 
 ---
 
@@ -129,8 +129,8 @@ npm run lint
 
 ## ✅ Definition of Done
 
-- [ ] Código implementado
-- [ ] Testes com stopPropagation
+- [x] Código implementado
+- [x] Testes com stopPropagation
 - [ ] CSS adicionado
-- [ ] `npm test` passando
+- [x] `npm test` passando
 - [ ] Commit: `feat(courses): adiciona botão Tarefas em WeekItem`

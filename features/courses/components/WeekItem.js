@@ -13,11 +13,21 @@ export function createWeekElement(week, callbacks) {
   nameSpan.className = 'week-name';
   nameSpan.textContent = week.name;
 
+  // Botão de Tarefas
+  const tasksBtn = document.createElement('button');
+  tasksBtn.className = 'btn-tasks';
+  tasksBtn.textContent = '📋 Tarefas';
+  tasksBtn.onclick = (e) => {
+    e.stopPropagation();
+    if (callbacks.onViewTasks) callbacks.onViewTasks(week);
+  };
+
   const arrow = document.createElement('span');
   arrow.className = 'week-arrow';
   arrow.innerHTML = '&rsaquo;';
 
   div.appendChild(nameSpan);
+  div.appendChild(tasksBtn);
   div.appendChild(arrow);
 
   return div;
