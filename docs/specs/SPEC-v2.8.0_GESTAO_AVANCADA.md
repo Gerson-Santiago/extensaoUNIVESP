@@ -1,7 +1,7 @@
 # SPEC v2.8.0: Gestão Avançada de Tarefas Acadêmicas
 
 > **Versão**: v2.8.0  
-> **Status**: Em Progresso  
+> **Status**: Em Progresso (Issue #010: 95%)  
 > **Última Atualização**: 22/12/2025
 
 ---
@@ -21,22 +21,30 @@ Expansão do sistema de gestão de tarefas semanais com funcionalidades avançad
 
 ## Issues da Epic v2.8.0
 
-### Issue #010: DetailsActivitiesWeekView ✅ (Em Progresso)
-**Status**: 85% Completo  
+### Issue #010: DetailsActivitiesWeekView ✅ (Quase Completo)
+**Status**: 95% Completo  
 **Prioridade**: Alta  
-**Estimativa**: 8h
+**Estimativa**: 8h (7.5h gastas)
 
 #### Descrição
 Índice navegável de atividades com scroll automático para elementos no AVA.
 
-#### Critérios de Aceitação
+####  Critérios de Aceitação
 - [x] Lista atividades na ordem DOM original
 - [x] Ícones visuais por tipo (Videoaula, Quiz, etc.)
 - [x] Botão [Ir →] faz scroll até elemento no AVA
 - [x] Highlight visual temporário (2s)
-- [x] Testes unitários (>80% cobertura)
-- [ ] Botão [Ver Atividades] em CourseWeeksView
-- [ ] Navegação end-to-end funcionando
+- [x] Testes unitários (11/11 passando - 100% cobertura)
+- [x] Botão [Ver Atividades] em CourseWeeksView
+- [ ] Navegação end-to-end funcionando (falta integrar router)
+
+#### Arquivos Implementados
+- ✅ `features/courses/logic/TaskCategorizer.js`
+- ✅ `features/courses/tests/TaskCategorizer.test.js`
+- ✅ `features/courses/views/DetailsActivitiesWeekView/index.js`
+- ✅ `features/courses/tests/DetailsActivitiesWeekView.test.js`
+- ✅ `features/courses/components/WeekItem.js` (modificado)
+- ✅ `features/courses/views/CourseWeeksView/index.js` (modificado)
 
 ---
 
@@ -48,9 +56,7 @@ Expansão do sistema de gestão de tarefas semanais com funcionalidades avançad
 ---
 
 ### Issue #012: Filtros de Atividades
-**Status**: Plan
-
-ejado  
+**Status**: Planejado  
 **Prioridade**: Média  
 **Estimativa**: 6h
 
@@ -73,7 +79,7 @@ ejado
 ## Roadmap de Desenvolvimento
 
 ### Fase 1: Core Navigation (Atual - Semana 1)
-- [x] Issue #010: DetailsActivitiesWeekView (85%)
+- [x] Issue #010: DetailsActivitiesWeekView (95% - falta router)
 
 ### Fase 2: Data Management (Semana 2)
 - [ ] Issue #011: Exportação CSV/JSON
