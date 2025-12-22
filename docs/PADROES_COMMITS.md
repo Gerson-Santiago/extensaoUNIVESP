@@ -53,24 +53,22 @@ O escopo denota o módulo afetado. Deve seguir a estrutura de diretórios ou dom
 
 ## 4. Exemplos
 
-**Feature Simples**
+**Feature Simples (Do Git Log)**
 ```bash
-feat(courses): adiciona botão de exportação
+docs(features): padroniza tom tecnico do readme
 ```
 
-**Bug Fix com Descrição Detalhada**
+**Bug Fix Real**
 ```bash
-fix(scraper): corrige timeout em conexões lentas
+fix(ux): destaque azul permanece mesmo quando preview fecha
 
-Aumenta o timeout padrão de 3s para 10s para acomodar
-usuários com conexão instável.
+Corrige comportamento onde o highlight CSS persistia após
+o fechamento do modal de preview.
 ```
 
-**Breaking Change (Rodapé)**
+**Refactor Real**
 ```bash
-feat(api): altera contrato de resposta
-
-BREAKING CHANGE: remove campo deprecated 'old_id'.
+refactor(courses): extrai logica de scrape para ScraperService
 ```
 
 ---

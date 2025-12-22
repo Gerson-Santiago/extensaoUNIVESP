@@ -65,11 +65,12 @@ graph TD
 
 ## 2. Anatomia Canônica de Feature
 
-Cada feature constitui um *Bounded Context* autônomo, seguindo uma estrutura padronizada de pastas.
+Cada feature constitui um *Bounded Context* autônomo. A camada de apresentação pode variar conforme a complexidade.
 
 ```text
 features/<nome-da-feature>/
-├── ui/              # Entry Views (Telas Principais)
+├── views/           # [Opção A] Telas Complexas (com sub-rotas ou lógica local)
+├── ui/              # [Opção B] Telas Simples (Arquivo Único)
 ├── components/      # Widgets Locais (Reutilizáveis apenas nesta feature)
 ├── logic/           # Domain Services (Lógica Pura - Framework Agnostic)
 ├── data/            # Repositories (Persistência)
@@ -80,12 +81,14 @@ features/<nome-da-feature>/
 
 ### 2.1 Matriz de Responsabilidade
 
-| Diretório | Responsabilidade | Exemplo |
+| Diretório | Responsabilidade | Exemplo Real |
 | :--- | :--- | :--- |
-| **`logic/`** | Regras de negócio puras (Vanilla JS). | `GradeCalculator.js` |
-| **`services/`** | Interação com APIs ou DOM externo. | `AVAScraper.js` |
+| **`logic/`** | Regras de negócio puras (Vanilla JS). | `CourseGrouper.js` |
+| **`services/`** | Interação com APIs ou DOM externo. | `ScraperService.js` |
 | **`data/`** | Abstração de persistência. | `CourseRepository.js` |
-| **`ui/`** | Camada de apresentação "burra". | `CourseListView.js` |
+| **`views/`** | Telas complexas (Page Controller). | `CoursesView/` |
+| **`ui/`** | Telas simples ou componentes de entrada. | `HomeView.js` |
+
 
 ---
 
@@ -107,7 +110,10 @@ O uso de validação de tipos é mandatório.
 ### `courses` (Core)
 Gestão completa do ciclo de vida acadêmico.
 - **Sub-módulos**: `import` (Importação em Lote).
-- **Views**: Lista de Cursos, Detalhes da Semana.
+- **Views**:
+  - `CoursesView/`: Lista principal de cursos.
+  - `CourseWeeksView/`: Detalhes de um curso (Lista de Semanas).
+  - `CourseWeekTasksView/`: Detalhes de uma semana (Lista de Tarefas).
 
 ### `home` (Utility)
 Dashboard central de acesso rápido.

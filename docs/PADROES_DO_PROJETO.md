@@ -65,7 +65,7 @@ A estrutura do projeto deve refletir os domínios de negócio.
 - **ECMAScript Modules**: Uso estrito de `import`/`export`.
 - **Classes vs Funções**:
     - **Classes**: Para serviços com estado ou "Singletons" (ex: `SessionManager`).
-    - **Funções Puras**: Para lógica de negócio e helpers (ex: `calculateAverage`).
+    - **Funções Puras**: Para lógica de negócio e helpers (ex: `TermParser.parseTerm`).
 
 ---
 
