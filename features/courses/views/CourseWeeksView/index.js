@@ -7,6 +7,7 @@
 import { createWeekElement } from '../../components/WeekItem.js';
 import { CourseRefresher } from '../../services/CourseRefresher.js';
 import { WeekContentScraper } from '../../services/WeekContentScraper.js';
+import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 
 export class CourseWeeksView {
   constructor(callbacks) {
@@ -178,6 +179,10 @@ export class CourseWeeksView {
       }
     } catch (error) {
       console.error('Erro ao carregar preview:', error);
+
+      const toaster = new Toaster();
+      toaster.show('Erro ao carregar preview. Tente novamente.', 'error');
+
       // Em caso de erro, remove destaque também
       if (weekElement) {
         weekElement.classList.remove('week-item-active');

@@ -1,10 +1,10 @@
 export class WeekContentScraper {
   /**
    * Scrapes week content from AVA by injecting script into active tab
-   * @param {string} weekUrl - URL da semana
+   * @param {string} _weekUrl - URL da semana
    * @returns {Promise<Array<{name: string, url: string, type: string, status?: 'TODO'|'DOING'|'DONE'}>>}
    */
-  static async scrapeWeekContent(weekUrl) {
+  static async scrapeWeekContent(_weekUrl) {
     try {
       // For testing: mock in jest will intercept this
       if (typeof chrome === 'undefined' || !chrome.tabs) {
@@ -32,53 +32,56 @@ export class WeekContentScraper {
    * Extrai itens de tarefa do DOM atual (uma página de curso no AVA)
    * @returns {Array<{name: string, url: string, type: string, status?: 'TODO'|'DOING'|'DONE'}>}
    */
-  static extractItemsFromDOM() {
-    const items = [];
-    const listItems = document.querySelectorAll('li[id^="contentListItem:"]');
+  static extractItemsFromDOM(dom = document) {
+    try {
+      const items = [];
+      const listItems = dom.querySelectorAll('li[id^="contentListItem:"]');
 
-    listItems.forEach((li) => {
-      try {
-        const anchor = /** @type {HTMLAnchorElement} */ (li.querySelector('h3 a'));
-        if (!anchor) return;
+      listItems.forEach((li) => {
+        try {
+          const anchor = /** @type {HTMLAnchorElement} */ (li.querySelector('h3 a'));
+          if (!anchor) return;
 
-        const name = anchor.textContent.trim();
-        const url = anchor.href;
+          const name = anchor.textContent.trim();
+          const url = anchor.href;
 
-        // Detect Status
-        let status = undefined;
-        // O botão tem classe 'button-5'. O texto dentro pode variar ou ter imagem.
-        // O texto geralmente "Revisto" ou "Marca Revista".
-        const button = li.querySelector('.button-5');
-        if (button) {
-          const btnText = button.textContent.trim();
-          if (btnText.includes('Revisto')) {
-            status = 'DONE';
-          } else if (btnText.includes('Marca Revista')) {
-            status = 'TODO';
+          // Detect Status
+          let status = undefined;
+          const button = li.querySelector('.button-5');
+          if (button) {
+            const btnText = button.textContent.trim();
+            if (btnText.includes('Revisto')) {
+              status = 'DONE';
+            } else if (btnText.includes('Marca Revista')) {
+              status = 'TODO';
+            }
           }
+
+          // Detect Type
+          let type = 'document';
+          const iconImg = /** @type {HTMLImageElement} */ (li.querySelector('img.item_icon'));
+          if (iconImg) {
+            type = this.detectType(iconImg.src, iconImg.alt);
+          } else {
+            type = this.detectTypeFromUrl(url);
+          }
+
+          items.push({
+            name,
+            url,
+            type,
+            ...(status && { status }),
+          });
+        } catch (e) {
+          console.error('Error parsing week item:', e);
         }
+      });
 
-        // Detect Type
-        let type = 'document';
-        const iconImg = /** @type {HTMLImageElement} */ (li.querySelector('img.item_icon'));
-        if (iconImg) {
-          type = this.detectType(iconImg.src, iconImg.alt);
-        } else {
-          type = this.detectTypeFromUrl(url);
-        }
-
-        items.push({
-          name,
-          url,
-          type,
-          ...(status && { status }), // Só adiciona status se definido
-        });
-      } catch (e) {
-        console.error('Error parsing week item:', e);
-      }
-    });
-
-    return items;
+      return items;
+    } catch (error) {
+      console.error('WeekContentScraper: Erro ao extrair dados do DOM', error);
+      throw new Error('Falha ao processar conteúdo da semana.');
+    }
   }
 
   /**

@@ -1,5 +1,6 @@
 const fs = require('fs');
 const path = require('path');
+// @ts-ignore
 const glob = require('glob');
 
 describe('Verificação de Integridade de Links (Anti-Tela Branca)', () => {

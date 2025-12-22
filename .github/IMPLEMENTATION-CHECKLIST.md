@@ -137,15 +137,15 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ### 🛡️ Issue #008: Error Handling (2h)
 **Branch**: `feat/issue-008-error-handling`
-- [ ] Criar branch a partir de dev
-- [ ] RED: Testes mockando erros
-- [ ] GREEN: Try/catch em scrapeWeekContent()
-- [ ] GREEN: Try/catch em showPreview()
-- [ ] GREEN: Try/catch em loadWeekTasks()
-- [ ] GREEN: Método showEmptyState()
-- [ ] GREEN: Integração com Toaster
-- [ ] Commit: `feat(courses): adiciona error handling com Toaster`
-- [ ] Merge para dev
+- [x] Criar branch a partir de dev
+- [x] RED: Testes mockando erros
+- [x] GREEN: Try/catch em scrapeWeekContent()
+- [x] GREEN: Try/catch em showPreview()
+- [x] GREEN: Try/catch em loadWeekTasks()
+- [x] GREEN: Método showEmptyState()
+- [x] GREEN: Integração com Toaster
+- [x] Commit: `feat(courses): adiciona error handling com Toaster`
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 

@@ -3,6 +3,8 @@
  * @description View de Tarefas da Semana de um Curso.
  * Localizada em: features/courses/views/CourseWeekTasksView/index.js
  */
+import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
+
 export class CourseWeekTasksView {
   /**
    * @param {Object} callbacks - Callbacks { onBack }
@@ -87,29 +89,35 @@ export class CourseWeekTasksView {
    * Renderiza a lista de tarefas no container
    */
   renderTasks() {
-    const container = document.getElementById('tasksList');
-    if (!container) return;
+    try {
+      const container = document.getElementById('tasksList');
+      if (!container) return;
 
-    container.innerHTML = '';
+      container.innerHTML = '';
 
-    if (!this.week.items || this.week.items.length === 0) {
-      container.innerHTML = '<p style="color:#999;">Nenhuma tarefa encontrada.</p>';
-      return;
+      if (!this.week || !this.week.items || this.week.items.length === 0) {
+        container.innerHTML = '<p style="color:#999;">Nenhuma tarefa encontrada.</p>';
+        return;
+      }
+
+      this.week.items.forEach((item) => {
+        const taskDiv = document.createElement('div');
+        taskDiv.className = 'task-item';
+
+        const statusIcon = this.getStatusIcon(item.status || 'TODO');
+
+        taskDiv.innerHTML = `
+                  <span class="task-status">${statusIcon}</span>
+                  <span class="task-name">${item.name}</span>
+              `;
+
+        container.appendChild(taskDiv);
+      });
+    } catch (error) {
+      console.error('CourseWeekTasksView: Erro ao renderizar tarefas', error);
+      const toaster = new Toaster();
+      toaster.show('Erro ao renderizar tarefas.', 'error');
     }
-
-    this.week.items.forEach((item) => {
-      const taskDiv = document.createElement('div');
-      taskDiv.className = 'task-item';
-
-      const statusIcon = this.getStatusIcon(item.status || 'TODO');
-
-      taskDiv.innerHTML = `
-                <span class="task-status">${statusIcon}</span>
-                <span class="task-name">${item.name}</span>
-            `;
-
-      container.appendChild(taskDiv);
-    });
   }
 
   /**
