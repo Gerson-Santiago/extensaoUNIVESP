@@ -102,6 +102,7 @@ Antes de rodar qualquer comando de merge para `main`, você **DEVE** garantir:
 1.  [ ] **Testes Verdes**: `npm test` passou sem erros.
 2.  [ ] **Lint Limpo**: `npm run lint` não acusa nada.
 3.  [ ] **Tipagem Sólida**: `npm run type-check` retornou 0 erros.
+    *   **Dica:** Use `npm run verify` para rodar tudo de uma vez.
 4.  [ ] **Dev Atualizada**: Você deu `git pull origin dev` e não veio nada novo (ou se veio, você re-testou).
 
 ### O Comando Sagrado (Release)
@@ -162,6 +163,7 @@ Novas dependências são um risco de segurança e performance.
 | `npm run lint:fix` | Auto-fix Lint. |
 | `npm run format` | Prettier. |
 | `npm test` | Jest Suite. |
+| `npm run verify` | Roda Testes + Lint + Type-Check (Recomendado antes do push). |
 
 ---
 

@@ -188,6 +188,7 @@ extensaoUNIVESP/
 │   │   │   ├── services/    # BatchScraper
 │   │   │   └── tests/
 │   │   └── tests/
+
 │   ├── session/             # Autenticação e Sessão (Nova - Phase 2)
 │   │   ├── models/          # Session.js
 │   │   ├── components/      # LoginWaitModal
@@ -255,6 +256,7 @@ Para evitar colisão de estilos em um ambiente sem Shadow DOM obrigatório:
 | **Linting** | ESLint (Flat Config) | Controle de qualidade estático rigoroso (Zero Warnings Policy). |
 | **Formatting** | Prettier | Consistência visual automatizada. |
 | **Versioning** | SemVer | Controle semântico de mudanças (Major.Minor.Patch). |
+| **Quality Gate** | npm run verify | Pipeline unificada de validação (Test + Lint + Types). |
 
 ---
 

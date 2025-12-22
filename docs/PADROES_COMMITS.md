@@ -197,7 +197,10 @@ echo "feat: teste" | npx commitlint
 ## **🚀 Workflow Recomendado**
 
 ```bash
-# 1. Faça suas alterações
+# 1. Valide seu código
+npm run verify
+
+# 2. Faça suas alterações
 git add .
 
 # 2. Escreva commit seguindo o padrão

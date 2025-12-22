@@ -97,6 +97,7 @@ Utilizamos **Jest** (`jest`, `jest-environment-jsdom`) para testes unitários e 
 *   **package.json:**
     *   `npm run lint`: Validação de código.
     *   `npm test`: Execução de testes.
+    *   `npm run verify`: Pipeline completa de verificação (Testes + Lint + Types). **Use antes de subir código.**
 
 ---
 
