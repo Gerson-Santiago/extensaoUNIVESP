@@ -54,9 +54,9 @@
 |-------|------|--------|------------|
 | #007 | Avançado | ✅ Concluída | 2h |
 | #008 | Avançado | ✅ Concluída | 2h |
-| #009 | Avançado | ⏳ Não iniciada | 3h |
+| #009 | Avançado | ✅ Concluída | 3h |
 
-**Tempo restante estimado:** 3 horas
+**Tempo restante estimado:** 0 horas
 
 **🎉 FASE 2 COMPLETA!** Todas as issues de UI & Preview finalizadas.
 

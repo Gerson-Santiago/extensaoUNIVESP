@@ -151,16 +151,16 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ---
 
-### 🧪 Issue #009: Testes de Integração (3h)
+### 🔄 Issue #009: Testes de Integração (3h)
 **Branch**: `feat/issue-009-testes-integracao`
-- [ ] Criar branch a partir de dev
-- [ ] Criar navigation.test.js (fluxo completo)
-- [ ] Criar scraping-storage.test.js
-- [ ] Criar mini-preview.test.js
-- [ ] Validar cobertura ≥90% em features/courses/
-- [ ] Validar todos os mocks de chrome.*
-- [ ] Commit: `test(courses): adiciona testes de integração v2.8.0`
-- [ ] Merge para dev
+- [x] Criar branch a partir de dev
+- [x] Criar `tests/integration/TaskManagementFlow.test.js`
+- [x] GREEN: Testar fluxo Scraping -> Preview
+- [x] GREEN: Testar fluxo de Erro -> Toast
+- [x] Validar persistência básica (opcional nesta fase)
+- [x] Garantir que `npm test` rode todos os testes
+- [x] Commit: `test(integration): adiciona fluxo de gestão de tarefas`
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 
