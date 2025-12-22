@@ -9,8 +9,7 @@ Este workflow realiza o processo de release da `dev` para a `main` de forma segu
    - `git pull origin dev`
 
 2. Executa verificações de segurança (Turbo Check)
-   - `npm run lint`
-   - `npm test`
+   - `npm run verify`
 
 3. Realiza o Merge para Produção
    - `git switch main`

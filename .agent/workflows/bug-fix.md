@@ -5,7 +5,7 @@ description: Fluxo para correção de bugs com testes e lint.
 > **Regra:** Bug sem teste é gambiarra.
 
 # 1. Reprodução
-@docs/LINTING_RULES.md
+@docs/PADROES_DO_PROJETO.md
 - [ ] Crie um teste em `tests/` que reproduza o erro (deve falhar).
 
 # 2. Correção

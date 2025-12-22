@@ -25,31 +25,33 @@
 
 ## 📏 Linting e Qualidade (Tolerância Zero)
 - **Política:** Zero Warnings. Qualquer aviso de lint ou erro de tipo (`type-check`) = Build Quebrada.
+- **Workflow:** Use `npm run verify` antes de qualquer commit.
 - **Formatação:** Aspas simples (`'`), Ponto e vírgula (`;`), largura 100 chars.
-- **Console:** `console.log` PROIBIDO em produção. Use `warn`/`error` ou `disable` explícito.
 - **Variáveis:** Variáveis não usadas são PROIBIDAS (exceto prefixadas com `_`).
 
 ## 🧪 Testes (Jest)
 - **Regra de Ouro:** "Se não está testado, não existe."
+- **Dia-a-dia:** Use `npm run test:features` ou `npm run test:courses` para feedback rápido.
+- **CI/CD:** `npm run verify` roda a suíte completa + lint + types.
 - **Mocks:** Use mocks globais de `chrome` do `jest-webextension-mock`.
-- **Tipagem:** Use JSDoc Casts para mocks: `/** @type {jest.Mock} */ (chrome.api.metodo)...`
 
 ## 🔄 Fluxos de Trabalho (Workflows)
 
 ### 🐛 Bug Fix (/bug-fix)
 1. **Reprodução:** Crie um teste que FALHE primeiro (Regressão).
 2. **Correção:** Implemente a correção respeitando Isolated World.
-3. **Verificação:** Teste passa + Lint limpo.
+3. **Verificação:** `npm run verify` obrigatório.
 
 ### ✨ Nova Feature (/nova-feature)
 1. **Planejamento:** Auditoria de privacidade (Local-First) e Manifesto.
 2. **TDD:** Crie testes ANTES do código (Red Phase).
 3. **Implementação:** Escreva código para passar nos testes.
+4. **Verificação:** `npm run verify`.
 
 ### ♻️ Refatoração (/refactor)
 1. **Segurança:** Garanta que testes existem e passam ANTES de tocar no código.
 2. **Refatoração:** Melhore estrutura (extração, tipagem forte).
-3. **Verificação:** Garanta ausência de regressões (`npm test`).
+3. **Verificação:** `npm run verify`.
 
 ## 🚨 Protocolo de Segurança (Água e Ar)
 - **Regra de Massa (6+ Arquivos):** Se a tarefa exigir alterar **6 ou mais arquivos**, É OBRIGATÓRIO criar uma branch separada (ex: `test/` ou `feat/`).

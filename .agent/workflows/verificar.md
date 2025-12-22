@@ -2,27 +2,13 @@
 description: Executa a verificação completa do projeto (Lint + Testes) conforme a política de qualidade.
 ---
 
-# Passo 1: Verificação de Estilo e Regras
-@docs/LINTING_RULES.md
+# Passo Único: Verificação Completa
+@docs/PADROES_DO_PROJETO.md
 // turbo
-Execute os linters para garantir que o código está em conformidade.
-1. `npm run lint`
+Execute a pipeline de qualidade (Testes + Lint + Types):
+1. `npm run verify`
 
-# Passo 2: Verificação de Tipos e Testes Automatizados
-@tests/
-// turbo
-1. **Verificação de Tipos (TypeScript/JSDoc)**
-   - Executa a validação de tipos baseada no JSDoc e jsconfig.json.
-   ```bash
-   npm run type-check
-   ```
-
-2. **Execução de Testes** para garantir que não há regressões.
-   ```bash
-   npm test
-   ```
-
-# Passo 3: Relatório
-Se algum passo acima falhou, não prossiga com commits ou PRs até corrigir.
+# Relatório
+Se falhar, não prossiga.
 - Lint errors devem ser zerados.
 - Testes devem estar todos passando (Green).
