@@ -36,15 +36,15 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ### 🔴 Issue #002: WeekContentScraper (4h) - CRÍTICO
 **Branch**: `feat/issue-002-week-content-scraper`
-- [ ] Criar branch a partir de dev
-- [ ] RED: Criar testes WeekContentScraper.test.js
-- [ ] GREEN: Implementar classe WeekContentScraper
-- [ ] GREEN: Método extractItemsFromDOM()
-- [ ] GREEN: Método detectType()
-- [ ] REFACTOR: Error handling
-- [ ] Validar cobertura ≥90%
-- [ ] Commit: `feat(courses): adiciona WeekContentScraper para scraping AVA`
-- [ ] Merge para dev
+- [x] Criar branch a partir de dev
+- [x] RED: Criar testes WeekContentScraper.test.js
+- [x] GREEN: Implementar classe WeekContentScraper
+- [x] GREEN: Método extractItemsFromDOM()
+- [x] GREEN: Método detectType()
+- [x] REFACTOR: Error handling
+- [x] Validar cobertura ≥90%
+- [x] Commit: `feat(courses): adiciona WeekContentScraper para scraping AVA`
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 **Atenção**: Mock chrome.scripting.executeScript

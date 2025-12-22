@@ -16,12 +16,12 @@ Implementar serviço para extrair tarefas/conteúdos de uma semana do AVA, lendo
 
 ## 🎯 Acceptance Criteria
 
-- [ ] Classe `WeekContentScraper` criada em `features/courses/services/`
-- [ ] Método `scrapeWeekContent(weekUrl)` retorna `items[]`
-- [ ] Detecta status: "Revisto" → DONE, "Marca Revista" → TODO
-- [ ] Detecta tipo: quiz/document/video pelo ícone
-- [ ] Testes mockando DOM do AVA (`contentListItem:_ID_`)
-- [ ] Error handling com console.error
+- [x] Classe `WeekContentScraper` criada em `features/courses/services/`
+- [x] Método `scrapeWeekContent(weekUrl)` retorna `items[]`
+- [x] Detecta status: "Revisto" → DONE, "Marca Revista" → TODO
+- [x] Detecta tipo: quiz/document/video pelo ícone
+- [x] Testes mockando DOM do AVA (`contentListItem:_ID_`)
+- [x] Error handling com console.error
 
 ---
 
@@ -101,9 +101,9 @@ npm run lint
 
 ## ✅ Definition of Done
 
-- [ ] Código implementado e testado
-- [ ] Testes com cobertura ≥90%
-- [ ] Mock de chrome.scripting.executeScript
-- [ ] Error handling com try/catch
-- [ ] `npm run lint` - Limpo
+- [x] Código implementado e testado
+- [x] Testes com cobertura ≥90%
+- [x] Mock de chrome.scripting.executeScript
+- [x] Error handling com try/catch
+- [x] `npm run lint` - Limpo
 - [ ] Commit: `feat(courses): adiciona WeekContentScraper para scraping AVA`
