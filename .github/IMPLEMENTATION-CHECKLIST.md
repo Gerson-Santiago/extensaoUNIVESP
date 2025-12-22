@@ -12,10 +12,10 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 ## 📊 Progresso Geral
 
 - [x] Fase 1: Foundation (3/3) ✅
-- [/] Fase 2: UI & Preview (2/3) 🟡
+- [x] Fase 2: UI & Preview (3/3) ✅ 🎉
 - [ ] Fase 3: Avançado (0/3)
 
-**Total**: 5/9 issues concluídas (55.5%)
+**Total**: 6/9 issues concluídas (66.7%)
 
 ---
 
@@ -102,16 +102,16 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ---
 
-### 🎨 Issue #006: Estilos CSS (1h)
+### ✅ Issue #006: Estilos CSS (1h)
 **Branch**: `feat/issue-006-css-styles`
-- [ ] Criar branch a partir de dev
-- [ ] Criar week-tasks.css
-- [ ] Modificar courses.css (adicionar .week-preview)
-- [ ] Criar/modificar week-item.css
-- [ ] Validar responsividade
-- [ ] Validar acessibilidade (WCAG contraste)
-- [ ] Commit: `style(courses): adiciona estilos para CourseWeekTasksView`
-- [ ] Merge para dev
+- [x] Criar branch a partir de dev
+- [x] Criar week-tasks.css
+- [x] Modificar courses.css (adicionar .week-preview)
+- [x] Criar/modificar week-item.css
+- [x] Validar responsividade
+- [x] Validar acessibilidade (WCAG contraste)
+- [x] Commit: `style(courses): adiciona estilos para CourseWeekTasksView`
+- [x] Merge para dev
 
 **Workflow**: Simples (sem testes)
 

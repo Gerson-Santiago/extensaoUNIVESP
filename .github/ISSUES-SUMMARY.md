@@ -37,7 +37,7 @@
 
 ## 🚀 Progresso de Implementação
 
-### ✅ Issues Concluídas (5/9 - 55.5%)
+### ✅ Issues Concluídas (6/9 - 66.7%)
 
 | Issue | Fase | Status | Branch | Commit |
 |-------|------|--------|---------|--------|
@@ -46,17 +46,19 @@
 | #003 | Foundation | ✅ Mergeada | `feat/issue-003-week-tasks-view` | `commit-hash` |
 | #004 | UI & Preview | ✅ Mergeada | `feat/issue-004-week-item-button` | `7386b1f` |
 | #005 | UI & Preview | ✅ Mergeada | `feat/issue-005-mini-preview` | `0089808` |
+| #006 | UI & Preview | ✅ Mergeada | `feat/issue-006-css-styles` | `972deda` |
 
-### ⏳ Issues Pendentes (4/9 - 44.5%)
+### ⏳ Issues Pendentes (3/9 - 33.3%)
 
 | Issue | Fase | Status | Estimativa |
 |-------|------|--------|------------|
-| #006 | UI & Preview | ⏳ Não iniciada | 1h |
 | #007 | Avançado | ⏳ Não iniciada | 2h |
 | #008 | Avançado | ⏳ Não iniciada | 2h |
 | #009 | Avançado | ⏳ Não iniciada | 3h |
 
-**Tempo restante estimado:** 8 horas
+**Tempo restante estimado:** 7 horas
+
+**🎉 FASE 2 COMPLETA!** Todas as issues de UI & Preview finalizadas.
 
 ---
 

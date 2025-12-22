@@ -17,7 +17,7 @@ Permitir que estudantes visualizem o progresso de tarefas semanais sem precisar 
 
 **Métricas de Sucesso**:
 - [x] Mini preview funcional com status visual
-- [ ] View completa de tarefas responsiva
+- [x] View completa de tarefas responsiva
 - [x] 100% cobertura de testes em logic/
 - [x] Zero warnings (lint + type-check)
 
@@ -65,7 +65,7 @@ Este Epic se divide em **3 fases incrementais**:
 
 ## ✅ Definition of Done (Epic)
 
-- [/] Todas as 9 issues fechadas (5/9 completas - 55.5%)
+- [/] Todas as 9 issues fechadas (6/9 completas - 66.7%)
 - [x] `npm test` - All Passing (252/252)
 - [x] `npm run lint` - Zero Warnings
 - [x] `npm run type-check` - Zero Errors
