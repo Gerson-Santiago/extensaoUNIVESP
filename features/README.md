@@ -13,21 +13,76 @@ Esta pasta contém as **funcionalidades de negócio** do projeto, organizadas po
 
 **Resposta**: Screaming Architecture organiza por **domínio de negócio**, não por hierarquia de UI.
 
-### 📊 Categorias
+### 📊 Categorias e Mapa Mental
 
-As 6 features estão divididas em 3 categorias:
+Entenda como as categorias se relacionam:
 
-| Categoria | Features | Explicação |
-|:---|:---|:---|
-| 🏆 **CORE** | `courses`, `import` | Núcleo do negócio (gestão de matérias) |
-| 🔧 **INFRA** | `session`, `settings` | Infraestrutura transversal (auth, config) |
-| 📦 **UTILITY** | `home`, `feedback` | Utilidades auxiliares (dashboard, reports) |
+```mermaid
+graph TD
+    User((Usuário))
+    
+    subgraph "Camada de Utilidade (UTILITY)"
+        Home[Home Dashboard]
+        Feedback[Feedback Form]
+    end
+    
+    subgraph "Camada de Negócio (CORE)"
+        Courses[Courses Feature]
+        Import[Import Sub-feature]
+    end
+    
+    subgraph "Camada de Infraestrutura (INFRA)"
+        Settings[Settings / Config]
+        Session[Session / Auth]
+    end
 
-**Princípio-chave**: O fato de `home`, `courses`, `settings` serem **tabs do TopNav** é um **detalhe de UI**, não define a arquitetura.
+    User --> Home
+    User --> Courses
+    
+    Home --> Courses
+    Courses --> Session
+    Courses --> Settings
+    
+    style Courses fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Import fill:#e1f5fe,stroke:#01579b,stroke-width:1px
+    style Session fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Settings fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Home fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style Feedback fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+```
 
-**Exemplo**: Amanhã `import` pode virar um tab no TopNav. Mas o domínio "importação em lote" continuará o mesmo.
+#### 1. 🏆 CORE (O Coração)
+**"A razão de ser do software."**
+- **Definição**: Domínio central (Gestão Acadêmica).
+- **Recursos**: `courses`, `import`.
+- **Características**: Lógica complexa, Persistência crítica.
 
-> **Screaming Architecture grita "o que o sistema FAZ", não "como a UI está organizada".**
+#### 2. 🔧 INFRA (O Alicerce)
+**"Serviços que ninguém vê, mas todos usam."**
+- **Definição**: Serviços transversais (Auth, Config, Storage).
+- **Recursos**: `session`, `settings`.
+- **Características**: Singleton, Estado Global.
+
+#### 3. 📦 UTILITY (Os Acessórios)
+**"Melhoram a vida, mas não são vitais."**
+- **Definição**: UX/UI, Dashboards, Feedback.
+- **Recursos**: `home`, `feedback`.
+- **Características**: Foco em UI, pouca lógica profunda.
+
+### 🚦 Algoritmo de Decisão
+
+Na dúvida de onde criar sua feature?
+
+1. **É vital para o aluno estudar?**
+    - [Sim] -> **CORE** 🏆
+    - [Não] -> Próximo passo...
+    
+2. **Outras features vão importar isso?**
+    - [Sim] -> **INFRA** 🔧
+    - [Não] -> **UTILITY** 📦
+
+---
+> **Princípio-chave**: Screaming Architecture grita "o que o sistema FAZ" (Domínio), não "como a UI está organizada".
 
 ---
 
