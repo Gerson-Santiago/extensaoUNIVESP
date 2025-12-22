@@ -15,7 +15,7 @@ export function createWeekElement(week, callbacks) {
 
   // Botão de Tarefas
   const tasksBtn = document.createElement('button');
-  tasksBtn.className = 'btn-tasks';
+  tasksBtn.className = 'btn-grid-action';
   tasksBtn.textContent = '📋 Tarefas';
   tasksBtn.onclick = (e) => {
     e.stopPropagation();

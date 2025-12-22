@@ -9,7 +9,7 @@ describe('WeekItem with Tasks Button', () => {
     const callbacks = { onViewTasks: jest.fn() };
 
     const element = createWeekElement(week, callbacks);
-    const btn = element.querySelector('.btn-tasks');
+    const btn = element.querySelector('.btn-grid-action');
 
     expect(btn).toBeTruthy();
     expect(btn.textContent).toContain('Tarefas');
@@ -20,7 +20,7 @@ describe('WeekItem with Tasks Button', () => {
     const callbacks = { onViewTasks: jest.fn() };
 
     const element = createWeekElement(week, callbacks);
-    const btn = /** @type {HTMLButtonElement} */ (element.querySelector('.btn-tasks'));
+    const btn = /** @type {HTMLButtonElement} */ (element.querySelector('.btn-grid-action'));
     btn.click();
 
     expect(callbacks.onViewTasks).toHaveBeenCalledTimes(1);
@@ -35,7 +35,7 @@ describe('WeekItem with Tasks Button', () => {
     };
 
     const element = createWeekElement(week, callbacks);
-    const btn = /** @type {HTMLButtonElement} */ (element.querySelector('.btn-tasks'));
+    const btn = /** @type {HTMLButtonElement} */ (element.querySelector('.btn-grid-action'));
     btn.click();
 
     // onClick do div NÃO deve ser chamado
@@ -51,7 +51,7 @@ describe('WeekItem with Tasks Button', () => {
     const children = Array.from(element.children);
 
     expect(children[0].className).toBe('week-name');
-    expect(children[1].className).toBe('btn-tasks');
+    expect(children[1].className).toBe('btn-grid-action');
     expect(children[2].className).toBe('week-arrow');
   });
 
@@ -60,7 +60,7 @@ describe('WeekItem with Tasks Button', () => {
     const callbacks = {};
 
     const element = createWeekElement(week, callbacks);
-    const btn = /** @type {HTMLButtonElement} */ (element.querySelector('.btn-tasks'));
+    const btn = /** @type {HTMLButtonElement} */ (element.querySelector('.btn-grid-action'));
 
     // Não deve dar erro ao clicar
     expect(() => btn.click()).not.toThrow();
