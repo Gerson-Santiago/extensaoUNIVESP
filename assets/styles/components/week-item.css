@@ -1,0 +1,44 @@
+/* ============================================
+   Week Item Component - Botão Tarefas
+   Issue #004
+   ============================================ */
+
+/* Botão de Tarefas */
+.btn-tasks {
+  padding: 4px 12px;
+  background: #4caf50;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  font-size: 12px;
+  margin: 0 8px;
+  transition:
+    background 0.2s,
+    transform 0.1s;
+  font-weight: 500;
+}
+
+.btn-tasks:hover {
+  background: #45a049;
+  transform: translateY(-1px);
+}
+
+.btn-tasks:active {
+  transform: translateY(0);
+}
+
+/* Acessibilidade - Contraste WCAG AAA */
+.btn-tasks:focus {
+  outline: 2px solid #2e7d32;
+  outline-offset: 2px;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .btn-tasks {
+    padding: 3px 10px;
+    font-size: 11px;
+    margin: 0 6px;
+  }
+}

@@ -128,3 +128,60 @@
   color: var(--text-light);
   font-size: 18px;
 }
+
+/* ============================================
+   Mini Preview - Issue #005
+   ============================================ */
+
+/* Container do Preview */
+#activeWeekPreview {
+  margin-top: 15px;
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  border-top: 2px solid #ddd;
+  display: none;
+}
+
+#activeWeekPreview.show {
+  display: block;
+}
+
+.week-preview h4 {
+  margin: 0 0 8px 0;
+  font-size: 14px;
+  color: #333;
+  font-weight: 600;
+}
+
+.status-icons {
+  font-size: 20px;
+  letter-spacing: 2px;
+  margin: 8px 0;
+  line-height: 1.4;
+}
+
+.preview-progress {
+  margin-top: 10px;
+  font-size: 13px;
+  color: #666;
+}
+
+/* Responsividade */
+@media (max-width: 600px) {
+  .item-name {
+    font-size: 13px;
+  }
+
+  .details-title {
+    font-size: 15px;
+  }
+
+  .week-item {
+    padding: 10px 12px;
+  }
+
+  #activeWeekPreview {
+    padding: 12px;
+  }
+}
