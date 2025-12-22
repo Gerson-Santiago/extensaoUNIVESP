@@ -77,7 +77,7 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 - [x] GREEN: Adicionar botão em WeekItem.js
 - [x] GREEN: Implementar stopPropagation
 - [x] GREEN: Callback onViewTasks
-- [ ] Adicionar CSS .btn-tasks
+- [x] Adicionar CSS .btn-tasks (feito na Issue #006)
 - [x] Commit: `feat(courses): adiciona botão Tarefas em WeekItem`
 - [x] Merge para dev
 
