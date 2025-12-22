@@ -1,37 +1,30 @@
-> Status: Active
-> Last Update: 2025-12-20
+# Especificação de Features (Domain Layout)
 
-# 🎯 Features (Screaming Architecture)
-
-Esta pasta contém as **funcionalidades de negócio** do projeto, organizadas por domínio. Cada pasta aqui representa um caso de uso independente.
+Este diretório implementa o padrão **Screaming Architecture**, onde a estrutura de pastas evidencia os domínios de negócio do software.
 
 ---
 
-## 🧠 Por Que 6 Features (não 3)?
+## 1. Categorização de Domínio
 
-**Você pode estar pensando**: "TopNav tem 3 tabs (Home, Cursos, Configurações). Por que 6 pastas?"
+As features são classificadas em três camadas arquiteturais para orientar o acoplamento.
 
-**Resposta**: Screaming Architecture organiza por **domínio de negócio**, não por hierarquia de UI.
-
-### 📊 Categorias e Mapa Mental
-
-Entenda como as categorias se relacionam:
+### 1.1 Mapa de Relacionamento (`features/`)
 
 ```mermaid
 graph TD
     User((Usuário))
     
-    subgraph "Camada de Utilidade (UTILITY)"
+    subgraph "Utility Layer"
         Home[Home Dashboard]
         Feedback[Feedback Form]
     end
     
-    subgraph "Camada de Negócio (CORE)"
+    subgraph "Core Domain Layer"
         Courses[Courses Feature]
         Import[Import Sub-feature]
     end
     
-    subgraph "Camada de Infraestrutura (INFRA)"
+    subgraph "Infrastructure Layer"
         Settings[Settings / Config]
         Session[Session / Auth]
     end
@@ -51,228 +44,79 @@ graph TD
     style Feedback fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
 ```
 
-#### 1. 🏆 CORE (O Coração)
-**"A razão de ser do software."**
-- **Definição**: Domínio central (Gestão Acadêmica).
-- **Recursos**: `courses`, `import`.
-- **Características**: Lógica complexa, Persistência crítica.
+### 1.2 Definições de Categoria
 
-#### 2. 🔧 INFRA (O Alicerce)
-**"Serviços que ninguém vê, mas todos usam."**
-- **Definição**: Serviços transversais (Auth, Config, Storage).
-- **Recursos**: `session`, `settings`.
-- **Características**: Singleton, Estado Global.
+#### 🏆 Core Domain
+**Definição**: Funcionalidades centrais que justificam a existêcia do produto.
+- **Features**: `courses` (inclui `import`).
+- **Característica**: Alta complexidade lógica, regras de negócio críticas.
 
-#### 3. 📦 UTILITY (Os Acessórios)
-**"Melhoram a vida, mas não são vitais."**
-- **Definição**: UX/UI, Dashboards, Feedback.
-- **Recursos**: `home`, `feedback`.
-- **Características**: Foco em UI, pouca lógica profunda.
+#### 🔧 Infrastructure
+**Definição**: Serviços transversais necessários para o funcionamento do Core.
+- **Features**: `session`, `settings`.
+- **Característica**: Estado global, Singleton, persistência de credenciais.
 
-### 🚦 Algoritmo de Decisão
-
-Na dúvida de onde criar sua feature?
-
-1. **É vital para o aluno estudar?**
-    - [Sim] -> **CORE** 🏆
-    - [Não] -> Próximo passo...
-    
-2. **Outras features vão importar isso?**
-    - [Sim] -> **INFRA** 🔧
-    - [Não] -> **UTILITY** 📦
-
----
-> **Princípio-chave**: Screaming Architecture grita "o que o sistema FAZ" (Domínio), não "como a UI está organizada".
+#### 📦 Utility
+**Definição**: Interfaces de suporte e melhoria de UX.
+- **Features**: `home`, `feedback`.
+- **Característica**: Foco em UI, lógica rasa.
 
 ---
 
-## 📂 Estrutura de uma Feature
+## 2. Anatomia Canônica de Feature
 
-Cada feature segue este padrão:
+Cada feature constitui um *Bounded Context* autônomo, seguindo uma estrutura padronizada de pastas.
 
-```
-features/
-└── <feature-name>/
-    ├── components/      # Widgets reutilizáveis (opcionais)
-    ├── ui/             # Telas simples (alternativa a views/)
-    ├── views/          # Telas complexas (componentes maiores)
-    ├── logic/          # Regras de negócio puras
-    ├── models/         # Definições de Tipo (JSDoc)
-    ├── data/           # Repositories (acesso a dados)
-    ├── services/       # Integrações externas (scraping, HTTP)
-    └── tests/          # Testes colocalizados
+```text
+features/<nome-da-feature>/
+├── ui/              # Entry Views (Telas Principais)
+├── components/      # Widgets Locais (Reutilizáveis apenas nesta feature)
+├── logic/           # Domain Services (Lógica Pura - Framework Agnostic)
+├── data/            # Repositories (Persistência)
+├── models/          # Type Definitions (JSDoc)
+├── services/        # Integration Services (Scrapers, HTTP)
+└── tests/           # Unit & Integration Tests
 ```
 
-**Regra**: Nem toda feature tem todas as pastas. Use apenas o necessário.
+### 2.1 Matriz de Responsabilidade
+
+| Diretório | Responsabilidade | Exemplo |
+| :--- | :--- | :--- |
+| **`logic/`** | Regras de negócio puras (Vanilla JS). | `GradeCalculator.js` |
+| **`services/`** | Interação com APIs ou DOM externo. | `AVAScraper.js` |
+| **`data/`** | Abstração de persistência. | `CourseRepository.js` |
+| **`ui/`** | Camada de apresentação "burra". | `CourseListView.js` |
 
 ---
 
-## 🧩 Padrões de Código & Tecnologias
+## 3. Diretrizes de Implementação
 
-Aqui usamos tecnologias nativas com padrões rigorosos para manter a qualidade.
+### 3.1 Unidirectional Data Flow
+Para garantir previsibilidade, o fluxo de dados deve respeitar a direção:
+`UI (Event) -> Logic -> Repository -> Storage -> Repository -> UI (Render)`
 
-### 1. Tipagem Híbrida (Vanilla JS + JSDoc)
-Não usamos TypeScript compilado, mas **escrevemos como se fosse**.
-- **Models (`models/*.js`)**: Definimos a "forma" dos dados usando `@typedef`.
-- **Validação**: O VS Code e o comando `npm run type-check` garantem que não estamos acessando propriedades inexistentes.
-- **Benefício**: Zero build step, 100% de segurança de tipo em desenvolvimento.
-
-### 2. Fluxo de Dados (Unidirectional Data Flow)
-O dados fluem de forma previsível dentro de uma feature:
-
-```mermaid
-graph LR
-    UI[View/UI] -->|Eventos| Service[Logic/Service]
-    Service -->|Dados| UI
-    Service -->|Persistência| Repo[Repository]
-    Repo -->|JSON| Storage[(Chrome Storage)]
-```
-
-1.  **UI** é "burra": Só exibe dados e dispara eventos.
-2.  **Logic/Service** é o cérebro: Processa regras e cordena.
-3.  **Repository** é o acesso a dados: Fala com o Chrome Storage.
-4.  **Models** são o contrato: Garantem que todos falem a mesma língua.
+### 3.2 Tipagem Estática (JSDoc)
+O uso de validação de tipos é mandatório.
+- **Models**: Devem estar definidos em `models/*.js` com `@typedef`.
+- **Verificação**: `npm run type-check` garantirá a integridade das referências.
 
 ---
 
-## 📖 Mini-Glossário (Complemento ao `/docs/GLOSSARIO.md`)
+## 4. Features Implementadas (v2.8.0)
 
-### 🗂️ Pastas
+### `courses` (Core)
+Gestão completa do ciclo de vida acadêmico.
+- **Sub-módulos**: `import` (Importação em Lote).
+- **Views**: Lista de Cursos, Detalhes da Semana.
 
-| Pasta | Quando Usar | O Que Vai Aqui |
-|:---|:---|:---|
-| **`ui/`** | Telas simples, uma View por arquivo | `HomeView.js`, `SettingsView.js`, `FeedbackView.js` |
-| **`views/`** | Telas complexas, uma pasta por View | `CoursesView/index.js`, `CourseWeeksView/index.js` |
-| **`components/`** | Widgets reutilizáveis dentro da feature | `CourseItem.js`, `WeekItem.js`, `AddManualModal/` |
-| **`logic/`** | Regras de negócio puras, **SEM** DOM/API | `TermParser.js`, `CourseGrouper.js` |
-| **`models/`** | Definições de Tipos (JSDoc @typedef) | `Course.js`, `Week.js` |
-| **`data/`** | Repositories (CRUD de dados) | `CourseRepository.js`, `CourseStorage.js` |
-| **`services/`** | Scraping, HTTP, integrações externas | `ScraperService.js`, `BatchScraper.js` |
-| **`tests/`** | Testes unitários e integração da feature | `*.test.js`, subpastas por contexto |
+### `home` (Utility)
+Dashboard central de acesso rápido.
 
-### 🔑 Diferenças Importantes
+### `settings` (Infra)
+Gerenciamento de configurações e preferências do usuário.
 
-**`ui/` vs `views/`**  
-- `ui/`: Telas simples, arquivo único (ex: `HomeView.js`)  
-- `views/`: Telas complexas, pasta com `index.js` + possíveis auxiliares
+### `session` (Infra)
+Gerenciamento de estado de autenticação (Blackboard/SEI).
 
-**`components/` vs `shared/ui/`**  
-- `components/`: Usado **só dentro desta feature**  
-- `shared/ui/`: Usado em **múltiplas features**
-
-**`logic/` vs `services/`**  
-- `logic/`: Regras puras, testável sem mocks (ex: parse de string)  
-- `services/`: Depende de mundo externo (DOM, chrome.*, HTTP)
-
----
-
-## 🗺️ Mapa das Features
-
-### 🏆 `courses/` - Gestão de Matérias (CORE)
-**Responsabilidade**: Listar, adicionar, atualizar e navegar nas matérias do aluno.
-
-**📍 View Principal do TopNav** (junto com Home e Settings)
-
-**Estrutura**:
-- `views/CoursesView/` - Lista principal de cursos
-- `views/CourseWeeksView/` - Detalhes de um curso específico
-- **`import/`** - 🎯 **Submódulo:** Importação em lote de cursos do AVA
-  - `import/components/BatchImportModal.js`
-  - `import/logic/BatchImportFlow.js`
-  - `import/services/BatchScraper.js`
-- `components/CourseItem.js` - Card individual de curso
-- `components/WeekItem.js` - Item de semana de aula
-- `components/AddManualModal/` - Modal de adição manual
-- `logic/CourseGrouper.js` - Agrupa cursos por bimestre
-- `logic/TermParser.js` - Extrai ano/bimestre de strings
-- `logic/CourseService.js` - Orquestração de operações de curso
-- `data/CourseRepository.js` - CRUD de cursos no storage
-- `services/ScraperService.js` - Extrai dados do AVA
-
-**Quando mexer**: Adicionar/editar matérias, mudar agrupamento, scraping do AVA, **importação em lote**.
-
-
-
-### 📦 `home/` - Tela Inicial (UTILITY)
-**Responsabilidade**: Dashboard com atalhos rápidos.
-
-**📍 View Principal do TopNav** (junto com Courses e Settings)
-
-**Estrutura**:
-- `ui/HomeView.js` - Tela inicial simples
-
-**Quando mexer**: Adicionar cards de atalhos, mudar layout inicial.
-
----
-
-### 📦 `feedback/` - Envio de Feedback (UTILITY)
-**Responsabilidade**: Formulário de bug report e sugestões.
-
-**Estrutura**:
-- `ui/FeedbackView.js` - Formulário de feedback
-
-**Quando mexer**: Ajustar campos do formulário, integração com GitHub Issues.
-
----
-
-### 🔧 `session/` - Autenticação e Sessão (INFRA)
-**Responsabilidade**: Gerenciar estado de login (AVA/SEI).
-
-**Estrutura**:
-- `components/LoginWaitModal.js` - Modal de espera de login
-- `logic/SessionManager.js` - Gerencia estado de sessão
-
-**Quando mexer**: Detectar login, validar sessão ativa.
-
----
-
-### 🔧 `settings/` - Configurações (INFRA)
-**Responsabilidade**: Gerenciar RA, domínio de email, preferências.
-
-**📍 View Principal do TopNav** (junto com Home e Courses)
-
-**Estrutura**:
-- `ui/SettingsView.js` - **Tela de configurações** (acessível via TopNav)
-- `components/ConfigForm.js` - Formulário de configurações
-- `logic/domainManager.js` - Gerencia domínio de email customizado
-
-**Quando mexer**: Adicionar novas configurações, persistência de preferências.
-
----
-
-## ✅ Checklist: "Onde Coloco Meu Código?"
-
-```
-└─ Pergunta                                    Resposta
-   ├─ É uma tela completa?                    → ui/ ou views/
-   ├─ É um widget reutilizável?               → components/ (ou shared/ui se for global)
-   ├─ É lógica de negócio pura?              → logic/
-   ├─ É acesso a dados (CRUD)?               → data/
-   ├─ É scraping ou HTTP?                    → services/
-   └─ É um teste?                            → tests/
-```
-
----
-
-## 🚫 O Que NÃO Fazer
-
-❌ **Não misture lógica de negócio em `views/`**  
-✅ Extraia para `logic/` e importe na View
-
-❌ **Não acesse `chrome.storage` diretamente em `logic/`**  
-✅ Use `data/Repository` e injete na lógica
-
-❌ **Não crie arquivos globais em `features/`**  
-✅ Use `shared/` para código verdadeiramente reutilizável
-
----
-
-## 📚 Saiba Mais
-
-- **Glossário Completo**: [`/docs/GLOSSARIO.md`](../docs/GLOSSARIO.md)
-- **Arquitetura**: [`/docs/TECNOLOGIAS_E_ARQUITETURA.md`](../docs/TECNOLOGIAS_E_ARQUITETURA.md)
-- **Decisões**: [`/docs/architecture/`](../docs/architecture/)
-
----
-
-> **Dica**: Se você não sabe em qual feature colocar código, pergunte: "Este código serve a qual caso de uso de negócio?" A resposta é o nome da feature.
+### `feedback` (Utility)
+Interface de reporte de erros e sugestões.
