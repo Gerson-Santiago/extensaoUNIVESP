@@ -93,6 +93,12 @@ export class CourseWeeksView {
             this.callbacks.onOpenCourse(url);
           },
           onViewTasks: (w) => this.showPreview(w, wDiv),
+          onViewActivities: (w) => {
+            // Navega para DetailsActivitiesWeekView
+            if (this.callbacks.onViewActivities) {
+              this.callbacks.onViewActivities(w);
+            }
+          },
         });
         weeksList.appendChild(wDiv);
       });
