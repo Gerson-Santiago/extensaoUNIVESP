@@ -86,8 +86,12 @@ export class CourseWeeksView {
     if (this.course.weeks && this.course.weeks.length > 0) {
       this.course.weeks.forEach((week) => {
         const wDiv = createWeekElement(week, {
-          onClick: (url) => this.callbacks.onOpenCourse(url),
-          onViewTasks: (w) => this.showPreview(w, wDiv), // Passa o elemento DOM
+          onClick: (url) => {
+            // Abre semana no navegador E marca como ativa (azul)
+            this.setActiveWeek(week, wDiv);
+            this.callbacks.onOpenCourse(url);
+          },
+          onViewTasks: (w) => this.showPreview(w, wDiv),
         });
         weeksList.appendChild(wDiv);
       });
@@ -98,35 +102,48 @@ export class CourseWeeksView {
   }
 
   /**
-   * Mostra/esconde preview de tarefas da semana (toggle)
-   * Preview aparece dinamicamente abaixo da semana clicada
-   * IMPORTANTE: Destaque azul permanece mesmo quando preview fecha (indica semana ativa no AVA)
-   * @param {Object} week - Objeto da semana
-   * @param {HTMLElement} [weekElement] - Elemento DOM da semana (opcional para testes)
+   * Define qual semana está ativa (aberta no navegador)
+   * Adiciona destaque visual azul para indicar ao usuário qual semana ele está estudando
+   * @param {Object} week - Semana a ser marcada como ativa
+   * @param {HTMLElement} weekElement - Elemento DOM da semana
    */
-  async showPreview(week, weekElement) {
-    // Se já é a semana ativa, apenas toggle do preview (mas mantém destaque azul!)
-    if (this.activeWeek === week && weekElement) {
-      // Toggle: fecha preview MAS mantém destaque visual
-      this.hidePreview();
-      // NÃO remove this.activeWeek nem o destaque azul
-      return;
-    }
-
-    // Trocar para nova semana: remove destaque anterior
-    this.hidePreview();
-    if (this.activeWeek && weekElement) {
-      // Remove destaque da semana anterior
+  setActiveWeek(week, weekElement) {
+    // Remove destaque anterior
+    if (this.activeWeek) {
       document
         .querySelectorAll('.week-item')
         .forEach((el) => el.classList.remove('week-item-active'));
     }
 
-    // Define nova semana ativa e adiciona destaque
+    // Define nova semana ativa e adiciona destaque azul
     this.activeWeek = week;
     if (weekElement) {
       weekElement.classList.add('week-item-active');
     }
+  }
+
+  /**
+   * Mostra/esconde preview de tarefas da semana (toggle)
+   * Preview aparece dinamicamente abaixo da semana clicada
+   * IMPORTANTE: Também marca a semana como ativa (destaque azul)
+   * @param {Object} week - Objeto da semana
+   * @param {HTMLElement} [weekElement] - Elemento DOM da semana (opcional para testes)
+   */
+  async showPreview(week, weekElement) {
+    // Marca semana como ativa (abre no navegador via botão Tarefas)
+    this.setActiveWeek(week, weekElement);
+    // Toggle do preview: se já está ativo, apenas fecha/abre preview
+    const existingPreview = document.querySelector('.week-preview-dynamic');
+    const hasPreview = existingPreview && existingPreview.previousElementSibling === weekElement;
+
+    if (hasPreview) {
+      // Já tem preview aberto: fecha (mas mantém destaque azul!)
+      this.hidePreview();
+      return;
+    }
+
+    // Remove preview anterior se houver
+    this.hidePreview();
 
     try {
       // Scrape week content from AVA
