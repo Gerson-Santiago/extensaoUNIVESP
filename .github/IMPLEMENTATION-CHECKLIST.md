@@ -72,14 +72,14 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ### ✅ Issue #004: Botão [Tarefas] (2h)
 **Branch**: `feat/issue-004-week-item-button`
-- [ ] Criar branch a partir de dev
-- [ ] RED: Atualizar testes WeekItem.test.js
-- [ ] GREEN: Adicionar botão em WeekItem.js
-- [ ] GREEN: Implementar stopPropagation
-- [ ] GREEN: Callback onViewTasks
+- [x] Criar branch a partir de dev
+- [x] RED: Atualizar testes WeekItem.test.js
+- [x] GREEN: Adicionar botão em WeekItem.js
+- [x] GREEN: Implementar stopPropagation
+- [x] GREEN: Callback onViewTasks
 - [ ] Adicionar CSS .btn-tasks
-- [ ] Commit: `feat(courses): adiciona botão Tarefas em WeekItem`
-- [ ] Merge para dev
+- [x] Commit: `feat(courses): adiciona botão Tarefas em WeekItem`
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 

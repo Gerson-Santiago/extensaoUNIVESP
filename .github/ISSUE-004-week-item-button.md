@@ -133,4 +133,4 @@ npm run lint
 - [x] Testes com stopPropagation
 - [ ] CSS adicionado
 - [x] `npm test` passando
-- [ ] Commit: `feat(courses): adiciona botão Tarefas em WeekItem`
+- [x] Commit: `feat(courses): adiciona botão Tarefas em WeekItem`
