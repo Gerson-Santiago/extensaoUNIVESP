@@ -1,235 +1,88 @@
-# 📝 Padrões de Commits (Conventional Commits)
+# Especificação de Commits (Conventional Commits)
 
-Este projeto utiliza o **Conventional Commits** para garantir histórico de commits padronizado, legível e automatizável.
+Este projeto adota a especificação [Conventional Commits](https://www.conventionalcommits.org/) para estruturar o histórico de alterações. Isso permite a geração automatizada de changelogs e facilita a navegação no histórico.
 
 ---
 
-## **📋 Estrutura da Mensagem**
+## 1. Formato da Mensagem
 
-```
-<tipo>(<escopo>): <subject>
+```text
+<tipo>(<escopo opcional>): <descrição>
 
 [corpo opcional]
 
 [rodapé opcional]
 ```
 
-### **Regras Importantes** ⚠️
-
-1. **Subject (assunto)**: SEMPRE em **lowercase** (minúsculas)
-   - ✅ Correto: `feat: adiciona botão de export`
-   - ❌ Errado: `feat: Adiciona Botão de Export`
-
-2. **Máximo de 100 caracteres** na primeira linha
-
-3. **Sem ponto final** no subject
+### 1.1 Regras de Sintaxe
+1.  **Assunto (Subject)**:
+    -   Deve iniciar com letra **minúscula**.
+    -   Não deve conter ponto final.
+    -   Máximo de 100 caracteres.
+    -   Verbo no **imperativo** (ex: "adiciona", "corrige", "remove").
+2.  **Idioma**: Português Brasileiro (PT-BR).
 
 ---
 
-## **🏷️ Tipos Disponíveis**
+## 2. Tipos de Commit
 
-| Tipo | Uso | Exemplo |
-|------|-----|---------|
-| `feat` | Nova funcionalidade | `feat: adiciona scraping de tarefas` |
-| `fix` | Correção de bug | `fix: corrige duplicação de cursos` |
-| `docs` | Apenas documentação | `docs: atualiza readme com exemplos` |
-| `style` | Formatação, ponto-vírgula, etc (sem mudança de lógica) | `style: formata código com prettier` |
-| `refactor` | Refatoração sem alterar comportamento | `refactor: extrai lógica de scraping` |
-| `test` | Adiciona ou corrige testes | `test: adiciona testes para task scraper` |
-| `chore` | Tarefas de build, configs, dependências | `chore: atualiza dependências` |
-| `perf` | Melhoria de performance | `perf: otimiza renderização de lista` |
-| `ci` | Mudanças em CI/CD | `ci: adiciona workflow de deploy` |
-| `build` | Mudanças no sistema de build | `build: configura webpack` |
-| `revert` | Reverte um commit anterior | `revert: reverte commit abc123` |
+| Tipo | Descrição | Exemplo |
+| :--- | :--- | :--- |
+| **`feat`** | Nova funcionalidade para o usuário. | `feat: implementa login automático` |
+| **`fix`** | Correção de bug. | `fix: resolve crash no scraper` |
+| **`docs`** | Alterações em documentação. | `docs: atualiza diagrama de arquitetura` |
+| **`style`** | Formatação, white-space (sem lógica). | `style: aplica prettier` |
+| **`refactor`** | Mudança de código que não altera comportamento. | `refactor: extrai service de scraping` |
+| **`test`** | Adição ou correção de testes. | `test: adiciona cobertura para modal` |
+| **`chore`** | Manutenção de build, deps, ferramentas. | `chore: atualiza eslint` |
+| **`perf`** | Melhoria de performance. | `perf: otimiza renderização da lista` |
 
 ---
 
-## **🎯 Exemplos Corretos**
+## 3. Escopos (Scopes)
 
-### **Feature (Nova Funcionalidade)**
+O escopo denota o módulo afetado. Deve seguir a estrutura de diretórios ou domínios lógicos.
+
+-   `features` (ou feature específica: `courses`, `settings`)
+-   `shared`
+-   `ui`
+-   `core`
+-   `deps`
+
+---
+
+## 4. Exemplos
+
+**Feature Simples**
 ```bash
-git commit -m "feat: adiciona importação em lote de cursos"
-
-git commit -m "feat(courses): implementa scraping de semanas"
-
-git commit -m "feat(ui): adiciona modal de confirmação de exclusão"
+feat(courses): adiciona botão de exportação
 ```
 
-### **Fix (Correção de Bug)**
+**Bug Fix com Descrição Detalhada**
 ```bash
-git commit -m "fix: corrige erro ao salvar curso sem url"
+fix(scraper): corrige timeout em conexões lentas
 
-git commit -m "fix(scraper): resolve timeout ao carregar semanas"
-
-git commit -m "fix(storage): previne duplicação de cursos"
+Aumenta o timeout padrão de 3s para 10s para acomodar
+usuários com conexão instável.
 ```
 
-### **Docs (Documentação)**
+**Breaking Change (Rodapé)**
 ```bash
-git commit -m "docs: adiciona guia de contribuição"
+feat(api): altera contrato de resposta
 
-git commit -m "docs: atualiza spec v2.8.0 com gestão acadêmica"
-
-git commit -m "docs(readme): adiciona seção de instalação"
-```
-
-### **Refactor (Refatoração)**
-```bash
-git commit -m "refactor: separa lógica de scraping em service"
-
-git commit -m "refactor(courses): usa repository pattern para persistência"
-```
-
-### **Test (Testes)**
-```bash
-git commit -m "test: adiciona testes para course repository"
-
-git commit -m "test(integration): cobre fluxo de importação em lote"
-```
-
-### **Chore (Tarefas de Manutenção)**
-```bash
-git commit -m "chore: atualiza dependências do npm"
-
-git commit -m "chore: configura husky e commitlint"
-
-git commit -m "chore(deps): atualiza jest para v29"
+BREAKING CHANGE: remove campo deprecated 'old_id'.
 ```
 
 ---
 
-## **🔍 Escopo (Opcional mas Recomendado)**
+## 5. Automação
 
-O escopo indica a área afetada. Exemplos:
+O projeto utiliza **Commitlint** validado via **Husky**.
+Commits que violem estas regras serão rejeitados automaticamente no momento da criação (`commit-msg` hook).
 
-- `(courses)` - Feature de cursos
-- `(settings)` - Configurações
-- `(ui)` - Interface do usuário
-- `(scraper)` - Scraping de dados
-- `(storage)` - Persistência de dados
-- `(session)` - Gerenciamento de sessão
-- `(feedback)` - Sistema de feedback
-- `(docs)` - Documentação
-- `(tests)` - Testes
-
-**Exemplo:**
-```bash
-git commit -m "feat(courses): adiciona filtro por semestre"
-```
-
----
-
-## **📝 Corpo e Rodapé (Opcional)**
-
-### **Corpo**
-Use para explicar **o quê** e **por quê**, não *como*:
+### Validação Manual
+Para verificar se sua mensagem está correta antes de commitar:
 
 ```bash
-git commit -m "fix(scraper): corrige timeout ao carregar semanas
-
-O scraper estava falhando em páginas com muitas semanas devido
-ao timeout de 3 segundos. Aumentado para 10 segundos e adicionado
-retry automático."
+echo "feat: minha mensagem" | npx commitlint
 ```
-
-### **Rodapé**
-Use para referenciar issues ou breaking changes:
-
-```bash
-git commit -m "feat(api): adiciona endpoint de exportação
-
-BREAKING CHANGE: remove endpoint antigo /export-courses
-Refs: #42"
-```
-
----
-
-## **❌ Erros Comuns**
-
-### **1. Subject com letra maiúscula**
-```bash
-❌ git commit -m "docs: Atualiza README"
-✅ git commit -m "docs: atualiza readme"
-```
-
-### **2. Tipo errado**
-```bash
-❌ git commit -m "feat: corrige bug no scraper"
-✅ git commit -m "fix: corrige bug no scraper"
-```
-
-### **3. Mensagem muito vaga**
-```bash
-❌ git commit -m "fix: correções"
-✅ git commit -m "fix(scraper): previne duplicação de semanas"
-```
-
-### **4. Ponto final no subject**
-```bash
-❌ git commit -m "feat: adiciona botão."
-✅ git commit -m "feat: adiciona botão"
-```
-
-### **5. Siglas em maiúsculas no subject**
-```bash
-❌ git commit -m "docs: atualiza SPEC v2.8.0"
-✅ git commit -m "docs: atualiza spec v2.8.0"
-```
-
----
-
-## **🔧 Configuração Local**
-
-Este projeto usa **Husky** + **Commitlint** para validar commits automaticamente.
-
-### **Arquivos de configuração:**
-- `.husky/commit-msg` - Hook que valida mensagens
-- `commitlint.config.js` - Regras do commitlint
-
-### **Testando seu commit antes de enviar:**
-```bash
-# Teste a mensagem sem fazer commit
-echo "feat: teste" | npx commitlint
-```
-
----
-
-## **🚀 Workflow Recomendado**
-
-```bash
-# 1. Valide seu código
-npm run verify
-
-# 2. Faça suas alterações
-git add .
-
-# 3. Escreva commit seguindo o padrão
-git commit -m "feat(courses): adiciona validação de url"
-
-# 4. Se errar, o commitlint vai avisar:
-# ✖   subject must not be sentence-case, start-case, pascal-case, upper-case
-
-# 5. Corrija e tente novamente
-git commit -m "feat(courses): adiciona validação de url"
-```
-
----
-
-## **📚 Referências**
-
-- [Conventional Commits](https://www.conventionalcommits.org/)
-- [Commitlint](https://commitlint.js.org/)
-- [Semantic Versioning](https://semver.org/)
-
----
-
-## **💡 Dica Final**
-
-**Seus commits devem contar uma história clara do projeto!**
-
-Imagine alguém lendo o `git log` daqui a 6 meses. Ela deve entender:
-- **O que** foi alterado
-- **Por que** foi alterado
-- **Quando** foi alterado
-
-Commits bem escritos = facilitam code review, debugging e releases automáticos! 🎉

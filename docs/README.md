@@ -1,76 +1,61 @@
-> Status: Active
-> Last Update: 2025-12-20
+# Extensão UNIVESP - Suíte de Produtividade Acadêmica
 
-# 📚 Documentação do Projeto
+> **Versão Atual**: v2.8.0
+> **Status**: Ativo / Em Desenvolvimento
 
-Bem-vindo à documentação central do **AutoPreencher UNIVESP**. Este diretório organiza toda a informação arquitetural, técnica e de negócio do projeto.
-
----
-
-## 🗺️ Navegação Rápida
-
-### 📖 Fundamentos (Leia Primeiro)
-1. **[GLOSSARIO.md](./GLOSSARIO.md)** - Dicionário de termos técnicos e de domínio
-2. **[IDENTIDADE_DO_PROJETO.md](./IDENTIDADE_DO_PROJETO.md)** - Visão, filosofia e valores
-3. **[TECNOLOGIAS_E_ARQUITETURA.md](./TECNOLOGIAS_E_ARQUITETURA.md)** - Stack técnico e Screaming Architecture
-
-### ⚖️ Regras e Padrões
-4. **[REGRAS_DE_NEGOCIO.md](./REGRAS_DE_NEGOCIO.md)** - Lógica de domínio (Como o sistema pensa)
-5. **[PADROES_DO_PROJETO.md](./PADROES_DO_PROJETO.md)** - Convenções de código (ESLint, Prettier, Commits)
-6. **[FLUXOS_DE_TRABALHO.md](./FLUXOS_DE_TRABALHO.md)** - Git workflow e qualidade
-
-### 📋 Conformidade e Dados
-7. **[PRIVACIDADE_E_DADOS.md](./PRIVACIDADE_E_DADOS.md)** - Política de privacidade, tratamento de dados e conformidade LGPD.
-
-### 🏗️ Arquitetura Detalhada
-8. **[architecture/](./architecture/)** - Decisões Arquiteturais (ADRs) e Manifestos.
+A **Extensão UNIVESP** é uma ferramenta de produtividade e gestão acadêmica projetada para automatizar o acesso e organização de tarefas no AVA. Priorizando a soberania de dados (Local-First) e uma arquitetura robusta.
 
 ---
 
-## 📂 Estrutura de Pastas
+## 📚 Documentação Técnica
 
-```
-docs/
-├── architecture/      # Arquitetura (ADRs, Visão)
-│   ├── VIS_*.md       # Visão e filosofia
-│   └── ADR_*.md       # Architecture Decision Records
-├── specs/             # Especificações de funcionalidade
-└── [arquivos .md]     # Documentação raiz
+| Documento | Descrição |
+| :--- | :--- |
+| **[Fluxo de Trabalho](docs/FLUXOS_DE_TRABALHO.md)** | Protocolos de Git, Branching e Release. |
+| **[Arquitetura](docs/TECNOLOGIAS_E_ARQUITETURA.md)** | Especificação técnica (Screaming Architecture, Stack). |
+| **[Padrões de Engenharia](docs/PADROES_DO_PROJETO.md)** | Style guides, Linting e Convenções de Código. |
+| **[Glossário](docs/GLOSSARIO.md)** | Definições de termos de domínio e técnicos. |
+| **[Visão do Projeto](docs/IDENTIDADE_DO_PROJETO.md)** | Princípios norteadores e filosofia do produto. |
+
+---
+
+## 🚀 Getting Started (Desenvolvimento)
+
+### Pré-requisitos
+- Node.js 20.x+
+- Google Chrome (Modo Desenvolvedor)
+
+### Instalação do Ambiente
+```bash
+# 1. Clone o repositório
+git clone https://github.com/Gerson-Santiago/extensaoUNIVESP.git
+
+# 2. Instale dependências
+npm install
 ```
 
----
-
-## 🎯 Por Onde Começar?
-
-### Se você é um **Novo Desenvolvedor**:
-1. Leia [IDENTIDADE_DO_PROJETO.md](./IDENTIDADE_DO_PROJETO.md) (entenda o "porquê")
-2. Leia [GLOSSARIO.md](./GLOSSARIO.md) (aprenda a linguagem)
-3. Leia [TECNOLOGIAS_E_ARQUITETURA.md](./TECNOLOGIAS_E_ARQUITETURA.md) (entenda o "como")
-4. Consulte [REGRAS_DE_NEGOCIO.md](./REGRAS_DE_NEGOCIO.md) antes de codificar
-
-### Se você quer **Contribuir com Código**:
-1. Siga [PADROES_DO_PROJETO.md](./PADROES_DO_PROJETO.md) (linting, testes)
-2. Respeite [FLUXOS_DE_TRABALHO.md](./FLUXOS_DE_TRABALHO.md) (Git, branches)
-
-### Se você quer **Entender uma Decisão Arquitetural**:
-Explore `screaming_architecture/ADR_*.md` (Architecture Decision Records)
+### Verificação
+Antes de submeter código, execute a pipeline de qualidade:
+```bash
+npm run verify
+```
 
 ---
 
-## 🔍 Dúvidas Comuns
+## 📂 Visão Geral da Estrutura
 
-**"Onde coloco meu código novo?"**
-→ Leia [TECNOLOGIAS_E_ARQUITETURA.md](./TECNOLOGIAS_E_ARQUITETURA.md) seção "Anatomia do Sistema"
-
-**"Qual a diferença entre Repository e Service?"**
-→ Consulte [GLOSSARIO.md](./GLOSSARIO.md)
-
-**"Por que a pasta sidepanel/ não pode ser renomeada?"**
-→ Leia [screaming_architecture/ADR_002_SIDEPANEL_CONSTRAINT.md](./screaming_architecture/ADR_002_SIDEPANEL_CONSTRAINT.md)
-
-**"Como a extensão coleta dados?"**
-→ Leia [DATA_HANDLING.md](./DATA_HANDLING.md) e [CONFORMIDADE_LGPD.md](./CONFORMIDADE_LGPD.md)
+```text
+/
+├── features/        # Módulos de Domínio (Core Business)
+├── shared/          # Componentes Reutilizáveis
+├── sidepanel/       # Interface Principal
+├── scripts/         # Scripts de Background/Content
+└── docs/            # Base de Conhecimento
+```
 
 ---
 
-> **Regra de Ouro**: Se a documentação não responde sua pergunta, ela está incompleta. Abra uma Issue ou atualize este README.
+## 📜 Conformidade e Legal
+
+- **Privacidade**: Consulte [PRIVACIDADE_E_DADOS.md](docs/PRIVACIDADE_E_DADOS.md).
+- **Licença**: MIT. Este projeto é independente e não possui vínculo oficial com a UNIVESP.

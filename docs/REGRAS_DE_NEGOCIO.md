@@ -1,75 +1,45 @@
-# 📜 Regras de Negócio e Especificação Funcional
+# Regras de Negócio (Business Logic)
 
-Este documento detalha o comportamento funcional e as decisões lógicas do sistema, servindo como referência para desenvolvimento e manutenção.
-
----
-
-## 1. Gerenciamento de Abas (`Tabs.js`)
-
-**Propósito**: Centralizar e normalizar a navegação e abertura de abas, garantindo que o usuário não perca o contexto de estudo e evitando a poluição do navegador com múltiplas abas do mesmo conteúdo.
-
-### 1.1. Regra de Unicidade de Aba
-**Quando**: O usuário clica em um item de curso ou semana no Painel Lateral.
-
-**Comportamento**:
-- O sistema DEVE verificar se já existe uma aba aberta correspondente ao conteúdo solicitado.
-- **Match por Pattern (Prioritário)**: Se o componente fornecer um padrão (ex: `sei.univesp.br`), qualquer aba do domínio satisfaz a requisição (ignora subcaminhos).
-- **Match por ID**: Se a URL alvo contém `course_id`/`content_id`, busca a aba específica.
-- **Fallback**: Busca exata ou por prefixo.
-
-**Decisão**:
-- **Se encontrar**: Foca na janela e ativa a aba existente. NÃO recarrega a página (preserva estado).
-- **Se não encontrar**: Cria uma nova aba e a foca imediatamente.
+Especificação funcional do comportamento esperado do sistema.
 
 ---
 
-## 2. Coleta de Dados (`ScraperService.js`)
+## 1. Gestão de Navegação (Tabs)
 
-**Propósito**: Extrair informações de estrutura do curso (semanas, vídeos, textos) diretamente da interface do AVA (Blackboard), visto que não há API pública disponível.
-
-### 2.1. Regra de Detecção de Semanas
-**Quando**: O usuário acessa a página "Conteúdo" de um curso ou clica em "Atualizar".
-
-**Lógica de Extração**:
-1. **Identificação**: Busca elementos HTML que correspondam ao padrão visual de uma "Semana" (pastas, links com datas).
-2. **Validação**: Ignora itens que não possuam links clicáveis ou que sejam puramente informativos (avisos).
-3. **Deep Scraping (Opcional)**: Ao importar em lote, o sistema pode acessar a página de cada semana em background para validar se há conteúdo real antes de adicionar.
+### 1.1 Unicidade de Instância
+O sistema deve prevenir a duplicação de abas para o mesmo recurso.
+- **Regra**: Ao solicitar a abertura de um link (ex: Curso X), verificar se existe aba ativa com URL correspondente.
+- **Ação**:
+    - *Match*: Focar na aba existente.
+    - *No Match*: Criar nova aba.
 
 ---
 
-## 3. Persistência de Dados (`CourseRepository.js`)
+## 2. Scraping e Coleta
 
-**Propósito**: Manter a lista de matérias e o progresso do usuário salvos localmente, respeitando a privacidade (Local-First).
-
-**Regras**:
-- **Soberania**: Os dados pertencem ao navegador do usuário (`chrome.storage.local` / `sync`). NENHUM dado é enviado para servidores externos.
-- **Identificador Único**: Cada curso é identificado primariamente por seu ID no AVA. Cursos com mesmo ID são tratados como o mesmo objeto (atualização ao em vez de duplicação).
-- **Metadados**: Tags como "2025/1 - 1º Bimestre" são persistidas junto com o curso para permitir agrupamento visual.
+### 2.1 Extração de Estrutura
+- **Fonte**: DOM do AVA (Blackboard).
+- **Validação**: Itens extraídos devem conter links funcionais. Placeholders visuais sem link devem ser ignorados.
+- **Sincronização**: O scraping ocorre sob demanda (clique do usuário) ou em background durante importação em lote.
 
 ---
 
-## 4. Importação em Lote (`BatchImportModal.js`)
+## 3. Persistência (Storage Layer)
 
-**Propósito**: Agilizar a configuração inicial da extensão importando múltiplas matérias de uma vez.
+### 3.1 Identidade de Entidade
+- **Chave Primária**: O ID de Curso extraído da URL do AVA é a chave única.
+- **Conflito**: Importar um curso já existente deve resultar em *Upsert* (Atualização), preservando metadados locais (ex: ordem, tags customizadas).
 
-**Fluxo**:
-1. **Varredura**: Lê a grade de cursos na página "Linha do Tempo" ou "Cursos".
-2. **Filtragem**: Permite ao usuário selecionar quais "Termos" (Períodos Letivos) deseja importar.
-3. **Execução**:
-    - Para cada curso selecionado, abre uma conexão em background.
-    - Extrai o nome e ID.
-    - Salva no storage.
-    - Notifica o progresso na UI.
+### 3.2 Escopo de Dados
+- **Local**: `chrome.storage.local` para dados volumosos (cache de semanas).
+- **Sync**: `chrome.storage.sync` para configurações críticas de usuário (preferências).
 
 ---
 
-> *Este documento deve se manter agnóstico à linguagem de programação. Alterações na implementação técnica não devem, idealmente, alterar este documento, a menos que a regra de negócio mude.*
+## 4. Importação em Lote
 
----
-
-### Documentação
-<!-- Documentação do projeto -->
-**[README.md](../README.md)**            Documentação do projeto.             
-<!-- Histórico de versões e atualizações -->
-**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
-
+### 4.1 Fluxo Executivo
+1.  **Discovery**: Identificação de cursos disponíveis na grade do aluno.
+2.  **Selection**: Usuário seleciona subconjunto de cursos.
+3.  **Processing**: Fila de processamento em background para extração de metadados de cada curso.
+4.  **Feedback**: Interface deve prover progresso visual em tempo real.

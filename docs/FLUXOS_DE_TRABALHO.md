@@ -1,187 +1,112 @@
-# ⚙️ Fluxos de Trabalho da Equipe (Team Workflow)
+# ⚙️ Workflow de Engenharia
 
-> [!WARNING]
-> **Regras Gerais:**
-> 1.  🚫 Proibido `npm install` sem discussão prévia.
-> 2.  🛡️ Commit direto na `main` ou `dev` é proibido sem aprovação (Gate Manual).
-> 3.  🧪 Sem teste, sem feature.
+> **Diretrizes Mandatórias:**
+> 1.  🚫 **Veto de Dependências**: A instalação de novos pacotes (`npm install`) requer aprovação técnica prévia.
+> 2.  🛡️ **Branch Protection**: Commits diretos na `main` ou `dev` são estritamente proibidos.
+> 3.  🧪 **Gate de Qualidade**: Pull Requests sem cobertura de testes serão rejeitados automaticamente.
 
-Este documento descreve como a equipe de desenvolvimento opera. Se você é um novo desenvolvedor (ou uma IA), **leia isto antes de tocar no código**.
-
----
-
-## 🏗️ Ciclo de Desenvolvimento (Development Lifecycle)
-
-Nosso fluxo segue um padrão simples de Feature Branch.
-
-### 1. Escolha da Tarefa
-- [ ] Identifique uma Issue ou crie uma tarefa no `task.md`.
-- [ ] Entenda o "Porquê" antes do "Como". Se a tarefa não tem um valor claro para o usuário, questione.
-
-### 2. Branching
-- [ ] Crie uma branch descritiva a partir da `dev` (ou `main` se não houver dev):
-    - `feat/nova-funcionalidade`
-    - `bug/correcao-critica`
-    - `refactor/limpeza-codigo`
-    - `docs/atualizacao-readme`
-    - **Dica:** Use `git switch -c feat/nome` (Moderno) - **NÃO USE** `git checkout -b`.
-    - **Dica:** Use os workflows automatizados (`.agent/workflows/`).
-
-### 3. Codificação (Coding Rules)
-- **Javascript Moderno**: Use ES6+, `const`/`let`, Arrow Functions.
-- **Modularização (Screaming Architecture)**: 
-  - `features/`: Organize por domínio de negócio (ex: `courses`, `session`)
-  - Cada feature contém: `ui/`, `logic/`, `data/`, `services/`, `tests/`
-  - `shared/`: Componentes reutilizáveis (`shared/ui`, `shared/utils`, `shared/logic`)
-  - `assets/`: Recursos estáticos (CSS, imagens)
-- **Padrões**: Consulte `PADROES_DO_PROJETO.md`.
-- **Linting Contínuo**: VS Code deve estar sem sublinhados vermelhos.
-
-### 4. Verificação Local (Before Commit)
-
-#### 🛡️ segurança de Refatoração
-**Nunca refatore código sem cobertura de testes.**
-- [ ] Se não tem teste, crie um teste que passe com o código atual.
-- [ ] Só depois refatore.
-
-#### 🔄 Princípio da Co-evolução
-> "Se a lógica muda, o teste muda."
-
-- [ ] Validou se o teste passou pelo motivo certo?
-- [ ] Atualizou o teste para refletir a nova regra?
-
-#### 💻 Comandos Obrigatórios (Automação Ativa)
-O projeto possui **Husky** configurado.
-- [ ] `git commit`: Dispara automaticamente Lint e Prettier.
-    - Se falhar: Corrija os erros reportados e tente novamente.
-    - Se passar: O código será formatado automaticamente.
-- [ ] `npm test`: **Deve ser rodado manualmente** antes do push (ainda não está no pre-commit por performance).
-
-### 5. Commit e Pull Request (PR)
-- Use mensagens semânticas (`feat:`, `fix:`, `docs:`).
-- **Idioma**: A descrição do commit deve ser sempre em **Português do Brasil**.
-    - ✅ `feat: adiciona botão de login`
-    - ❌ `feat: add login button`
-- Abra o PR descrevendo o que foi feito.
-
-## 🔄 6. Ciclo de Vida e Sincronização (Anti-Caos)
-
-Para evitar que a árvore balance e caia (branches divergentes), siga este ritual sagrado:
-
-### 🛫 Decolagem (Antes de criar branch)
-1.  **Vá para a base:** `git switch dev`
-2.  **Balance a Árvore:** `git pull origin dev` (Garanta que você tem a verdade).
-3.  **Teste o Solo:** `npm test` (Nunca crie branch a partir de uma dev quebrada).
-4.  **REGRA DE OURO (Zero Divergência):**
-    > [!IMPORTANT]
-    > **Nunca crie uma feature branch se `main` e `dev` estiverem divergentes.**
-    *   Verifique: `git diff main dev`
-    *   **Deve retornar vazio.** Se houver diferença, PARE.
-    *   *Solução:* Crie uma branch `chore/sync`, resolva a divergência (rebase/merge), mergeie e só então comece sua feature.
-5.  **Crie:** `git switch -c feat/sua-feature`.
-
-### 🛬 Pouso (Ao terminar)
-1.  **Merge Local:**
-    *   `git switch dev`
-    *   `git merge feat/sua-feature`
-2.  **Sincronização Imediata (Crucial):**
-    *   `git push origin dev`
-    *   *Se você não der push agora, a próxima pessoa (ou você mesmo no futuro) vai ramificar de uma base desatualizada.*
-
-### 🧹 Limpeza
-*   `git branch -d feat/sua-feature` (Delete branches mortas para não confundir).
+Este documento estabelece os protocolos operacionais da equipe de engenharia. O compliance com estas regras é mandatório para todos os colaboradores.
 
 ---
 
-## 🚀 7. Release & Deploy (Dev -> Main)
+## 1. Estratégia de Branching (Git Flow Simplificado)
 
-Quando a `dev` está estável, testada e pronta para o público:
+Adotamos um modelo baseado em Feature Branching com Trunk-Based Development na `dev`.
 
-### Checklist de Segurança Absoluta (Gatekeeper)
-Antes de rodar qualquer comando de merge para `main`, você **DEVE** garantir:
-1.  [ ] **Testes Verdes**: `npm test` passou sem erros.
-2.  [ ] **Lint Limpo**: `npm run lint` não acusa nada.
-3.  [ ] **Tipagem Sólida**: `npm run type-check` retornou 0 erros.
-    *   **Dica:** Use `npm run verify` para rodar tudo de uma vez.
-4.  [ ] **Dev Atualizada**: Você deu `git pull origin dev` e não veio nada novo (ou se veio, você re-testou).
+### 1.1 Tipos de Branch
+- **`main`**: Produção estável. Deploy automatizado.
+- **`dev`**: Integração contínua (Trunk). Deve estar sempre compilável e testável.
+- **`feat/<nome>`**: Novas funcionalidades.
+- **`fix/<nome>`**: Correções de bugs.
+- **`refactor/<nome>`**: Refatoração técnica.
+- **`docs/<nome>`**: Atualização de documentação.
 
-### O Comando Sagrado (Release)
-Para evitar erros manuais, use o workflow: `/release-prod`.
-Ou manualmente:
+### 1.2 Protocolo de Criação
+1.  **Sincronização**: Garanta que sua base `dev` está atualizada (`git pull origin dev`).
+2.  **Verificação de Divergência**: Não inicie features se houver conflito pendente entre `main` e `dev`.
+3.  **Nomenclatura**: Use nomes descritivos em *kebab-case*.
+    -   Ex: `feat/importacao-lote`, `fix/erro-download`.
+
+---
+
+## 2. Padrões de Codificação
+
+### 2.1 Stack & Arquitetura
+- **Javascript**: ES Modules (ESM) nativo.
+- **Arquitetura**: Screaming Architecture (vide `TECNOLOGIAS_E_ARQUITETURA.md`).
+- **Módulos**:
+    -   `features/`: Domínios de negócio isolados.
+    -   `shared/`: Utilitários transversais.
+- **Linting**: Tolerância zero para linters. O código não deve conter warnings.
+
+### 2.2 Refatoração Segura
+**Princípio**: Refatoração é uma operação de manutenção de estrutura, não de comportamento.
+- **Pré-requisito**: Existência de testes verdes.
+- **Execução**: Altere a estrutura interna mantendo a interface pública inalterada.
+- **Validação**: Testes devem permanecer verdes sem alteração na lógica de asserção.
+
+---
+
+## 3. Protocolo de Commit e Integração
+
+### 3.1 Automação Local (Pre-commit)
+O repositório utiliza Husky para garantir sanidade antes do push.
+- **Lint Staged**: Formatação automática (Prettier) e Linting (ESLint) nos arquivos modificados.
+- **Teste Manual**: É responsabilidade do desenvolvedor executar `npm test` antes do push para evitar quebra da CI.
+
+### 3.2 Convenção de Commits
+Seguimos estritamente o **Conventional Commits** em Português Brasileiro.
+- Ex: `feat: implementa autenticação via token`
+- Ex: `fix(scraper): corrige seletor css da semana`
+
+### 3.3 Sincronização (Sync Policy)
+Para minimizar conflitos de merge (Merge Hell):
+1.  **Pull Frequent**: Atualize sua branch com a `dev` diariamente.
+2.  **Push Early**: Suba seus commits regularmente para backup e visibilidade.
+
+---
+
+## 4. Pipeline de Release
+
+O processo de promoção de código da `dev` para `main` segue um rigoroso Gate de Qualidade.
+
+### 4.1 Critérios de Aceite (Quality Gate)
+- [ ] **Testes**: Suíte completa (`npm test`) passando.
+- [ ] **Lint**: Sem erros ou warnings (`npm run lint`).
+- [ ] **Types**: Verificação estática (`npm run type-check`) limpa.
+
+### 4.2 Procedimento de Deploy
+Utilize o script de verificação unificado para validar o release candidato:
 
 ```bash
-# 1. Garanta que a dev tem a última versão
-git switch dev
-git pull origin dev
+# 1. Validação Completa
+npm run verify
 
-# 2. Vá para a main e atualize (para evitar conflitos de base)
+# 2. Execução do Merge (Se aprovado)
 git switch main
 git pull origin main
-
-# 3. O Grande Momento (Merge)
 git merge dev
-
-# 4. Envio para Produção
 git push origin main
-
-# 5. Volte para segurança
 git switch dev
 ```
 
 ---
 
-## 🏛️ Governança e Regras de Segurança
+## 5. Ferramental
 
-### 4.1 Gate de Aprovação
-O agente (ou dev) tem autonomia para rodar testes "Turbo", mas **NÃO TEM AUTONOMIA** para commitar alterações funcionais sem revisão explícita.
-- **Fluxo**: Implementar -> Validar (Turbo) -> Pausar -> Pedir feedback -> Commitar.
+### Ambiente de Desenvolvimento
+- **Runtime**: Node.js 20.x (LTS).
+- **Gerenciador de Pacotes**: npm.
 
-### 4.2 Documentação Viva
-Software muda. Documentação deve acompanhar.
-- [ ] Estrutura mudou? -> Atualizar `TECNOLOGIAS_E_ARQUITETURA.md`.
-- [ ] Fluxo mudou? -> Atualizar `FLUXOS_DE_TRABALHO.md`.
-- [ ] Changelog atualizado?
-
-### 4.3 Política Estrita de NPM
-**Proibido `npm install` silencioso.**
-Novas dependências são um risco de segurança e performance.
-- Regra: Todo `npm install` deve ser proposto, justificado e aprovado pelo usuário antes de execução.
-
----
-
-## 🛠️ Ferramentas e Configurações
-
-### Ambiente
-- **Editor**: VS Code (Recomendado) + ESLint + Prettier.
-- **Node**: Versão 20.x+.
-
-### Scripts Principais (`package.json`)
-| Comando | Descrição |
+### Scripts Essenciais
+| Script | Função |
 | :--- | :--- |
-| `npm install` | Instala dependências (Cuidado!). |
-| `npm run lint` | Roda o ESLint (Check). |
-| `npm run lint:fix` | Auto-fix Lint. |
-| `npm run format` | Prettier. |
-| `npm test` | Jest Suite. |
-| `npm run verify` | Roda Testes + Lint + Type-Check (Recomendado antes do push). |
+| `npm run verify` | **Pipeline Principal**. Executa Testes, Lint e Type-Check. |
+| `npm test` | Executa suíte de testes (Jest). |
+| `npm run lint` | Analisa código estático (ESLint). |
+| `npm run format` | Aplica formatação de estilo (Prettier). |
+| `npm run type-check` | Validação de tipos JSDoc. |
 
 ---
 
-## 🚫 O que NÃO Fazer
-
-1.  **Não comite código quebrado.**
-2.  **Não ignore o console.**
-3.  **Não misture idiomas.** (Doc em PT-BR, Código misto).
-
----
-
-> *"Qualidade não é um ato, é um hábito."*
-
----
-
-### Documentação
-<!-- Documentação do projeto -->
-**[README.md](../README.md)**            Documentação do projeto.             
-<!-- Histórico de versões e atualizações -->
-**[CHANGELOG.md](../CHANGELOG.md)**      Histórico de versões e atualizações. 
-
+> **Nota**: A violação destes protocolos pode resultar em rejeição automática de Pull Requests ou reversão de commits.
