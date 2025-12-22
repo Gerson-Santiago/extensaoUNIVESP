@@ -198,10 +198,10 @@ describe('CourseWeeksView - Mini Preview', () => {
       expect(view.activeWeek).toBe(week);
       expect(mockElement.classList.add).toHaveBeenCalledWith('week-item-active');
 
-      // Second click: hide (toggle)
+      // Second click: hide preview BUT keep highlight (UX improvement)
       await view.showPreview(week, mockElement);
-      expect(view.activeWeek).toBe(null);
-      expect(mockElement.classList.remove).toHaveBeenCalledWith('week-item-active');
+      expect(view.activeWeek).toBe(week); // Still active!
+      expect(mockElement.classList.remove).not.toHaveBeenCalled(); // Highlight stays!
     });
 
     it('should remove previous preview when clicking different week', async () => {

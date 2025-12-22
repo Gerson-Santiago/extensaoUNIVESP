@@ -100,27 +100,29 @@ export class CourseWeeksView {
   /**
    * Mostra/esconde preview de tarefas da semana (toggle)
    * Preview aparece dinamicamente abaixo da semana clicada
+   * IMPORTANTE: Destaque azul permanece mesmo quando preview fecha (indica semana ativa no AVA)
    * @param {Object} week - Objeto da semana
    * @param {HTMLElement} [weekElement] - Elemento DOM da semana (opcional para testes)
    */
   async showPreview(week, weekElement) {
-    // Toggle: se clicar na mesma semana, colapsa
+    // Se já é a semana ativa, apenas toggle do preview (mas mantém destaque azul!)
     if (this.activeWeek === week && weekElement) {
+      // Toggle: fecha preview MAS mantém destaque visual
       this.hidePreview();
-      this.activeWeek = null;
-      weekElement.classList.remove('week-item-active');
+      // NÃO remove this.activeWeek nem o destaque azul
       return;
     }
 
-    // Remove preview anterior e destaque
+    // Trocar para nova semana: remove destaque anterior
     this.hidePreview();
     if (this.activeWeek && weekElement) {
+      // Remove destaque da semana anterior
       document
         .querySelectorAll('.week-item')
         .forEach((el) => el.classList.remove('week-item-active'));
     }
 
-    // Define nova semana ativa
+    // Define nova semana ativa e adiciona destaque
     this.activeWeek = week;
     if (weekElement) {
       weekElement.classList.add('week-item-active');
@@ -159,7 +161,7 @@ export class CourseWeeksView {
       }
     } catch (error) {
       console.error('Erro ao carregar preview:', error);
-      // Remove destaque se houver erro
+      // Em caso de erro, remove destaque também
       if (weekElement) {
         weekElement.classList.remove('week-item-active');
       }
