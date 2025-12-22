@@ -11,7 +11,7 @@ Sistema Blackboard utilizado pela UNIVESP. Fonte primária de dados para scrapin
 
 ### Feature
 Unidade funcional autônoma do sistema. Representa um Bounded Context na arquitetura.
-- Ex: `courses`, `session`.
+- Ex: `courses`, `session`, `settings`.
 
 ### View
 Interface gráfica de alto nível que ocupa a área principal do painel lateral. Equivalente a uma "Página" em SPAs.
@@ -19,7 +19,7 @@ Interface gráfica de alto nível que ocupa a área principal do painel lateral.
 
 ### Component
 Elemento de interface reutilizável e de escopo menor que uma View.
-- Ex: `WeekItem`, `ProgressBar`.
+- Ex: `WeekItem`, `CourseItem`, `Modal`.
 
 ---
 
