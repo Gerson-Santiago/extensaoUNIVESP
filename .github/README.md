@@ -75,8 +75,8 @@ features/courses/
 ├── services/
 │   └── WeekContentScraper.js (#002 - scraping AVA)
 ├── views/
-│   ├── WeeksCourseView/     (#005 - mini preview)
-│   └── WeekTasksView/       (#003, #007, #008 - view principal)
+│   ├── CourseWeeksView/     (#005 - mini preview)
+│   └── CourseWeekTasksView/ (#003, #007, #008 - view principal)
 ├── components/
 │   └── WeekItem.js          (#004 - botão Tarefas)
 └── tests/                   (#009 - testes integração)
