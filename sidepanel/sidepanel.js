@@ -19,6 +19,7 @@ import { HomeView } from '../features/home/ui/HomeView.js';
 import { CoursesView } from '../features/courses/views/CoursesView/index.js';
 import { SettingsView } from '../features/settings/ui/SettingsView.js';
 import { CourseWeeksView } from '../features/courses/views/CourseWeeksView/index.js';
+import { DetailsActivitiesWeekView } from '../features/courses/views/DetailsActivitiesWeekView/index.js';
 import { FeedbackView } from '../features/feedback/ui/FeedbackView.js';
 
 // Utilitários
@@ -122,12 +123,22 @@ document.addEventListener('DOMContentLoaded', () => {
     onAddCurrentInfo: () => handleAddCurrentPage(),
   });
 
+  const detailsActivitiesWeekView = new DetailsActivitiesWeekView({
+    onBack: () => {
+      layout.navigateTo('courseDetails');
+    },
+  });
+
   const courseWeeksView = new CourseWeeksView({
     onBack: () => {
       layout.topNav.setActive('courses');
       layout.navigateTo('courses');
     },
     onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
+    onViewActivities: (week) => {
+      detailsActivitiesWeekView.setWeek(week);
+      layout.navigateTo('weekActivities');
+    },
   });
 
   const feedbackView = new FeedbackView({
@@ -143,6 +154,7 @@ document.addEventListener('DOMContentLoaded', () => {
     courses: coursesView,
     settings: settingsView,
     courseDetails: courseWeeksView,
+    weekActivities: detailsActivitiesWeekView,
     feedback: feedbackView,
   };
 

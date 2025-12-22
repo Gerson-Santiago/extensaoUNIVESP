@@ -93,7 +93,17 @@ export class CourseWeeksView {
             this.callbacks.onOpenCourse(url);
           },
           onViewTasks: (w) => this.showPreview(w, wDiv),
-          onViewActivities: (w) => {
+          onViewActivities: async (w) => {
+            // Scrape content if not already loaded
+            if (!w.items || w.items.length === 0) {
+              try {
+                const items = await WeekContentScraper.scrapeWeekContent(w.url);
+                w.items = items;
+              } catch (error) {
+                console.error('Erro ao carregar atividades:', error);
+                w.items = [];
+              }
+            }
             // Navega para DetailsActivitiesWeekView
             if (this.callbacks.onViewActivities) {
               this.callbacks.onViewActivities(w);
