@@ -29,7 +29,7 @@ Adicionar sistema de status de tarefas com 3 estados visuais:
 > [!NOTE]
 > **Status das Tarefas**: A extensão LÊ o status do AVA ("Revisto" = 🟢 / "Marca Revista" = 🔵), não cria sistema próprio de marcação.
 
-1. **Reutilizar** código existente (Week.js, WeekItem.js, WeeksCourseView)
+1. **Reutilizar** código existente (Week.js, WeekItem.js, CourseWeeksView)
 2. **Fazer funcionar** com funcionalidade mínima
 3. **TDD rigoroso** em cada passo
 4. **Ler status do AVA** (não criar próprio)
@@ -82,9 +82,9 @@ Adicionar sistema de status de tarefas com 3 estados visuais:
 - **TopNav**: 📚 Cursos
 - **Não modificar**: Funciona perfeitamente
 
-#### WeeksCourseView/ (JÁ EXISTE)
+#### CourseWeeksView/ (JÁ EXISTE)
 - **O que faz**: Lista semanas de UMA matéria
-- **Navegação**: MyCoursesView → (clica em 👁️) → WeeksCourseView
+- **Navegação**: MyCoursesView → (clica em 👁️) → CourseWeeksView
 - **Modificação mínima**: Chamar nova view ao clicar em [Tarefas]
 
 ---
@@ -266,12 +266,12 @@ describe('WeekItem with Tasks Button', () => {
 
 ---
 
-#### 3.1.3 Criar WeekTasksView (Nova View Simples)
-**Arquivo**: `features/courses/views/WeekTasksView/index.js` (NOVO)
+#### 3.1.3 Criar CourseWeekTasksView (Nova View Simples)
+**Arquivo**: `features/courses/views/CourseWeekTasksView/index.js` (NOVO)
 
 **Implementação Mínima**:
 ```javascript
-export class WeekTasksView {
+export class CourseWeekTasksView {
   constructor(callbacks) {
     this.callbacks = callbacks; // { onBack }
     this.week = null;
@@ -344,12 +344,12 @@ export class WeekTasksView {
 
 **Teste (TDD)**:
 ```javascript
-// features/courses/views/WeekTasksView/WeekTasksView.test.js
-describe('WeekTasksView', () => {
+// features/courses/views/CourseWeekTasksView/CourseWeekTasksView.test.js
+describe('CourseWeekTasksView', () => {
   let view;
   
   beforeEach(() => {
-    view = new WeekTasksView({ onBack: jest.fn() });
+    view = new CourseWeekTasksView({ onBack: jest.fn() });
     document.body.innerHTML = '';
   });
 
@@ -384,8 +384,8 @@ describe('WeekTasksView', () => {
 
 ---
 
-#### 3.1.4 Integrar com WeeksCourseView
-**Arquivo**: `features/courses/views/WeeksCourseView/index.js` (MODIFICAR)
+#### 3.1.4 Integrar com CourseWeeksView
+**Arquivo**: `features/courses/views/CourseWeeksView/index.js` (MODIFICAR)
 
 **Modificação no método `renderWeeksList`**:
 ```javascript
@@ -409,9 +409,9 @@ renderWeeksList(weeksList) {
 - [ ] Week.js com status (typedef + teste)
 - [ ] WeekItem.js com botão [Tarefas] (código + teste)
 - [ ] WeekContentScraper (scraping do AVA - código + teste)
-- [ ] WeekTasksView básica (código + teste)
-- [ ] Mini preview em WeeksCourseView (código + teste)
-- [ ] Integração WeeksCourseView (código + teste)
+- [ ] CourseWeekTasksView básica (código + teste)
+- [ ] Mini preview em CourseWeeksView (código + teste)
+- [ ] Integração CourseWeeksView (código + teste)
 - [ ] `npm test` - All Passing
 
 ---
@@ -419,7 +419,7 @@ renderWeeksList(weeksList) {
 ### Fase 2: Funcionalidades - Interatividade e Persistência 🔄
 
 #### 3.2.1 Adicionar Click Handler para Mudar Status
-**Arquivo**: `features/courses/views/WeekTasksView/index.js` (MODIFICAR)
+**Arquivo**: `features/courses/views/CourseWeekTasksView/index.js` (MODIFICAR)
 
 **Adicionar no `renderTasks()`**:
 ```javascript
@@ -474,7 +474,7 @@ it('should cycle status on click: TODO → DOING → DONE → TODO', () => {
 ---
 
 #### 3.2.2 Persistir Status no chrome.storage
-**Arquivo**: `features/courses/views/WeekTasksView/index.js` (MODIFICAR)
+**Arquivo**: `features/courses/views/CourseWeekTasksView/index.js` (MODIFICAR)
 
 **Adicionar método**:
 ```javascript
@@ -544,7 +544,7 @@ it('should save status to chrome.storage', async () => {
 ---
 
 #### 3.2.3 Calcular e Exibir Progresso
-**Arquivo**: `features/courses/views/WeekTasksView/index.js` (MODIFICAR)
+**Arquivo**: `features/courses/views/CourseWeekTasksView/index.js` (MODIFICAR)
 
 **Adicionar método**:
 ```javascript
@@ -629,7 +629,7 @@ it('should calculate progress correctly', () => {
 > Esta fase só deve ser executada SE o código da Fase 2 ficar complexo demais ou difícil de manter.
 
 #### Quando Refatorar?
-- ✅ `WeekTasksView` passar de 300 linhas
+- ✅ `CourseWeekTasksView` passar de 300 linhas
 - ✅ Lógica de status ficar duplicada em múltiplos lugares
 - ✅ Adicionar nova feature que precise da mesma lógica
 
@@ -693,8 +693,8 @@ export class WeekStorage {
 features/courses/
 ├── views/
 │   ├── MyCoursesView/
-│   ├── WeeksCourseView/
-│   └── WeekTasksView/          (já existe)
+│   ├── CourseWeeksView/
+│   └── CourseWeekTasksView/          (já existe)
 ├── components/
 │   ├── CourseItem.js
 │   └── WeekItem.js         (já modificado)
@@ -713,7 +713,7 @@ features/courses/
 **Checklist Fase 3** (só se necessário):
 - [ ] Extrair lógica para WeekProgress (TDD)
 - [ ] Extrair storage para WeekStorage (TDD)
-- [ ] Organizar imports em WeekTasksView
+- [ ] Organizar imports em CourseWeekTasksView
 - [ ] Todos os testes ainda passando
 - [ ] Zero regressões
 
@@ -806,9 +806,9 @@ features/courses/
     ↓
 MyCoursesView (Lista de Matérias)
     ↓ clica em 👁️ de "Cálculo I"
-WeeksCourseView (Lista de Semanas)
+CourseWeeksView (Lista de Semanas)
     ↓ clica em [📋 Tarefas] de "Semana 1"
-WeekTasksView (Lista de Tarefas da Semana 1)
+CourseWeekTasksView (Lista de Tarefas da Semana 1)
     ↓ clica em tarefa
     Status muda: ⚪ → 🔵 → 🟢 → ⚪
 ```
@@ -826,12 +826,12 @@ WeekTasksView (Lista de Tarefas da Semana 1)
 ### Cobertura de Testes
 - [ ] **Models**: 100% (typedef)
 - [ ] **Components**: ≥90% (WeekItem)
-- [ ] **Views**: ≥90% (WeekTasksView)
+- [ ] **Views**: ≥90% (CourseWeekTasksView)
 - [ ] **Lógica**: 100% (status cycle, progress calc)
 
 ### Funcionalidade
 - [ ] Botão [Tarefas] aparece em cada semana
-- [ ] WeekTasksView abre corretamente
+- [ ] CourseWeekTasksView abre corretamente
 - [ ] Status muda ao clicar: ⚪ → 🔵 → 🟢
 - [ ] Status persiste após fechar e reabrir
 - [ ] Progresso calcula corretamente
@@ -869,7 +869,7 @@ Enquanto isso, `features/courses/` é o lar natural! 🏠
 - Adiciona complexidade desnecessária
 
 **Solução MVP-First**:
-- Tudo em `WeekTasksView` inicialmente
+- Tudo em `CourseWeekTasksView` inicialmente
 - Funciona em ~200 linhas
 - Fácil de testar
 - Refatora DEPOIS se crescer (Fase 3)

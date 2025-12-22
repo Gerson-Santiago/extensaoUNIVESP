@@ -51,17 +51,17 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ---
 
-### ✅ Issue #003: WeekTasksView (3h)
+### ✅ Issue #003: CourseWeekTasksView (3h)
 **Branch**: `feat/issue-003-week-tasks-view`
 - [x] Criar branch a partir de dev
-- [x] RED: Criar testes WeekTasksView.test.js
-- [x] GREEN: Implementar classe WeekTasksView
+- [x] RED: Criar testes CourseWeekTasksView.test.js
+- [x] GREEN: Implementar classe CourseWeekTasksView
 - [x] GREEN: Métodos render() e afterRender()
 - [x] GREEN: Método renderTasks()
 - [x] GREEN: Empty state
 - [x] REFACTOR: CSS inline temporário
 - [x] Validar cobertura ≥90%
-- [x] Commit: `feat(courses): adiciona WeekTasksView básica`
+- [x] Commit: `feat(courses): adiciona CourseWeekTasksView básica`
 - [x] Merge para dev
 
 **Workflow**: `/nova-feature`
@@ -88,14 +88,14 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 ### ✅ Issue #005: Mini Preview (3h)
 **Branch**: `feat/issue-005-mini-preview`
 - [ ] Criar branch a partir de dev
-- [ ] RED: Criar testes WeeksCourseView.test.js
+- [ ] RED: Criar testes CourseWeeksView.test.js
 - [ ] GREEN: Adicionar div #activeWeekPreview
 - [ ] GREEN: Método showPreview()
 - [ ] GREEN: Renderização de ícones e %
 - [ ] GREEN: Integração com WeekContentScraper
 - [ ] Error handling com Toaster
 - [ ] Adicionar CSS .week-preview
-- [ ] Commit: `feat(courses): adiciona mini preview em WeeksCourseView`
+- [ ] Commit: `feat(courses): adiciona mini preview em CourseWeeksView`
 - [ ] Merge para dev
 
 **Workflow**: `/nova-feature`
@@ -110,7 +110,7 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 - [ ] Criar/modificar week-item.css
 - [ ] Validar responsividade
 - [ ] Validar acessibilidade (WCAG contraste)
-- [ ] Commit: `style(courses): adiciona estilos para WeekTasksView`
+- [ ] Commit: `style(courses): adiciona estilos para CourseWeekTasksView`
 - [ ] Merge para dev
 
 **Workflow**: Simples (sem testes)
@@ -128,7 +128,7 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 - [ ] GREEN: Atualizar barra visual
 - [ ] Validar fórmula (DONE=100%, DOING=50%)
 - [ ] Cobertura 100%
-- [ ] Commit: `feat(courses): adiciona cálculo de progresso em WeekTasksView`
+- [ ] Commit: `feat(courses): adiciona cálculo de progresso em CourseWeekTasksView`
 - [ ] Merge para dev
 
 **Workflow**: `/nova-feature`
@@ -211,7 +211,7 @@ git branch -d feat/issue-001-week-model
 
 1. #001 (Week.js) → Base de dados
 2. #002 (Scraper) → Fonte de dados
-3. #003 (WeekTasksView) → Visualização básica
+3. #003 (CourseWeekTasksView) → Visualização básica
 4. #004 (Botão) → Acesso à view
 5. #006 (CSS) → Estilização
 6. #005 (Preview) → Feature extra

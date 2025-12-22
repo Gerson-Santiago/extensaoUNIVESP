@@ -1,5 +1,34 @@
 export class WeekContentScraper {
   /**
+   * Scrapes week content from AVA by injecting script into active tab
+   * @param {string} weekUrl - URL da semana
+   * @returns {Promise<Array<{name: string, url: string, type: string, status?: 'TODO'|'DOING'|'DONE'}>>}
+   */
+  static async scrapeWeekContent(weekUrl) {
+    try {
+      // For testing: mock in jest will intercept this
+      if (typeof chrome === 'undefined' || !chrome.tabs) {
+        throw new Error('Chrome APIs not available');
+      }
+
+      const [tab] = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
+      if (!tab || !tab.id) {
+        throw new Error('AVA tab not found');
+      }
+
+      const results = await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: WeekContentScraper.extractItemsFromDOM,
+      });
+
+      return results[0]?.result || [];
+    } catch (error) {
+      console.error('Error scraping week content:', error);
+      throw error;
+    }
+  }
+
+  /**
    * Extrai itens de tarefa do DOM atual (uma página de curso no AVA)
    * @returns {Array<{name: string, url: string, type: string, status?: 'TODO'|'DOING'|'DONE'}>}
    */

@@ -88,7 +88,7 @@
 }
 
 .btn-back {
-  /* Botão de Voltar (<) - Usado em Headers de CourseDetailsView e FeedbackView */
+  /* Botão de Voltar (<) - Usado em Headers de CourseWeeksView e FeedbackView */
   background: none;
   border: none;
   color: var(--text-secondary);

@@ -87,7 +87,7 @@ graph LR
 | Pasta | Quando Usar | O Que Vai Aqui |
 |:---|:---|:---|
 | **`ui/`** | Telas simples, uma View por arquivo | `HomeView.js`, `SettingsView.js`, `FeedbackView.js` |
-| **`views/`** | Telas complexas, uma pasta por View | `CoursesView/index.js`, `CourseDetails/index.js` |
+| **`views/`** | Telas complexas, uma pasta por View | `CoursesView/index.js`, `CourseWeeksView/index.js` |
 | **`components/`** | Widgets reutilizáveis dentro da feature | `CourseItem.js`, `WeekItem.js`, `AddManualModal/` |
 | **`logic/`** | Regras de negócio puras, **SEM** DOM/API | `TermParser.js`, `CourseGrouper.js` |
 | **`models/`** | Definições de Tipos (JSDoc @typedef) | `Course.js`, `Week.js` |
@@ -120,7 +120,7 @@ graph LR
 
 **Estrutura**:
 - `views/CoursesView/` - Lista principal de cursos
-- `views/CourseDetails/` - Detalhes de um curso específico
+- `views/CourseWeeksView/` - Detalhes de um curso específico
 - **`import/`** - 🎯 **Submódulo:** Importação em lote de cursos do AVA
   - `import/components/BatchImportModal.js`
   - `import/logic/BatchImportFlow.js`

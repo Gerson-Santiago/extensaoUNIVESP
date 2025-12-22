@@ -1,9 +1,9 @@
 /**
  * @jest-environment jsdom
  */
-import { WeekTasksView } from '../views/WeekTasksView/index.js';
+import { CourseWeekTasksView } from '../views/CourseWeekTasksView/index.js';
 
-describe('WeekTasksView', () => {
+describe('CourseWeekTasksView', () => {
   let view;
   let mockCallbacks;
 
@@ -11,7 +11,7 @@ describe('WeekTasksView', () => {
     mockCallbacks = {
       onBack: jest.fn(),
     };
-    view = new WeekTasksView(mockCallbacks);
+    view = new CourseWeekTasksView(mockCallbacks);
     document.body.innerHTML = '';
   });
 

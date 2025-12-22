@@ -31,7 +31,7 @@ Criar testes de integração que validam o fluxo completo: navegação → scrap
 ```javascript
 // features/courses/integration/navigation.test.js
 describe('Integration: Navigation Flow', () => {
-  it('should navigate from CoursesView to WeekTasksView', async () => {
+  it('should navigate from CoursesView to CourseWeekTasksView', async () => {
     // Setup
     const course = {
       id: 1,
@@ -53,8 +53,8 @@ describe('Integration: Navigation Flow', () => {
         // 2. Abre CourseDetailsView
         const detailsView = new CourseDetailsView({
           onViewTasks: async (week) => {
-            // 3. Abre WeekTasksView
-            const tasksView = new WeekTasksView({ onBack: jest.fn() });
+            // 3. Abre CourseWeekTasksView
+            const tasksView = new CourseWeekTasksView({ onBack: jest.fn() });
             tasksView.setWeek(week);
             await tasksView.loadWeekTasks();
             
@@ -100,7 +100,7 @@ describe('Integration: Scraping + Storage', () => {
       ]);
     
     const week = { name: 'Semana 1', url: 'http://test.com/week1' };
-    const view = new WeekTasksView({ onBack: jest.fn() });
+    const view = new CourseWeekTasksView({ onBack: jest.fn() });
     view.setWeek(week);
     
     // 1. Carrega tarefas (scraping)
@@ -142,7 +142,7 @@ describe('Integration: Mini Preview', () => {
         { name: 'T3', status: 'TODO' }
       ]);
     
-    const view = new WeeksCourseView({ onBack: jest.fn() });
+    const view = new CourseWeeksView({ onBack: jest.fn() });
     view.setCourse(course);
     const element = view.render();
     document.body.appendChild(element);

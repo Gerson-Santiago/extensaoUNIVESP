@@ -18,7 +18,7 @@ import { MainLayout } from '../shared/ui/layout/MainLayout.js';
 import { HomeView } from '../features/home/ui/HomeView.js';
 import { CoursesView } from '../features/courses/views/CoursesView/index.js';
 import { SettingsView } from '../features/settings/ui/SettingsView.js';
-import { CourseDetailsView } from '../features/courses/views/CourseDetails/index.js';
+import { CourseWeeksView } from '../features/courses/views/CourseWeeksView/index.js';
 import { FeedbackView } from '../features/feedback/ui/FeedbackView.js';
 
 // Utilitários
@@ -87,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
     onViewDetails: (course) => {
       // Navegação customizada: atualiza dados do componente antes de navegar
-      courseDetailsView.setCourse(course);
+      courseWeeksView.setCourse(course);
       layout.navigateTo('courseDetails');
     },
     onAddBatch: () => {
@@ -122,7 +122,7 @@ document.addEventListener('DOMContentLoaded', () => {
     onAddCurrentInfo: () => handleAddCurrentPage(),
   });
 
-  const courseDetailsView = new CourseDetailsView({
+  const courseWeeksView = new CourseWeeksView({
     onBack: () => {
       layout.topNav.setActive('courses');
       layout.navigateTo('courses');
@@ -142,7 +142,7 @@ document.addEventListener('DOMContentLoaded', () => {
     home: homeView,
     courses: coursesView,
     settings: settingsView,
-    courseDetails: courseDetailsView,
+    courseDetails: courseWeeksView,
     feedback: feedbackView,
   };
 

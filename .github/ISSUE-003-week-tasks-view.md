@@ -1,4 +1,4 @@
-# Issue #3: Criar WeekTasksView Básica
+# Issue #3: Criar CourseWeekTasksView Básica
 
 **Epic**: #EPIC-v2.8.0  
 **Fase**: 1 - Foundation  
@@ -16,7 +16,7 @@ Criar view para mostrar lista de tarefas de uma semana com ícones de status (�
 
 ## 🎯 Acceptance Criteria
 
-- [x] Classe `WeekTasksView` criada em `features/courses/views/WeekTasksView/`
+- [x] Classe `CourseWeekTasksView` criada em `features/courses/views/CourseWeekTasksView/`
 - [x] Renderiza lista de tarefas com status visual
 - [x] Botão "← Voltar" funcional
 - [x] Tratamento para lista vazia
@@ -28,12 +28,12 @@ Criar view para mostrar lista de tarefas de uma semana com ícones de status (�
 
 ### Step 1: Criar Testes (RED)
 ```javascript
-// features/courses/views/WeekTasksView/WeekTasksView.test.js
-describe('WeekTasksView', () => {
+// features/courses/views/CourseWeekTasksView/CourseWeekTasksView.test.js
+describe('CourseWeekTasksView', () => {
   let view;
   
   beforeEach(() => {
-    view = new WeekTasksView({ onBack: jest.fn() });
+    view = new CourseWeekTasksView({ onBack: jest.fn() });
     document.body.innerHTML = '';
   });
 
@@ -76,7 +76,7 @@ describe('WeekTasksView', () => {
 ```
 
 ### Step 2: Implementar (GREEN)
-**Arquivo**: `features/courses/views/WeekTasksView/index.js`
+**Arquivo**: `features/courses/views/CourseWeekTasksView/index.js`
 
 Ver SPEC seção 3.1.3 para código completo.
 
@@ -89,7 +89,7 @@ Ver SPEC seção 3.1.3 para código completo.
 
 ### Step 3: Validar
 ```bash
-npm test -- WeekTasksView.test.js
+npm test -- CourseWeekTasksView.test.js
 npm run lint
 ```
 
@@ -118,4 +118,4 @@ Por enquanto, usar estilos inline básicos.
 - [x] Botão Voltar executando callback
 - [x] Empty state funcional
 - [x] `npm test` passando
-- [x] Commit: `feat(courses): adiciona WeekTasksView básica`
+- [x] Commit: `feat(courses): adiciona CourseWeekTasksView básica`

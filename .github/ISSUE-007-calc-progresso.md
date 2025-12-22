@@ -11,7 +11,7 @@
 
 ## 📝 Descrição
 
-Adicionar método `calculateProgress()` em WeekTasksView para calcular % de conclusão com base nos status.
+Adicionar método `calculateProgress()` em CourseWeekTasksView para calcular % de conclusão com base nos status.
 
 ---
 
@@ -29,7 +29,7 @@ Adicionar método `calculateProgress()` em WeekTasksView para calcular % de conc
 
 ### Step 1: Criar Testes (RED)
 ```javascript
-// features/courses/views/WeekTasksView/WeekTasksView.test.js
+// features/courses/views/CourseWeekTasksView/CourseWeekTasksView.test.js
 describe('Progress Calculation', () => {
   it('should calculate progress correctly', () => {
     const week = {
@@ -76,7 +76,7 @@ describe('Progress Calculation', () => {
 
 ### Step 2: Implementar (GREEN)
 ```javascript
-// WeekTasksView/index.js
+// CourseWeekTasksView/index.js
 calculateProgress() {
   if (!this.week.items || this.week.items.length === 0) {
     return { percent: 0, done: 0, total: 0 };
@@ -129,4 +129,4 @@ render() {
 - [ ] Cobertura 100% (todos os cenários)
 - [ ] Barra visual funcionando
 - [ ] `npm test` passando
-- [ ] Commit: `feat(courses): adiciona cálculo de progresso em WeekTasksView`
+- [ ] Commit: `feat(courses): adiciona cálculo de progresso em CourseWeekTasksView`

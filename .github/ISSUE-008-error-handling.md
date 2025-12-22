@@ -30,7 +30,7 @@ Adicionar tratamento de erros (try/catch) com feedback visual via Toaster em tod
 
 ### Step 1: Criar Testes (RED)
 ```javascript
-// WeekTasksView.test.js
+// CourseWeekTasksView.test.js
 describe('Error Handling', () => {
   it('should show error toast when scraping fails', async () => {
     jest.spyOn(WeekContentScraper, 'scrapeWeekContent')
@@ -63,7 +63,7 @@ describe('Error Handling', () => {
 
 ### Step 2: Implementar (GREEN)
 
-**WeekTasksView**:
+**CourseWeekTasksView**:
 ```javascript
 async loadWeekTasks(week) {
   try {
@@ -88,7 +88,7 @@ showEmptyState() {
 }
 ```
 
-**WeeksCourseView (Mini Preview)**:
+**CourseWeeksView (Mini Preview)**:
 ```javascript
 async showPreview(week) {
   try {
@@ -122,7 +122,7 @@ static async scrapeWeekContent(weekUrl) {
 | Erro | Onde | Tratamento |
 |------|------|------------|
 | Scraping falha | WeekContentScraper | console.error + throw |
-| DOM mudou | WeekTasksView | Toaster + empty state |
+| DOM mudou | CourseWeekTasksView | Toaster + empty state |
 | chrome.storage cheio | (futuro) | Toaster |
 | URL inválida | WeekContentScraper | console.error + throw |
 

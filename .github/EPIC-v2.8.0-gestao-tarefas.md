@@ -30,11 +30,11 @@ Este Epic se divide em **3 fases incrementais**:
 ### Fase 1: Foundation (MVP Mínimo)
 - #1 - Estender model Week.js com status
 - #2 - Adicionar WeekContentScraper (scraping AVA)
-- #3 - Criar WeekTasksView básica
+- #3 - Criar CourseWeekTasksView básica
 
 ### Fase 2: UI & Preview
 - #4 - Adicionar botão [Tarefas] em WeekItem
-- #5 - Implementar mini preview em WeeksCourseView
+- #5 - Implementar mini preview em CourseWeeksView
 - #6 - Adicionar estilos CSS (week-tasks.css)
 
 ### Fase 3: Funcionalidades Avançadas

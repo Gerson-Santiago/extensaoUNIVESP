@@ -1,4 +1,4 @@
-# Issue #5: Implementar Mini Preview em WeeksCourseView
+# Issue #5: Implementar Mini Preview em CourseWeeksView
 
 **Epic**: #EPIC-v2.8.0  
 **Fase**: 2 - UI & Preview  
@@ -17,7 +17,7 @@ Adicionar div expandida abaixo da lista de semanas mostrando preview visual (✅
 
 ## 🎯 Acceptance Criteria
 
-- [ ] Div `#activeWeekPreview` criada em WeeksCourseView
+- [ ] Div `#activeWeekPreview` criada em CourseWeeksView
 - [ ] Preview aparece ao clicar em › (abre semana)
 - [ ] Mostra ícones de status e % de progresso
 - [ ] Usa `WeekContentScraper` para buscar dados
@@ -29,12 +29,12 @@ Adicionar div expandida abaixo da lista de semanas mostrando preview visual (✅
 
 ### Step 1: Criar Testes (RED)
 ```javascript
-// features/courses/views/WeeksCourseView/WeeksCourseView.test.js (novo)
-describe('WeeksCourseView - Mini Preview', () => {
+// features/courses/views/CourseWeeksView/CourseWeeksView.test.js (novo)
+describe('CourseWeeksView - Mini Preview', () => {
   let view;
   
   beforeEach(() => {
-    view = new WeeksCourseView({ onBack: jest.fn() });
+    view = new CourseWeeksView({ onBack: jest.fn() });
     // Mock WeekContentScraper
     jest.spyOn(WeekContentScraper, 'scrapeWeekContent')
       .mockResolvedValue([
@@ -75,7 +75,7 @@ describe('WeeksCourseView - Mini Preview', () => {
 ```
 
 ### Step 2: Implementar (GREEN)
-**Arquivo**: `features/courses/views/WeeksCourseView/index.js` (MODIFICAR)
+**Arquivo**: `features/courses/views/CourseWeeksView/index.js` (MODIFICAR)
 
 Ver SPEC-GAPS-RESOLVED seção 2.3 para código completo.
 
@@ -87,7 +87,7 @@ Ver SPEC-GAPS-RESOLVED seção 2.3 para código completo.
 
 ### Step 3: Validar
 ```bash
-npm test -- WeeksCourseView.test.js
+npm test -- CourseWeeksView.test.js
 npm run lint
 ```
 
@@ -134,4 +134,4 @@ npm run lint
 - [ ] CSS adicionado
 - [ ] Error handling com Toaster
 - [ ] `npm test` passando
-- [ ] Commit: `feat(courses): adiciona mini preview em WeeksCourseView`
+- [ ] Commit: `feat(courses): adiciona mini preview em CourseWeeksView`

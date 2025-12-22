@@ -1,4 +1,9 @@
-export class WeekTasksView {
+/**
+ * @file CourseWeekTasksView.js
+ * @description View de Tarefas da Semana de um Curso.
+ * Localizada em: features/courses/views/CourseWeekTasksView/index.js
+ */
+export class CourseWeekTasksView {
   /**
    * @param {Object} callbacks - Callbacks { onBack }
    */

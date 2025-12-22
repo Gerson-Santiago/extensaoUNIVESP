@@ -11,7 +11,7 @@
 
 ## 📝 Descrição
 
-Criar arquivos CSS para estilizar WeekTasksView e componentes de tarefa.
+Criar arquivos CSS para estilizar CourseWeekTasksView e componentes de tarefa.
 
 ---
 
@@ -153,4 +153,4 @@ Adicionar ao final:
 - [ ] 3 arquivos CSS criados/modificados
 - [ ] Estilos responsivos
 - [ ] Cores acessíveis (contraste WCAG)
-- [ ] Commit: `style(courses): adiciona estilos para WeekTasksView`
+- [ ] Commit: `style(courses): adiciona estilos para CourseWeekTasksView`
