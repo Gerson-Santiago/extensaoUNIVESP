@@ -16,10 +16,10 @@ Adicionar propriedade `status` aos items de Week.js para armazenar estado das ta
 
 ## 🎯 Acceptance Criteria
 
-- [ ] `Week.items[]` tem propriedade `status?: 'TODO'|'DOING'|'DONE'`
-- [ ] JSDoc atualizado com `@typedef`
-- [ ] Teste unitário criado e passando
-- [ ] Zero warnings (`type-check`)
+- [x] `Week.items[]` tem propriedade `status?: 'TODO'|'DOING'|'DONE'`
+- [x] JSDoc atualizado com `@typedef`
+- [x] Teste unitário criado e passando
+- [x] Zero warnings (`type-check`)
 
 ---
 
@@ -78,8 +78,8 @@ npm run type-check
 
 ## ✅ Definition of Done
 
-- [ ] Código implementado
-- [ ] Teste passando
-- [ ] `npm run lint` - Limpo
-- [ ] `npm run type-check` - Zero erros
+- [x] Código implementado
+- [x] Teste passando
+- [x] `npm run lint` - Limpo
+- [x] `npm run type-check` - Zero erros
 - [ ] Commit: `feat(courses): adiciona status aos items de Week`

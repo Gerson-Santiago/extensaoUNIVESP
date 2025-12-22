@@ -23,11 +23,11 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ### ✅ Issue #001: Week.js com Status (1h)
 **Branch**: `feat/issue-001-week-model`
-- [ ] Criar branch a partir de dev
-- [ ] RED: Criar teste Week.test.js
-- [ ] GREEN: Adicionar typedef com status
-- [ ] REFACTOR: Validar type-check
-- [ ] Commit: `feat(courses): adiciona status aos items de Week`
+- [x] Criar branch a partir de dev
+- [x] RED: Criar teste Week.test.js
+- [x] GREEN: Adicionar typedef com status
+- [x] REFACTOR: Validar type-check
+- [x] Commit: `feat(courses): adiciona status aos items de Week`
 - [ ] Merge para dev
 
 **Workflow**: `/nova-feature`
