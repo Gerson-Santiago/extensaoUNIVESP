@@ -48,15 +48,15 @@
 | #005 | UI & Preview | ✅ Mergeada | `feat/issue-005-mini-preview` | `0089808` |
 | #006 | UI & Preview | ✅ Mergeada | `feat/issue-006-css-styles` | `972deda` |
 
-### ⏳ Issues Pendentes (3/9 - 33.3%)
+### ⏳ Issues Pendentes (2/9 - 22.2%)
 
 | Issue | Fase | Status | Estimativa |
 |-------|------|--------|------------|
-| #007 | Avançado | ⏳ Não iniciada | 2h |
+| #007 | Avançado | ✅ Concluída | 2h |
 | #008 | Avançado | ⏳ Não iniciada | 2h |
 | #009 | Avançado | ⏳ Não iniciada | 3h |
 
-**Tempo restante estimado:** 7 horas
+**Tempo restante estimado:** 5 horas
 
 **🎉 FASE 2 COMPLETA!** Todas as issues de UI & Preview finalizadas.
 

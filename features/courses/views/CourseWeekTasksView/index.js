@@ -36,6 +36,9 @@ export class CourseWeekTasksView {
                 <button id="backBtn" class="btn-back">← Voltar</button>
                 <h2>${this.week.name} - Tarefas</h2>
             </div>
+            <div id="weekProgress" class="week-progress-container">
+                <!-- Progress bar will be injected here -->
+            </div>
             <div id="tasksList" class="tasks-container"></div>
         `;
     return div;
@@ -50,7 +53,34 @@ export class CourseWeekTasksView {
       backBtn.onclick = () => this.callbacks.onBack();
     }
 
+    this.renderProgress();
     this.renderTasks();
+  }
+
+  /**
+   * Renderiza a barra de progresso
+   */
+  renderProgress() {
+    const container = document.getElementById('weekProgress');
+    if (!container) return;
+
+    const { completed, total, percentage } = this.calculateProgress();
+
+    // Se não houver itens, não mostra progresso ou mostra 0
+    if (total === 0) {
+      container.innerHTML = '';
+      return;
+    }
+
+    container.innerHTML = `
+        <div class="progress-info">
+            <span>Progresso: ${percentage}%</span>
+            <span>${completed}/${total} tarefas</span>
+        </div>
+        <div class="progress-bar-bg">
+            <div class="progress-bar-fill" style="width: ${percentage}%"></div>
+        </div>
+    `;
   }
 
   /**
@@ -94,5 +124,21 @@ export class CourseWeekTasksView {
       TODO: '⚪',
     };
     return icons[status] || '⚪';
+  }
+
+  /**
+   * Calcula o progresso das tarefas da semana
+   * @returns {{completed: number, total: number, percentage: number}}
+   */
+  calculateProgress() {
+    if (!this.week || !this.week.items || this.week.items.length === 0) {
+      return { completed: 0, total: 0, percentage: 0 };
+    }
+
+    const total = this.week.items.length;
+    const completed = this.week.items.filter((item) => item.status === 'DONE').length;
+    const percentage = Math.round((completed / total) * 100);
+
+    return { completed, total, percentage };
   }
 }

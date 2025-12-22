@@ -121,15 +121,15 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ### ✅ Issue #007: Cálculo de Progresso (2h)
 **Branch**: `feat/issue-007-calc-progresso`
-- [ ] Criar branch a partir de dev
-- [ ] RED: Testes calculateProgress()
-- [ ] GREEN: Implementar método
-- [ ] GREEN: Integrar no render()
-- [ ] GREEN: Atualizar barra visual
-- [ ] Validar fórmula (DONE=100%, DOING=50%)
-- [ ] Cobertura 100%
-- [ ] Commit: `feat(courses): adiciona cálculo de progresso em CourseWeekTasksView`
-- [ ] Merge para dev
+- [x] Criar branch a partir de dev
+- [x] RED: Testes calculateProgress()
+- [x] GREEN: Implementar método
+- [x] GREEN: Integrar no render()
+- [x] GREEN: Atualizar barra visual
+- [x] Validar fórmula (DONE=100%, DOING=50%)
+- [x] Cobertura 100%
+- [x] Commit: `feat(courses): adiciona cálculo de progresso em CourseWeekTasksView`
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 
