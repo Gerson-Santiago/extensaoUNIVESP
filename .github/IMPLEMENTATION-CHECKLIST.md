@@ -53,14 +53,14 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ### ✅ Issue #003: WeekTasksView (3h)
 **Branch**: `feat/issue-003-week-tasks-view`
-- [ ] Criar branch a partir de dev
-- [ ] RED: Criar testes WeekTasksView.test.js
-- [ ] GREEN: Implementar classe WeekTasksView
-- [ ] GREEN: Métodos render() e afterRender()
-- [ ] GREEN: Método renderTasks()
-- [ ] GREEN: Empty state
-- [ ] REFACTOR: CSS inline temporário
-- [ ] Validar cobertura ≥90%
+- [x] Criar branch a partir de dev
+- [x] RED: Criar testes WeekTasksView.test.js
+- [x] GREEN: Implementar classe WeekTasksView
+- [x] GREEN: Métodos render() e afterRender()
+- [x] GREEN: Método renderTasks()
+- [x] GREEN: Empty state
+- [x] REFACTOR: CSS inline temporário
+- [x] Validar cobertura ≥90%
 - [ ] Commit: `feat(courses): adiciona WeekTasksView básica`
 - [ ] Merge para dev
 

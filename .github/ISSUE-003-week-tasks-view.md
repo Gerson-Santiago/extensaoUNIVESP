@@ -16,11 +16,11 @@ Criar view para mostrar lista de tarefas de uma semana com ícones de status (�
 
 ## 🎯 Acceptance Criteria
 
-- [ ] Classe `WeekTasksView` criada em `features/courses/views/WeekTasksView/`
-- [ ] Renderiza lista de tarefas com status visual
-- [ ] Botão "← Voltar" funcional
-- [ ] Tratamento para lista vazia
-- [ ] Testes de renderização
+- [x] Classe `WeekTasksView` criada em `features/courses/views/WeekTasksView/`
+- [x] Renderiza lista de tarefas com status visual
+- [x] Botão "← Voltar" funcional
+- [x] Tratamento para lista vazia
+- [x] Testes de renderização
 
 ---
 
@@ -113,9 +113,9 @@ Por enquanto, usar estilos inline básicos.
 
 ## ✅ Definition of Done
 
-- [ ] Código implementado
-- [ ] Testes com cobertura ≥90%
-- [ ] Botão Voltar executando callback
-- [ ] Empty state funcional
-- [ ] `npm test` passando
+- [x] Código implementado
+- [x] Testes com cobertura ≥90%
+- [x] Botão Voltar executando callback
+- [x] Empty state funcional
+- [x] `npm test` passando
 - [ ] Commit: `feat(courses): adiciona WeekTasksView básica`
