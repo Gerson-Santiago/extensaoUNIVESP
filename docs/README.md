@@ -20,11 +20,10 @@ Bem-vindo à documentação central do **AutoPreencher UNIVESP**. Este diretóri
 6. **[FLUXOS_DE_TRABALHO.md](./FLUXOS_DE_TRABALHO.md)** - Git workflow e qualidade
 
 ### 📋 Conformidade e Dados
-7. **[DATA_HANDLING.md](./DATA_HANDLING.md)** - Como acessamos AVA e SEI
-8. **[CONFORMIDADE_LGPD.md](./CONFORMIDADE_LGPD.md)** - Análise técnica de privacidade e segurança
+7. **[PRIVACIDADE_E_DADOS.md](./PRIVACIDADE_E_DADOS.md)** - Política de privacidade, tratamento de dados e conformidade LGPD.
 
 ### 🏗️ Arquitetura Detalhada
-9. **[screaming_architecture/](./screaming_architecture/)** - Planejamento e decisões arquiteturais (ADRs, PLANs, REFs)
+8. **[architecture/](./architecture/)** - Decisões Arquiteturais (ADRs) e Manifestos.
 
 ---
 
@@ -32,15 +31,11 @@ Bem-vindo à documentação central do **AutoPreencher UNIVESP**. Este diretóri
 
 ```
 docs/
-├── screaming_architecture/   # Documentação arquitetural profunda
-│   ├── VIS_*.md             # Visão e filosofia
-│   ├── ADR_*.md             # Architecture Decision Records
-│   ├── REF_*.md             # Referências técnicas
-│   ├── PLAN_*.md            # Planos históricos de refatoração
-│   └── RUN_*.md             # Runbooks executados
-├── estudos/                 # Estudos técnicos isolados
-├── investigacao/            # Logs de investigação de bugs/features
-└── estudos_termos/          # Análises de workflow (legado)
+├── architecture/      # Arquitetura (ADRs, Visão)
+│   ├── VIS_*.md       # Visão e filosofia
+│   └── ADR_*.md       # Architecture Decision Records
+├── specs/             # Especificações de funcionalidade
+└── [arquivos .md]     # Documentação raiz
 ```
 
 ---
