@@ -28,7 +28,7 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 - [x] GREEN: Adicionar typedef com status
 - [x] REFACTOR: Validar type-check
 - [x] Commit: `feat(courses): adiciona status aos items de Week`
-- [ ] Merge para dev
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 

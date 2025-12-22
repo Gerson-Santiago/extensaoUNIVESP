@@ -106,4 +106,4 @@ npm run lint
 - [x] Mock de chrome.scripting.executeScript
 - [x] Error handling com try/catch
 - [x] `npm run lint` - Limpo
-- [ ] Commit: `feat(courses): adiciona WeekContentScraper para scraping AVA`
+- [x] Commit: `feat(courses): adiciona WeekContentScraper para scraping AVA`
