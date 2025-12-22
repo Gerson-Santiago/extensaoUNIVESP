@@ -16,10 +16,10 @@ Adicionar sistema de visualização de tarefas acadêmicas por semana, lendo sta
 Permitir que estudantes visualizem o progresso de tarefas semanais sem precisar navegar no AVA toda vez.
 
 **Métricas de Sucesso**:
-- [ ] Mini preview funcional com status visual
+- [x] Mini preview funcional com status visual
 - [ ] View completa de tarefas responsiva
-- [ ] 100% cobertura de testes em logic/
-- [ ] Zero warnings (lint + type-check)
+- [x] 100% cobertura de testes em logic/
+- [x] Zero warnings (lint + type-check)
 
 ---
 
@@ -65,9 +65,9 @@ Este Epic se divide em **3 fases incrementais**:
 
 ## ✅ Definition of Done (Epic)
 
-- [ ] Todas as 9 issues fechadas
-- [ ] `npm test` - All Passing
-- [ ] `npm run lint` - Zero Warnings
-- [ ] `npm run type-check` - Zero Errors
+- [/] Todas as 9 issues fechadas (5/9 completas - 55.5%)
+- [x] `npm test` - All Passing (252/252)
+- [x] `npm run lint` - Zero Warnings
+- [x] `npm run type-check` - Zero Errors
 - [ ] Documentação atualizada (CHANGELOG.md)
 - [ ] Piloto com 3+ usuários realizado

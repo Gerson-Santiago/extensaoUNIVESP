@@ -35,6 +35,31 @@
 
 ---
 
+## 🚀 Progresso de Implementação
+
+### ✅ Issues Concluídas (5/9 - 55.5%)
+
+| Issue | Fase | Status | Branch | Commit |
+|-------|------|--------|---------|--------|
+| #001 | Foundation | ✅ Mergeada | `feat/issue-001-week-model` | `commit-hash` |
+| #002 | Foundation | ✅ Mergeada | `feat/issue-002-week-content-scraper` | `commit-hash` |
+| #003 | Foundation | ✅ Mergeada | `feat/issue-003-week-tasks-view` | `commit-hash` |
+| #004 | UI & Preview | ✅ Mergeada | `feat/issue-004-week-item-button` | `7386b1f` |
+| #005 | UI & Preview | ✅ Mergeada | `feat/issue-005-mini-preview` | `0089808` |
+
+### ⏳ Issues Pendentes (4/9 - 44.5%)
+
+| Issue | Fase | Status | Estimativa |
+|-------|------|--------|------------|
+| #006 | UI & Preview | ⏳ Não iniciada | 1h |
+| #007 | Avançado | ⏳ Não iniciada | 2h |
+| #008 | Avançado | ⏳ Não iniciada | 2h |
+| #009 | Avançado | ⏳ Não iniciada | 3h |
+
+**Tempo restante estimado:** 8 horas
+
+---
+
 ## 🎯 Padrões Seguidos
 
 ### ✅ .cursorrules

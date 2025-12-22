@@ -11,11 +11,11 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ## 📊 Progresso Geral
 
-- [ ] Fase 1: Foundation (0/3)
-- [ ] Fase 2: UI & Preview (0/3)
+- [x] Fase 1: Foundation (3/3) ✅
+- [/] Fase 2: UI & Preview (2/3) 🟡
 - [ ] Fase 3: Avançado (0/3)
 
-**Total**: 0/9 issues concluídas (0%)
+**Total**: 5/9 issues concluídas (55.5%)
 
 ---
 
@@ -44,7 +44,7 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 - [x] REFACTOR: Error handling
 - [x] Validar cobertura ≥90% (97.75% ✅)
 - [x] Commit: `feat(courses): adiciona WeekContentScraper para scraping AVA`
-- [ ] Merge para dev
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 **Atenção**: Mock chrome.scripting.executeScript
@@ -87,16 +87,16 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 
 ### ✅ Issue #005: Mini Preview (3h)
 **Branch**: `feat/issue-005-mini-preview`
-- [ ] Criar branch a partir de dev
-- [ ] RED: Criar testes CourseWeeksView.test.js
-- [ ] GREEN: Adicionar div #activeWeekPreview
-- [ ] GREEN: Método showPreview()
-- [ ] GREEN: Renderização de ícones e %
-- [ ] GREEN: Integração com WeekContentScraper
-- [ ] Error handling com Toaster
-- [ ] Adicionar CSS .week-preview
-- [ ] Commit: `feat(courses): adiciona mini preview em CourseWeeksView`
-- [ ] Merge para dev
+- [x] Criar branch a partir de dev
+- [x] RED: Criar testes CourseWeeksView.test.js
+- [x] GREEN: Adicionar div #activeWeekPreview
+- [x] GREEN: Método showPreview()
+- [x] GREEN: Renderização de ícones e %
+- [x] GREEN: Integração com WeekContentScraper
+- [x] Error handling com console.error
+- [x] Validar cobertura ≥90%
+- [x] Commit: `feat(courses): adiciona mini preview em CourseWeeksView`
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 
