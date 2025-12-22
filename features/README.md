@@ -216,7 +216,7 @@ graph LR
 
 - **Glossário Completo**: [`/docs/GLOSSARIO.md`](../docs/GLOSSARIO.md)
 - **Arquitetura**: [`/docs/TECNOLOGIAS_E_ARQUITETURA.md`](../docs/TECNOLOGIAS_E_ARQUITETURA.md)
-- **Decisões**: [`/docs/screaming_architecture/`](../docs/screaming_architecture/)
+- **Decisões**: [`/docs/architecture/`](../docs/architecture/)
 
 ---
 

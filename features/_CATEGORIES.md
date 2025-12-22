@@ -1,120 +1,100 @@
 # 📂 Categorias de Features
 
-Este documento explica a organização das features em 3 categorias: CORE, INFRA e UTILITY.
+Este documento detalha o sistema de classificação de features da **Screaming Architecture**. 
+Nosso objetivo é que qualquer desenvolvedor saiba onde colocar seu código em < 10 segundos.
 
 ---
 
-> Para entender a estrutura de pastas detalhada, veja o [README das Features](./README.md).
+## 🧭 Mapa Mental
+
+Entenda como as categorias se relacionam:
+
+```mermaid
+graph TD
+    User((Usuário))
+    
+    subgraph "Camada de Utilidade (UTILITY)"
+        Home[Home Dashboard]
+        Feedback[Feedback Form]
+    end
+    
+    subgraph "Camada de Negócio (CORE)"
+        Courses[Courses Feature]
+        Import[Import Sub-feature]
+    end
+    
+    subgraph "Camada de Infraestrutura (INFRA)"
+        Settings[Settings / Config]
+        Session[Session / Auth]
+    end
+
+    User --> Home
+    User --> Courses
+    
+    Home --> Courses
+    Courses --> Session
+    Courses --> Settings
+    
+    style Courses fill:#e1f5fe,stroke:#01579b,stroke-width:2px
+    style Import fill:#e1f5fe,stroke:#01579b,stroke-width:1px
+    style Session fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Settings fill:#fff3e0,stroke:#e65100,stroke-width:2px
+    style Home fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style Feedback fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+```
 
 ---
 
-## 🏆 CORE (Núcleo do Negócio)
+## 1. 🏆 CORE (O Coração)
+**"A razão de ser do software."**
 
-**Definição**: Features que implementam o **domínio central** do projeto.
+Se você deletar essas features, a extensão perde o propósito. Elas contêm as regras de negócio acadêmico.
 
-**Características**:
-- Contêm lógica de negócio complexa
-- Têm repositórios próprios (data/)
-- São a razão de existir do app
+- **Características**:
+    - Tem `logic/` complexa e `models/` ricos.
+    - Persiste dados críticos (`data/`).
+- **Exemplos Atuais**:
+    - `courses/`: O gerenciamento das matérias.
+    - `courses/import/`: A inteligência de scraping (sub-feature).
 
-**Features atuais**:
-1. **`courses/`** - Gestão de matérias acadêmicas
-   - Submódulo: `courses/import/` - Importação em lote de cursos
+## 2. 🔧 INFRA (O Alicerce)
+**"Serviços que ninguém vê, mas todos usam."**
 
-**Quando criar uma CORE feature**:
-- Se implementa um novo domínio de negócio
-- Se tem regras de negócio específicas
-- Se precisa de persistência própria
+Fornecem capacidades técnicas transversais. Geralmente lidam com APIs do Browser (Chrome Storage, Cookies, Auth).
 
----
+- **Características**:
+    - Singleton ou Estado Global.
+    - Abstrai complexidade técnica.
+- **Exemplos Atuais**:
+    - `session/`: Quem sou eu? Estou logado?
+    - `settings/`: Preferências guardadas no sync.
 
-## 🔧 INFRA (Infraestrutura)
+## 3. 📦 UTILITY (Os Acessórios)
+**"Melhoram a vida, mas não são vitais."**
 
-**Definição**: Features que fornecem **serviços transversais** para outras features.
+Geralmente são telas de apoio, dashboards ou ferramentas auxiliares.
 
-**Características**:
-- Não têm domínio de negócio próprio
-- São usadas por múltiplas features
-- Geralmente singleton ou stateful
-
-**Features atuais**:
-1. **`session/`** - Gerenciamento de autenticação
-2. **`settings/`** - Configurações globais do app
-
-**Quando criar uma INFRA feature**:
-- Se é usado por várias features CORE
-- Se gerencia estado global (auth, config)
-- Se abstrai serviços externos (API, storage)
+- **Características**:
+    - Focadas em UX/UI.
+    - Pouca lógica de negócio profunda.
+- **Exemplos Atuais**:
+    - `home/`: Tela de boas-vindas.
+    - `feedback/`: Enviar bug report.
 
 ---
 
-## 📦 UTILITY (Utilidades)
+## 🚦 Algoritmo de Decisão
 
-**Definição**: Features auxiliares que **não são críticas** para o negócio.
+Na dúvida? Rode este "algoritmo mental":
 
-**Características**:
-- Melhoram UX mas não são essenciais
-- Geralmente telas simples sem lógica complexa
-- Podem ser removidas sem quebrar o core
-
-**Features atuais**:
-1. **`home/`** - Tela de boas-vindas/dashboard
-2. **`feedback/`** - Formulário de bug report
-
-**Quando criar uma UTILITY feature**:
-- Se é uma tela de boas-vindas, about, help
-- Se é formulário de feedback/contato
-- Se melhora UX mas não afeta regras de negócio
+1. **É vital para o aluno estudar?**
+    - [Sim] -> **CORE** 🏆
+    - [Não] -> Próximo passo...
+    
+2. **Outras features vão importar isso?**
+    - [Sim] -> **INFRA** �
+    - [Não] -> **UTILITY** 📦
 
 ---
 
-## 🤔 Como Decidir a Categoria?
-
-**Pergunte-se:**
-
-1. **"Se eu remover isso, o app para de funcionar?"**
-   - ✅ Sim → CORE
-   - ❌ Não → UTILITY ou INFRA
-
-2. **"Outras features dependem disso?"**
-   - ✅ Sim → INFRA
-   - ❌ Não → CORE ou UTILITY
-
-3. **"Isso tem regras de negócio complexas?"**
-   - ✅ Sim → CORE
-   - ❌ Não → UTILITY
-
----
-
-## 📌 Exemplos Práticos
-
-### Cenário: Adicionar feature de "Anotações"
-
-**Análise**:
-- ❓ Remove = app para? → Não (não é essencial)
-- ❓ Outras features dependem? → Não
-- ❓ Tem regras de negócio? → Sim (CRUD de notas, vinculação com cursos)
-
-**Categoria**: 🏆 **CORE** (é domínio de negócio próprio, mesmo não sendo essencial)
-
-### Cenário: Adicionar feature de "Dark Mode"
-
-**Análise**:
-- ❓ Remove = app para? → Não
-- ❓ Outras features dependem? → Sim (todas as telas usam)
-- ❓ Tem regras de negócio? → Não (só toggle CSS)
-
-**Categoria**: 🔧 **INFRA** (configuração transversal)
-
-### Cenário: Adicionar feature de "Help/Tutorial"
-
-**Análise**:
-- ❓ Remove = app para? → Não
-- ❓ Outras features dependem? → Não
-- ❓ Tem regras de negócio? → Não
-
-**Categoria**: 📦 **UTILITY** (melhoria de UX)
-
----
-
-> **Lembre-se**: As categorias são **guias mentais**, não regras rígidas. Use bom senso!
+> **Nota**: Para ver a estrutura de pastas técnica, vá para o [README das Features](./README.md).
