@@ -97,4 +97,50 @@ describe('WeekContentScraper', () => {
     expect(items).toHaveLength(0);
     consoleSpy.mockRestore();
   });
+
+  it('should use detectTypeFromUrl when no icon is present', () => {
+    document.body.innerHTML = `
+            <li id="contentListItem:101">
+                <h3><a href="https://ava.univesp.br/mod/quiz/view.php?id=101">Quiz da Semana</a></h3>
+                <!-- No icon image -->
+            </li>
+        `;
+
+    const items = WeekContentScraper.extractItemsFromDOM();
+    expect(items[0].type).toBe('quiz');
+    expect(items[0].name).toBe('Quiz da Semana');
+  });
+
+  it('should detect forum from URL', () => {
+    document.body.innerHTML = `
+            <li id="contentListItem:102">
+                <h3><a href="https://ava.univesp.br/mod/forum/view.php?id=102">Fórum de Discussão</a></h3>
+            </li>
+        `;
+
+    const items = WeekContentScraper.extractItemsFromDOM();
+    expect(items[0].type).toBe('forum');
+  });
+
+  it('should detect resource/pdf from URL', () => {
+    document.body.innerHTML = `
+            <li id="contentListItem:103">
+                <h3><a href="https://ava.univesp.br/mod/resource/view.php?id=103">Material Complementar</a></h3>
+            </li>
+        `;
+
+    const items = WeekContentScraper.extractItemsFromDOM();
+    expect(items[0].type).toBe('pdf');
+  });
+
+  it('should default to document for unknown URL types', () => {
+    document.body.innerHTML = `
+            <li id="contentListItem:104">
+                <h3><a href="https://ava.univesp.br/mod/page/view.php?id=104">Página Web</a></h3>
+            </li>
+        `;
+
+    const items = WeekContentScraper.extractItemsFromDOM();
+    expect(items[0].type).toBe('document');
+  });
 });
