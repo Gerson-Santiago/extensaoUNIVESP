@@ -129,11 +129,44 @@
   font-size: 18px;
 }
 
+/* Semana Ativa/Selecionada - Destaque Azul */
+.week-item-active {
+  background-color: #e3f2fd !important;
+  /* Azul claro */
+  border-left: 3px solid #2196f3 !important;
+  /* Borda azul */
+}
+
 /* ============================================
-   Mini Preview - Issue #005
+   Mini Preview Dinâmico - Issue #005
    ============================================ */
 
-/* Container do Preview */
+/* Preview Dinâmico (aparece abaixo da semana) */
+.week-preview-dynamic {
+  padding: 15px;
+  background: #f5f5f5;
+  border-radius: 8px;
+  border-top: 2px solid #ddd;
+  border-left: 3px solid #2196f3;
+  /* Conexão visual com semana ativa */
+  margin: 0;
+  box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.05);
+  animation: slideDown 0.2s ease-out;
+}
+
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Container do Preview (DEPRECATED - mantido para compatibilidade) */
 #activeWeekPreview {
   margin-top: 15px;
   padding: 15px;
@@ -179,6 +212,10 @@
 
   .week-item {
     padding: 10px 12px;
+  }
+
+  .week-preview-dynamic {
+    padding: 12px;
   }
 
   #activeWeekPreview {

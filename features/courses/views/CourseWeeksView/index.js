@@ -13,6 +13,7 @@ export class CourseWeeksView {
     // callbacks: { onBack, onOpenCourse }
     this.callbacks = callbacks;
     this.course = null;
+    this.activeWeek = null; // Track active week for toggle
   }
 
   setCourse(course) {
@@ -37,11 +38,12 @@ export class CourseWeeksView {
 
             <h3 style="font-size: 14px; color: #555; margin-bottom: 10px;">Semanas Disponíveis:</h3>
             <div id="weeksList" class="weeks-container">
-                <!-- Lista de semanas aqui -->
+                <!-- Lista de semanas e previews dinâmicos aqui -->
             </div>
             
+            <!-- Preview Fixo (apenas para compatibilidade com testes) -->
             <div id="activeWeekPreview" style="display: none; margin-top: 15px; padding: 15px; background: #f5f5f5; border-radius: 8px;">
-                <!-- Mini preview aparece aqui -->
+                <!-- Preview legado -->
             </div>
         `;
     return div;
@@ -85,7 +87,7 @@ export class CourseWeeksView {
       this.course.weeks.forEach((week) => {
         const wDiv = createWeekElement(week, {
           onClick: (url) => this.callbacks.onOpenCourse(url),
-          onViewTasks: (w) => this.showPreview(w),
+          onViewTasks: (w) => this.showPreview(w, wDiv), // Passa o elemento DOM
         });
         weeksList.appendChild(wDiv);
       });
@@ -96,12 +98,33 @@ export class CourseWeeksView {
   }
 
   /**
-   * Mostra preview de tarefas da semana com scraping do AVA
+   * Mostra/esconde preview de tarefas da semana (toggle)
+   * Preview aparece dinamicamente abaixo da semana clicada
    * @param {Object} week - Objeto da semana
+   * @param {HTMLElement} [weekElement] - Elemento DOM da semana (opcional para testes)
    */
-  async showPreview(week) {
-    const preview = document.getElementById('activeWeekPreview');
-    if (!preview) return;
+  async showPreview(week, weekElement) {
+    // Toggle: se clicar na mesma semana, colapsa
+    if (this.activeWeek === week && weekElement) {
+      this.hidePreview();
+      this.activeWeek = null;
+      weekElement.classList.remove('week-item-active');
+      return;
+    }
+
+    // Remove preview anterior e destaque
+    this.hidePreview();
+    if (this.activeWeek && weekElement) {
+      document
+        .querySelectorAll('.week-item')
+        .forEach((el) => el.classList.remove('week-item-active'));
+    }
+
+    // Define nova semana ativa
+    this.activeWeek = week;
+    if (weekElement) {
+      weekElement.classList.add('week-item-active');
+    }
 
     try {
       // Scrape week content from AVA
@@ -112,25 +135,52 @@ export class CourseWeeksView {
       const statusIcons = this.renderStatusIcons(items);
       const progress = this.calculateProgress(items);
 
-      preview.innerHTML = `
-        <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #333;">${week.name}</h4>
-        <div id="previewStatus" style="font-size: 20px; letter-spacing: 2px; margin: 8px 0;">${statusIcons}</div>
-        <div id="previewProgress" style="font-size: 13px; color: #666;">Progresso: ${progress}%</div>
-      `;
-      preview.style.display = 'block';
+      if (weekElement) {
+        // Modo dinâmico: cria div e insere após o elemento
+        const previewDiv = document.createElement('div');
+        previewDiv.className = 'week-preview-dynamic';
+        previewDiv.innerHTML = `
+          <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #333; font-weight: 600;">📊 ${week.name}</h4>
+          <div style="font-size: 20px; letter-spacing: 2px; margin: 8px 0; line-height: 1.4;">${statusIcons}</div>
+          <div style="font-size: 13px; color: #666;">Progresso: ${progress}% (${items.filter((i) => i.status === 'DONE').length}/${items.length} concluídas)</div>
+        `;
+        weekElement.insertAdjacentElement('afterend', previewDiv);
+      } else {
+        // Modo legado (para testes antigos): usa div fixa
+        const preview = document.getElementById('activeWeekPreview');
+        if (preview) {
+          preview.innerHTML = `
+            <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #333;">${week.name}</h4>
+            <div id="previewStatus" style="font-size: 20px; letter-spacing: 2px; margin: 8px 0;">${statusIcons}</div>
+            <div id="previewProgress" style="font-size: 13px; color: #666;">Progresso: ${progress}%</div>
+          `;
+          preview.style.display = 'block';
+        }
+      }
     } catch (error) {
       console.error('Erro ao carregar preview:', error);
-      // Don't break UI on error - just log
+      // Remove destaque se houver erro
+      if (weekElement) {
+        weekElement.classList.remove('week-item-active');
+      }
+      this.activeWeek = null;
     }
   }
 
   /**
-   * Esconde o preview
+   * Remove preview dinâmico atual e esconde preview legado
    */
   hidePreview() {
-    const preview = document.getElementById('activeWeekPreview');
-    if (preview) {
-      preview.style.display = 'none';
+    // Remove preview dinâmico
+    const existingPreview = document.querySelector('.week-preview-dynamic');
+    if (existingPreview) {
+      existingPreview.remove();
+    }
+
+    // Esconde preview legado (para testes)
+    const legacyPreview = document.getElementById('activeWeekPreview');
+    if (legacyPreview) {
+      legacyPreview.style.display = 'none';
     }
   }
 
