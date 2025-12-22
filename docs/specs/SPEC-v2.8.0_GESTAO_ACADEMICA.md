@@ -412,7 +412,7 @@ renderWeeksList(weeksList) {
 - [ ] CourseWeekTasksView básica (código + teste)
 - [ ] Mini preview em CourseWeeksView (código + teste)
 - [ ] Integração CourseWeeksView (código + teste)
-- [ ] `npm test` - All Passing
+- [ ] `npm run verify` - All Checks Passing (Test + Lint + Types)
 
 ---
 
@@ -618,7 +618,7 @@ it('should calculate progress correctly', () => {
 - [ ] Persistência chrome.storage (código + teste)
 - [ ] Cálculo de progresso (código + teste)
 - [ ] Barra de progresso visual (código + teste)
-- [ ] `npm test` - All Passing
+- [ ] `npm run verify` - All Checks Passing (Test + Lint + Types)
 - [ ] `/verificar` - Lint + Type-check
 
 ---
@@ -820,7 +820,7 @@ CourseWeekTasksView (Lista de Tarefas da Semana 1)
 ### Validação Técnica
 - [ ] `npm run type-check` - Zero Errors
 - [ ] `npm run lint` - Zero Warnings  
-- [ ] `npm test` - All Passing
+- [ ] `npm run verify` - All Checks Passing (Test + Lint + Types)
 - [ ] `npm run format:check` - All Formatted
 
 ### Cobertura de Testes

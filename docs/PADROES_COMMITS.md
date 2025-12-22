@@ -203,13 +203,13 @@ npm run verify
 # 2. Faça suas alterações
 git add .
 
-# 2. Escreva commit seguindo o padrão
+# 3. Escreva commit seguindo o padrão
 git commit -m "feat(courses): adiciona validação de url"
 
-# 3. Se errar, o commitlint vai avisar:
+# 4. Se errar, o commitlint vai avisar:
 # ✖   subject must not be sentence-case, start-case, pascal-case, upper-case
 
-# 4. Corrija e tente novamente
+# 5. Corrija e tente novamente
 git commit -m "feat(courses): adiciona validação de url"
 ```
 
