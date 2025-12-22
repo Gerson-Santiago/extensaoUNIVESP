@@ -1,7 +1,7 @@
 export class WeekContentScraper {
   /**
    * Extrai itens de tarefa do DOM atual (uma página de curso no AVA)
-   * @returns {Array<import('../models/Week.js').WeekItem>}
+   * @returns {Array<{name: string, url: string, type: string, status?: 'TODO'|'DOING'|'DONE'}>}
    */
   static extractItemsFromDOM() {
     const items = [];

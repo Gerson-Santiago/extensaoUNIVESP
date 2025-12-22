@@ -42,9 +42,9 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 - [x] GREEN: Método extractItemsFromDOM()
 - [x] GREEN: Método detectType()
 - [x] REFACTOR: Error handling
-- [x] Validar cobertura ≥90%
+- [x] Validar cobertura ≥90% (97.75% ✅)
 - [x] Commit: `feat(courses): adiciona WeekContentScraper para scraping AVA`
-- [x] Merge para dev
+- [ ] Merge para dev
 
 **Workflow**: `/nova-feature`
 **Atenção**: Mock chrome.scripting.executeScript
