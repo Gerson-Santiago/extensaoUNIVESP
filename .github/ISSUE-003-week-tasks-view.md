@@ -118,4 +118,4 @@ Por enquanto, usar estilos inline básicos.
 - [x] Botão Voltar executando callback
 - [x] Empty state funcional
 - [x] `npm test` passando
-- [ ] Commit: `feat(courses): adiciona WeekTasksView básica`
+- [x] Commit: `feat(courses): adiciona WeekTasksView básica`

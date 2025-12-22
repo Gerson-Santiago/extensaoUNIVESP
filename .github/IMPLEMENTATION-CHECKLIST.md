@@ -61,8 +61,8 @@ Implementar sistema de gestão de tarefas semanais seguindo abordagem MVP-First 
 - [x] GREEN: Empty state
 - [x] REFACTOR: CSS inline temporário
 - [x] Validar cobertura ≥90%
-- [ ] Commit: `feat(courses): adiciona WeekTasksView básica`
-- [ ] Merge para dev
+- [x] Commit: `feat(courses): adiciona WeekTasksView básica`
+- [x] Merge para dev
 
 **Workflow**: `/nova-feature`
 
