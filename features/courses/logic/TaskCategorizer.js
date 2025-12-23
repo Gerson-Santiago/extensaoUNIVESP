@@ -14,11 +14,23 @@
 
 /**
  * Categoriza uma tarefa baseado no título
- * @param {Object} task - Tarefa com { title, id, ... }
+ * @param {Object} task - Tarefa com { name, title, id, ... }
  * @returns {CategorizedTask}
  */
 export function categorizeTask(task) {
-    const { title } = task;
+    // Aceita 'name' ou 'title' (compatibilidade com diferentes fontes)
+    const text = task.name || task.title || '';
+
+    // Validação básica
+    if (!text) {
+        console.warn('[TaskCategorizer] Task sem name/title:', task);
+        return {
+            type: 'OUTROS',
+            number: null,
+            id: task.id || 'unknown',
+            original: task,
+        };
+    }
 
     // Regex patterns para cada tipo (ordem IMPORTA! Mais específico primeiro)
     const patterns = {
@@ -31,12 +43,12 @@ export function categorizeTask(task) {
 
     // Tenta encontrar match para cada padrão
     for (const [type, pattern] of Object.entries(patterns)) {
-        const match = title.match(pattern);
+        const match = text.match(pattern);
         if (match) {
             return {
                 type,
                 number: match[1] ? parseInt(match[1], 10) : null,
-                id: task.id,
+                id: task.id || 'unknown',
                 original: task,
             };
         }
