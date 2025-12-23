@@ -46,7 +46,7 @@ export function categorizeTask(task) {
     return {
         type: 'OUTROS',
         number: null,
-        id: task.id,
+        id: task.id || 'unknown',
         original: task,
     };
 }
