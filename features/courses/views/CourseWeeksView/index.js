@@ -117,6 +117,9 @@ export class CourseWeeksView {
             console.warn('[CourseWeeksView] week.items APÓS scraping:', w.items);
             console.warn('[CourseWeeksView] Verificando se week.items está vazio:', w.items.length === 0);
 
+            // Adicionar nome da matéria para breadcrumb
+            w.courseName = this.course.name;
+
             // Navega para DetailsActivitiesWeekView
             if (this.callbacks.onViewActivities) {
               this.callbacks.onViewActivities(w);
@@ -136,6 +139,9 @@ export class CourseWeeksView {
               console.error('[CourseWeeksView] Erro ao carregar via QuickLinks:', error);
               w.items = [];
             }
+
+            // Adicionar nome da matéria para breadcrumb
+            w.courseName = this.course.name;
 
             // Navega para mesma view
             if (this.callbacks.onViewActivities) {

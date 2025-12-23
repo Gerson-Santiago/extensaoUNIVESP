@@ -46,13 +46,14 @@ export class DetailsActivitiesWeekView {
         div.innerHTML = `
       <div class="details-header">
         <button id="backBtn" class="btn-back">← Voltar</button>
-        <div style="flex: 1;">
-          <h2>${this.week.name} - Atividades</h2>
-          <p class="subtitle">Clique em uma atividade para rolar até ela no AVA</p>
-          <p class="method-indicator" style="font-size: 11px; color: #666; margin-top: 4px;">Método: ${methodLabel}</p>
+        <div class="details-header-info">
+          <div class="details-breadcrumb">${this.week.courseName || 'Matéria'}</div>
+          <h2 class="details-title">${this.week.name} - Atividades</h2>
+          <p class="details-subtitle">Clique em uma atividade para rolar até ela no AVA</p>
+          <p class="method-indicator">Método: ${methodLabel}</p>
         </div>
-        <div style="margin-left: auto; display: flex; gap: 8px;">
-          <button id="clearBtn" class="btn-clear" title="Limpar cache e voltar" style="background: #dc3545; color: white;">🗑️ Limpar</button>
+        <div class="details-header-actions">
+          <button id="clearBtn" class="btn-clear" title="Limpar cache e voltar">🗑️ Limpar</button>
           <button id="refreshBtn" class="btn-refresh" title="Atualizar lista">↻</button>
         </div>
       </div>
