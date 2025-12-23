@@ -36,12 +36,13 @@ graph TD
     Courses --> Session
     Courses --> Settings
     
-    style Courses fill:#e1f5fe,stroke:#01579b,stroke-width:2px
-    style Import fill:#e1f5fe,stroke:#01579b,stroke-width:1px
-    style Session fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Settings fill:#fff3e0,stroke:#e65100,stroke-width:2px
-    style Home fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
-    style Feedback fill:#f3e5f5,stroke:#4a148c,stroke-width:2px
+    style Courses fill:#2196F3,stroke:#0D47A1,stroke-width:3px,color:#fff
+    style Import fill:#64B5F6,stroke:#1976D2,stroke-width:2px,color:#000
+    style Session fill:#FF9800,stroke:#E65100,stroke-width:3px,color:#fff
+    style Settings fill:#FFB74D,stroke:#F57C00,stroke-width:2px,color:#000
+    style Home fill:#9C27B0,stroke:#4A148C,stroke-width:3px,color:#fff
+    style Feedback fill:#BA68C8,stroke:#6A1B9A,stroke-width:2px,color:#fff
+    style User fill:#4CAF50,stroke:#1B5E20,stroke-width:3px,color:#fff
 ```
 
 ### 1.2 Definições de Categoria

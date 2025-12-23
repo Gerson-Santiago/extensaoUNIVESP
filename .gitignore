@@ -28,3 +28,13 @@ Thumbs.db
 
 # Imagens
 # Screenshot*
+
+# 🚨 SECURITY: Prevent credential leaks
+*.har
+*.log
+*.pcap
+*.cap
+docs/**/*.har
+docs/**/*.log
+**/*.har
+**/*.log
