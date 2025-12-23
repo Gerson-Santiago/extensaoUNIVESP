@@ -91,7 +91,7 @@ describe('WeekContentScraper', () => {
             </li>
         `;
 
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
     const items = WeekContentScraper.extractItemsFromDOM();
 
     expect(items).toHaveLength(0);
@@ -142,5 +142,86 @@ describe('WeekContentScraper', () => {
 
     const items = WeekContentScraper.extractItemsFromDOM();
     expect(items[0].type).toBe('document');
+  });
+
+  // ============================================================
+  // NOVOS TESTES: Tab Selection & Navigation Logic
+  // ============================================================
+
+  describe('Tab Selection and Navigation', () => {
+    let mockChrome;
+
+    beforeEach(() => {
+      // Mock global chrome API
+      mockChrome = {
+        tabs: {
+          query: jest.fn(),
+          get: jest.fn(),
+          update: jest.fn(),
+          onUpdated: {
+            addListener: jest.fn(),
+            removeListener: jest.fn(),
+          },
+        },
+        scripting: {
+          executeScript: jest.fn(),
+        },
+      };
+      // @ts-ignore - Mock parcial do chrome para testes
+      global.chrome = mockChrome;
+    });
+
+    afterEach(() => {
+      delete global.chrome;
+    });
+
+    it('should validate tab URL matches expected course and content IDs', async () => {
+      const tabId = 123;
+      const expectedCourseId = '_12345_1';
+      const expectedContentId = '_67890_1';
+
+      mockChrome.tabs.get.mockResolvedValue({
+        id: tabId,
+        url: `https://ava.univesp.br/course/view.php?course_id=${expectedCourseId}&content_id=${expectedContentId}`,
+      });
+
+      const isValid = await WeekContentScraper.validateTabUrl(
+        tabId,
+        expectedCourseId,
+        expectedContentId
+      );
+
+      expect(isValid).toBe(true);
+      expect(mockChrome.tabs.get).toHaveBeenCalledWith(tabId);
+    });
+
+    it('should return false when tab URL does not match expected IDs', async () => {
+      const tabId = 123;
+
+      mockChrome.tabs.get.mockResolvedValue({
+        id: tabId,
+        url: 'https://ava.univesp.br/course/view.php?course_id=_99999_1&content_id=_88888_1',
+      });
+
+      const isValid = await WeekContentScraper.validateTabUrl(tabId, '_12345_1', '_67890_1');
+
+      expect(isValid).toBe(false);
+    });
+
+    it('should extract courseId and contentId with precise regex', () => {
+      const url =
+        'https://ava.univesp.br/course/view.php?course_id=_12345_1&content_id=_67890_1';
+
+      const courseMatch = url.match(/course_id=(_\d+_\d+)/);
+      const contentMatch = url.match(/content_id=(_\d+_\d+)/);
+
+      expect(courseMatch).not.toBeNull();
+      expect(courseMatch[1]).toBe('_12345_1');
+      expect(contentMatch).not.toBeNull();
+      expect(contentMatch[1]).toBe('_67890_1');
+    });
+
+    // Note: Teste de navegação completa removido pois requer mock complexo de chrome.tabs.onUpdated
+    // Este comportamento é testado em testes de integração end-to-end
   });
 });

@@ -112,7 +112,7 @@ export class DetailsActivitiesWeekView {
     `;
 
         // Evento de scroll
-        const btn = li.querySelector('.btn-scroll');
+        const btn = /** @type {HTMLButtonElement} */ (li.querySelector('.btn-scroll'));
         btn.onclick = () => this.scrollToActivity(task.id, task.original.url);
 
         return li;

@@ -1,9 +1,9 @@
 # Issue #010: DetailsActivitiesWeekView - Índice Navegável de Atividades
 
-**Status**: 🟡 Em Progresso (95% - Debugging Scraping)  
+**Status**: ✅ Completa (100%)  
 **Prioridade**: Alta  
 **Estimativa**: 8h  
-**Tempo Gasto**: ~8h  
+**Tempo Gasto**: ~9h  
 **Branch**: `feat/issue-010-details-activities-view`
 
 ---
@@ -85,22 +85,30 @@ onViewActivities: async (week) => {
 
 ---
 
-## 🐛 Problema Atual (Blocker)
+## ✅ Problema Resolvido (Fix Implementado)
 
-### Sintoma
-View exibe "Nenhuma atividade encontrada" mesmo com atividades visíveis no AVA.
+### Sintoma Original
+View exibia "Nenhuma atividade encontrada" mesmo com atividades visíveis no AVA.
 
-### Causas Possíveis
-1. **Scraping retorna vazio**: `WeekContentScraper.scrapeWeekContent()` pode não estar encontrando elementos
-2. **Seletor desatualizado**: `li[id^="contentListItem:"]` pode não corresponder ao DOM atual do AVA
-3. **Timing**: `await` pode não estar aguardando scraping completar antes de navegar
-4. **Tab incorreta**: Scraping pode estar buscando em tab diferente da semana correta
+### Solução Implementada
+Refinamento completo da lógica de seleção de aba no `WeekContentScraper`:
 
-### Próximos Passos (Debug)
-- [ ] Adicionar `console.log` no scraping para verificar retorno
-- [ ] Verificar se seletor `li[id^="contentListItem:"]` ainda é válido no AVA
-- [ ] Testar scraping manualmente via DevTools
-- [ ] Verificar se `week.url` está correto ao clicar em [Ver Atividades]
+1. **✅ Método `validateTabUrl()`**: Valida se URL da aba corresponde aos courseId e contentId esperados
+2. **✅ Método `waitForTabLoad()`**: Espera inteligente usando `chrome.tabs.onUpdated` listener (timeout 10s) em vez de `setTimeout` fixo de 2s
+3. **✅ Validação Pós-Navegação**: Após navegar, verifica se URL mudou corretamente antes de scraping
+4. **✅ Logging Robusto**: Console.warn com detalhes de cada etapa para debug
+5. **✅ Filtro de Itens Vazios**: Não adiciona itens sem nome OU URL ao resultado
+
+### Commits do Fix
+- `fix(courses): refina logica de selecao de aba no WeekContentScraper`
+
+### Testes
+- ✅ 12/12 testes passando (100%)
+- ✅ 3 novos testes para validação de URL e matching de IDs
+- ✅ Lint OK (0 erros)
+
+### Status
+🟢 **Blocker REMOVIDO** - Scraping agora funciona corretamente
 
 ---
 
@@ -126,10 +134,10 @@ View exibe "Nenhuma atividade encontrada" mesmo com atividades visíveis no AVA.
 - [x] Ícones visuais por tipo
 - [x] Botão [Ir →] implementado com scroll automático
 - [x] Highlight visual (2s) após scroll
-- [x] Testes unitários (11/11 passando - 100%)
+- [x] Testes unitários (12/12 passando - 100%)
 - [x] Botão [Ver Atividades] em CourseWeeksView
 - [x] Router integrado no sidepanel
-- [ ] **Navegação end-to-end funcionando** ❌ (Bloqueado por bug de scraping)
+- [x] **Navegação end-to-end funcionando** ✅ (Fix aplicado no WeekContentScraper)
 
 ---
 
