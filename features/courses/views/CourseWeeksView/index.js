@@ -7,6 +7,7 @@
 import { createWeekElement } from '../../components/WeekItem.js';
 import { CourseRefresher } from '../../services/CourseRefresher.js';
 import { WeekContentScraper } from '../../services/WeekContentScraper.js';
+import { QuickLinksScraper } from '../../services/QuickLinksScraper.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 
 export class CourseWeeksView {
@@ -94,35 +95,49 @@ export class CourseWeeksView {
           },
           onViewTasks: (w) => this.showPreview(w, wDiv),
           onViewActivities: async (w) => {
-            // eslint-disable-next-line no-console
-            console.log('[CourseWeeksView] onViewActivities chamado para:', w.name);
-            // eslint-disable-next-line no-console
-            console.log('[CourseWeeksView] week.items ANTES do scraping:', w.items);
+            console.warn('[CourseWeeksView] onViewActivities chamado para:', w.name);
+            console.warn('[CourseWeeksView] week.items ANTES do scraping:', w.items);
 
             // Scrape content if not already loaded
             if (!w.items || w.items.length === 0) {
               try {
-                // eslint-disable-next-line no-console
-                console.log('[CourseWeeksView] Iniciando scraping para URL:', w.url);
+                console.warn('[CourseWeeksView] Iniciando scraping para URL:', w.url);
                 const items = await WeekContentScraper.scrapeWeekContent(w.url);
-                // eslint-disable-next-line no-console
-                console.log('[CourseWeeksView] Scraping retornou:', items.length, 'items:', items);
+                console.warn('[CourseWeeksView] Scraping retornou:', items.length, 'items:', items);
                 w.items = items;
+                w.method = 'DOM'; // Tag para saber qual método foi usado
               } catch (error) {
                 console.error('[CourseWeeksView] Erro ao carregar atividades:', error);
                 w.items = [];
               }
             } else {
-              // eslint-disable-next-line no-console
-              console.log('[CourseWeeksView] Items já em cache:', w.items.length, 'items');
+              console.warn('[CourseWeeksView] Items já em cache:', w.items.length, 'items');
             }
 
-            // eslint-disable-next-line no-console
-            console.log('[CourseWeeksView] week.items APÓS scraping:', w.items);
-            // eslint-disable-next-line no-console
-            console.log('[CourseWeeksView] Verificando se week.items está vazio:', w.items.length === 0);
+            console.warn('[CourseWeeksView] week.items APÓS scraping:', w.items);
+            console.warn('[CourseWeeksView] Verificando se week.items está vazio:', w.items.length === 0);
 
             // Navega para DetailsActivitiesWeekView
+            if (this.callbacks.onViewActivities) {
+              this.callbacks.onViewActivities(w);
+            }
+          },
+          onViewQuickLinks: async (w) => {
+            console.warn('[CourseWeeksView] onViewQuickLinks chamado para:', w.name);
+
+            // Scrape usando Links Rápidos
+            try {
+              console.warn('[CourseWeeksView] Iniciando QuickLinks scraping...');
+              const items = await QuickLinksScraper.scrapeFromQuickLinks(w.url);
+              console.warn('[CourseWeeksView] QuickLinks retornou:', items.length, 'items');
+              w.items = items;
+              w.method = 'QuickLinks'; // Tag para saber qual método foi usado
+            } catch (error) {
+              console.error('[CourseWeeksView] Erro ao carregar via QuickLinks:', error);
+              w.items = [];
+            }
+
+            // Navega para mesma view
             if (this.callbacks.onViewActivities) {
               this.callbacks.onViewActivities(w);
             }

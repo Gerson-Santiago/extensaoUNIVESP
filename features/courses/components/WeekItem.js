@@ -26,10 +26,20 @@ export function createWeekElement(week, callbacks) {
   const activitiesBtn = document.createElement('button');
   activitiesBtn.className = 'btn-grid-action btn-activities';
   activitiesBtn.textContent = '🔍 Atividades';
-  activitiesBtn.title = 'Ver detalhes das atividades';
+  activitiesBtn.title = 'Ver detalhes das atividades (DOM)';
   activitiesBtn.onclick = (e) => {
     e.stopPropagation();
     if (callbacks.onViewActivities) callbacks.onViewActivities(week);
+  };
+
+  // Botão de Links Rápidos (alternativo - Issue #010)
+  const quickLinksBtn = document.createElement('button');
+  quickLinksBtn.className = 'btn-grid-action btn-quick-links';
+  quickLinksBtn.textContent = '⚡ Rápido';
+  quickLinksBtn.title = 'Ver atividades (Links Rápidos)';
+  quickLinksBtn.onclick = (e) => {
+    e.stopPropagation();
+    if (callbacks.onViewQuickLinks) callbacks.onViewQuickLinks(week);
   };
 
   const arrow = document.createElement('span');
@@ -39,6 +49,7 @@ export function createWeekElement(week, callbacks) {
   div.appendChild(nameSpan);
   div.appendChild(tasksBtn);
   div.appendChild(activitiesBtn);
+  div.appendChild(quickLinksBtn); // NOVO
   div.appendChild(arrow);
 
   return div;

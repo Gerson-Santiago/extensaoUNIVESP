@@ -26,7 +26,6 @@ export class WeekContentScraper {
       const tabs = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
 
       let tab = null;
-      let needsNavigation = false;
 
       // 2. Try to find EXACT match (course AND week)
       if (targetCourseId && targetContentId) {
@@ -53,8 +52,6 @@ export class WeekContentScraper {
             if (!isValid) {
               console.warn(`WeekContentScraper: Navegação falhou - URL não corresponde ao esperado após ${tab.id}`);
             }
-
-            needsNavigation = true;
           }
         }
       }

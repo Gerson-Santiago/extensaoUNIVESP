@@ -82,7 +82,7 @@ export class DetailsActivitiesWeekView {
             }
 
             if (!this.week?.items || this.week.items.length === 0) {
-                // eslint-disable-next-line no-console
+                 
                 console.warn('[DetailsActivitiesWeekView] Nenhum item encontrado, exibindo mensagem vazia');
                 container.innerHTML = '<p style="color:#999;">Nenhuma atividade encontrada.</p>';
                 return;
