@@ -69,11 +69,7 @@ export class WeekContentScraper {
         throw new Error('Nenhuma aba do AVA encontrada para realizar o scraping.');
       }
 
-      // eslint-disable-next-line no-console
-      console.log(`WeekContentScraper: Scraping na aba [${tab.id}] ${tab.url} (Alvo: course=${targetCourseId}, content=${targetContentId}, navegou=${needsNavigation})`);
-
-      // eslint-disable-next-line no-console
-      console.log('WeekContentScraper: Usando aba para scraping:', tab.url, tab.id);
+      console.error('🔍 WeekContentScraper: ANTES de executeScript, tab:', tab.id, tab.url);
 
       // Wait for page to be fully loaded (more robust approach)
       let retries = 3;
@@ -83,15 +79,81 @@ export class WeekContentScraper {
         // Wait a bit between retries
         await new Promise(resolve => setTimeout(resolve, 1500));
 
+        console.error(`🔍 WeekContentScraper: Tentativa ${4 - retries} - Executando script na aba ${tab.id}`);
+
         const results = await chrome.scripting.executeScript({
           target: { tabId: tab.id },
-          func: WeekContentScraper.extractItemsFromDOM,
+          func: () => {
+            // ===== EXECUTA INLINE NA PÁGINA =====
+            console.warn('🔍 [INLINE] Script executando NA PÁGINA');
+            console.warn('🔍 [INLINE] URL:', document.location.href);
+            console.warn('🔍 [INLINE] readyState:', document.readyState);
+
+            const items = [];
+
+            // Tentar múltiplos seletores
+            let listItems = document.querySelectorAll('li[id^="contentListItem:"]');
+            console.warn(`🔍 [INLINE] Seletor principal encontrou ${listItems.length} elementos`);
+
+            if (listItems.length === 0) {
+              listItems = document.querySelectorAll('li.liItem');
+              console.warn(`🔍 [INLINE] Fallback 1 (li.liItem) encontrou ${listItems.length} elementos`);
+            }
+
+            if (listItems.length === 0) {
+              listItems = document.querySelectorAll('#contentList li, .contentList li, ul.contentList li');
+              console.warn(`🔍 [INLINE] Fallback 2 (contentList) encontrou ${listItems.length} elementos`);
+            }
+
+            console.warn(`🔍 [INLINE] TOTAL de elementos para processar: ${listItems.length}`);
+
+            listItems.forEach((li, index) => {
+              try {
+                const h3Link = li.querySelector('h3 a');
+                if (!h3Link || !h3Link.href) return;
+
+                const span = h3Link.querySelector('span');
+                const name = (span ? span.textContent : h3Link.textContent).trim().replace(/\s+/g, ' ');
+                const url = h3Link.href;
+
+                if (!name || !url) return;
+
+                // Status
+                let status = undefined;
+                const button = li.querySelector('.button-5');
+                if (button) {
+                  const btnText = button.textContent.trim();
+                  if (btnText.includes('Revisto')) status = 'DONE';
+                  else if (btnText.includes('Marca Revista')) status = 'TODO';
+                }
+
+                // Type (simplificado)
+                let type = 'document';
+                const iconImg = li.querySelector('img.item_icon');
+                if (iconImg) {
+                  const src = (iconImg.src || '').toLowerCase();
+                  const alt = (iconImg.alt || '').toLowerCase();
+                  if (src.includes('quiz') || alt.includes('quiz')) type = 'quiz';
+                  else if (src.includes('video') || alt.includes('video')) type = 'video';
+                  else if (src.includes('pdf') || alt.includes('pdf')) type = 'pdf';
+                  else if (src.includes('forum') || alt.includes('forum')) type = 'forum';
+                }
+
+                items.push({ name, url, type, ...(status && { status }) });
+                console.warn(`🔍 [INLINE] Item ${index + 1}: ${name.substring(0, 50)}...`);
+              } catch (e) {
+                console.error('🔍 [INLINE] Erro ao processar item:', e);
+              }
+            });
+
+            console.warn(`🔍 [INLINE] Retornando ${items.length} itens`);
+            return items;
+          },
         });
 
         items = results[0]?.result || [];
 
-        // eslint-disable-next-line no-console
-        console.log(`WeekContentScraper: Tentativa ${4 - retries}: ${items.length} itens encontrados`);
+        console.error(`🔍 WeekContentScraper: Tentativa ${4 - retries} RETORNOU ${items.length} itens`);
 
         if (items.length > 0) {
           break; // Success!
