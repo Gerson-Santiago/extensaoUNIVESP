@@ -136,6 +136,10 @@ document.addEventListener('DOMContentLoaded', () => {
     },
     onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
     onViewActivities: (week) => {
+      // eslint-disable-next-line no-console
+      console.log('[sidepanel.js] onViewActivities recebeu week:', week.name);
+      // eslint-disable-next-line no-console
+      console.log('[sidepanel.js] week.items:', week.items);
       detailsActivitiesWeekView.setWeek(week);
       layout.navigateTo('weekActivities');
     },

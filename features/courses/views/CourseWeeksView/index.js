@@ -94,16 +94,34 @@ export class CourseWeeksView {
           },
           onViewTasks: (w) => this.showPreview(w, wDiv),
           onViewActivities: async (w) => {
+            // eslint-disable-next-line no-console
+            console.log('[CourseWeeksView] onViewActivities chamado para:', w.name);
+            // eslint-disable-next-line no-console
+            console.log('[CourseWeeksView] week.items ANTES do scraping:', w.items);
+
             // Scrape content if not already loaded
             if (!w.items || w.items.length === 0) {
               try {
+                // eslint-disable-next-line no-console
+                console.log('[CourseWeeksView] Iniciando scraping para URL:', w.url);
                 const items = await WeekContentScraper.scrapeWeekContent(w.url);
+                // eslint-disable-next-line no-console
+                console.log('[CourseWeeksView] Scraping retornou:', items.length, 'items:', items);
                 w.items = items;
               } catch (error) {
-                console.error('Erro ao carregar atividades:', error);
+                console.error('[CourseWeeksView] Erro ao carregar atividades:', error);
                 w.items = [];
               }
+            } else {
+              // eslint-disable-next-line no-console
+              console.log('[CourseWeeksView] Items já em cache:', w.items.length, 'items');
             }
+
+            // eslint-disable-next-line no-console
+            console.log('[CourseWeeksView] week.items APÓS scraping:', w.items);
+            // eslint-disable-next-line no-console
+            console.log('[CourseWeeksView] Verificando se week.items está vazio:', w.items.length === 0);
+
             // Navega para DetailsActivitiesWeekView
             if (this.callbacks.onViewActivities) {
               this.callbacks.onViewActivities(w);

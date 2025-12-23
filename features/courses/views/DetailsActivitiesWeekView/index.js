@@ -24,6 +24,8 @@ export class DetailsActivitiesWeekView {
      * @param {Object} week - { name, url, items: [{name, url, id}] }
      */
     setWeek(week) {
+        // eslint-disable-next-line no-console
+        console.log('[DetailsActivitiesWeekView] setWeek() chamado com:', week);
         this.week = week;
     }
 
@@ -66,13 +68,28 @@ export class DetailsActivitiesWeekView {
      */
     renderActivities() {
         try {
+            // eslint-disable-next-line no-console
+            console.log('[DetailsActivitiesWeekView] renderActivities() chamado');
+            // eslint-disable-next-line no-console
+            console.log('[DetailsActivitiesWeekView] this.week:', this.week);
+            // eslint-disable-next-line no-console
+            console.log('[DetailsActivitiesWeekView] this.week?.items:', this.week?.items);
+
             const container = document.getElementById('activitiesContainer');
-            if (!container) return;
+            if (!container) {
+                console.error('[DetailsActivitiesWeekView] Container activitiesContainer não encontrado!');
+                return;
+            }
 
             if (!this.week?.items || this.week.items.length === 0) {
+                // eslint-disable-next-line no-console
+                console.warn('[DetailsActivitiesWeekView] Nenhum item encontrado, exibindo mensagem vazia');
                 container.innerHTML = '<p style="color:#999;">Nenhuma atividade encontrada.</p>';
                 return;
             }
+
+            // eslint-disable-next-line no-console
+            console.log('[DetailsActivitiesWeekView] Renderizando', this.week.items.length, 'atividades');
 
             // Lista na ordem exata do DOM
             const list = document.createElement('ul');
@@ -86,7 +103,7 @@ export class DetailsActivitiesWeekView {
 
             container.appendChild(list);
         } catch (error) {
-            console.error('Erro ao renderizar atividades:', error);
+            console.error('[DetailsActivitiesWeekView] Erro ao renderizar atividades:', error);
             const toaster = new Toaster();
             toaster.show('Erro ao carregar atividades.', 'error');
         }

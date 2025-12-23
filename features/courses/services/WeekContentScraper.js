@@ -108,19 +108,37 @@ export class WeekContentScraper {
   }
 
   /**
-   * Extrai itens de tarefa do DOM atual - VERSÃO SIMPLIFICADA/ROBUSTA
-   * Usa busca por texto em vez de seletores DOM complexos
+   * Extrai itens de tarefa do DOM atual - VERSÃO ROBUSTA COM ESPERA
+   * @param {Document} dom - Documento onde buscar (padrão: document global)
    * @returns {Array<{name: string, url: string, type: string, status?: 'TODO'|'DOING'|'DONE'}>}
    */
   static extractItemsFromDOM(dom = document) {
     try {
-      const items = [];
-      const listItems = dom.querySelectorAll('li[id^="contentListItem:"]');
+      // Debug: Verificar contexto
+      console.warn('[WeekContentScraper] extractItemsFromDOM iniciado');
+      console.warn('[WeekContentScraper] URL atual:', dom.location?.href || 'N/A');
+      console.warn('[WeekContentScraper] DOM readyState:', dom.readyState);
 
-      // Debug: Log quantidade de elementos encontrados (usar console.warn para lint)
-      if (typeof console !== 'undefined') {
-        console.warn(`[WeekContentScraper] Encontrados ${listItems.length} li elements`);
+      const items = [];
+
+      // Tentar múltiplos seletores (fallback)
+      let listItems = dom.querySelectorAll('li[id^="contentListItem:"]');
+
+      if (listItems.length === 0) {
+        console.warn('[WeekContentScraper] Seletor principal retornou 0. Tentando seletores alternativos...');
+
+        // Fallback 1: Qualquer LI com class liItem
+        listItems = dom.querySelectorAll('li.liItem');
+        console.warn('[WeekContentScraper] Fallback 1 (li.liItem):', listItems.length, 'elementos');
       }
+
+      if (listItems.length === 0) {
+        // Fallback 2: Qualquer LI dentro de contentList
+        listItems = dom.querySelectorAll('#contentList li, .contentList li, ul.contentList li');
+        console.warn('[WeekContentScraper] Fallback 2 (contentList li):', listItems.length, 'elementos');
+      }
+
+      console.warn(`[WeekContentScraper] Total de elementos encontrados: ${listItems.length}`);
 
       listItems.forEach((li, _index) => {
         try {
@@ -136,14 +154,23 @@ export class WeekContentScraper {
           const h3Link = /** @type {HTMLAnchorElement} */ (li.querySelector('h3 a'));
           if (h3Link && h3Link.href) {
             url = h3Link.href;
-            name = h3Link.textContent.trim();
+            // Pegar apenas o texto do SPAN ou do próprio link (ignorando imgs/outros elementos)
+            const span = h3Link.querySelector('span');
+            if (span) {
+              name = span.textContent.trim();
+            } else {
+              name = h3Link.textContent.trim();
+            }
+
+            // Limpar possíveis espaços/quebras extras
+            name = name.replace(/\s+/g, ' ').trim();
           } else if (allLinks.length > 0) {
             // Pega o primeiro link que não seja vazio ou "ally"
             for (const link of allLinks) {
               const anchorLink = /** @type {HTMLAnchorElement} */ (link);
               if (anchorLink.href && !anchorLink.href.includes('#') && !anchorLink.className.includes('ally')) {
                 url = anchorLink.href;
-                name = anchorLink.textContent.trim();
+                name = anchorLink.textContent.trim().replace(/\s+/g, ' ');
                 break;
               }
             }
@@ -161,10 +188,10 @@ export class WeekContentScraper {
           if (!name) {
             const h3 = li.querySelector('h3');
             if (h3) {
-              name = h3.textContent.trim();
+              name = h3.textContent.trim().replace(/\s+/g, ' ');
             } else {
               // Última opção: primeiras 100 chars do texto
-              name = fullText.substring(0, 100).trim();
+              name = fullText.substring(0, 100).trim().replace(/\s+/g, ' ');
             }
           }
 
@@ -197,16 +224,20 @@ export class WeekContentScraper {
               type,
               ...(status && { status }),
             });
+          } else {
+            console.warn('[WeekContentScraper] Item ignorado (sem name ou url):', { name, url });
           }
         } catch (e) {
-          console.error('Error parsing week item:', e);
+          console.error('[WeekContentScraper] Error parsing week item:', e);
         }
       });
 
+      console.warn(`[WeekContentScraper] Retornando ${items.length} itens válidos`);
       return items;
     } catch (error) {
-      console.error('WeekContentScraper: Erro ao extrair dados do DOM', error);
-      throw new Error('Falha ao processar conteúdo da semana.');
+      console.error('[WeekContentScraper] Erro ao extrair dados do DOM:', error);
+      console.error('[WeekContentScraper] Stack trace:', error.stack);
+      return []; // Retorna array vazio em caso de erro
     }
   }
 
