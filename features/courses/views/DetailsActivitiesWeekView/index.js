@@ -38,13 +38,23 @@ export class DetailsActivitiesWeekView {
             return document.createElement('div');
         }
 
+        const method = this.week.method || 'DOM';
+        const methodLabel = method === 'QuickLinks' ? 'Links Rápidos' : 'Scraping DOM';
+
         const div = document.createElement('div');
         div.className = 'view-details-activities';
         div.innerHTML = `
       <div class="details-header">
         <button id="backBtn" class="btn-back">← Voltar</button>
-        <h2>${this.week.name} - Atividades</h2>
-        <p class="subtitle">Clique em uma atividade para rolar até ela no AVA</p>
+        <div style="flex: 1;">
+          <h2>${this.week.name} - Atividades</h2>
+          <p class="subtitle">Clique em uma atividade para rolar até ela no AVA</p>
+          <p class="method-indicator" style="font-size: 11px; color: #666; margin-top: 4px;">Método: ${methodLabel}</p>
+        </div>
+        <div style="margin-left: auto; display: flex; gap: 8px;">
+          <button id="clearBtn" class="btn-clear" title="Limpar cache e voltar" style="background: #dc3545; color: white;">🗑️ Limpar</button>
+          <button id="refreshBtn" class="btn-refresh" title="Atualizar lista">↻</button>
+        </div>
       </div>
       <div id="activitiesContainer" class="activities-container"></div>
     `;
@@ -60,7 +70,89 @@ export class DetailsActivitiesWeekView {
             backBtn.onclick = () => this.callbacks.onBack();
         }
 
+        const refreshBtn = /** @type {HTMLButtonElement} */ (document.getElementById('refreshBtn'));
+        if (refreshBtn) {
+            refreshBtn.onclick = () => this.handleRefresh(refreshBtn);
+        }
+
+        const clearBtn = /** @type {HTMLButtonElement} */ (document.getElementById('clearBtn'));
+        if (clearBtn) {
+            clearBtn.onclick = () => this.handleClear();
+        }
+
         this.renderActivities();
+    }
+
+    /**
+     * Atualiza lista de atividades re-executando scraping
+     * @param {HTMLButtonElement} btn - Botão de refresh (para loading state)
+     */
+    async handleRefresh(btn) {
+        if (!this.week) return;
+
+        const method = this.week.method || 'DOM';
+        const originalText = btn.textContent;
+
+        try {
+            // Loading state
+            btn.disabled = true;
+            btn.textContent = '⏳';
+
+            // eslint-disable-next-line no-console
+            console.log(`[DetailsActivitiesWeekView] Refresh com método: ${method}`);
+
+            // Re-executar scraping baseado no método
+            let items = [];
+            if (method === 'QuickLinks') {
+                const { QuickLinksScraper } = await import('../../services/QuickLinksScraper.js');
+                items = await QuickLinksScraper.scrapeFromQuickLinks(this.week.url);
+            } else {
+                const { WeekContentScraper } = await import('../../services/WeekContentScraper.js');
+                items = await WeekContentScraper.scrapeWeekContent(this.week.url);
+            }
+
+            // Atualizar week.items
+            this.week.items = items;
+
+            // Re-renderizar lista
+            this.renderActivities();
+
+            // eslint-disable-next-line no-console
+            console.log(`[DetailsActivitiesWeekView] Refresh concluído: ${items.length} items`);
+        } catch (error) {
+            console.error('[DetailsActivitiesWeekView] Erro ao atualizar:', error);
+            const { Toaster } = await import('../../../../shared/ui/feedback/Toaster.js');
+            const toaster = new Toaster();
+            toaster.show('Erro ao atualizar lista. Tente novamente.', 'error');
+        } finally {
+            // Restaurar estado
+            btn.disabled = false;
+            btn.textContent = originalText;
+        }
+    }
+
+    /**
+     * Limpa cache de atividades e volta para lista de semanas
+     */
+    handleClear() {
+        if (!this.week) return;
+
+        // Confirmar com usuário
+        const confirmed = confirm(
+            `Deseja limpar o cache de atividades de "${this.week.name}"?\n\n` +
+            'Isso forçará um novo scraping na próxima vez.'
+        );
+
+        if (!confirmed) return;
+
+        // Limpar items do cache
+        this.week.items = [];
+        this.week.method = undefined;
+
+        // Voltar para lista de semanas
+        if (this.callbacks.onBack) {
+            this.callbacks.onBack();
+        }
     }
 
     /**
@@ -68,28 +160,19 @@ export class DetailsActivitiesWeekView {
      */
     renderActivities() {
         try {
-            // eslint-disable-next-line no-console
-            console.log('[DetailsActivitiesWeekView] renderActivities() chamado');
-            // eslint-disable-next-line no-console
-            console.log('[DetailsActivitiesWeekView] this.week:', this.week);
-            // eslint-disable-next-line no-console
-            console.log('[DetailsActivitiesWeekView] this.week?.items:', this.week?.items);
-
             const container = document.getElementById('activitiesContainer');
             if (!container) {
                 console.error('[DetailsActivitiesWeekView] Container activitiesContainer não encontrado!');
                 return;
             }
 
+            // Limpar container antes de renderizar (evita duplicação no refresh)
+            container.innerHTML = '';
+
             if (!this.week?.items || this.week.items.length === 0) {
-                 
-                console.warn('[DetailsActivitiesWeekView] Nenhum item encontrado, exibindo mensagem vazia');
                 container.innerHTML = '<p style="color:#999;">Nenhuma atividade encontrada.</p>';
                 return;
             }
-
-            // eslint-disable-next-line no-console
-            console.log('[DetailsActivitiesWeekView] Renderizando', this.week.items.length, 'atividades');
 
             // Lista na ordem exata do DOM
             const list = document.createElement('ul');
@@ -137,21 +220,49 @@ export class DetailsActivitiesWeekView {
 
     /**
      * Faz scroll até a atividade na página do AVA
-     * @param {string} activityId - ID único da atividade (ex: "_1767514_1")
+     * @param {string} activityId - ID único da atividade (ex: "_1767514_1" ou "anonymous_element_9")
      * @param {string} fallbackUrl - URL da atividade (fallback se scroll falhar)
      */
     async scrollToActivity(activityId, fallbackUrl) {
         try {
-            // Encontrar tab do AVA aberta
+            // 1. Encontrar tab do AVA aberta
             const [tab] = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
 
             if (!tab || !tab.id) {
-                // Nenhuma tab do AVA aberta, abrir URL
-                chrome.tabs.create({ url: fallbackUrl });
+                // Nenhuma tab do AVA aberta, abrir URL da semana
+                chrome.tabs.create({ url: this.week.url || fallbackUrl });
                 return;
             }
 
-            // Executar scroll na tab existente
+            // 2. Navegar para a URL da semana (se ainda não estiver lá)
+            if (this.week.url && !tab.url.includes(this.week.url)) {
+                await chrome.tabs.update(tab.id, { url: this.week.url, active: true });
+
+                // Aguardar página carregar
+                await new Promise(resolve => {
+                    const listener = (tabId, info) => {
+                        if (tabId === tab.id && info.status === 'complete') {
+                            chrome.tabs.onUpdated.removeListener(listener);
+                            resolve();
+                        }
+                    };
+                    chrome.tabs.onUpdated.addListener(listener);
+
+                    // Timeout de segurança (5s)
+                    setTimeout(() => {
+                        chrome.tabs.onUpdated.removeListener(listener);
+                        resolve();
+                    }, 5000);
+                });
+
+                // Aguardar mais 500ms para JS do AVA executar
+                await new Promise(resolve => setTimeout(resolve, 500));
+            } else {
+                // Já está na página correta, apenas focar
+                await chrome.tabs.update(tab.id, { active: true });
+            }
+
+            // 3. Executar scroll na tab
             await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
                 func: (id) => {
@@ -163,17 +274,16 @@ export class DetailsActivitiesWeekView {
                         setTimeout(() => {
                             element.style.backgroundColor = '';
                         }, 2000);
+                    } else {
+                        // Elemento não encontrado - silencioso
                     }
                 },
                 args: [activityId],
             });
-
-            // Focar na tab
-            await chrome.tabs.update(tab.id, { active: true });
         } catch (error) {
             console.error('Erro ao fazer scroll:', error);
-            // Fallback: abrir URL
-            chrome.tabs.create({ url: fallbackUrl });
+            // Fallback: abrir URL da semana ou fallback
+            chrome.tabs.create({ url: this.week.url || fallbackUrl });
         }
     }
 

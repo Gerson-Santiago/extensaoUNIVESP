@@ -26,8 +26,9 @@ export class QuickLinksScraper {
                 let id = null;
 
                 if (onclick) {
-                    // onclick format: quickLinks.messageHelper.activateElement("7722825", ...)
-                    const match = onclick.match(/activateElement\s*\(\s*["']([^"']+)["']/);
+                    // onclick format: quickLinks.messageHelper.activateElement("2641727", "anonymous_element_9", ...)
+                    // Extrair SEGUNDO parâmetro (elementId), não o primeiro (frameId)
+                    const match = onclick.match(/activateElement\s*\(\s*["'][^"']+["']\s*,\s*["']([^"']+)["']/);
                     if (match && match[1]) {
                         id = match[1];
                     }
@@ -49,7 +50,7 @@ export class QuickLinksScraper {
 
     /**
      * Scrape items do modal "Links Rápidos" em uma página do AVA
-     * @param {string} weekUrl - URL da semana (usado para contexto, mas scraping é na aba AVA atual)
+     * @param {string} _weekUrl - URL da semana (usado para contexto, mas scraping é na aba AVA atual)
      * @returns {Promise<Array>} - Items extraídos
      */
     static async scrapeFromQuickLinks(_weekUrl) {
@@ -64,49 +65,75 @@ export class QuickLinksScraper {
             // Usa a primeira aba encontrada (idealmente a ativa)
             const tab = tabs[0];
 
-            console.warn('[QuickLinksScraper] Scraping na aba:', tab.id, tab.url);
 
-            // 2. Executar scraping inline
+
+            // 2. Executar scraping inline (com abertura automática do modal)
             const results = await chrome.scripting.executeScript({
                 target: { tabId: tab.id },
-                func: () => {
-                    // ===== EXECUTA INLINE NA PÁGINA =====
-                    console.warn('🔗 [QuickLinks] Executando scraping...');
+                func: async () => {
 
+                    // 1. Verificar se modal já está populado
+                    let links = document.querySelectorAll('li.quick_links_header_h3 a');
+
+                    // 2. Se vazio, abrir modal Links Rápidos
+                    if (links.length === 0) {
+                        const quickLinksBtn = document.getElementById('quick_links_lightbox_link');
+
+                        if (!quickLinksBtn) {
+                            console.error('🔗 [QuickLinks] Botão "Links rápidos" não encontrado!');
+                            return [];
+                        }
+
+                        quickLinksBtn.click();
+
+                        // 3. Aguardar modal popular (polling com timeout)
+                        const maxAttempts = 20; // 2 segundos (20 x 100ms)
+                        let attempts = 0;
+
+                        while (attempts < maxAttempts) {
+                            await new Promise(resolve => setTimeout(resolve, 100));
+                            links = document.querySelectorAll('li.quick_links_header_h3 a');
+
+                            if (links.length > 0) {
+                                break;
+                            }
+
+                            attempts++;
+                        }
+
+                        if (links.length === 0) {
+                            console.error('🔗 [QuickLinks] Timeout: modal não populou após 2s');
+                            return [];
+                        }
+                    }
+
+                    // 4. Scraping dos links
                     const items = [];
-                    const links = document.querySelectorAll('li.quick_links_header_h3 a');
 
-                    console.warn(`🔗 [QuickLinks] Encontrados ${links.length} links`);
-
-                    links.forEach((link, index) => {
+                    links.forEach((link, _index) => {
                         const name = link.textContent.trim().replace(/\s+/g, ' ');
 
                         if (!name) return;
 
-                        // Extrai ID do onclick
+                        // Extrai ID do onclick (SEGUNDO parâmetro = elementId)
                         const onclick = link.getAttribute('onclick');
                         let id = null;
 
                         if (onclick) {
-                            const match = onclick.match(/activateElement\s*\(\s*["']([^"']+)["']/);
+                            const match = onclick.match(/activateElement\s*\(\s*["'][^"']+["']\s*,\s*["']([^"']+)["']/);
                             if (match && match[1]) {
                                 id = match[1];
                             }
                         }
 
                         items.push({ name, id, type: 'document' });
-                        console.warn(`🔗 [QuickLinks] Item ${index + 1}: ${name.substring(0, 50)}...`);
                     });
 
-                    console.warn(`🔗 [QuickLinks] Retornando ${items.length} itens`);
                     return items;
                 },
             });
 
             const items = results[0]?.result || [];
-
-            console.warn(`[QuickLinksScraper] Scraping retornou ${items.length} itens`);
-
             return items;
         } catch (error) {
             console.error('[QuickLinksScraper] Erro ao fazer scraping:', error);

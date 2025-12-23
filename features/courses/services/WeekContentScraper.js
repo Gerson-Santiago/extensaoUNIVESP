@@ -106,7 +106,7 @@ export class WeekContentScraper {
 
             listItems.forEach((li, index) => {
               try {
-                const h3Link = li.querySelector('h3 a');
+                const h3Link = /** @type {HTMLAnchorElement|null} */ (li.querySelector('h3 a'));
                 if (!h3Link || !h3Link.href) return;
 
                 const span = h3Link.querySelector('span');
@@ -126,7 +126,7 @@ export class WeekContentScraper {
 
                 // Type (simplificado)
                 let type = 'document';
-                const iconImg = li.querySelector('img.item_icon');
+                const iconImg = /** @type {HTMLImageElement|null} */ (li.querySelector('img.item_icon'));
                 if (iconImg) {
                   const src = (iconImg.src || '').toLowerCase();
                   const alt = (iconImg.alt || '').toLowerCase();

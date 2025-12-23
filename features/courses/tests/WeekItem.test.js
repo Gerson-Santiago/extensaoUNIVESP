@@ -51,8 +51,9 @@ describe('WeekItem with Tasks Button', () => {
     const children = Array.from(element.children);
 
     expect(children[0].className).toBe('week-name');
-    expect(children[1].className).toBe('btn-grid-action');
-    expect(children[2].className).toBe('week-arrow');
+    expect(children[1].className).toBe('btn-grid-action'); // Tarefas
+    expect(children[2].className).toBe('btn-grid-action btn-activities'); // @Atividades (QuickLinks)
+    expect(children[3].className).toBe('week-arrow');
   });
 
   it('should work without onViewTasks callback', () => {
