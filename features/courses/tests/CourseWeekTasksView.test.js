@@ -31,20 +31,29 @@ describe('CourseWeekTasksView', () => {
 
     view.setWeek(mockWeek, mockCourse);
 
-    // Mock Service behavior
-    /** @type {jest.Mock} */ (TaskProgressService.calculateProgress).mockReturnValue({
+    // Mock Service behavior (now async)
+    /** @type {jest.Mock} */ (TaskProgressService.calculateProgress).mockResolvedValue({
       completed: 1,
       total: 2,
       percentage: 50,
     });
+    /** @type {jest.Mock} */ (TaskProgressService.isTaskCompleted).mockImplementation(
+      async (courseId, weekId, taskId) => {
+        // Return false for t1, true for t2 (matching mock data)
+        return taskId === 't2';
+      }
+    );
     /** @type {jest.Mock} */ (TaskProgressService.toggleTask).mockResolvedValue(true);
   });
 
   describe('render', () => {
-    it('should render items correctly', () => {
+    it('should render items correctly', async () => {
       const element = view.render();
-      document.body.appendChild(element); // To use DOM methods
-      view.afterRender();
+      document.body.appendChild(element);
+      await view.afterRender(); // afterRender now calls async methods
+
+      // Wait for async renders to complete
+      await new Promise((resolve) => setTimeout(resolve, 50));
 
       const taskItems = document.querySelectorAll('.task-item');
       expect(taskItems.length).toBe(2);
@@ -52,12 +61,12 @@ describe('CourseWeekTasksView', () => {
       expect(taskItems[1].textContent).toContain('Task 2');
     });
 
-    it('should calculate progress via Service', () => {
+    it('should calculate progress via Service', async () => {
       const element = view.render();
       document.body.appendChild(element);
-      view.renderProgress();
+      await view.renderProgress();
 
-      expect(TaskProgressService.calculateProgress).toHaveBeenCalledWith(mockWeek);
+      expect(TaskProgressService.calculateProgress).toHaveBeenCalledWith(mockWeek, 'http://c1.com');
       const progressInfo = document.querySelector('.progress-info');
       expect(progressInfo.textContent).toContain('50%');
     });
@@ -67,22 +76,28 @@ describe('CourseWeekTasksView', () => {
     it('should call Service.toggleTask when clicking a task', async () => {
       const element = view.render();
       document.body.appendChild(element);
-      view.afterRender();
+      await view.afterRender();
 
       const firstTask = /** @type {HTMLElement} */ (document.querySelectorAll('.task-item')[0]);
       firstTask.dispatchEvent(new PointerEvent('click', { bubbles: true }));
 
-      expect(TaskProgressService.toggleTask).toHaveBeenCalledWith(mockCourse, 'Week 1', 't1');
+      // Wait for async handleToggle to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
+
+      expect(TaskProgressService.toggleTask).toHaveBeenCalledWith('http://c1.com', 'Week 1', 't1');
     });
 
     it('should re-render progress after toggle', async () => {
       const renderSpy = jest.spyOn(view, 'renderProgress');
       const element = view.render();
       document.body.appendChild(element);
-      view.afterRender();
+      await view.afterRender();
 
       const firstTask = /** @type {HTMLElement} */ (document.querySelectorAll('.task-item')[0]);
       firstTask.dispatchEvent(new PointerEvent('click', { bubbles: true }));
+
+      // Wait for async handleToggle to complete
+      await new Promise((resolve) => setTimeout(resolve, 10));
 
       expect(renderSpy).toHaveBeenCalled();
     });
