@@ -67,6 +67,12 @@ A estrutura do projeto deve refletir os domínios de negócio.
     - **Classes**: Para serviços com estado ou "Singletons" (ex: `SessionManager`).
     - **Funções Puras**: Para lógica de negócio e helpers (ex: `TermParser.parseTerm`).
 
+### 4.3 Padrões de Frontend (Interação)
+- **Eventos**: Uso exclusivo de `PointerEvent` para interações de ponteiro (mouse, touch, pen).
+    - ✅ **Preferível**: `element.addEventListener('click', (e) => ...)` tipado como `PointerEvent`.
+    - ❌ **Evitar**: `onclick = ...` (Tipagem implícita/legada).
+    - **Motivo**: Compatibilidade com padrão Interop 2025 e suporte nativo a hardware moderno.
+
 ---
 
 ## 5. Scripts de Automação (CI/CD Local)

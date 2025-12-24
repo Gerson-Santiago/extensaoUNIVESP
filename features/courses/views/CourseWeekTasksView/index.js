@@ -1,9 +1,5 @@
-/**
- * @file CourseWeekTasksView.js
- * @description View de Tarefas da Semana de um Curso.
- * Localizada em: features/courses/views/CourseWeekTasksView/index.js
- */
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
+import { TaskProgressService } from '../../services/TaskProgressService.js';
 
 export class CourseWeekTasksView {
   /**
@@ -12,14 +8,17 @@ export class CourseWeekTasksView {
   constructor(callbacks) {
     this.callbacks = callbacks;
     this.week = null;
+    this.course = null; // Needed for persistence
   }
 
   /**
-   * Define a semana a ser exibida
+   * Define a semana e o curso a ser exibido
    * @param {Object} week - Objeto Week com name e items
+   * @param {Object} course - Objeto Course pai (necessário para persistência)
    */
-  setWeek(week) {
+  setWeek(week, course) {
     this.week = week;
+    this.course = course;
   }
 
   /**
@@ -52,7 +51,9 @@ export class CourseWeekTasksView {
   afterRender() {
     const backBtn = document.getElementById('backBtn');
     if (backBtn) {
-      backBtn.onclick = () => this.callbacks.onBack();
+      backBtn.addEventListener('click', (/** @type {PointerEvent} */ _e) => {
+        this.callbacks.onBack();
+      });
     }
 
     this.renderProgress();
@@ -66,7 +67,8 @@ export class CourseWeekTasksView {
     const container = document.getElementById('weekProgress');
     if (!container) return;
 
-    const { completed, total, percentage } = this.calculateProgress();
+    // Delegate calculation to Service
+    const { completed, total, percentage } = TaskProgressService.calculateProgress(this.week);
 
     // Se não houver itens, não mostra progresso ou mostra 0
     if (total === 0) {
@@ -103,8 +105,19 @@ export class CourseWeekTasksView {
       this.week.items.forEach((item) => {
         const taskDiv = document.createElement('div');
         taskDiv.className = 'task-item';
+        // Allow clicking the entire row to toggle
+        taskDiv.style.cursor = 'pointer';
+        taskDiv.addEventListener('click', (/** @type {PointerEvent} */ _e) => {
+          this.handleToggle(item.id);
+        });
 
-        const statusIcon = this.getStatusIcon(item.status || 'TODO');
+        const isCompleted = item.completed || item.status === 'DONE';
+        const statusIcon = isCompleted ? '🟢' : '⚪';
+
+        // Add visual feedback class
+        if (isCompleted) {
+          taskDiv.classList.add('completed');
+        }
 
         taskDiv.innerHTML = `
                   <span class="task-status">${statusIcon}</span>
@@ -121,32 +134,26 @@ export class CourseWeekTasksView {
   }
 
   /**
-   * Mapeia status para emoji correspondente
-   * @param {string} status - Status da tarefa (DONE/DOING/TODO)
-   * @returns {string} - Emoji do status
+   * Handle task toggle interaction using the Service
+   * @param {string} taskId
    */
-  getStatusIcon(status) {
-    const icons = {
-      DONE: '🟢',
-      DOING: '🔵',
-      TODO: '⚪',
-    };
-    return icons[status] || '⚪';
-  }
-
-  /**
-   * Calcula o progresso das tarefas da semana
-   * @returns {{completed: number, total: number, percentage: number}}
-   */
-  calculateProgress() {
-    if (!this.week || !this.week.items || this.week.items.length === 0) {
-      return { completed: 0, total: 0, percentage: 0 };
+  async handleToggle(taskId) {
+    if (!this.course || !this.week) {
+      console.error('Missing context for toggle');
+      return;
     }
 
-    const total = this.week.items.length;
-    const completed = this.week.items.filter((item) => item.status === 'DONE').length;
-    const percentage = Math.round((completed / total) * 100);
+    try {
+      // Optimistic UI Update equivalent not needed if render is fast,
+      // but let's call service then re-render.
+      await TaskProgressService.toggleTask(this.course, this.week.name, taskId);
 
-    return { completed, total, percentage };
+      // Re-render to show new state
+      this.renderProgress();
+      this.renderTasks();
+    } catch (error) {
+      console.error('Error toggling task:', error);
+      new Toaster().show('Erro ao atualizar tarefa.', 'error');
+    }
   }
 }

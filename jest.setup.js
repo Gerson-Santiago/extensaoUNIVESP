@@ -20,3 +20,9 @@ if (!global.chrome.windows) {
     },
   });
 }
+
+// Polyfill PointerEvent for JSDOM environment (used by CourseWeekTasksView)
+if (!global.PointerEvent) {
+  // @ts-ignore
+  global.PointerEvent = class extends MouseEvent {};
+}

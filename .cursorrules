@@ -22,6 +22,7 @@
   - JSDoc Strict (`@param`, `@return`) obrigatório.
   - Definições de modelos em `features/*/models/`.
   - Type Guards (`instanceof`) para DOM elements.
+  - **Eventos:** Use `addEventListener` com `PointerEvent` explícito (Interop 2025).
 
 ## 📏 Linting e Qualidade (Tolerância Zero)
 - **Política:** Zero Warnings. Qualquer aviso de lint ou erro de tipo (`type-check`) = Build Quebrada.

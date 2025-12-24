@@ -17,6 +17,7 @@ description: Planeja e implementa nova feature (TDD).
 @docs/PADROES_DO_PROJETO.md
 - [ ] Defina **Models** JSDoc explícitos em `models/` antes da lógica.
 - [ ] Codifique usando ES Modules e Tipagem defensiva.
+- [ ] Use `addEventListener` com `PointerEvent` para interações.
 
 # 4. Validação
 // turbo

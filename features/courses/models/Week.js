@@ -3,6 +3,8 @@
  * @property {string} name - Nome do item
  * @property {string} url - URL do item
  * @property {string} type - Tipo do item (video, quiz, document, etc)
+ * @property {string} [id] - Identificador único do item (útil para persistência de status)
+ * @property {boolean} [completed] - Status simplificado de conclusão
  * @property {'TODO'|'DOING'|'DONE'} [status] - Status da tarefa (opcional)
  */
 

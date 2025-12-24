@@ -1,6 +1,6 @@
 # EPIC 1: Arquitetura e Refatoração
 
-**Status**: 🔧 Em Progresso  
+**Status**: ✅ Concluído  
 **Prioridade**: Alta  
 **Owner**: Equipe de Engenharia  
 
@@ -43,7 +43,7 @@ As Views atuais possuem **múltiplas responsabilidades**, misturando:
 
 ---
 
-### 2. [REFACTOR-persistencia-courseweektasksview.md](file:///home/sant/extensaoUNIVESP/.github/REFACTOR/REFACTOR-persistencia-courseweektasksview.md)
+### 2. [REFACTOR-persistencia-courseweektasksview.md](file:///home/sant/extensaoUNIVESP/.github/REFACTOR/REFACTOR-persistencia-courseweektasksview.md) (✅ Concluído)
 
 **Problema**: `CourseWeekTasksView` salva direto em `CourseRepository`
 
@@ -80,11 +80,11 @@ As Views atuais possuem **múltiplas responsabilidades**, misturando:
 ## 📊 Progresso
 
 ```
-[████████░░░░░░░░] 50%
+[████████████████████] 100%
 ```
 
-**Concluído**: 1/2 issues  
-**Em progresso**: 1/2 issues  
+**Concluído**: 2/2 issues  
+**Em progresso**: 0/2 issues  
 **Total estimado**: 6-9 horas
 
 ---
