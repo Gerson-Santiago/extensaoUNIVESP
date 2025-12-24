@@ -35,7 +35,7 @@ features/courses/
 │   └── CourseRefresher.js           ← Atualização de cursos
 ├── logic/                           ← Regras de negócio puras
 │   └── TaskCategorizer.js           ← Classifica atividades
-├── repository/                      ← Persistência
+├── data/                            ← Persistência
 │   └── CourseRepository.js          ← CRUD de cursos
 └── tests/                           ← Testes unitários
 ```
