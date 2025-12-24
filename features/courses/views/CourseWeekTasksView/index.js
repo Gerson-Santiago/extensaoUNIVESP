@@ -63,12 +63,15 @@ export class CourseWeekTasksView {
   /**
    * Renderiza a barra de progresso
    */
-  renderProgress() {
+  async renderProgress() {
     const container = document.getElementById('weekProgress');
     if (!container) return;
 
-    // Delegate calculation to Service
-    const { completed, total, percentage } = TaskProgressService.calculateProgress(this.week);
+    // Delegate calculation to Service (now async)
+    const { completed, total, percentage } = await TaskProgressService.calculateProgress(
+      this.week,
+      this.course.url
+    );
 
     // Se não houver itens, não mostra progresso ou mostra 0
     if (total === 0) {
@@ -90,7 +93,7 @@ export class CourseWeekTasksView {
   /**
    * Renderiza a lista de tarefas no container
    */
-  renderTasks() {
+  async renderTasks() {
     try {
       const container = document.getElementById('tasksList');
       if (!container) return;
@@ -102,16 +105,22 @@ export class CourseWeekTasksView {
         return;
       }
 
-      this.week.items.forEach((item) => {
+      // Fetch all progress statuses at once for efficiency
+      for (const item of this.week.items) {
         const taskDiv = document.createElement('div');
         taskDiv.className = 'task-item';
-        // Allow clicking the entire row to toggle
         taskDiv.style.cursor = 'pointer';
         taskDiv.addEventListener('click', (/** @type {PointerEvent} */ _e) => {
           this.handleToggle(item.id);
         });
 
-        const isCompleted = item.completed || item.status === 'DONE';
+        // Check progress from repository
+        const isCompleted = await TaskProgressService.isTaskCompleted(
+          this.course.url,
+          this.week.name,
+          item.id
+        );
+
         const statusIcon = isCompleted ? '🟢' : '⚪';
 
         // Add visual feedback class
@@ -125,7 +134,7 @@ export class CourseWeekTasksView {
               `;
 
         container.appendChild(taskDiv);
-      });
+      }
     } catch (error) {
       console.error('CourseWeekTasksView: Erro ao renderizar tarefas', error);
       const toaster = new Toaster();
@@ -144,13 +153,12 @@ export class CourseWeekTasksView {
     }
 
     try {
-      // Optimistic UI Update equivalent not needed if render is fast,
-      // but let's call service then re-render.
-      await TaskProgressService.toggleTask(this.course, this.week.name, taskId);
+      // Toggle using new unified model
+      await TaskProgressService.toggleTask(this.course.url, this.week.name, taskId);
 
       // Re-render to show new state
-      this.renderProgress();
-      this.renderTasks();
+      await this.renderProgress();
+      await this.renderTasks();
     } catch (error) {
       console.error('Error toggling task:', error);
       new Toaster().show('Erro ao atualizar tarefa.', 'error');
