@@ -4,11 +4,15 @@
  * @architecture Screaming Architecture - Service Layer
  */
 
+/**
+ * @typedef {import('../models/Week.js').WeekItem} WeekItem
+ */
+
 export class QuickLinksScraper {
   /**
    * Extrai items do modal "Links Rápidos" (executado inline na página)
    * @param {Document} dom - Documento onde buscar (padrão: document global)
-   * @returns {Array<{name: string, id: string|null, type: string}>}
+   * @returns {Partial<WeekItem>[]}
    */
   static extractFromModal(dom = document) {
     try {

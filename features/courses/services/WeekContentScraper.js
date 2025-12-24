@@ -1,8 +1,12 @@
+/**
+ * @typedef {import('../models/Week.js').WeekItem} WeekItem
+ */
+
 export class WeekContentScraper {
   /**
    * Scrapes week content from AVA by injecting script into active tab
    * @param {string} _weekUrl - URL da semana
-   * @returns {Promise<Array<{name: string, url: string, type: string, status?: 'TODO'|'DOING'|'DONE'}>>}
+   * @returns {Promise<WeekItem[]>}
    */
   static async scrapeWeekContent(_weekUrl) {
     try {
@@ -169,7 +173,7 @@ export class WeekContentScraper {
   /**
    * Extrai itens de tarefa do DOM atual - VERSÃO ROBUSTA COM ESPERA
    * @param {Document} dom - Documento onde buscar (padrão: document global)
-   * @returns {Array<{name: string, url: string, type: string, status?: 'TODO'|'DOING'|'DONE'}>}
+   * @returns {WeekItem[]}
    */
   static extractItemsFromDOM(dom = document) {
     try {
