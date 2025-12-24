@@ -11,7 +11,8 @@
       "@shared/*": ["shared/*"],
       "@tests/*": ["tests/*"],
       "@sidepanel/*": ["sidepanel/*"]
-    }
+    },
+    "moduleResolution": "node"
   },
   "include": ["**/*"],
   "exclude": ["node_modules", "dist", "coverage"]

@@ -28,11 +28,12 @@ features/courses/
 │   └── DetailsActivitiesWeekView/   ← Índice de atividades
 ├── components/                      ← Componentes reutilizáveis
 │   └── WeekItem.js                  ← Card de semana
-├── services/                        ← Lógica de negócio
+├── services/                        ← Lógica de negócio (Orquestração)
+│   ├── WeekActivitiesService.js     ← [NOVO] Facade para Scraping e Cache
 │   ├── QuickLinksScraper.js         ← Scraping via Links Rápidos
 │   ├── WeekContentScraper.js        ← Scraping via DOM
 │   └── CourseRefresher.js           ← Atualização de cursos
-├── logic/                           ← Regras de negócio
+├── logic/                           ← Regras de negócio puras
 │   └── TaskCategorizer.js           ← Classifica atividades
 ├── repository/                      ← Persistência
 │   └── CourseRepository.js          ← CRUD de cursos
@@ -107,17 +108,23 @@ features/courses/
   onBack: () => navigateTo('CoursesView'),
   onOpenCourse: (url) => Tabs.openOrSwitchTo(url),
   onViewTasks: (week) => navigateTo('CourseWeekTasksView'),
-  onViewActivities: (week) => {
-    // Scrape se necessário
-    if (!week.items) {
-      week.items = await WeekContentScraper.scrape(week.url);
+  onViewTasks: (week) => navigateTo('CourseWeekTasksView'),
+  onViewActivities: async (week) => {
+    // Delega orquestração para Service
+    try {
+      await WeekActivitiesService.getActivities(week, 'DOM');
+      navigateTo('DetailsActivitiesWeekView');
+    } catch (err) {
+      Toaster.show('Erro ao carregar');
     }
-    navigateTo('DetailsActivitiesWeekView');
   },
-  onViewQuickLinks: (week) => {
-    week.items = await QuickLinksScraper.scrape(week.url);
-    week.method = 'QuickLinks';
-    navigateTo('DetailsActivitiesWeekView');
+  onViewQuickLinks: async (week) => {
+    try {
+      await WeekActivitiesService.getActivities(week, 'QuickLinks');
+      navigateTo('DetailsActivitiesWeekView');
+    } catch (err) {
+      Toaster.show('Erro ao carregar');
+    }
   }
 }
 ```
@@ -236,7 +243,19 @@ async scrollToActivity(activityId, fallbackUrl) {
 
 ---
 
-## 🔄 Scrapers
+## 🔄 Services (Orquestração e Scraping)
+
+### WeekActivitiesService (Facade)
+**Arquivo**: `services/WeekActivitiesService.js`
+
+**Responsabilidade**:
+- Atuar como ponto único de entrada para obtenção de atividades.
+- Gerenciar cache (`week.items`).
+- Delegar a estratégia de scraping (`DOM` vs `QuickLinks`).
+- Propagar erros para tratamento na View.
+
+**Fluxo**:
+`View -> WeekActivitiesService -> (Cache Check) -> Scraper -> View`
 
 ### QuickLinksScraper
 **Arquivo**: `services/QuickLinksScraper.js`
