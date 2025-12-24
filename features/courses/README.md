@@ -21,23 +21,36 @@ Esta feature gerencia a **navegação e visualização de cursos, semanas e ativ
 
 ```
 features/courses/
-├── views/                           ← Views (UI)
+├── views/                           ← Views (UI - React-like)
 │   ├── CoursesView/                 ← Home: lista de matérias
 │   ├── CourseWeeksView/             ← Semanas de uma matéria
 │   ├── CourseWeekTasksView/         ← Tarefas filtradas
 │   └── DetailsActivitiesWeekView/   ← Índice de atividades
-├── components/                      ← Componentes reutilizáveis
-│   └── WeekItem.js                  ← Card de semana
-├── services/                        ← Lógica de negócio (Orquestração)
-│   ├── WeekActivitiesService.js     ← [NOVO] Facade para Scraping e Cache
-│   ├── QuickLinksScraper.js         ← Scraping via Links Rápidos
-│   ├── WeekContentScraper.js        ← Scraping via DOM
-│   └── CourseRefresher.js           ← Atualização de cursos
-├── logic/                           ← Regras de negócio puras
-│   └── TaskCategorizer.js           ← Classifica atividades
+├── components/                      ← Componentes visuais
+│   ├── CourseItem.js
+│   ├── WeekItem.js
+│   └── AddManualModal/
+├── services/                        ← Integração e Orquestração
+│   ├── WeekActivitiesService.js     ← Facade: Scraping + Cache
+│   ├── CourseRefresher.js           ← Atualização em lote
+│   ├── ScraperService.js            ← Base para scrapers
+│   ├── QuickLinksScraper.js         ← Estratégia: Links Rápidos
+│   └── WeekContentScraper.js        ← Estratégia: DOM Parser
+├── logic/                           ← Regras de Negócio Puras (No-UI)
+│   ├── CourseService.js             ← Regras de alto nível de curso
+│   ├── CourseGrouper.js             ← Agrupamento por período/semestre
+│   ├── TermParser.js                ← Parse de strings de período
+│   ├── AutoScrollService.js         ← Lógica matemática de scroll
+│   └── TaskCategorizer.js           ← Classificação de tipos de tarefa
+├── models/                          ← Entidades de Domínio
+│   ├── Course.js                    ← Schema: Curso
+│   └── Week.js                      ← Schema: Semana
 ├── data/                            ← Persistência
-│   └── CourseRepository.js          ← CRUD de cursos
-└── tests/                           ← Testes unitários
+│   ├── CourseRepository.js          ← Repositório (Regras de acesso)
+│   └── CourseStorage.js             ← Driver de Storage (Chrome API)
+├── import/                          ← Sub-feature: Importação
+│   └── ... (Fluxo de Batch Import)
+└── tests/                           ← Testes unitários (Mirroring structure)
 ```
 
 ---
@@ -278,30 +291,46 @@ async scrollToActivity(activityId, fallbackUrl) {
 
 ---
 
-## 📊 Diagrama de Dados
+## 🧠 Logic Layer (Regras de Negócio)
 
-```
-Course {
-  id: string
-  name: string
-  url: string
-  weeks: Week[]
+A camada `logic/` contém código Javascript puro, testável e desacoplado de UI ou Chrome APIs.
+
+| Arquivo | Responsabilidade |
+| :--- | :--- |
+| **`CourseGrouper.js`** | Agrupa cursos crus em semestres/períodos baseados no nome. |
+| **`TermParser.js`** | Extrai metadados (ano, semestre) de strings de título. |
+| **`TaskCategorizer.js`** | Define se um item é Videoaula, PDF, Quiz, etc. baseados em ícone/URL. |
+| **`AutoScrollService.js`** | Calcula posições de scroll para a lista de atividades (Math heavy). |
+
+---
+
+## 📦 Persistence Layer (Data)
+
+Separação clara entre *O Que* salvar (Repository) e *Como* salvar (Storage).
+
+- **`CourseRepository.js`**: Implementa a lógica de CRUD da aplicação. Sabe lidar com cache, validação e serialização de objetos de domínio.
+- **`CourseStorage.js`**: Conhece a `chrome.storage.local`. Lida com quotas, erros de I/O e promessas da API do navegador.
+
+---
+
+## 🏗️ Models (Entidades)
+
+Definições de estrutura de dados (Schemas simulados via JSDoc).
+
+```javascript
+// models/Course.js
+class Course {
+  id: string;
+  name: string;
+  weeks: Week[];
+  // ...
 }
 
-Week {
-  name: string
-  url: string
-  items: Activity[]
-  method?: 'QuickLinks' | 'DOM'
-  courseName?: string  // Para breadcrumb
-}
-
-Activity {
-  name: string
-  url?: string
-  id: string           // DOM element ID
-  type: 'document'
-  completed?: boolean  // Para CourseWeekTasksView
+// models/Week.js
+class Week {
+  name: string;
+  url: string;
+  items: Activity[];
 }
 ```
 
