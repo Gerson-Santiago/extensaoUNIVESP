@@ -1,7 +1,7 @@
 # 🔐 Privacidade, Dados e Conformidade LGPD
 
 > **Última Atualização:** 22/12/2025
-> **Versão:** 2.7.1
+> **Versão:** 2.8.0
 
 Este documento detalha como a extensão **AutoPreencher UNIVESP** coleta, processa e protege os dados dos usuários, servindo como referência para conformidade com a LGPD (Lei Geral de Proteção de Dados) e normas da UNIVESP.
 

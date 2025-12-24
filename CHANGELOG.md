@@ -1,6 +1,6 @@
 # Changelog - Versão Beta
 
-## [2.7.1] - 2025-12-21
+## [2.8.0] - 2025-12-24
 ### Infraestrutura & Tecnologia (ES2024 Update)
 - **ES2024 Ready**: Atualização da configuração do compilador (`jsconfig.json`) para suportar nativamente funcionalidades do ES2024 (como `Object.groupBy`).
 - **Conventional Commits**: Implementação do **Commitlint** no pipeline de hooks do git (`.husky`) para garantir padronização rigorosa das mensagens de commit.
