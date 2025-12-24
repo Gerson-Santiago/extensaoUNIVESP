@@ -45,9 +45,9 @@ describe('TaskProgressService', () => {
       const mockWeek = {
         name: 'Week 1',
         items: [
-          { id: 'task1', name: 'Task 1' },
-          { id: 'task2', name: 'Task 2' },
-          { id: 'task3', name: 'Task 3' },
+          { id: 'task1', name: 'Task 1', url: '#', type: 'video' },
+          { id: 'task2', name: 'Task 2', url: '#', type: 'quiz' },
+          { id: 'task3', name: 'Task 3', url: '#', type: 'document' },
         ],
       };
 
@@ -67,6 +67,7 @@ describe('TaskProgressService', () => {
     });
 
     it('should handle empty weeks', async () => {
+      /** @type {import('../models/Week.js').Week} */
       const emptyWeek = { name: 'Empty Week', items: [] };
 
       const result = await TaskProgressService.calculateProgress(emptyWeek, 'courseId');
@@ -79,11 +80,12 @@ describe('TaskProgressService', () => {
     });
 
     it('should fallback to scraped status if no repository data', async () => {
+      /** @type {import('../models/Week.js').Week} */
       const mockWeek = {
         name: 'Week 1',
         items: [
-          { id: 'task1', name: 'Task 1', status: 'DONE' }, // Scraped as DONE
-          { id: 'task2', name: 'Task 2', status: 'TODO' },
+          { id: 'task1', name: 'Task 1', url: '#', type: 'video', status: 'DONE' },
+          { id: 'task2', name: 'Task 2', url: '#', type: 'quiz', status: 'TODO' },
         ],
       };
 

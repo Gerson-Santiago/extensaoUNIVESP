@@ -40,7 +40,7 @@ Transformar a extensão em uma **ferramenta completa de acompanhamento**, permit
 **Estimativa**: 3-4 horas
 
 **Dependências**:
-- ⚠️ Requer TECH_DEBT-unificar-estrutura-progresso resolvido primeiro
+- ✅ ~~TECH_DEBT-unificar-estrutura-progresso~~ **RESOLVIDO** (2025-12-24)
 
 ---
 

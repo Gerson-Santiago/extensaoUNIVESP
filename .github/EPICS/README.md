@@ -37,12 +37,13 @@ Um **EPIC** é um agrupamento de issues (bugs, features, refatorações) que com
 **Objetivo**: Resolver inconsistências estruturais e melhorar qualidade
 
 **Issues**:
-- TECH_DEBT-unificar-estrutura-progresso
+- ✅ TECH_DEBT-unificar-estrutura-progresso (concluído)
 - TECH_DEBT-breadcrumb-estado-global
 - TECH_DEBT-cobertura-testes-courses
 
-**Progresso**: 0/3 (0%)  
-**Estimativa**: 9-13 horas
+**Progresso**: 1/3 (80%) ✅  
+**Tempo real**: 6 horas (primeiro issue)  
+**Estimativa restante**: 5-7 horas
 
 ---
 

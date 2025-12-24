@@ -31,11 +31,14 @@ features/courses/
 │   ├── WeekItem.js
 │   └── AddManualModal/
 ├── services/                        ← Integração e Orquestração
+│   ├── TaskProgressService.js       ← Gerencia progresso de tarefas
 │   ├── WeekActivitiesService.js     ← Facade: Scraping + Cache
 │   ├── CourseRefresher.js           ← Atualização em lote
 │   ├── ScraperService.js            ← Base para scrapers
 │   ├── QuickLinksScraper.js         ← Estratégia: Links Rápidos
 │   └── WeekContentScraper.js        ← Estratégia: DOM Parser
+├── repository/                      ← Data Access Layer
+│   └── ActivityProgressRepository.js ← CRUD de progresso (NEW!)
 ├── logic/                           ← Regras de Negócio Puras (No-UI)
 │   ├── CourseService.js             ← Regras de alto nível de curso
 │   ├── CourseGrouper.js             ← Agrupamento por período/semestre
@@ -44,8 +47,9 @@ features/courses/
 │   └── TaskCategorizer.js           ← Classificação de tipos de tarefa
 ├── models/                          ← Entidades de Domínio
 │   ├── Course.js                    ← Schema: Curso
-│   └── Week.js                      ← Schema: Semana
-├── data/                            ← Persistência
+│   ├── Week.js                      ← Schema: Semana
+│   └── ActivityProgress.js          ← Schema: Progresso (NEW!)
+├── data/                            ← Persistência de Courses
 │   ├── CourseRepository.js          ← Repositório (Regras de acesso)
 │   └── CourseStorage.js             ← Driver de Storage (Chrome API)
 ├── import/                          ← Sub-feature: Importação
@@ -304,7 +308,99 @@ A camada `logic/` contém código Javascript puro, testável e desacoplado de UI
 
 ---
 
-## 📦 Persistence Layer (Data)
+## � Activity Progress (Modelo Unificado) ✨ NOVO
+
+### Visão Geral
+
+Data de implementação: **2025-12-24**  
+TECH_DEBT resolvido: `TECH_DEBT-unificar-estrutura-progresso`
+
+Anteriormente, o progresso de atividades estava fragmentado:
+- ❌ `Week.items[].completed` (boolean)
+- ❌ `Week.items[].status` (enum 'TODO'|'DOING'|'DONE')
+
+**Problema**: Ambiguidade e dados duplicados dentro do modelo de Course.
+
+**Solução**: Modelo unificado com **Separation of Concerns**.
+
+### ActivityProgress Model
+
+**Arquivo**: `models/ActivityProgress.js`
+
+```javascript
+/**
+ * @typedef {Object} ActivityProgressData
+ * @property {string} activityId - ID composto: courseId_weekId_taskId
+ * @property {'TODO'|'DOING'|'DONE'} status - Workflow state
+ * @property {boolean} markedByUser - Toggle manual do usuário?
+ * @property {boolean} completedInAVA - Scraped como concluído no AVA?
+ * @property {number} lastUpdated - Timestamp
+ */
+
+class ActivityProgress {
+  static fromScraped(activityId, status) { ... }
+  static fromUserToggle(activityId, isCompleted) { ... }
+  static isCompleted(progress) { ... }
+  static generateId(courseId, weekId, taskId) { ... }
+}
+```
+
+### ActivityProgressRepository
+
+**Arquivo**: `repository/ActivityProgressRepository.js`
+
+**Namespace isolado**: `chrome.storage.local.activityProgress`
+
+**CRUD Methods**:
+- `get(activityId)` - Busca individual
+- `getMany(activityIds)` - Batch (eficiente)
+- `save(progress)` - Salva
+- `toggle(activityId)` - Alterna TODO ↔ DONE
+- `delete(activityId)` - Deleta
+- `clear()` - Limpa tudo
+
+**Benefícios**:
+- ✅ Progresso separado de Course data
+- ✅ Facilita sync futuro com AVA
+- ✅ Tracking de provenance (user vs scraped)
+- ✅ Namespace isolado (não polui courses)
+
+### TaskProgressService (Refatorado)
+
+**Arquivo**: `services/TaskProgressService.js`
+
+**BREAKING CHANGES**:
+
+```javascript
+// ANTES
+TaskProgressService.toggleTask(course, weekName, taskId)
+TaskProgressService.calculateProgress(week)
+
+// DEPOIS
+TaskProgressService.toggleTask(courseId, weekId, taskId)  // async
+TaskProgressService.calculateProgress(week, courseId)     // async
+TaskProgressService.isTaskCompleted(courseId, weekId, taskId)  // NEW
+```
+
+**Motivação da mudança**:
+- Remove dependência de mutação de objetos Course
+- API mais funcional e testável
+- Usa IDs ao invés de objetos complexos
+
+### Views Migradas
+
+**CourseWeekTasksView**: ✅ Migrada
+- Rendering agora é async
+- Usa `ActivityProgressRepository` via Service
+- Fallback para status scraped se não há toggle do usuário
+
+**DetailsActivitiesWeekView**: ⏳ Pendente
+- Ainda usa padrão antigo
+- Próximo alvo de migração
+
+---
+
+## �📦 Persistence Layer (Data)
 
 Separação clara entre *O Que* salvar (Repository) e *Como* salvar (Storage).
 
