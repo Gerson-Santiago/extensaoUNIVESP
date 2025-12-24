@@ -28,8 +28,8 @@ Um **EPIC** é um agrupamento de issues (bugs, features, refatorações) que com
 - REFACTOR-desacoplar-scraping-view
 - REFACTOR-persistencia-courseweektasksview
 
-**Progresso**: 0/2 (0%)  
-**Estimativa**: 6-9 horas
+**Progresso**: 2/2 (100%) ✅  
+**Tempo real**: ~8 horas (concluído em 2025-12-23)
 
 ---
 

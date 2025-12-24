@@ -69,11 +69,11 @@ As Views atuais possuem **múltiplas responsabilidades**, misturando:
 
 ## ✅ Critérios de Aceitação
 
-- [ ] Todas Views delegam lógica para Services
-- [ ] Services testados isoladamente (100% cobertura)
-- [ ] Views testadas com mocks de Services
-- [ ] Comportamento externo preservado (Green-Green Refactor)
-- [ ] `npm run verify` passa
+- [x] Todas Views delegam lógica para Services
+- [x] Services testados isoladamente (WeekActivitiesService, TaskProgressService)
+- [x] Views testadas com mocks de Services (CourseWeeksView.test.js, CourseWeekTasksView.test.js)
+- [x] Comportamento externo preservado (Green-Green Refactor)
+- [x] `npm run verify` passa
 
 ---
 
@@ -83,9 +83,9 @@ As Views atuais possuem **múltiplas responsabilidades**, misturando:
 [████████████████████] 100%
 ```
 
-**Concluído**: 2/2 issues  
-**Em progresso**: 0/2 issues  
-**Total estimado**: 6-9 horas
+**Concluído**: 2/2 issues ✅  
+**Total realizado**: ~8 horas  
+**Data de conclusão**: 2025-12-23
 
 ---
 
@@ -97,4 +97,5 @@ As Views atuais possuem **múltiplas responsabilidades**, misturando:
 ---
 
 **Criado em**: 2025-12-23  
+**Concluído em**: 2025-12-23  
 **Relacionado a**: [SPEC-v2.8.0.md](file:///home/sant/extensaoUNIVESP/.github/SPEC-v2.8.0.md)
