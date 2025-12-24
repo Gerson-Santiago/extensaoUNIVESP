@@ -30,7 +30,7 @@ As Views atuais possuem **múltiplas responsabilidades**, misturando:
 
 ## 🗂️ Issues Incluídas
 
-### 1. [REFACTOR-desacoplar-scraping-view.md](file:///home/sant/extensaoUNIVESP/.github/REFACTOR/REFACTOR-desacoplar-scraping-view.md)
+### 1. [REFACTOR-desacoplar-scraping-view.md](file:///home/sant/extensaoUNIVESP/.github/REFACTOR/REFACTOR-desacoplar-scraping-view.md) (✅ Concluído)
 
 **Problema**: `CourseWeeksView` gerencia scraping de conteúdo
 
@@ -80,11 +80,11 @@ As Views atuais possuem **múltiplas responsabilidades**, misturando:
 ## 📊 Progresso
 
 ```
-[██░░░░░░░░] 20%
+[████████░░░░░░░░] 50%
 ```
 
-**Concluído**: 0/2 issues  
-**Em progresso**: 0/2 issues  
+**Concluído**: 1/2 issues  
+**Em progresso**: 1/2 issues  
 **Total estimado**: 6-9 horas
 
 ---

@@ -76,6 +76,16 @@ Conteúdo:
 
 ---
 
+#### 4. Estudos de Arquitetura (Realizados)
+
+**Localização**: `docs/learning/`
+
+- `ESTUDO_POO.md`: Análise de Orientação a Objetos vs Funcional.
+- `ESTUDO_DESIGN_PATTERNS.md`: Facade, Strategy, Adapter na prática.
+- `ESTUDO_CRUD_E_PERSISTENCIA.md`: Fluxo de dados no Chrome Extension.
+
+---
+
 ## 🎁 Benefícios
 
 - 📚 **Onboarding rápido**: Novos devs produtivos em dias, não semanas
@@ -104,12 +114,13 @@ Conteúdo:
 ## 📊 Progresso
 
 ```
-[██░░░░░░░░] 20%
+[████░░░░░░░░] 40%
 ```
 
 **Concluído**: 
 - ✅ README.md principal
 - ✅ Docs em `/docs` (parcial)
+- ✅ Estudos de Arquitetura (`docs/learning/`)
 
 **Planejado**:
 - 📋 Chrome APIs

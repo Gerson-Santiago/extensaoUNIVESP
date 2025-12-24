@@ -1,6 +1,6 @@
 # REFACTOR: Desacoplar Scraping de CourseWeeksView
 
-**Status**: 🔧 Refatoração Pendente  
+**Status**: ✅ Concluído  
 **Prioridade**: Alta  
 **Estimativa**: 4-6 horas  
 
@@ -141,12 +141,12 @@ class ScrapeWeekCommand {
 
 ## ✅ Critérios de Aceitação
 
-- [ ] `WeekActivitiesService` criado
-- [ ] CourseWeeksView delega scraping para Service
-- [ ] Testes unitários do Service passando
-- [ ] Cache de `week.items` continua funcionando
-- [ ] Ambos métodos (DOM e QuickLinks) suportados
-- [ ] Lint e type-check passando
+- [x] `WeekActivitiesService` criado
+- [x] CourseWeeksView delega scraping para Service
+- [x] Testes unitários do Service passando
+- [x] Cache de `week.items` continua funcionando
+- [x] Ambos métodos (DOM e QuickLinks) suportados
+- [x] Lint e type-check passando
 
 ---
 
