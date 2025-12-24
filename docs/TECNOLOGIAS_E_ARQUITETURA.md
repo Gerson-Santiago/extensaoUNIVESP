@@ -63,7 +63,12 @@ Contém a lógica pura de negócio.
 - **Característica**: Agnóstica de Framework e UI.
 - **Teste**: 100% Coberta por Testes Unitários.
 
-### 3.2 Data Layer (`features/*/data`)
+### 3.2 Service Layer (`features/*/services`)
+Responsável pela orquestração e integração com o mundo externo (DOM, APIs).
+- **Pattern**: Facade / Service Object.
+- **Responsabilidade**: Isolar a View da complexidade de obtenção de dados.
+
+### 3.3 Data Layer (`features/*/data`)
 Responsável pela persistência e hidratação.
 - **Pattern**: Repository Pattern.
 - **Driver**: Abstrai `chrome.storage`.
