@@ -73,7 +73,7 @@ export class QuickLinksScraper {
         throw new Error('Nenhuma aba do AVA encontrada para scraping de Links Rápidos.');
       }
 
-      console.log(`[QuickLinksScraper] Alvo: Aba ${tab.id} ("${tab.title}")`);
+      console.warn(`[QuickLinksScraper] Alvo: Aba ${tab.id} ("${tab.title}")`);
 
       // 2. Executar scraping inline (com abertura automática do modal)
       const results = await chrome.scripting.executeScript({
@@ -103,7 +103,7 @@ export class QuickLinksScraper {
               links = document.querySelectorAll('li.quick_links_header_h3 a');
 
               if (links.length > 0) {
-                console.log(`🔗 [QuickLinks] Modal carregado após ${attempts * 100}ms`);
+                console.warn(`🔗 [QuickLinks] Modal carregado após ${attempts * 100}ms`);
                 break;
               }
 

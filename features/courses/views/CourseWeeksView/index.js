@@ -6,8 +6,7 @@
 
 import { createWeekElement } from '../../components/WeekItem.js';
 import { CourseRefresher } from '../../services/CourseRefresher.js';
-import { WeekContentScraper } from '../../services/WeekContentScraper.js';
-import { QuickLinksScraper } from '../../services/QuickLinksScraper.js';
+import { WeekActivitiesService } from '../../services/WeekActivitiesService.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 
 export class CourseWeeksView {
@@ -96,26 +95,15 @@ export class CourseWeeksView {
           onViewTasks: (w) => this.showPreview(w, wDiv),
           onViewActivities: async (w) => {
             console.warn('[CourseWeeksView] onViewActivities chamado para:', w.name);
-            console.warn('[CourseWeeksView] week.items ANTES do scraping:', w.items);
 
-            // Scrape content if not already loaded
-            if (!w.items || w.items.length === 0) {
-              try {
-                console.warn('[CourseWeeksView] Iniciando scraping para URL:', w.url);
-                const items = await WeekContentScraper.scrapeWeekContent(w.url);
-                console.warn('[CourseWeeksView] Scraping retornou:', items.length, 'items:', items);
-                w.items = items;
-                w.method = 'DOM'; // Tag para saber qual método foi usado
-              } catch (error) {
-                console.error('[CourseWeeksView] Erro ao carregar atividades:', error);
-                w.items = [];
-              }
-            } else {
-              console.warn('[CourseWeeksView] Items já em cache:', w.items.length, 'items');
+            // Delegate to Service
+            try {
+              await WeekActivitiesService.getActivities(w, 'DOM');
+            } catch (error) {
+              console.error('[CourseWeeksView] Erro ao carregar atividades:', error);
+              new Toaster().show('Erro ao carregar atividades. Tente novamente.', 'error');
+              w.items = [];
             }
-
-            console.warn('[CourseWeeksView] week.items APÓS scraping:', w.items);
-            console.warn('[CourseWeeksView] Verificando se week.items está vazio:', w.items.length === 0);
 
             // Adicionar nome da matéria para breadcrumb
             w.courseName = this.course.name;
@@ -128,15 +116,12 @@ export class CourseWeeksView {
           onViewQuickLinks: async (w) => {
             console.warn('[CourseWeeksView] onViewQuickLinks chamado para:', w.name);
 
-            // Scrape usando Links Rápidos
+            // Delegate to Service (QuickLinks method)
             try {
-              console.warn('[CourseWeeksView] Iniciando QuickLinks scraping...');
-              const items = await QuickLinksScraper.scrapeFromQuickLinks(w.url);
-              console.warn('[CourseWeeksView] QuickLinks retornou:', items.length, 'items');
-              w.items = items;
-              w.method = 'QuickLinks'; // Tag para saber qual método foi usado
+              await WeekActivitiesService.getActivities(w, 'QuickLinks');
             } catch (error) {
               console.error('[CourseWeeksView] Erro ao carregar via QuickLinks:', error);
+              new Toaster().show('Erro ao carregar via Links Rápidos. Tente novamente.', 'error');
               w.items = [];
             }
 
@@ -202,8 +187,8 @@ export class CourseWeeksView {
     this.hidePreview();
 
     try {
-      // Scrape week content from AVA
-      const items = await WeekContentScraper.scrapeWeekContent(week.url);
+      // Scrape week content from AVA (Force DOM update for preview if not loaded)
+      const items = await WeekActivitiesService.getActivities(week, 'DOM');
       week.items = items;
 
       // Render preview

@@ -2,10 +2,10 @@
  * @jest-environment jsdom
  */
 import { CourseWeeksView } from '../views/CourseWeeksView/index.js';
-import { WeekContentScraper } from '../services/WeekContentScraper.js';
+import { WeekActivitiesService } from '../services/WeekActivitiesService.js';
 
 // Mock dependencies
-jest.mock('../services/WeekContentScraper.js');
+jest.mock('../services/WeekActivitiesService.js');
 
 describe('CourseWeeksView - Mini Preview', () => {
   let view;
@@ -30,7 +30,7 @@ describe('CourseWeeksView - Mini Preview', () => {
         { name: 'T2', status: 'TODO', type: 'pdf', url: 'http://test.com/2' },
       ];
 
-      WeekContentScraper.scrapeWeekContent = jest.fn().mockResolvedValue(mockItems);
+      /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
 
       const week = { name: 'Semana 1', url: 'http://ava.com/week1', items: [] };
       view.setCourse({ name: 'Test Course', weeks: [week] });
@@ -54,7 +54,7 @@ describe('CourseWeeksView - Mini Preview', () => {
         { name: 'T3', status: 'TODO', type: 'quiz', url: 'http://test.com/3' },
       ];
 
-      WeekContentScraper.scrapeWeekContent = jest.fn().mockResolvedValue(mockItems);
+      /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
 
       const week = { name: 'Semana 1', url: 'http://ava.com/week1', items: [] };
       view.setCourse({ name: 'Test Course', weeks: [week] });
@@ -77,7 +77,7 @@ describe('CourseWeeksView - Mini Preview', () => {
         { name: 'T3', status: 'TODO', type: 'quiz', url: 'http://test.com/3' },
       ];
 
-      WeekContentScraper.scrapeWeekContent = jest.fn().mockResolvedValue(mockItems);
+      /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
 
       const week = { name: 'Semana 1', url: 'http://ava.com/week1', items: [] };
       view.setCourse({ name: 'Test Course', weeks: [week] });
@@ -95,9 +95,9 @@ describe('CourseWeeksView - Mini Preview', () => {
     });
 
     it('should handle scraping errors gracefully', async () => {
-      WeekContentScraper.scrapeWeekContent = jest
-        .fn()
-        .mockRejectedValue(new Error('Scraping failed'));
+      /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockRejectedValue(
+        new Error('Scraping failed')
+      );
 
       const week = { name: 'Semana 1', url: 'http://ava.com/week1', items: [] };
       view.setCourse({ name: 'Test Course', weeks: [week] });
@@ -185,7 +185,7 @@ describe('CourseWeeksView - Mini Preview', () => {
   describe('Dynamic Preview Behavior', () => {
     it('should toggle preview when clicking same week twice', async () => {
       const mockItems = [{ name: 'T1', status: 'DONE', type: 'video', url: 'http://test.com/1' }];
-      WeekContentScraper.scrapeWeekContent = jest.fn().mockResolvedValue(mockItems);
+      /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
 
       const week = { name: 'Semana 1', url: 'http://ava.com/week1' };
       const mockElement = {
@@ -206,7 +206,7 @@ describe('CourseWeeksView - Mini Preview', () => {
 
     it('should remove previous preview when clicking different week', async () => {
       const mockItems = [{ name: 'T1', status: 'DONE' }];
-      WeekContentScraper.scrapeWeekContent = jest.fn().mockResolvedValue(mockItems);
+      /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
 
       const week1 = { name: 'Semana 1', url: 'http://ava.com/week1' };
       const week2 = { name: 'Semana 2', url: 'http://ava.com/week2' };
@@ -230,7 +230,9 @@ describe('CourseWeeksView - Mini Preview', () => {
     });
 
     it('should handle scraping errors and remove active state', async () => {
-      WeekContentScraper.scrapeWeekContent = jest.fn().mockRejectedValue(new Error('Failed'));
+      /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockRejectedValue(
+        new Error('Failed')
+      );
 
       const week = { name: 'Semana Error', url: 'http://ava.com/error' };
       const mockElement = {
