@@ -1,16 +1,9 @@
 /**
- * @typedef {Object} ActionMenuAction
- * @property {string} label
- * @property {string} icon
- * @property {Function} [onClick]
- * @property {'action'|'danger'} [type]
+ * @typedef {import('../models/ActionMenu.js').ActionMenuAction} ActionMenuAction
  */
 
 /**
- * @typedef {Object} ActionMenuOptions
- * @property {ActionMenuAction[]} [actions]
- * @property {string} [icon]
- * @property {string} [title]
+ * @typedef {import('../models/ActionMenu.js').ActionMenuOptions} ActionMenuOptions
  */
 
 /**

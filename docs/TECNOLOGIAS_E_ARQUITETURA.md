@@ -68,17 +68,24 @@ Responsável pela orquestração e integração com o mundo externo (DOM, APIs).
 - **Pattern**: Facade / Service Object.
 - **Responsabilidade**: Isolar a View da complexidade de obtenção de dados.
 
-### 3.3 Data Layer (`features/*/data`)
-Responsável pela persistência e hidratação.
+### 3.3 Repository Layer (`features/*/repository`)
+Responsável pela persistência e recuperação de dados. Implementa o padrão Repository para abstrair a fonte de dados (ex: `chrome.storage` ou API).
 - **Pattern**: Repository Pattern.
-- **Driver**: Abstrai `chrome.storage`.
+- **Responsabilidade**: CRUD puro, sem regras de negócio complexas.
+- **Exemplo**: `ActivityProgressRepository.js`.
 
-### 3.3 Interface Layer (`features/*/ui`)
+### 3.4 Model Layer (`features/*/models`)
+Definições de tipos e entidades de domínio.
+- **Formato**: Módulos ES contendo JSDoc `@typedef`.
+- **Regra**: Fonte única da verdade para estruturas de dados (Canonical Models).
+- **Exemplo**: `Week.js`, `ActivityProgress.js`.
+
+### 3.5 Interface Layer (`features/*/ui`)
 Responsável pela renderização e interação.
 - **Componentes**: Views (Páginas) e Components (Widgets).
 - **Estado**: Gerenciamento local ou via Stores simples.
 
-### 3.4 Infrastructure Layer (`scripts/`)
+### 3.6 Infrastructure Layer (`scripts/`)
 Conecta o sistema à API do navegador.
 - **Responsabilidade**: Mensageria entre abas, detecção de lifecycle eventos.
 

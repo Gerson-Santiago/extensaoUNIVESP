@@ -30,12 +30,21 @@ A formatação é automatizada e não deve ser debatida em Code Review.
     - Aspas simples, Ponto e vírgula, Trailing Comma (ES5).
 
 ### 2.3 Tipagem Estática (JSDoc)
-Utilizamos TypeScript Check em arquivos JavaScript para segurança de tipos em tempo de desenvolvimento.
+Utilizamos TypeScript Check em arquivos JavaScript para segurança tipos em tempo de desenvolvimento.
 - **Validação**: `npm run type-check`.
-- **Diretrizes**:
-    - **Models**: Devem ser definidos via `@typedef` em arquivos dedicados (`features/*/models/`).
-    - **Methods**: Assinaturas públicas devem documentar `@param` e `@return`.
-    - **Casting**: Use `/** @type {Type} */` para desambiguação de tipos, especialmente para mocks do Jest.
+- **Padrões de Tipagem** (Ver `docs_audit.md`):
+    1.  **Models Canônicos** (`features/*/models/`):
+        - Fonte única da verdade para entidades de domínio.
+        - Deve exportar objeto vazio (`export const Model = {}`) para ser módulo.
+        - Ex: `features/courses/models/Week.js`.
+    2.  **Imports de Tipos** (`@typedef {import(...)}`):
+        - Uso preferencial para reutilizar modelos em serviços e views.
+        - Ex: `/** @typedef {import('../models/Course.js').Course} Course */`.
+    3.  **Definições Inline** (Documented Justification):
+        - Permitido APENAS para tipos locais/configurações não reutilizáveis.
+        - Deve incluir comentário explicando decisão.
+        - Ex: `shared/logic/AutoScroll.js`.
+- **Casting**: Use `/** @type {Type} */` para desambiguação.
 
 ---
 
@@ -83,7 +92,7 @@ Os scripts do `package.json` são a interface padrão para operações de desenv
 | :--- | :--- |
 | `npm run verify` | **Gatekeeper**. Executa a pipeline completa de qualidade. Use antes de commit/push. |
 | `npm test` | Executa testes unitários/integração. |
-| `npm run list` | Executa linter. |
+| `npm run lint` | Executa linter. |
 | `npm run type-check` | Executa verificação de tipos TS. |
 
 ---

@@ -457,7 +457,7 @@ class Week {
 - `tests/QuickLinksScraper.test.js`
 - `tests/WeekContentScraper.test.js`
 
-**Total**: 304 testes passando ✅
+**Total**: 335 testes passando ✅
 
 ---
 
@@ -477,4 +477,4 @@ Ver `.github/NEXT/`:
 
 ---
 
-**Última atualização**: 2025-12-23
+**Última atualização**: 2025-12-25

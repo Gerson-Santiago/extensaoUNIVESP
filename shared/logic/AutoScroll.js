@@ -2,7 +2,14 @@
  * Classe responsável por gerenciar a rolagem automática da página.
  * Ideal para carregar conteúdo via lazy loading (infinite scroll).
  */
+
 /**
+ * DESIGN DECISION: Typedef inline (não em models/)
+ *
+ * Motivo: AutoScrollOptions são opções de configuração deste utilitário específico,
+ * não representa uma entidade de domínio. É análogo a parâmetros de função.
+ * Manter inline reduz overhead desnecessário.
+ *
  * @typedef {Object} AutoScrollOptions
  * @property {number} [interval=800] - Intervalo em ms entre os scrolls
  * @property {number} [step=300] - Píxeis para rolar a cada passo
