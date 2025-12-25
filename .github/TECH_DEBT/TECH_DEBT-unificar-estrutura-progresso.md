@@ -1,8 +1,8 @@
 # TECH_DEBT: Unificar Estrutura de Dados de Progresso
 
-**Status**: 📊 Análise de Dados Necessária  
-**Prioridade**: Alta  
-**Estimativa**: 4-6 horas  
+**Status**: ✅ Resolvido (v2.8.0)  
+**Prioridade**: Baixa (Concluído)  
+**Estimativa**: -  
 
 ---
 
@@ -233,4 +233,18 @@ const isCompleted = ActivityProgress.isCompleted(progress);
 ---
 
 **Criado em**: 2025-12-23  
-**Relacionado a**: [features/courses/README.md](file:///home/sant/extensaoUNIVESP/features/courses/README.md) - Linhas 166, 286
+**Resolvido em**: 2025-12-24 (v2.8.0)
+**Solução**: Implementação de `ActivityProgressRepository` e `ActivityProgress` model. Testes cobrindo 100% dos cenários.
+
+---
+
+## ✅ Resolução (v2.8.0)
+
+O débito técnico foi pago com a criação de uma estrutura robusta de persistência separada para o progresso:
+
+1. **ActivityProgress Model**: Modelo canônico JSDoc em `features/courses/models/ActivityProgress.js`.
+2. **Repository Dedicado**: `ActivityProgressRepository` isola a complexidade de storage.
+3. **Views Migradas**: `CourseWeekTasksView` agora consome o novo service.
+4. **Testes**: Cobertura completa de unit e integration tests.
+
+Ver `features/courses/README.md` e `walkthrough.md` para detalhes.

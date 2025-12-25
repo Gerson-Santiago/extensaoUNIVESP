@@ -85,6 +85,8 @@ static async add(name, url...) {
 ```
 **Benefício**: Separação de responsabilidades. `Course.js` (Modelo) define os dados. `CourseStorage.js` (Driver) define *como* gravar (Chrome API). `CourseRepository` (Regra) define o comportamento da coleção.
 
+**Evolução (v2.8.0)**: O novo `ActivityProgressRepository` leva isso além, implementando persistência granular e desacoplada do modelo principal de cursos.
+
 ### 📡 Observer Pattern (via Callbacks/Events)
 **Teoria**: Definir uma dependência um-para-muitos entre objetos, de modo que quando um objeto muda de estado, todos os seus dependentes são notificados e atualizados automaticamente.
 

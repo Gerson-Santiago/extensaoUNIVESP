@@ -39,15 +39,25 @@ Não fazemos `INSERT INTO courses`. O fluxo é:
 3.  **Hidratação**: O Repository pode (opcionalmente) transformar esses dados em classes, mas aqui usamos POJOs (Plain Objects) por performance.
 
 ### 2.3 Fluxo de UPDATE (Atualizar Progresso)
+**Evolução Arquitetural (v2.8.0): Separation of Concerns**
 
-Este é o ponto mais delicado.
-Para mudar **1 tarefa** de "TODO" para "DONE":
-1.  Carregamos todos os cursos.
-2.  Encontramos o curso X. e a semana Y.
-3.  Alteramos o item na memória.
-4.  Salvamos **toda a lista de cursos** de volta.
+Antigamente, para mudar 1 tarefa de "TODO" para "DONE", precisávamos reescrever todo o arquivo de cursos. Isso era ineficiente e perigoso (concorrência).
 
-> **Nota de Arquitetura**: Isso será refatorado em breve para `TaskProgressService` para tornar essa operação mais eficiente e isolada.
+Hoje, usamos o **ActivityProgressRepository**:
+
+1.  **Toggle Atômico**: A View chama `ActivityProgressRepository.toggle(id)`.
+2.  **Namespace Isolado**: O dado é salvo em uma chave separada `activityProgress` no storage.
+3.  **Eficiência**: Apenas o pequeno objeto JSON daquela atividade é gravado (delta).
+4.  **Independência**: O array de `courses` permanece intocado (Read-Only neste contexto).
+
+```javascript
+// Exemplo Conceitual
+await ActivityProgressRepository.save({
+  activityId: 'LET100_sem1_quiz',
+  status: 'DONE',
+  lastUpdated: 123456789
+});
+```
 
 ---
 

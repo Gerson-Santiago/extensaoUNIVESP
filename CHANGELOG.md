@@ -25,7 +25,22 @@
 - **Navegação Centralizada**: Hub de documentação `docs/README.md`.
 - **Glossário Expandido**: Definições detalhadas de termos arquiteturais.
 
-## [2.6.3] - 2025-12-20
+### [2.8.2] - 2025-12-25
+### Documentação (Auditoria Completa)
+- **Code-First Documentation**: Auditoria de 17 arquivos de documentação para alinhar com o código real.
+  - Correção de `TECNOLOGIAS_E_ARQUITETURA.md` (Repository + Models).
+  - Atualização dos Debt Status para "Resolvido".
+  - Padronização de JSDoc em `PADROES_DO_PROJETO.md`.
+
+### [2.8.1] - 2025-12-25
+### Correções (Testes)
+- **Mock Persistence Fix**: Implementação de mock customizado para `chrome.storage.local` com persistência em memória no ambiente de testes.
+  - Resolução de bug onde `set()` seguido de `get()` retornava vazio em testes.
+  - Resultado: Aumento de 332 para **335 testes passando** (100% Green).
+
+---
+
+## [2.8.0] - 2025-12-24
 ### Engenharia & Qualidade
 - **Refatoração do Scraper**: Simplificação da lógica de "Auto-Scroll" em `BatchScraper.js` para maior robustez e legibilidade. Eliminação de complexidade desnecessária.
 - **Suite de Testes**: Divisão do monolito `CourseRepository.test.js` em arquivos menores (`load`, `save`, `add`, `update_delete`), facilitando a manutenção.

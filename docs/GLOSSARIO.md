@@ -37,6 +37,15 @@ Script de event-handling que roda em background, independente da interface gráf
 ### Repository Pattern
 Padrão de acesso a dados que abstrai a fonte de persistência (`chrome.storage`), oferecendo uma interface de coleção para o domínio.
 
+### @typedef (JSDoc)
+Diretiva de documentação utilizada para criar definições de tipos reutilizáveis em JavaScript puro. Utilizado extensivamente em `features/*/models` para simular interfaces sem TypeScript.
+
+### ActivityProgress
+Modelo canônico (Entidade) que representa o estado de conclusão de uma tarefa. Unifica dados de scraping ('TODO'/'DONE') e interação do usuário (toggle manual).
+
+### QuickLinks Scraper
+Estratégia de extração de dados que utiliza o modal nativo "Links Rápidos" do Blackboard. Mais rápido que o scraping via DOM, mas fornece apenas IDs e Títulos.
+
 ### Scraper
 Serviço especializado em extrair dados estruturados a partir do DOM de páginas HTML (AVA/SEI).
 
