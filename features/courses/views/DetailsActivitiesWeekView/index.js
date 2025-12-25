@@ -9,6 +9,7 @@
 
 import { categorizeTask } from '../../logic/TaskCategorizer.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
+import { NavigationService } from '../../../../shared/services/NavigationService.js';
 
 export class DetailsActivitiesWeekView {
     /**
@@ -220,71 +221,22 @@ export class DetailsActivitiesWeekView {
     }
 
     /**
-     * Faz scroll até a atividade na página do AVA
-     * @param {string} activityId - ID único da atividade (ex: "_1767514_1" ou "anonymous_element_9")
-     * @param {string} fallbackUrl - URL da atividade (fallback se scroll falhar)
+     * Faz scroll até a atividade na página do AVA usando o NavigationService.
+     * @param {string} activityId - ID único da atividade
+     * @param {string} fallbackUrl - URL de fallback (não usada se week.url existir)
      */
     async scrollToActivity(activityId, fallbackUrl) {
         try {
-            // 1. Encontrar tab do AVA aberta
-            const [tab] = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
-
-            if (!tab || !tab.id) {
-                // Nenhuma tab do AVA aberta, abrir URL da semana
-                chrome.tabs.create({ url: this.week.url || fallbackUrl });
-                return;
-            }
-
-            // 2. Navegar para a URL da semana (se ainda não estiver lá)
-            if (this.week.url && !tab.url.includes(this.week.url)) {
-                await chrome.tabs.update(tab.id, { url: this.week.url, active: true });
-
-                // Aguardar página carregar
-                await new Promise(resolve => {
-                    const listener = (tabId, info) => {
-                        if (tabId === tab.id && info.status === 'complete') {
-                            chrome.tabs.onUpdated.removeListener(listener);
-                            resolve();
-                        }
-                    };
-                    chrome.tabs.onUpdated.addListener(listener);
-
-                    // Timeout de segurança (5s)
-                    setTimeout(() => {
-                        chrome.tabs.onUpdated.removeListener(listener);
-                        resolve();
-                    }, 5000);
-                });
-
-                // Aguardar mais 500ms para JS do AVA executar
-                await new Promise(resolve => setTimeout(resolve, 500));
+            if (this.week && this.week.url) {
+                await NavigationService.openActivity(this.week.url, activityId);
             } else {
-                // Já está na página correta, apenas focar
-                await chrome.tabs.update(tab.id, { active: true });
+                // Fallback se não tiver URL da semana (abre direto)
+                NavigationService.openCourse(fallbackUrl);
             }
-
-            // 3. Executar scroll na tab
-            await chrome.scripting.executeScript({
-                target: { tabId: tab.id },
-                func: (id) => {
-                    const element = document.getElementById(id);
-                    if (element) {
-                        element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-                        // Highlight temporário
-                        element.style.backgroundColor = '#fff3cd';
-                        setTimeout(() => {
-                            element.style.backgroundColor = '';
-                        }, 2000);
-                    } else {
-                        // Elemento não encontrado - silencioso
-                    }
-                },
-                args: [activityId],
-            });
         } catch (error) {
-            console.error('Erro ao fazer scroll:', error);
-            // Fallback: abrir URL da semana ou fallback
-            chrome.tabs.create({ url: this.week.url || fallbackUrl });
+            console.error('[DetailsActivitiesWeekView] Erro ao navegar:', error);
+            // Fallback final
+            window.open(fallbackUrl, '_blank');
         }
     }
 

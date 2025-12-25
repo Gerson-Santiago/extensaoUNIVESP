@@ -4,6 +4,9 @@
  */
 
 import { DetailsActivitiesWeekView } from '../views/DetailsActivitiesWeekView/index.js';
+import { NavigationService } from '../../../shared/services/NavigationService.js';
+
+jest.mock('../../../shared/services/NavigationService.js');
 
 describe('DetailsActivitiesWeekView', () => {
     let view;
@@ -72,6 +75,28 @@ describe('DetailsActivitiesWeekView', () => {
                 expect(view.getTypeIcon(type)).toBeTruthy();
                 expect(typeof view.getTypeIcon(type)).toBe('string');
             });
+        });
+    });
+    describe('scrollToActivity', () => {
+        it('deve chamar NavigationService.openActivity com URL da semana', async () => {
+            const week = {
+                name: 'Semana 1',
+                url: 'http://ava.univesp.br/semana1',
+                items: [],
+            };
+            view.setWeek(week);
+
+            await view.scrollToActivity('activity-123', 'http://fallback.com');
+
+            expect(NavigationService.openActivity).toHaveBeenCalledWith(week.url, 'activity-123');
+        });
+
+        it('deve chamar NavigationService.openCourse (fallback) se não houver URL da semana', async () => {
+            view.setWeek({ name: 'Semana X', items: [] }); // Sem URL
+
+            await view.scrollToActivity('activity-123', 'http://fallback.com');
+
+            expect(NavigationService.openCourse).toHaveBeenCalledWith('http://fallback.com');
         });
     });
 });
