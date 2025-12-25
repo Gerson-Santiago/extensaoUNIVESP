@@ -1,6 +1,6 @@
 # EPIC 3: Features de Gestão de Tarefas
 
-**Status**: 🚀 Ativo  
+**Status**: ✅ Concluído  
 **Prioridade**: Alta  
 **Owner**: Product + Engenharia  
 
