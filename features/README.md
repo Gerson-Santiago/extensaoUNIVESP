@@ -1,6 +1,7 @@
 # Especificação de Features (Domain Layout)
 
-Este diretório implementa o padrão **Screaming Architecture**, onde a estrutura de pastas evidencia os domínios de negócio do software.
+Este diretório implementa uma arquitetura híbrida de **Screaming Architecture** com **Vertical Slices**.
+A estrutura de pastas evidencia os domínios de negócio, onde cada pasta em `features/` contem uma fatia vertical completa da aplicação (View, Logic, Data).
 
 ---
 

@@ -25,6 +25,15 @@ Elemento de interface reutilizável e de escopo menor que uma View.
 
 ## 2. Conceitos Técnicos
 
+### Vertical Slice Architecture
+Arquitetura onde o sistema é dividido verticalmente por funcionalidades. Cada fatia contém toda a lógica necessária (UI, Service, Model) para funcionar, evitando dependências entre camadas horizontais globais.
+
+### Modular Monolith (Monolito Modular)
+Estratégia de implantação onde o sistema é um único artefato distribuível (no caso, extensão Chrome), mas internamente é organizado em módulos altamente desacoplados, facilitando manutenção e escalabilidade.
+
+### Feature-Sliced Design (Adaptado)
+Metodologia que divide o sistema em fatias (Features) e segmentos técnicos (Segments: `logic`, `ui`, `data`). O projeto adapta este conceito ao usar `shared/` como kernel comum.
+
 ### Screaming Architecture
 Padrão arquitetural onde a estrutura de diretórios comunica a intenção de negócio do sistema. 
 

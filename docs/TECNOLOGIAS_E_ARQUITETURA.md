@@ -1,7 +1,7 @@
 # Especificação de Arquitetura
 
 > **Status**: Produção (v2.8.0)
-> **Padrão**: Screaming Architecture (Domain-Driven)
+> **Padrão**: Hybrid (Screaming Arch + Modular Monolith)
 > **Runtime**: Google Chrome V3
 
 Este documento define a arquitetura de software, restrições técnicas e decisões de design do projeto.
@@ -10,9 +10,9 @@ Este documento define a arquitetura de software, restrições técnicas e decis�
 
 ## 1. Princípios Arquiteturais
 
-### 1.1 Screaming Architecture
-A organização do código deve evidenciar o domínio de negócio, não o framework.
-- **Regra**: O diretório `features/` é a fonte da verdade. Cada subdiretório representa um Bounded Context.
+### 1.1 Arquitetura Híbrida (Screaming + Vertical Slices)
+A organização do código deve evidenciar o domínio de negócio, utilizando o conceito de **Vertical Slices** dentro de um **Modular Monolith**.
+- **Regra**: O diretório `features/` é a fonte da verdade. Cada subdiretório representa uma "Fatia Vertical" completa (UI, Lógica, Dados) de um Bounded Context.
 - **Isolamento**: Features não devem acoplar-se diretamente. Comunicação via Eventos ou Shared Kernel é preferível.
 
 ### 1.2 Local-First (Data Sovereignty)
