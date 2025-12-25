@@ -34,6 +34,11 @@ O sistema deve prevenir a duplicação de abas para o mesmo recurso.
 - **Local**: `chrome.storage.local` para dados volumosos (cache de semanas).
 - **Sync**: `chrome.storage.sync` para configurações críticas de usuário (preferências).
 
+### 3.3 Progresso de Atividades
+- **Desacoplamento**: O status de conclusão (`TODO/DONE`) é armazenado separadamente da estrutura do curso.
+- **Atomicidade**: Atualizações de progresso usam operações de "Toggle" que afetam apenas o registro específico da atividade, evitando reescrita total do storage de cursos.
+- **Fonte**: Pode ser obtido via scraping (automático) ou interação do usuário (manual).
+
 ---
 
 ## 4. Importação em Lote

@@ -41,20 +41,16 @@ Transformar a extensão em uma **ferramenta completa de acompanhamento acadêmic
 ---
 
 #### 2. **Controle de Progresso de Tarefas** ✅
-**Status**: Implementado (básico)
+**Status**: Implementado (Completo)
 
 - Lista de tarefas por semana
 - Progress bar de conclusão
 - Toggle de status (feito/pendente)
-- Persistência no `chrome.storage`
+- Persistência desacoplada em `ActivityProgressRepository`
 
 **Arquivos**:
 - `features/courses/views/CourseWeekTasksView/`
-- `features/courses/repository/CourseRepository.js`
-
-**Limitações conhecidas**:
-- Estrutura de dados fragmentada (`completed` vs `status`)
-- Acoplamento View ↔ Repository
+- `features/courses/repository/ActivityProgressRepository.js` (NEW)
 
 ---
 
@@ -75,10 +71,12 @@ Transformar a extensão em uma **ferramenta completa de acompanhamento acadêmic
 
 Esta release também endereça **débito técnico** acumulado:
 
-#### EPIC 1: Separação de Responsabilidades
-- Desacoplar scraping de Views
-- Extrair persistência para Services
-- Implementar Repository Pattern adequadamente
+#### EPIC 1: Separação de Responsabilidades ✅
+**Status**: Concluído
+
+- Scraping desacoplado de Views
+- Repository Pattern implementado
+- Services isolados
 
 **Issues**:
 - `REFACTOR-desacoplar-scraping-view.md`
@@ -86,10 +84,12 @@ Esta release também endereça **débito técnico** acumulado:
 
 ---
 
-#### EPIC 2: Unificação de Estrutura de Dados
-- Modelo único de progresso (`ActivityProgress`)
-- Namespace separado para progresso no storage
-- Preparação para sync com AVA
+#### EPIC 2: Unificação de Estrutura de Dados ✅
+**Status**: Concluído
+
+- Modelo único implementado (`ActivityProgress`)
+- Namespace isolado `activityProgress`
+- Views migradas
 
 **Issues**:
 - `TECH_DEBT-unificar-estrutura-progresso.md`
@@ -169,7 +169,7 @@ Esta release também endereça **débito técnico** acumulado:
 }
 ```
 
-### ActivityProgress (Proposto - v2.8.1+)
+### ActivityProgress (Implementado - v2.8.0)
 ```javascript
 {
   activityId: "LET100_semana1_anonymous_element_9",
@@ -212,12 +212,12 @@ Esta release também endereça **débito técnico** acumulado:
 3. Scroll automático com highlight
 4. Sistema básico de progresso
 5. Persistência em `chrome.storage`
+6. Refatoração de Views (SRP)
+7. Unificação de estrutura de dados (`ActivityProgress`)
 
 ### Em Desenvolvimento 🔄
-1. Refatoração de Views (SRP)
-2. Unificação de estrutura de dados
-3. CSS consistente com Design System
-4. Cobertura de testes de integração
+1. CSS consistente com Design System
+2. Cobertura de testes de integração
 
 ### Planejado 📋
 1. Sincronização com AVA (scraping de status real)
