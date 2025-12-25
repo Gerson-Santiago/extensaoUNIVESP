@@ -26,8 +26,8 @@ describe('Lógica - Troca de Abas', () => {
 
     Tabs.openOrSwitchTo(targetUrl);
 
-    // Should update tab 102 (possui AMBOS course_id E content_id)
-    expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true });
+    // Should update tab 102 with correct URL and active state
+    expect(chrome.tabs.update).toHaveBeenCalledWith(102, { url: targetUrl, active: true });
     expect(chrome.windows.update).toHaveBeenCalledWith(999, { focused: true });
     expect(chrome.tabs.create).not.toHaveBeenCalled();
   });
@@ -45,7 +45,7 @@ describe('Lógica - Troca de Abas', () => {
 
     Tabs.openOrSwitchTo(targetUrl);
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(201, { active: true });
+    expect(chrome.tabs.update).toHaveBeenCalledWith(201, { url: targetUrl, active: true });
     expect(chrome.tabs.create).not.toHaveBeenCalled();
   });
 
@@ -89,7 +89,7 @@ describe('Lógica - Troca de Abas', () => {
 
     Tabs.openOrSwitchTo(targetUrl);
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true });
+    expect(chrome.tabs.update).toHaveBeenCalledWith(102, { url: targetUrl, active: true });
     expect(chrome.windows.update).toHaveBeenCalledWith(999, { focused: true });
   });
 
@@ -108,7 +108,7 @@ describe('Lógica - Troca de Abas', () => {
 
     Tabs.openOrSwitchTo(targetUrl);
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(301, { active: true });
+    expect(chrome.tabs.update).toHaveBeenCalledWith(301, { url: targetUrl, active: true });
   });
 
   test('Deve focar na janela ao alternar abas', () => {
@@ -126,7 +126,7 @@ describe('Lógica - Troca de Abas', () => {
 
     Tabs.openOrSwitchTo(targetUrl);
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(401, { active: true });
+    expect(chrome.tabs.update).toHaveBeenCalledWith(401, { url: targetUrl, active: true });
     expect(chrome.windows.update).toHaveBeenCalledWith(555, { focused: true });
   });
 
@@ -160,7 +160,7 @@ describe('Lógica - Troca de Abas', () => {
     Tabs.openOrSwitchTo(targetUrl);
 
     // Deve escolher o id 902 (Exato) e não o 901
-    expect(chrome.tabs.update).toHaveBeenCalledWith(902, { active: true });
+    expect(chrome.tabs.update).toHaveBeenCalledWith(902, { url: targetUrl, active: true });
   });
 
   test('Deve usar matchPattern opcional quando fornecido', () => {
@@ -179,6 +179,85 @@ describe('Lógica - Troca de Abas', () => {
 
     Tabs.openOrSwitchTo(targetUrl, matchPattern);
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(701, { active: true });
+    expect(chrome.tabs.update).toHaveBeenCalledWith(701, { url: targetUrl, active: true });
+  });
+
+  // --- TESTES DE REPRODUÇÃO DE BUGS (EPIC 4) ---
+
+  test('BUG REPRO: Não deve reusar aba se course_id for diferente (Matéria A vs Matéria B)', () => {
+    const targetUrl =
+      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_MAT_1&content_id=_123';
+
+    const mockTabs = [
+      {
+        id: 999,
+        url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_ING_1&content_id=_456',
+        windowId: 111,
+      },
+    ];
+
+    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+      callback(mockTabs);
+    });
+
+    Tabs.openOrSwitchTo(targetUrl);
+
+    // Deve criar NOVA aba
+    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl });
+    expect(chrome.tabs.update).not.toHaveBeenCalled();
+  });
+
+  test('BUG REPRO: Botão Abrir Matéria deve funcionar mesmo se aba de semana estiver aberta', () => {
+    const courseUrl =
+      'https://ava.univesp.br/webapps/blackboard/execute/launcher?type=Course&id=_ING_1';
+
+    const mockTabs = [
+      {
+        id: 888,
+        url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_ING_1&content_id=_WEEK3',
+        windowId: 111,
+      },
+    ];
+
+    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+      callback(mockTabs);
+    });
+
+    Tabs.openOrSwitchTo(courseUrl);
+
+    // Se a lógica permitir reuso (IDs batem), deve atualizar URL
+    // Se a lógica não permitir reuso (prefixo não bate), deve criar nova
+    const callsCreate = /** @type {jest.Mock} */ (chrome.tabs.create).mock.calls.length > 0;
+    const callsUpdateWithUrl = /** @type {jest.Mock} */ (chrome.tabs.update).mock.calls.some(
+      (call) => call[1].url === courseUrl
+    );
+
+    expect(callsCreate || callsUpdateWithUrl).toBe(true);
+  });
+
+  test('BUG REPRO 3: Deve lidar com course_id que NÃO começa com underscore', () => {
+    // Agora que a regex suporta IDs variados, deve funcionar corretamente (reusando se ID bater, ou criando nova se não bater)
+    // Se o ID for 12345 e a aba tiver 99999 -> IDs diferentes -> Nova Aba.
+
+    const targetUrl =
+      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=123456&content_id=_123';
+
+    const mockTabs = [
+      {
+        id: 777,
+        url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=99999&content_id=_456',
+        windowId: 111,
+      },
+    ];
+
+    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+      callback(mockTabs);
+    });
+
+    Tabs.openOrSwitchTo(targetUrl);
+
+    // Com a nova regex e proteção de segurança, deve criar nova aba
+    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl });
+    expect(chrome.tabs.update).not.toHaveBeenCalled();
   });
 });
