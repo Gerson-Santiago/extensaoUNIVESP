@@ -19,7 +19,7 @@ export class HomeView {
                         Portal SEI
                     </a>
                     <a href="https://ava.univesp.br/ultra/course" 
-                       data-match-pattern="ava.univesp.br"
+                       data-match-pattern="ultra/course"
                        class="link-card blackboard-card js-smart-link">
                         <img src="../assets/icon_blackboard.png" alt="Blackboard" class="bb-icon">
                         AVA (Cursos)

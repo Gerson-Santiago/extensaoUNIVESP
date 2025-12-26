@@ -83,6 +83,6 @@ describe('HomeView - Renderização', () => {
 
     const avaLink = element.querySelector('a[href*="ava.univesp.br"]');
     expect(avaLink.classList.contains('js-smart-link')).toBe(true);
-    expect(avaLink.getAttribute('data-match-pattern')).toBe('ava.univesp.br');
+    expect(avaLink.getAttribute('data-match-pattern')).toBe('ultra/course');
   });
 });

@@ -42,7 +42,7 @@ export class Tabs {
       );
     }
     // 2. Busca apenas course_id
-    else if (!existingTab && targetCourseId) {
+    if (!existingTab && targetCourseId) {
       existingTab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
     }
 
