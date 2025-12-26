@@ -21,7 +21,7 @@ Se falhar, não prossiga.
 ### Gate de Segurança (Pre-commit)
 ```bash
 # Executado automaticamente em todo commit:
-security:secrets → type-check → test → lint-staged
+security:secrets → lint-staged (eslint + prettier + testes relacionados)
 ```
 
 ### Validação Manual Completa
@@ -52,7 +52,7 @@ npm run test:coverage  # Gera relatório de cobertura
 
 **Testes:**
 - `npm run test:quick` - Apenas testes que falharam
-- `npm run test:dev` - Modo watch interativo
+- `npm run test:watch` - Modo watch interativo
 - `npm run test:debug` - Para no primeiro erro
 - `npm test` - Suite completa
 - `npm run test:ci` - Para CI/CD com coverage

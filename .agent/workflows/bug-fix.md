@@ -11,7 +11,7 @@ description: Fluxo para correção de bugs com testes e lint.
 
 # 2. Correção
 - [ ] Corrija o código respeitando a modularização e privacidade.
-- [ ] Use `npm run test:dev` (modo watch) para feedback contínuo
+- [ ] Use `npm run test:watch` (modo watch) para feedback contínuo
 
 # 3. Validação
 // turbo
@@ -32,7 +32,7 @@ npm run verify    # Tests + Lint + Type-check
 
 **Testes:**
 - `npm run test:debug` - Para no primeiro erro
-- `npm run test:dev` - Modo watch interativo
+- `npm run test:watch` - Modo watch interativo
 
 **Segurança:**
 - `npm run security:secrets` - Detecta API keys, tokens
