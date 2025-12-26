@@ -450,14 +450,6 @@ class Week {
 ## ✅ Testes
 
 **Cobertura**:
-- `tests/CoursesView.test.js`
-- `tests/CourseWeeksView.test.js`
-- `tests/CourseWeekTasksView.test.js`
-- `tests/DetailsActivitiesWeekView.test.js`
-- `tests/QuickLinksScraper.test.js`
-- `tests/WeekContentScraper.test.js`
-
-**Total**: 335 testes passando ✅
 
 ---
 
