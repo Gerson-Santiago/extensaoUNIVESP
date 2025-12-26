@@ -84,17 +84,73 @@ A estrutura do projeto deve refletir os domínios de negócio.
 
 ---
 
-## 5. Scripts de Automação (CI/CD Local)
+## 5. Scripts de Automação
 
-Os scripts do `package.json` são a interface padrão para operações de desenvolvimento.
+O projeto disponibiliza scripts organizados por categoria para garantir qualidade, segurança e produtividade.
 
-| Script | Descrição |
-| :--- | :--- |
-| `npm run verify` | **Gatekeeper**. Executa a pipeline completa de qualidade. Use antes de commit/push. |
-| `npm test` | Executa testes unitários/integração. |
-| `npm run lint` | Executa linter. |
-| `npm run type-check` | Executa verificação de tipos TS. |
+### 5.1 Verificação e Qualidade
+
+| Script | Descrição | Quando Usar |
+| :--- | :--- | :--- |
+| `npm run verify` | **Pipeline completa** (tests + lint + type-check) | Obrigatório antes de PR |
+| `npm run lint` | ESLint com zero tolerância | Validação de código |
+| `npm run lint:fix` | ESLint com correção automática | Corrigir erros de lint |
+| `npm run format` | Prettier (formata todo projeto) | Primeira vez ou mudança de config |
+| `npm run format:check` | Verifica formatação sem modificar | CI/CD |
+| `npm run type-check` | Verificação de tipos JSDoc | Validação estática |
+
+### 5.2 Testes (Jest)
+
+#### Core
+| Script | Comando | Quando Usar |
+| :--- | :--- | :--- |
+| `npm test` | `jest` | Suite completa (365 testes) |
+| `npm run test:watch` | `jest --watch` | Desenvolvimento ativo |
+| `npm run test:coverage` | `jest --coverage` | Análise de cobertura |
+| `npm run test:debug` | `jest --bail` | Debug (para no 1º erro) |
+| `npm run test:quick` | `jest --onlyFailures` | Validação rápida |
+| `npm run test:ci` | `jest --coverage --ci` | CI/CD otimizado |
+
+#### Por Feature
+- `npm run test:courses` - Apenas feature courses
+- `npm run test:feedback` - Apenas feature feedback
+- `npm run test:session` - Apenas feature session
+- `npm run test:unit` - Apenas testes unitários
+- `npm run test:integration` - Apenas testes de integração
+
+### 5.3 Segurança
+
+**3 Camadas de Proteção Automática:**
+
+| Script | Ferramenta | O Que Detecta |
+| :--- | :--- | :--- |
+| `npm run security:secrets` | Secretlint | API keys, tokens, passwords |
+| `npm run security:audit` | npm audit | CVE high/critical em dependências |
+| `npm run security:lint` | ESLint Security | Vulnerabilidades no código (eval, injection, XSS) |
+| `npm run security` | **Todas acima** | Gate completo de segurança |
+
+**Bloqueadores Automáticos:**
+- ❌ Commits com secrets detectados
+- ❌ Dependências com CVE high/critical
+- ❌ Código com vulnerabilidades conhecidas
+
+### 5.4 Pre-commit (Automático)
+
+**Executado em todo `git commit`:**
+
+```
+1. security:secrets  → Detecta secrets em todo projeto (~0.5s)
+2. lint-staged       → ESLint + Prettier + Jest (apenas arquivos alterados)
+   ├─ eslint --fix   → Corrige e valida código
+   ├─ prettier --write → Formata automaticamente
+   └─ jest --bail --findRelatedTests → Testes relacionados
+```
+
+**Performance:** ~16s (apenas testes dos arquivos alterados)
+
+**Bypass:** `git commit --no-verify` (não recomendado)
 
 ---
 
 > **Compliance**: Pull Requests que não aderem a estes padrões serão reprovados na revisão estática ou dinâmica.
+
