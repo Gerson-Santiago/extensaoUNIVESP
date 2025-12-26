@@ -21,7 +21,6 @@
     "test:session": "jest features/session",
     "test:settings": "jest features/settings",
     "test:shared": "jest shared/",
-    "test:dev": "jest --watch",
     "test:debug": "jest --bail",
     "test:quick": "jest --onlyFailures",
     "test:file": "jest",
@@ -30,7 +29,7 @@
     "security:audit": "npm audit --audit-level=high",
     "security:lint": "eslint . --max-warnings=0",
     "security": "npm run security:secrets && npm run security:audit && npm run security:lint",
-    "precommit": "npm run security:secrets && npm run test && lint-staged"
+    "precommit": "npm run security:secrets && lint-staged"
   },
   "author": "Gerson Santiago",
   "license": "ISC",

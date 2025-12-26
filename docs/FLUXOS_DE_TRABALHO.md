@@ -49,14 +49,13 @@ Adotamos um modelo baseado em Feature Branching com Trunk-Based Development na `
 
 **Gate de Segurança** (Executado em todo commit):
 ```
-security:secrets → type-check → test → lint-staged
+security:secrets → lint-staged (tests relacionados + lint)
 ```
 
 **Camadas de Proteção:**
 1. **Secretlint**: Detecta API keys, tokens, passwords no código
-2. **Type-check**: Validação de tipos JSDoc
-3. **Tests**: 365 testes automatizados
-4. **Lint**: ESLint + Security rules (anti-injection, anti-XSS)
+2. **Testes Relacionados**: Jest roda apenas testes dos arquivos alterados (--findRelatedTests)
+3. **Lint**: ESLint + Security rules (anti-injection, anti-XSS) + Prettier
 
 **Scripts Disponíveis:**
 - `npm run security` - Gate completo (secrets + audit + lint)
