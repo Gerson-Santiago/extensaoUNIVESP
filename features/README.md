@@ -107,7 +107,7 @@ O uso de validação de tipos é mandatório.
 
 ---
 
-## 4. Features Implementadas (v2.8.0)
+## 4. Features Implementadas (v2.8.7)
 
 ### `courses` (Core)
 Gestão completa do ciclo de vida acadêmico.
