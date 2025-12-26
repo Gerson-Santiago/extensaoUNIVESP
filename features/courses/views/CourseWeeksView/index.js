@@ -96,41 +96,51 @@ export class CourseWeeksView {
           onViewActivities: async (w) => {
             console.warn('[CourseWeeksView] onViewActivities chamado para:', w.name);
 
-            // Delegate to Service
+            // Adicionar nome da matéria para breadcrumb
+            w.courseName = this.course.name;
+
+            // 🎯 UX: Navega IMEDIATAMENTE (mostra skeleton se sem cache)
+            if (this.callbacks.onViewActivities) {
+              this.callbacks.onViewActivities(w);
+            }
+
+            // 🔄 Carrega dados em background
             try {
               await WeekActivitiesService.getActivities(w, 'DOM');
+
+              // Atualiza view com dados reais (substitui skeleton)
+              if (this.callbacks.onViewActivities) {
+                this.callbacks.onViewActivities(w);
+              }
             } catch (error) {
               console.error('[CourseWeeksView] Erro ao carregar atividades:', error);
               new Toaster().show('Erro ao carregar atividades. Tente novamente.', 'error');
               w.items = [];
             }
-
-            // Adicionar nome da matéria para breadcrumb
-            w.courseName = this.course.name;
-
-            // Navega para DetailsActivitiesWeekView
-            if (this.callbacks.onViewActivities) {
-              this.callbacks.onViewActivities(w);
-            }
           },
           onViewQuickLinks: async (w) => {
             console.warn('[CourseWeeksView] onViewQuickLinks chamado para:', w.name);
 
-            // Delegate to Service (QuickLinks method)
+            // Adicionar nome da matéria para breadcrumb
+            w.courseName = this.course.name;
+
+            // 🎯 UX: Navega IMEDIATAMENTE (mostra skeleton se sem cache)
+            if (this.callbacks.onViewActivities) {
+              this.callbacks.onViewActivities(w);
+            }
+
+            // 🔄 Carrega dados em background (QuickLinks method)
             try {
               await WeekActivitiesService.getActivities(w, 'QuickLinks');
+
+              // Atualiza view com dados reais (substitui skeleton)
+              if (this.callbacks.onViewActivities) {
+                this.callbacks.onViewActivities(w);
+              }
             } catch (error) {
               console.error('[CourseWeeksView] Erro ao carregar via QuickLinks:', error);
               new Toaster().show('Erro ao carregar via Links Rápidos. Tente novamente.', 'error');
               w.items = [];
-            }
-
-            // Adicionar nome da matéria para breadcrumb
-            w.courseName = this.course.name;
-
-            // Navega para mesma view
-            if (this.callbacks.onViewActivities) {
-              this.callbacks.onViewActivities(w);
             }
           },
         });

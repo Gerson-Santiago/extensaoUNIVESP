@@ -1,6 +1,7 @@
 import { WeekContentScraper } from './WeekContentScraper.js';
 import { QuickLinksScraper } from './QuickLinksScraper.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
+import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
 
 /**
  * Service to manage fetching week activities.
@@ -19,6 +20,8 @@ export class WeekActivitiesService {
       return week.items;
     }
 
+    let toaster = null;
+
     try {
       console.warn(`[WeekActivitiesService] Scraping via ${method}...`);
 
@@ -33,6 +36,15 @@ export class WeekActivitiesService {
       // 🆕 2. Aguardar carregamento completo se aba estiver carregando
       if (tab.status === 'loading') {
         console.warn(`[WeekActivitiesService] Aguardando carregamento da aba ${tab.id}...`);
+
+        // 🎨 Feedback visual: Informa usuário que está aguardando
+        toaster = new Toaster();
+        toaster.show(
+          `⏳ Aguardando "${week.name}" carregar para buscar atividades...`,
+          'info',
+          5000
+        );
+
         await this.waitForTabComplete(tab.id);
       }
 
@@ -44,6 +56,11 @@ export class WeekActivitiesService {
       const scrapeMethod = method === 'QuickLinks' ? 'scrapeFromQuickLinks' : 'scrapeWeekContent';
 
       const items = await scraper[scrapeMethod](week.url);
+
+      // 🎨 Feedback de sucesso
+      if (toaster && items.length > 0) {
+        toaster.show(`✅ ${items.length} atividades carregadas de "${week.name}"`, 'success', 3000);
+      }
 
       // 5. Atualizar cache
       week.items = items;
