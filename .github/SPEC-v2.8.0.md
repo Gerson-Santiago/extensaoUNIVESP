@@ -1,9 +1,10 @@
-# SPEC v2.8.0 - Gestão Acadêmica com Controle de Progresso
+# SPEC v2.8.7 - Gestão Acadêmica com Controle de Progresso
 
-**Versão**: 2.8.0  
-**Status**: Release Candidate (RC)  
+**Versão**: 2.8.7 (LTS)  
+**Status**: Release Estável  
 **Data de Início**: 2025-12-21  
 **Release**: 2025-12-25  
+**Última Auditoria**: 2025-12-26  
 
 ---
 

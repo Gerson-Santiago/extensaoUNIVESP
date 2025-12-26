@@ -13,7 +13,8 @@
       "@tests/*": ["tests/*"],
       "@sidepanel/*": ["sidepanel/*"]
     },
-    "moduleResolution": "node"
+    "moduleResolution": "node",
+    "resolveJsonModule": true
   },
   "include": ["**/*"],
   "exclude": ["node_modules", "dist", "coverage"]

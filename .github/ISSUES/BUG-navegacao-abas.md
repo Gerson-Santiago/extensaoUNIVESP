@@ -1,8 +1,9 @@
 # BUG: Navegação entre Abas de Matérias Diferentes
 
-**Status**: 🐛 Bug Identificado  
+**Status**: 🚧 Parcialmente Resolvido (Auditoria 2025-12-26)  
 **Prioridade**: Média  
 **Afeta**: Navegação entre matérias  
+**Resolução**: `Tabs.js` refatorado com lógica de `course_id` - Necessita validação manual  
 
 ---
 
@@ -104,5 +105,42 @@ async function openOrSwitchToWeek(weekUrl) {
 
 ---
 
+## 📌 Nota de Auditoria (2025-12-26)
+
+**Evidências de Resolução Encontradas**:
+
+O arquivo [`Tabs.js`](file:///home/sant/extensaoUNIVESP/shared/utils/Tabs.js) foi significativamente refatorado desde a criação deste bug:
+
+1. **Linhas 15-20**: Extração automática de `course_id` e `content_id` da URL
+2. **Linhas 38-47**: Lógica de busca priorizada:
+   - Primeiro: Match por `course_id` + `content_id`
+   - Segundo: Match apenas por `course_id`
+3. **Linhas 63-73**: Safety check que REJEITA match se `course_id` for diferente
+
+**Implementação atual**:
+```javascript
+// Se a aba candidata tem um course_id, E a URL alvo tem OUTRO, rejeita.
+const tabCourseMatch = t.url.match(/course_id=([^&]+)(&|$)/);
+const tabCourseId = tabCourseMatch ? tabCourseMatch[1] : null;
+
+if (tabCourseId && targetCourseId && tabCourseId !== targetCourseId) {
+  return false; // Rejeita match (IDs conflitantes)
+}
+```
+
+**Status Recomendado**: 🚧 Parcialmente Resolvido
+- ✅ Lógica implementada corretamente
+- ⚠️ Falta teste de regressão automatizado
+- ⚠️ Necessita validação manual do usuário
+
+**Ação Sugerida**: 
+1. Criar teste de regressão em `tests/integration/navigation.integration.test.js`
+2. Validar manualmente o cenário: Inglês S3 → Matemática S4
+3. Se confirmado resolvido, mover para "Bugs Resolvidos"
+
+---
+
 **Criado em**: 2025-12-23  
-**Reportado por**: Usuário durante testes
+**Reportado por**: Usuário durante testes  
+**Auditado em**: 2025-12-26
+

@@ -1,8 +1,9 @@
-# NEXT: Padronizar CSS da DetailsActivitiesWeekView
+# ✅ CONCLUÍDO: Padronizar CSS da DetailsActivitiesWeekView
 
-**Status**: 📋 Planejado  
+**Status**: ✅ Concluído  
 **Prioridade**: Alta  
 **Estimativa**: 1-2 horas  
+**Concluído em**: 2025-12-23  
 
 ---
 

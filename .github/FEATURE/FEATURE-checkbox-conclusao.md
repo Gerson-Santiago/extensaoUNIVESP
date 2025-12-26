@@ -1,8 +1,9 @@
-# NEXT: Checkbox de Conclusão nas Atividades
+# ✅ CONCLUÍDO: Checkbox de Conclusão nas Atividades
 
-**Status**: 📋 Planejado  
+**Status**: ✅ Concluído  
 **Prioridade**: Alta  
 **Estimativa**: 3-4 horas  
+**Concluído em**: 2025-12-22 (v2.8.0)  
 
 ---
 

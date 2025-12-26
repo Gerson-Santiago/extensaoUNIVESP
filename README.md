@@ -41,6 +41,16 @@ O **AutoPreencher UNIVESP** é uma extensão de navegador desenvolvida **de alun
 
 ---
 
+## 🛠️ Stack Tecnológica
+
+- **Core:** JavaScript (ES2024), Manifest V3 (Vanilla JS, sem frameworks de build complexos).
+- **Runtime:** Node.js v24.12.x (Current).
+- **Package Manager:** npm v11.6.x (via Corepack v0.34.x).
+- **Testes:** Jest + `jest-webextension-mock`.
+- **Qualidade:** ESLint (Security Rules), Prettier, SecretLint.
+
+---
+
 ## 🚀 Como Instalar (Modo Desenvolvedor)
 
 1.  **Clone este repositório** ou baixe o código fonte:

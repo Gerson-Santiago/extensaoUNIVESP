@@ -54,7 +54,7 @@ export class NavigationService {
               /** @type {HTMLElement} */ (closeBtn).click();
               // eslint-disable-next-line no-console
               console.log('[Extension] Modal fechado automaticamente');
-            } catch (e) {
+            } catch {
               /* ignore */
             }
           }
