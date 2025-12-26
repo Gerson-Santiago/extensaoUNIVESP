@@ -133,7 +133,7 @@ git switch dev
 ### Scripts de Testes (Jest Otimizado)
 | Script | Comando | Quando Usar |
 | :--- | :--- | :--- |
-| `npm run test:dev` | `jest --watch` | **Desenvolvimento ativo** - Feedback instantâneo |
+| `npm run test:watch` | `jest --watch` | **Desenvolvimento ativo** - Feedback instantâneo |
 | `npm run test:debug` | `jest --bail` | **Debug de bugs** - Para no 1º erro |
 | `npm run test:quick` | `jest --onlyFailures` | **Validação rápida** - Só testes que falharam |
 | `npm test` | `jest` | **Validação completa** - CI/CD e final |

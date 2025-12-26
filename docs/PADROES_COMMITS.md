@@ -84,3 +84,63 @@ Para verificar se sua mensagem está correta antes de commitar:
 ```bash
 echo "feat: minha mensagem" | npx commitlint
 ```
+
+---
+
+## 6. Commits de Segurança (Novas Práticas v2.8.1)
+
+Quando implementar melhorias de segurança, use os tipos apropriados:
+
+| Tipo | Quando Usar | Exemplo |
+| :--- | :--- | :--- |
+| `chore(security)` | Configuração de ferramentas de segurança | `chore(security): adiciona secretlint no pre-commit` |
+| `feat(security)` | Nova feature de segurança | `feat(security): implementa gate de auditoria CVE` |
+| `fix(security)` | Correção de vulnerabilidade | `fix(security): corrige XSS em formulário` |
+| `perf(security)` | Otimização mantendo segurança | `perf(security): otimiza pre-commit de 37s para 16s` |
+| `docs(security)` | Documentação de segurança | `docs(security): documenta 3 camadas de proteção` |
+
+### Exemplos Reais
+
+**Implementação de  Ferramentas:**
+```bash
+chore(security): adiciona secretlint para detectar API keys
+
+Implementa @secretlint/secretlint-rule-preset-recommend
+Detecta: AWS keys, GitHub tokens, private keys, passwords
+```
+
+**Otimização de Performance:**
+```bash
+perf: otimiza pre-commit para rodar apenas testes relacionados
+
+- Remove npm test completo do pre-commit
+- lint-staged já roda jest --findRelatedTests
+- Ganho: 57% mais rápido (37s → 16s)
+```
+
+**Documentação:**
+```bash
+docs: atualiza README com 3 camadas de segurança
+
+- Secretlint (detecta secrets)
+- npm audit (CVE high/critical)
+- ESLint Security (injection, XSS, eval)
+```
+
+### Bloqueadores Automáticos
+
+O projeto possui 3 gates de segurança que **rejeitam commits automaticamente**:
+
+1. **Secretlint** → Detecta API keys, tokens, passwords
+2. **npm audit** → Bloqueia dependências com CVE high/critical  
+3. **ESLint Security** → Detecta código inseguro (eval, injection, XSS)
+
+**Bypass (não recomendado):** `git commit --no-verify`
+
+---
+
+## 7. Referências
+
+- [Conventional Commits](https://www.conventionalcommits.org/)
+- [Commitlint](https://commitlint.js.org/)
+- [Keep a Changelog](https://keepachangelog.com/pt-BR/)

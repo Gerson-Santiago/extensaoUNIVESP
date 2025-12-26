@@ -19,7 +19,7 @@ description: Planeja e implementa nova feature (TDD).
 - [ ] Defina **Models** JSDoc explícitos em `models/` antes da lógica.
 - [ ] Codifique usando ES Modules e Tipagem defensiva.
 - [ ] Use `addEventListener` com `PointerEvent` para interações.
-- [ ] Use `npm run test:dev` (modo watch) para desenvolvimento iterativo
+- [ ] Use `npm run test:watch` (modo watch) para desenvolvimento iterativo
 
 # 4. Validação
 // turbo
@@ -46,7 +46,7 @@ npm run verify  # Testes + lint + type-check
 
 ## 💡 Comandos Jest Úteis
 
-- `npm run test:dev` - Modo watch (desenvolvimento)
+- `npm run test:watch` - Modo watch (desenvolvimento)
 - `npm run test:debug` - Para no primeiro erro
 - `npm run test:quick` - Apenas testes que falharam
 - `npm test` - Suite completa
