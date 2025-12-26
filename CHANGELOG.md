@@ -10,7 +10,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [2.8.7] - 2025-12-26
 
 ### 📝 Documentação (Auditoria Final)
-- **PADROES_DO_PROJETO.md**: Seção completa de scripts (27 scripts organizados)
+- **PADROES_DO_PROJETO.md**: Seção completa de scripts (26 scripts organizados)
 - **README.md**: Comandos atualizados com 3 camadas de segurança
 - **docs/README.md**: Scripts disponíveis para desenvolvimento
 - **PADROES_COMMITS.md**: Seção de commits de segurança com exemplos práticos
