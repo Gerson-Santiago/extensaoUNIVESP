@@ -1,8 +1,8 @@
-import { TaskProgressService } from '../services/TaskProgressService.js';
-import { ActivityProgressRepository } from '../repository/ActivityProgressRepository.js';
+import { TaskProgressService } from '../../services/TaskProgressService.js';
+import { ActivityProgressRepository } from '../../repository/ActivityProgressRepository.js';
 
 // Mock Repository
-jest.mock('../repository/ActivityProgressRepository.js');
+jest.mock('../../repository/ActivityProgressRepository.js');
 
 describe('TaskProgressService', () => {
   beforeEach(() => {
@@ -12,12 +12,12 @@ describe('TaskProgressService', () => {
   describe('toggleTask', () => {
     it('should toggle task using ActivityProgressRepository', async () => {
       /** @type {jest.Mock} */ (ActivityProgressRepository.toggle).mockResolvedValue({
-      activityId: 'course_week_task1',
-      status: 'DONE',
-      markedByUser: true,
-      completedInAVA: false,
-      lastUpdated: Date.now(),
-    });
+        activityId: 'course_week_task1',
+        status: 'DONE',
+        markedByUser: true,
+        completedInAVA: false,
+        lastUpdated: Date.now(),
+      });
 
       const result = await TaskProgressService.toggleTask('courseId', 'weekId', 'task1');
 
@@ -27,12 +27,12 @@ describe('TaskProgressService', () => {
 
     it('should return false when toggling to TODO', async () => {
       /** @type {jest.Mock} */ (ActivityProgressRepository.toggle).mockResolvedValue({
-      activityId: 'course_week_task2',
-      status: 'TODO',
-      markedByUser: true,
-      completedInAVA: false,
-      lastUpdated: Date.now(),
-    });
+        activityId: 'course_week_task2',
+        status: 'TODO',
+        markedByUser: true,
+        completedInAVA: false,
+        lastUpdated: Date.now(),
+      });
 
       const result = await TaskProgressService.toggleTask('courseId', 'weekId', 'task2');
 
@@ -67,7 +67,7 @@ describe('TaskProgressService', () => {
     });
 
     it('should handle empty weeks', async () => {
-      /** @type {import('../models/Week.js').Week} */
+      /** @type {import('../../models/Week.js').Week} */
       const emptyWeek = { name: 'Empty Week', items: [] };
 
       const result = await TaskProgressService.calculateProgress(emptyWeek, 'courseId');
@@ -80,7 +80,7 @@ describe('TaskProgressService', () => {
     });
 
     it('should fallback to scraped status if no repository data', async () => {
-      /** @type {import('../models/Week.js').Week} */
+      /** @type {import('../../models/Week.js').Week} */
       const mockWeek = {
         name: 'Week 1',
         items: [
@@ -105,12 +105,12 @@ describe('TaskProgressService', () => {
   describe('isTaskCompleted', () => {
     it('should return true when task is completed', async () => {
       /** @type {jest.Mock} */ (ActivityProgressRepository.get).mockResolvedValue({
-      activityId: 'course_week_task1',
-      status: 'DONE',
-      markedByUser: true,
-      completedInAVA: false,
-      lastUpdated: Date.now(),
-    });
+        activityId: 'course_week_task1',
+        status: 'DONE',
+        markedByUser: true,
+        completedInAVA: false,
+        lastUpdated: Date.now(),
+      });
 
       const result = await TaskProgressService.isTaskCompleted('courseId', 'weekId', 'task1');
 
@@ -119,12 +119,12 @@ describe('TaskProgressService', () => {
 
     it('should return false when task is not completed', async () => {
       /** @type {jest.Mock} */ (ActivityProgressRepository.get).mockResolvedValue({
-      activityId: 'course_week_task2',
-      status: 'TODO',
-      markedByUser: true,
-      completedInAVA: false,
-      lastUpdated: Date.now(),
-    });
+        activityId: 'course_week_task2',
+        status: 'TODO',
+        markedByUser: true,
+        completedInAVA: false,
+        lastUpdated: Date.now(),
+      });
 
       const result = await TaskProgressService.isTaskCompleted('courseId', 'weekId', 'task2');
 

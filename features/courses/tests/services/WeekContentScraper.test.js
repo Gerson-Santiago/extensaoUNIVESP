@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { WeekContentScraper } from '../services/WeekContentScraper.js';
+import { WeekContentScraper } from '../../services/WeekContentScraper.js';
 
 describe('WeekContentScraper', () => {
   beforeEach(() => {
@@ -91,7 +91,7 @@ describe('WeekContentScraper', () => {
             </li>
         `;
 
-    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+    const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
     const items = WeekContentScraper.extractItemsFromDOM();
 
     expect(items).toHaveLength(0);
@@ -209,8 +209,7 @@ describe('WeekContentScraper', () => {
     });
 
     it('should extract courseId and contentId with precise regex', () => {
-      const url =
-        'https://ava.univesp.br/course/view.php?course_id=_12345_1&content_id=_67890_1';
+      const url = 'https://ava.univesp.br/course/view.php?course_id=_12345_1&content_id=_67890_1';
 
       const courseMatch = url.match(/course_id=(_\d+_\d+)/);
       const contentMatch = url.match(/content_id=(_\d+_\d+)/);

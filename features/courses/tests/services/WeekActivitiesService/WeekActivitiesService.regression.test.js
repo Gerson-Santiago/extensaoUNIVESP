@@ -9,13 +9,13 @@
  * ANTES de fazer scraping.
  */
 
-import { WeekActivitiesService } from '../services/WeekActivitiesService.js';
-import { WeekContentScraper } from '../services/WeekContentScraper.js';
-import { Tabs } from '../../../shared/utils/Tabs.js';
+import { WeekActivitiesService } from '../../../services/WeekActivitiesService.js';
+import { WeekContentScraper } from '../../../services/WeekContentScraper.js';
+import { Tabs } from '../../../../../shared/utils/Tabs.js';
 
 // Mock dependencies
-jest.mock('../services/WeekContentScraper.js');
-jest.mock('../../../shared/utils/Tabs.js');
+jest.mock('../../../services/WeekContentScraper.js');
+jest.mock('../../../../../shared/utils/Tabs.js');
 
 describe('WeekActivitiesService - Regression: Bug de Sincronização de Navegação', () => {
   const semana2Url =

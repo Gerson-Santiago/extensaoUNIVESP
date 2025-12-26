@@ -1,12 +1,12 @@
-import { WeekActivitiesService } from '../services/WeekActivitiesService.js';
-import { WeekContentScraper } from '../services/WeekContentScraper.js';
-import { QuickLinksScraper } from '../services/QuickLinksScraper.js';
-import { Tabs } from '../../../shared/utils/Tabs.js';
+import { WeekActivitiesService } from '../../../services/WeekActivitiesService.js';
+import { WeekContentScraper } from '../../../services/WeekContentScraper.js';
+import { QuickLinksScraper } from '../../../services/QuickLinksScraper.js';
+import { Tabs } from '../../../../../shared/utils/Tabs.js';
 
 // Mock both scrapers and Tabs
-jest.mock('../services/WeekContentScraper.js');
-jest.mock('../services/QuickLinksScraper.js');
-jest.mock('../../../shared/utils/Tabs.js');
+jest.mock('../../../services/WeekContentScraper.js');
+jest.mock('../../../services/QuickLinksScraper.js');
+jest.mock('../../../../../shared/utils/Tabs.js');
 
 describe('WeekActivitiesService', () => {
   const mockWeek = {

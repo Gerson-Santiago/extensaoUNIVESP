@@ -4,7 +4,7 @@
  * Bug: Modal em branco quando página não carrega rápido o suficiente
  */
 
-import { QuickLinksScraper } from '../services/QuickLinksScraper.js';
+import { QuickLinksScraper } from '../../../services/QuickLinksScraper.js';
 
 describe('QuickLinksScraper - Race Condition', () => {
   describe('Timeout e Retry', () => {
