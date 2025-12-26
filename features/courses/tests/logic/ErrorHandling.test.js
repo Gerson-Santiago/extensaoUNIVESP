@@ -1,10 +1,10 @@
-import { CourseWeeksView } from '../views/CourseWeeksView/index.js';
-import { WeekActivitiesService } from '../services/WeekActivitiesService.js';
-import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
+import { CourseWeeksView } from '../../views/CourseWeeksView/index.js';
+import { WeekActivitiesService } from '../../services/WeekActivitiesService.js';
+import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 
 // Mock dependencies
-jest.mock('../services/WeekActivitiesService.js');
-jest.mock('../../../shared/ui/feedback/Toaster.js');
+jest.mock('../../services/WeekActivitiesService.js');
+jest.mock('../../../../shared/ui/feedback/Toaster.js');
 
 describe('Error Handling Integration', () => {
   let weeksView;

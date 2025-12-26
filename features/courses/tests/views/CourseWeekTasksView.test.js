@@ -1,9 +1,9 @@
-import { CourseWeekTasksView } from '../views/CourseWeekTasksView/index.js';
-import { TaskProgressService } from '../services/TaskProgressService.js';
+import { CourseWeekTasksView } from '../../views/CourseWeekTasksView/index.js';
+import { TaskProgressService } from '../../services/TaskProgressService.js';
 
 // Mock dependencies
-jest.mock('../services/TaskProgressService.js');
-jest.mock('../../../shared/ui/feedback/Toaster.js', () => ({
+jest.mock('../../services/TaskProgressService.js');
+jest.mock('../../../../shared/ui/feedback/Toaster.js', () => ({
   Toaster: jest.fn().mockImplementation(() => ({
     show: jest.fn(),
   })),

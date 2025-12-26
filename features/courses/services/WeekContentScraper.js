@@ -33,16 +33,16 @@ export class WeekContentScraper {
 
       // 2. Try to find EXACT match (course AND week)
       if (targetCourseId && targetContentId) {
-        tab = tabs.find(t =>
-          t.url &&
-          t.url.includes(targetCourseId) &&
-          t.url.includes(targetContentId)
+        tab = tabs.find(
+          (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
         );
 
         // 3. If exact not found, find course tab and navigate
         if (!tab) {
-          console.warn(`WeekContentScraper: Aba exata não encontrada (course: ${targetCourseId}, content: ${targetContentId})`);
-          tab = tabs.find(t => t.url && t.url.includes(targetCourseId));
+          console.warn(
+            `WeekContentScraper: Aba exata não encontrada (course: ${targetCourseId}, content: ${targetContentId})`
+          );
+          tab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
           if (tab && _weekUrl) {
             // eslint-disable-next-line no-console
             console.log(`WeekContentScraper: Navegando aba ${tab.id} para ${_weekUrl}`);
@@ -52,9 +52,15 @@ export class WeekContentScraper {
             await WeekContentScraper.waitForTabLoad(tab.id, 10000);
 
             // Validate navigation succeeded
-            const isValid = await WeekContentScraper.validateTabUrl(tab.id, targetCourseId, targetContentId);
+            const isValid = await WeekContentScraper.validateTabUrl(
+              tab.id,
+              targetCourseId,
+              targetContentId
+            );
             if (!isValid) {
-              console.warn(`WeekContentScraper: Navegação falhou - URL não corresponde ao esperado após ${tab.id}`);
+              console.warn(
+                `WeekContentScraper: Navegação falhou - URL não corresponde ao esperado após ${tab.id}`
+              );
             }
           }
         }
@@ -63,7 +69,7 @@ export class WeekContentScraper {
       // 4. Fallback: Active Tab or First Available
       if (!tab) {
         console.warn('WeekContentScraper: Fallback para aba ativa ou primeira disponível');
-        tab = tabs.find(t => t.active) || tabs[0];
+        tab = tabs.find((t) => t.active) || tabs[0];
       }
 
       if (!tab || !tab.id) {
@@ -78,9 +84,11 @@ export class WeekContentScraper {
 
       while (retries > 0) {
         // Wait a bit between retries
-        await new Promise(resolve => setTimeout(resolve, 1500));
+        await new Promise((resolve) => setTimeout(resolve, 1500));
 
-        console.error(`🔍 WeekContentScraper: Tentativa ${4 - retries} - Executando script na aba ${tab.id}`);
+        console.error(
+          `🔍 WeekContentScraper: Tentativa ${4 - retries} - Executando script na aba ${tab.id}`
+        );
 
         const results = await chrome.scripting.executeScript({
           target: { tabId: tab.id },
@@ -98,12 +106,18 @@ export class WeekContentScraper {
 
             if (listItems.length === 0) {
               listItems = document.querySelectorAll('li.liItem');
-              console.warn(`🔍 [INLINE] Fallback 1 (li.liItem) encontrou ${listItems.length} elementos`);
+              console.warn(
+                `🔍 [INLINE] Fallback 1 (li.liItem) encontrou ${listItems.length} elementos`
+              );
             }
 
             if (listItems.length === 0) {
-              listItems = document.querySelectorAll('#contentList li, .contentList li, ul.contentList li');
-              console.warn(`🔍 [INLINE] Fallback 2 (contentList) encontrou ${listItems.length} elementos`);
+              listItems = document.querySelectorAll(
+                '#contentList li, .contentList li, ul.contentList li'
+              );
+              console.warn(
+                `🔍 [INLINE] Fallback 2 (contentList) encontrou ${listItems.length} elementos`
+              );
             }
 
             console.warn(`🔍 [INLINE] TOTAL de elementos para processar: ${listItems.length}`);
@@ -114,7 +128,9 @@ export class WeekContentScraper {
                 if (!h3Link || !h3Link.href) return;
 
                 const span = h3Link.querySelector('span');
-                const name = (span ? span.textContent : h3Link.textContent).trim().replace(/\s+/g, ' ');
+                const name = (span ? span.textContent : h3Link.textContent)
+                  .trim()
+                  .replace(/\s+/g, ' ');
                 const url = h3Link.href;
 
                 if (!name || !url) return;
@@ -130,7 +146,9 @@ export class WeekContentScraper {
 
                 // Type (simplificado)
                 let type = 'document';
-                const iconImg = /** @type {HTMLImageElement|null} */ (li.querySelector('img.item_icon'));
+                const iconImg = /** @type {HTMLImageElement|null} */ (
+                  li.querySelector('img.item_icon')
+                );
                 if (iconImg) {
                   const src = (iconImg.src || '').toLowerCase();
                   const alt = (iconImg.alt || '').toLowerCase();
@@ -154,7 +172,9 @@ export class WeekContentScraper {
 
         items = results[0]?.result || [];
 
-        console.error(`🔍 WeekContentScraper: Tentativa ${4 - retries} RETORNOU ${items.length} itens`);
+        console.error(
+          `🔍 WeekContentScraper: Tentativa ${4 - retries} RETORNOU ${items.length} itens`
+        );
 
         if (items.length > 0) {
           break; // Success!
@@ -188,7 +208,9 @@ export class WeekContentScraper {
       let listItems = dom.querySelectorAll('li[id^="contentListItem:"]');
 
       if (listItems.length === 0) {
-        console.warn('[WeekContentScraper] Seletor principal retornou 0. Tentando seletores alternativos...');
+        console.warn(
+          '[WeekContentScraper] Seletor principal retornou 0. Tentando seletores alternativos...'
+        );
 
         // Fallback 1: Qualquer LI com class liItem
         listItems = dom.querySelectorAll('li.liItem');
@@ -198,7 +220,11 @@ export class WeekContentScraper {
       if (listItems.length === 0) {
         // Fallback 2: Qualquer LI dentro de contentList
         listItems = dom.querySelectorAll('#contentList li, .contentList li, ul.contentList li');
-        console.warn('[WeekContentScraper] Fallback 2 (contentList li):', listItems.length, 'elementos');
+        console.warn(
+          '[WeekContentScraper] Fallback 2 (contentList li):',
+          listItems.length,
+          'elementos'
+        );
       }
 
       console.warn(`[WeekContentScraper] Total de elementos encontrados: ${listItems.length}`);
@@ -231,7 +257,11 @@ export class WeekContentScraper {
             // Pega o primeiro link que não seja vazio ou "ally"
             for (const link of allLinks) {
               const anchorLink = /** @type {HTMLAnchorElement} */ (link);
-              if (anchorLink.href && !anchorLink.href.includes('#') && !anchorLink.className.includes('ally')) {
+              if (
+                anchorLink.href &&
+                !anchorLink.href.includes('#') &&
+                !anchorLink.className.includes('ally')
+              ) {
                 url = anchorLink.href;
                 name = anchorLink.textContent.trim().replace(/\s+/g, ' ');
                 break;

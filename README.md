@@ -1,9 +1,9 @@
 # AutoPreencher UNIVESP (Extensão Chrome)
 
-> **Versão Atual**: v2.8.0
+> **Versão Atual**: v2.8.7
 > **Descrição**: Ferramenta de produtividade Open Source para alunos da UNIVESP.
 
-![Version](https://img.shields.io/badge/version-2.8.0-blue)
+![Version](https://img.shields.io/badge/version-2.8.7-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 
@@ -32,8 +32,12 @@ O **AutoPreencher UNIVESP** é uma extensão de navegador desenvolvida **de alun
 *   **Foco no Aluno**: Ferramentas pensadas para reduzir o atrito no uso das plataformas da universidade.
 
 ### 🛡️ Segurança e Qualidade
-*   **Tipagem Estática (Sem TypeScript)**: Utilizamos **JSDoc Strict** para garantir segurança de tipos em tempo de desenvolvimento, sem a complexidade de transpiladores.
-*   **Zero Erros**: Política de 0 erros de lint e 0 erros de tipagem em código de produção.
+*   **Tipagem Estática (JSDoc)**: Segurança de tipos sem TypeScript - utilizamos JSDoc Strict com validação em tempo de desenvolvimento.
+*   **3 Camadas de Proteção:**
+    *   🔒 Secretlint - Detecta API keys, tokens, passwords
+    *   🔒 npm audit - Bloqueia CVE high/critical
+    *   🔒 ESLint Security - Anti-injection, anti-XSS, anti-eval
+*   **Zero Erros**: Política de 0 erros de lint, 0 warnings e 0 erros de tipagem em código de produção.
 
 ---
 
@@ -68,19 +72,33 @@ Mantemos uma documentação rigorosa e detalhada para garantir a qualidade e a c
 
 Este projeto utiliza **Node.js** e **npm** para scripts de qualidade e automação.
 
+### Pipeline de Qualidade
 ```bash
-# Instalar dependências
+# Instalação
 npm install
 
-# Rodar testes (Jest)
-npm test
-
-# Verificar estilo de código (Lint)
-npm run lint
-
-# Formatar código (Prettier)
-npm run format
+# Validação completa (obrigatório antes de PR)
+npm run verify  # Tests + Lint + Type-check
 ```
+
+### Segurança
+```bash
+npm run security  # Gate completo (secrets + audit + security lint)
+```
+
+### Desenvolvimento Ágil
+```bash
+# Testes
+npm run test:watch   # Modo watch (feedback instantâneo)
+npm run test:quick   # Apenas testes que falharam (rápido)
+npm run test:debug   # Para no primeiro erro (debug)
+
+# Qualidade
+npm run lint:fix     # Corrige erros automaticamente
+npm run format       # Formata código (Prettier)
+```
+
+**⚡ Performance:** Pre-commit otimizado (~16s - apenas testes relacionados aos arquivos alterados)
 
 > **Nota:** Seguimos a metodologia **"Screaming Architecture"** e **"Zero Warnings"** no Linter.
 

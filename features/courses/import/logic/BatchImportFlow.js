@@ -1,3 +1,5 @@
+import { NavigationService } from '../../../../shared/services/NavigationService.js';
+
 export class BatchImportFlow {
   /**
    * @param {Object} dependencies
@@ -11,41 +13,31 @@ export class BatchImportFlow {
 
   async start() {
     try {
-      // A. Smart Switch / Discovery
-      const existingTabs = await new Promise((r) =>
-        chrome.tabs.query({ url: '*://ava.univesp.br/*' }, r)
+      // A. Smart Switch / Discovery via NavigationService
+      // Usa 'ava.univesp.br' como pattern para encontrar QUALQUER aba do AVA e reutilizar
+      const targetTab = await NavigationService.openCourse(
+        'https://ava.univesp.br/ultra/course',
+        'ava.univesp.br'
       );
-      let targetTab = existingTabs.find((t) => t.url.includes('ava.univesp.br'));
-      let newlyCreated = false;
 
       if (!targetTab) {
-        // No tab found. Create one.
-        newlyCreated = true;
-        targetTab = await new Promise((resolve) => {
-          chrome.tabs.create({ url: 'https://ava.univesp.br/ultra/course', active: true }, resolve);
-        });
-      } else {
-        // Found one. Switch to it.
-        await chrome.tabs.update(targetTab.id, { active: true });
-        if (targetTab.windowId) {
-          await chrome.windows.update(targetTab.windowId, { focused: true });
-        }
+        throw new Error('Falha ao obter aba do AVA');
       }
 
-      // Allow a small tick for object stability if needed,
-      // but 'targetTab' is the object from valid query or create.
-
       // B. Check State
-      const isCoursePage =
+      // Se o status for 'loading', consideramos newlyCreated/navegando -> Wait Modal
+      // Se for 'complete' e a URL já estiver correta -> Import Modal
+
+      const isReadyValue =
+        targetTab.status === 'complete' &&
         targetTab.url &&
         (targetTab.url.includes('/ultra/course') || targetTab.url.includes('bb_router'));
 
-      // If we just created the tab, it is loading. We direct to Wait Modal to be safe.
-      if (isCoursePage && !newlyCreated) {
+      if (isReadyValue) {
         // Ready to scrape
         this.batchImportModal.open(targetTab.id);
       } else {
-        // Login or other page OR newly created -> Wait
+        // Loading, Login required or Redirecting -> Wait
         this.loginWaitModal.open();
       }
     } catch (err) {

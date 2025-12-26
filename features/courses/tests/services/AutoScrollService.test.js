@@ -1,5 +1,5 @@
 // import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
-import { DOM_autoScroll_Injected } from '../logic/AutoScrollService.js';
+import { DOM_autoScroll_Injected } from '../../logic/AutoScrollService.js';
 
 describe('AutoScrollService Logic (Injected)', () => {
   let mockScrollTo;

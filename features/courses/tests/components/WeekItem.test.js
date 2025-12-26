@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { createWeekElement } from '../components/WeekItem.js';
+import { createWeekElement } from '../../components/WeekItem.js';
 
 describe('WeekItem with Tasks Button', () => {
   it('should render tasks button', () => {

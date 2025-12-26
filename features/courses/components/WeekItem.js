@@ -27,9 +27,32 @@ export function createWeekElement(week, callbacks) {
   activitiesBtn.className = 'btn-grid-action btn-activities';
   activitiesBtn.textContent = '🔍 Atividades';
   activitiesBtn.title = 'Ver atividades da semana';
-  activitiesBtn.onclick = (e) => {
+  activitiesBtn.onclick = async (e) => {
     e.stopPropagation();
-    if (callbacks.onViewQuickLinks) callbacks.onViewQuickLinks(week);
+
+    // Previne múltiplos cliques
+    if (activitiesBtn.disabled) {
+      return;
+    }
+
+    // Loading state
+    const originalText = activitiesBtn.textContent;
+    activitiesBtn.disabled = true;
+    activitiesBtn.textContent = '⏳ Carregando...';
+    activitiesBtn.style.opacity = '0.6';
+
+    try {
+      if (callbacks.onViewQuickLinks) {
+        await callbacks.onViewQuickLinks(week);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar atividades:', error);
+    } finally {
+      // Restaura botão
+      activitiesBtn.disabled = false;
+      activitiesBtn.textContent = originalText;
+      activitiesBtn.style.opacity = '1';
+    }
   };
 
   const arrow = document.createElement('span');

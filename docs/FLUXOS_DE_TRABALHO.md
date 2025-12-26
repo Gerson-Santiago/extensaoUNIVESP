@@ -45,6 +45,29 @@ Adotamos um modelo baseado em Feature Branching com Trunk-Based Development na `
 - **Execução**: Altere a estrutura interna mantendo a interface pública inalterada.
 - **Validação**: Testes devem permanecer verdes sem alteração na lógica de asserção.
 
+### 2.3 Protocolo de Segurança
+
+**Gate de Segurança** (Executado em todo commit):
+```
+security:secrets → lint-staged (tests relacionados + lint)
+```
+
+**Camadas de Proteção:**
+1. **Secretlint**: Detecta API keys, tokens, passwords no código
+2. **Testes Relacionados**: Jest roda apenas testes dos arquivos alterados (--findRelatedTests)
+3. **Lint**: ESLint + Security rules (anti-injection, anti-XSS) + Prettier
+
+**Scripts Disponíveis:**
+- `npm run security` - Gate completo (secrets + audit + lint)
+- `npm run security:secrets` - Apenas detecção de secrets
+- `npm run security:audit` - Vulnerabilidades em dependências
+- `npm run security:lint` - Regras de segurança no código
+
+**⚠️ Bloqueadores Automáticos:**
+- Commits com secrets detectados
+- Dependências com CVE high/critical
+- Código com vulnerabilidades conhecidas (eval, injection, etc.)
+
 ---
 
 ## 3. Protocolo de Commit e Integração
@@ -102,10 +125,22 @@ git switch dev
 | Script | Função |
 | :--- | :--- |
 | `npm run verify` | **Pipeline Principal**. Executa Testes, Lint e Type-Check. |
-| `npm test` | Executa suíte de testes (Jest). |
+| `npm test` | Executa suíte de testes completa (Jest). |
 | `npm run lint` | Analisa código estático (ESLint). |
 | `npm run format` | Aplica formatação de estilo (Prettier). |
 | `npm run type-check` | Validação de tipos JSDoc. |
+
+### Scripts de Testes (Jest Otimizado)
+| Script | Comando | Quando Usar |
+| :--- | :--- | :--- |
+| `npm run test:watch` | `jest --watch` | **Desenvolvimento ativo** - Feedback instantâneo |
+| `npm run test:debug` | `jest --bail` | **Debug de bugs** - Para no 1º erro |
+| `npm run test:quick` | `jest --onlyFailures` | **Validação rápida** - Só testes que falharam |
+| `npm test` | `jest` | **Validação completa** - CI/CD e final |
+| `npm run test:coverage` | `jest --coverage` | **Análise de cobertura** - Release |
+| `npm run test:ci` | `jest --coverage --ci` | **CI/CD** - Otimizado para pipelines |
+
+**💡 Dica de Performance**: Use ` test:quick` durante desenvolvimento para economizar memória e tempo.
 
 ---
 

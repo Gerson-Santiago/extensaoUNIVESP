@@ -1,10 +1,12 @@
-import { WeekActivitiesService } from '../services/WeekActivitiesService.js';
-import { WeekContentScraper } from '../services/WeekContentScraper.js';
-import { QuickLinksScraper } from '../services/QuickLinksScraper.js';
+import { WeekActivitiesService } from '../../../services/WeekActivitiesService.js';
+import { WeekContentScraper } from '../../../services/WeekContentScraper.js';
+import { QuickLinksScraper } from '../../../services/QuickLinksScraper.js';
+import { Tabs } from '../../../../../shared/utils/Tabs.js';
 
-// Mock both scrapers
-jest.mock('../services/WeekContentScraper.js');
-jest.mock('../services/QuickLinksScraper.js');
+// Mock both scrapers and Tabs
+jest.mock('../../../services/WeekContentScraper.js');
+jest.mock('../../../services/QuickLinksScraper.js');
+jest.mock('../../../../../shared/utils/Tabs.js');
 
 describe('WeekActivitiesService', () => {
   const mockWeek = {
@@ -27,6 +29,14 @@ describe('WeekActivitiesService', () => {
     // Setup mock implementations
     /** @type {jest.Mock} */ (WeekContentScraper.scrapeWeekContent).mockResolvedValue(mockItems);
     /** @type {jest.Mock} */ (QuickLinksScraper.scrapeFromQuickLinks).mockResolvedValue(mockItems);
+
+    // Mock Tabs.openOrSwitchTo para retornar aba válida por padrão
+    /** @type {jest.Mock} */ (Tabs.openOrSwitchTo).mockResolvedValue({
+      id: 1,
+      url: mockWeek.url,
+      status: 'complete',
+      windowId: 1,
+    });
   });
 
   describe('getActivities', () => {
