@@ -9,11 +9,13 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ## [2.8.9] - 2025-12-26
 
-### ✨ Chips de Navegação (Base)
+### ✨ Chips de Navegação Contextual
 - **ContextualChips.js**: Componente UI para lista de navegação contextual (TDD).
 - **Interação**: Suporte a clique (navegar) e remoção de itens.
 - **Acessibilidade**: Layout semântico e suporte a teclado.
-- **HistoryService**: Integrado com estrutura de dados `HistoryItem`.
+- **HistoryService**: Sistema LRU (Least Recently Used) por matéria.
+- **Integração**: `DetailsActivitiesWeekView` rastreia navegação automaticamente.
+- **CSS**: Estilos completos (pill shape, animações, responsivo).
 
 ---
 

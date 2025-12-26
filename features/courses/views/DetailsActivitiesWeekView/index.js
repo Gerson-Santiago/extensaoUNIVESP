@@ -11,6 +11,8 @@ import { categorizeTask } from '../../logic/TaskCategorizer.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 import { NavigationService } from '../../../../shared/services/NavigationService.js';
 import { SkeletonLoader } from '../../../../shared/ui/SkeletonLoader.js';
+import { ContextualChips } from '../../../../shared/ui/ContextualChips.js';
+import { HistoryService } from '../../../../shared/services/HistoryService.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -19,6 +21,8 @@ export class DetailsActivitiesWeekView {
   constructor(callbacks) {
     this.callbacks = callbacks;
     this.week = null;
+    this.historyService = new HistoryService(5); // Max 5 recent items
+    this.chipsComponent = null;
   }
 
   /**
@@ -57,6 +61,8 @@ export class DetailsActivitiesWeekView {
           <button id="refreshBtn" class="btn-refresh" title="Atualizar lista">↻</button>
         </div>
       </div>
+      <!-- Contextual Navigation Chips -->
+      <div id="chipsContainer"></div>
       <div id="activitiesContainer" class="activities-container"></div>
     `;
     return div;
@@ -81,6 +87,9 @@ export class DetailsActivitiesWeekView {
       clearBtn.onclick = () => this.handleClear();
     }
 
+    // 🎯 Contextual Chips: Renderizar navegação recente
+    this.renderChips();
+
     // 🎯 UX Otimizada: Se tem cache, mostra imediatamente. Senão, mostra skeleton.
     if (this.week?.items && this.week.items.length > 0) {
       // Cache hit: Mostra dados imediatamente (rápido!)
@@ -88,6 +97,67 @@ export class DetailsActivitiesWeekView {
     } else {
       // Cache miss: Mostra skeleton enquanto carrega
       this.renderSkeleton();
+    }
+  }
+
+  /**
+   * Renderiza chips de navegação contextual
+   */
+  async renderChips() {
+    const container = document.getElementById('chipsContainer');
+    if (!container || !this.week) return;
+
+    // Obter course ID (extrair do courseId ou usar nome como fallback)
+    const courseId = this.week.courseId || this.week.courseName || 'default';
+
+    // Salvar acesso atual no histórico
+    await this.historyService.push(courseId, {
+      id: this.week.url || this.week.name,
+      label: this.week.name,
+      targetId: this.week.url,
+      url: this.week.url,
+    });
+
+    // Buscar histórico recente
+    const recentWeeks = await this.historyService.getRecent(courseId);
+
+    // Inicializar componente se necessário
+    if (!this.chipsComponent) {
+      this.chipsComponent = new ContextualChips(container);
+
+      // Conectar evento de navegação
+      this.chipsComponent.on('navigate', (item) => {
+        this.navigateToWeek(item);
+      });
+
+      // Conectar evento de remoção
+      this.chipsComponent.on('remove', async (itemId) => {
+        await this.historyService.remove(courseId, itemId);
+        this.renderChips(); // Re-render após remover
+      });
+    }
+
+    // Renderizar chips
+    this.chipsComponent.render(recentWeeks);
+  }
+
+  /**
+   * Navega para uma semana selecionada via chip
+   * @param {Object} item - Item do histórico { id, label, url }
+   */
+  async navigateToWeek(item) {
+    if (!item.url) return;
+
+    try {
+      // Abrir/focar aba da semana no navegador
+      const { Tabs } = await import('../../../../shared/utils/Tabs.js');
+      await Tabs.openOrSwitchTo(item.url);
+
+      // TODO: Atualizar view da extensão para mostrar essa semana
+      // (Requer refatoração do fluxo de navegação - fora do escopo atual)
+      console.warn('[DetailsActivitiesWeekView] Navegando para:', item.label);
+    } catch (error) {
+      console.error('[DetailsActivitiesWeekView] Erro ao navegar:', error);
     }
   }
 

@@ -1,0 +1,117 @@
+/**
+ * Contextual Navigation Chips
+ * Componente de navegação secundária (Smart Chips)
+ */
+
+.chips-container {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 8px 16px;
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* Hide scrollbar for Chrome/Safari/Opera */
+.chips-container::-webkit-scrollbar {
+  display: none;
+}
+
+/* Chip Base */
+.chip {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6px 16px;
+  border-radius: 9999px; /* Pill shape */
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+  background-color: var(--surface-secondary, #e0e0e0);
+  color: var(--text-primary, #333);
+  border: 1px solid transparent;
+  user-select: none;
+  white-space: nowrap;
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+/* Estado: Hover */
+.chip:hover {
+  background-color: var(--surface-hover, #d6d6d6);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Estado: Ativo/Selecionado */
+.chip--active {
+  background-color: var(--primary-color, #6b63ff) !important;
+  color: #ffffff !important;
+  font-weight: 600;
+  box-shadow: 0 2px 8px rgba(107, 99, 255, 0.3);
+}
+
+/* Estado: Ícone de Check (Opcional) */
+.chip--active::before {
+  content: '✓';
+  margin-right: 6px;
+  font-weight: bold;
+}
+
+/* UX: Truncamento de Texto Longo */
+.chip span {
+  max-width: 150px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* UX: Botão de Remover */
+.chip .remove-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+  width: 18px;
+  height: 18px;
+  opacity: 0.6;
+  border-radius: 50%;
+  padding: 2px;
+  font-size: 14px;
+  line-height: 1;
+  transition: all 0.2s ease;
+}
+
+.chip .remove-btn:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  opacity: 1;
+}
+
+/* Animação de Entrada */
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Responsivo: Mobile */
+@media (max-width: 768px) {
+  .chips-container {
+    padding: 6px 12px;
+    gap: 6px;
+  }
+
+  .chip {
+    font-size: 0.8125rem;
+    padding: 5px 12px;
+  }
+
+  .chip span {
+    max-width: 120px;
+  }
+}
