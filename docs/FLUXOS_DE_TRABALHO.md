@@ -102,10 +102,22 @@ git switch dev
 | Script | Função |
 | :--- | :--- |
 | `npm run verify` | **Pipeline Principal**. Executa Testes, Lint e Type-Check. |
-| `npm test` | Executa suíte de testes (Jest). |
+| `npm test` | Executa suíte de testes completa (Jest). |
 | `npm run lint` | Analisa código estático (ESLint). |
 | `npm run format` | Aplica formatação de estilo (Prettier). |
 | `npm run type-check` | Validação de tipos JSDoc. |
+
+### Scripts de Testes (Jest Otimizado)
+| Script | Comando | Quando Usar |
+| :--- | :--- | :--- |
+| `npm run test:dev` | `jest --watch` | **Desenvolvimento ativo** - Feedback instantâneo |
+| `npm run test:debug` | `jest --bail` | **Debug de bugs** - Para no 1º erro |
+| `npm run test:quick` | `jest --onlyFailures` | **Validação rápida** - Só testes que falharam |
+| `npm test` | `jest` | **Validação completa** - CI/CD e final |
+| `npm run test:coverage` | `jest --coverage` | **Análise de cobertura** - Release |
+| `npm run test:ci` | `jest --coverage --ci` | **CI/CD** - Otimizado para pipelines |
+
+**💡 Dica de Performance**: Use ` test:quick` durante desenvolvimento para economizar memória e tempo.
 
 ---
 

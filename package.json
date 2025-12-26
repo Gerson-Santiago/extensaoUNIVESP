@@ -21,6 +21,11 @@
     "test:session": "jest features/session",
     "test:settings": "jest features/settings",
     "test:shared": "jest shared/",
+    "test:dev": "jest --watch",
+    "test:debug": "jest --bail",
+    "test:quick": "jest --onlyFailures",
+    "test:file": "jest",
+    "test:ci": "jest --coverage --ci",
     "precommit": "npm run type-check && npm run test && lint-staged"
   },
   "author": "Gerson Santiago",
@@ -61,7 +66,7 @@
     "*.{js,mjs}": [
       "eslint --fix",
       "prettier --write",
-      "jest --findRelatedTests"
+      "jest --bail --findRelatedTests"
     ],
     "*.{json,css,md}": [
       "prettier --write"
