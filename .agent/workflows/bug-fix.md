@@ -15,26 +15,26 @@ description: Fluxo para correção de bugs com testes e lint.
 
 # 3. Validação
 // turbo
-Execute validação rápida:
+Execute validação completa:
 ```bash
-npm run test:quick  # Apenas testes que falharam
-```
-
-Validação completa antes de commit:
-```bash
-npm run verify  # Testes + lint + type-check
+npm run security  # Secrets + Audit + Security Lint
+npm run verify    # Tests + Lint + Type-check
 ```
 
 # 4. Entrega
 @docs/PADROES_DO_PROJETO.md
-- [ ] Testes passando? Lint ok?
+- [ ] Testes passando? Lint ok? Segurança ok?
 - [ ] Proponha commit em PT-BR (ex: `fix: corrige X`).
 
 ---
 
-## 💡 Comandos Jest Úteis
+## 💡 Comandos Úteis
 
-- `npm run test:debug` - Para no primeiro erro (debug rápido)
+**Testes:**
+- `npm run test:debug` - Para no primeiro erro
 - `npm run test:dev` - Modo watch interativo
-- `npm run test:quick` - Apenas testes que falharam
-- `npm test` - Suite completa
+
+**Segurança:**
+- `npm run security:secrets` - Detecta API keys, tokens
+- `npm run security:audit` - Vulnerabilidades em dependências
+- `npm run security` - Gate completo

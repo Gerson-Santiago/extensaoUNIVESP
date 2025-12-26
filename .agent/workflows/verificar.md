@@ -5,27 +5,36 @@ description: Executa a verificação completa do projeto (Lint + Testes) conform
 # Passo Único: Verificação Completa
 @docs/PADROES_DO_PROJETO.md
 // turbo
-Execute a pipeline de qualidade (Testes + Lint + Types):
+Execute a pipeline de qualidade (Segurança + Testes + Lint + Types):
 1. `npm run verify`
 
 # Relatório
 Se falhar, não prossiga.
-- Lint errors devem ser zerados.
-- Testes devem estar todos passando (Green).
+- **Segurança**: Sem secrets detectados
+- **Lint errors**: Devem ser zerados
+- **Testes**: Devem estar todos passando (Green)
 
 ---
 
 ## 💡 Opções de Verificação
 
-### Durante Desenvolvimento (Rápido)
+### Gate de Segurança (Pre-commit)
 ```bash
-npm run test:quick  # Apenas testes que falharam
-npm run lint        # Apenas lint
+# Executado automaticamente em todo commit:
+security:secrets → type-check → test → lint-staged
 ```
 
-### Antes de Commit (Completo)
+### Validação Manual Completa
 ```bash
-npm run verify  # Testes + Lint + Type-check completo
+npm run security  # Secrets + Audit + Security Lint
+npm run verify    # Tests + Lint + Type-check
+```
+
+### Durante Desenvolvimento (Rápido)
+```bash
+npm run test:quick        # Apenas testes que falharam
+npm run security:secrets  # Apenas detecção de secrets
+npm run lint              # Apenas lint
 ```
 
 ### Opcional: Coverage
@@ -33,10 +42,17 @@ npm run verify  # Testes + Lint + Type-check completo
 npm run test:coverage  # Gera relatório de cobertura
 ```
 
-## 📊 Comandos Jest Disponíveis
+## 📊 Comandos Disponíveis
 
-- `npm run test:quick` - Apenas testes que falharam (mais rápido)
+**Segurança:**
+- `npm run security` - Gate completo (secrets + audit + lint)
+- `npm run security:secrets` - Detecta API keys, tokens, passwords
+- `npm run security:audit` - npm audit --audit-level=high
+- `npm run security:lint` - ESLint com regras de segurança
+
+**Testes:**
+- `npm run test:quick` - Apenas testes que falharam
 - `npm run test:dev` - Modo watch interativo
 - `npm run test:debug` - Para no primeiro erro
-- `npm test` - Suite completa (usado pelo verify)
+- `npm test` - Suite completa
 - `npm run test:ci` - Para CI/CD com coverage

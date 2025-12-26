@@ -21,25 +21,29 @@ describe('Lógica - Troca de Abas', () => {
       'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1';
 
     /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((query, callback) => {
-        callback([
-          {
-            id: 101,
-            url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_99999_1&content_id=_11111_1',
-            windowId: 888,
-          },
-          {
-            id: 102,
-            url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1',
-            windowId: 999,
-          },
-        ]);
-      });
+      callback([
+        {
+          id: 101,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_99999_1&content_id=_11111_1',
+          windowId: 888,
+        },
+        {
+          id: 102,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1',
+          windowId: 999,
+        },
+      ]);
+    });
 
     await Tabs.openOrSwitchTo(targetUrl);
 
     // Should update tab 102 (Same URL) -> Only active: true
     expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true }, expect.any(Function));
-    expect(chrome.windows.update).toHaveBeenCalledWith(999, { focused: true }, expect.any(Function));
+    expect(chrome.windows.update).toHaveBeenCalledWith(
+      999,
+      { focused: true },
+      expect.any(Function)
+    );
     expect(chrome.tabs.create).not.toHaveBeenCalled();
   });
 
@@ -56,7 +60,11 @@ describe('Lógica - Troca de Abas', () => {
 
     await Tabs.openOrSwitchTo(targetUrl);
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(201, { url: targetUrl, active: true }, expect.any(Function));
+    expect(chrome.tabs.update).toHaveBeenCalledWith(
+      201,
+      { url: targetUrl, active: true },
+      expect.any(Function)
+    );
     expect(chrome.tabs.create).not.toHaveBeenCalled();
   });
 
@@ -84,24 +92,28 @@ describe('Lógica - Troca de Abas', () => {
       'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_EXACT_1';
 
     /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-        callback([
-          {
-            id: 101,
-            url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_OTHER_1',
-            windowId: 888,
-          },
-          {
-            id: 102,
-            url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_EXACT_1',
-            windowId: 999,
-          },
-        ]);
-      });
+      callback([
+        {
+          id: 101,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_OTHER_1',
+          windowId: 888,
+        },
+        {
+          id: 102,
+          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_EXACT_1',
+          windowId: 999,
+        },
+      ]);
+    });
 
     await Tabs.openOrSwitchTo(targetUrl);
 
     expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true }, expect.any(Function));
-    expect(chrome.windows.update).toHaveBeenCalledWith(999, { focused: true }, expect.any(Function));
+    expect(chrome.windows.update).toHaveBeenCalledWith(
+      999,
+      { focused: true },
+      expect.any(Function)
+    );
   });
 
   test('Deve lidar com URL sem course_id ou content_id usando startsWith', async () => {
@@ -119,7 +131,11 @@ describe('Lógica - Troca de Abas', () => {
 
     await Tabs.openOrSwitchTo(targetUrl);
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(301, { url: targetUrl, active: true }, expect.any(Function));
+    expect(chrome.tabs.update).toHaveBeenCalledWith(
+      301,
+      { url: targetUrl, active: true },
+      expect.any(Function)
+    );
   });
 
   test('Deve focar na janela ao alternar abas', async () => {
@@ -138,7 +154,11 @@ describe('Lógica - Troca de Abas', () => {
     await Tabs.openOrSwitchTo(targetUrl);
 
     expect(chrome.tabs.update).toHaveBeenCalledWith(401, { active: true }, expect.any(Function));
-    expect(chrome.windows.update).toHaveBeenCalledWith(555, { focused: true }, expect.any(Function));
+    expect(chrome.windows.update).toHaveBeenCalledWith(
+      555,
+      { focused: true },
+      expect.any(Function)
+    );
   });
 
   test('Deve criar nova aba quando query retornar array vazio', async () => {
@@ -190,7 +210,11 @@ describe('Lógica - Troca de Abas', () => {
 
     await Tabs.openOrSwitchTo(targetUrl, matchPattern);
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(701, { url: targetUrl, active: true }, expect.any(Function));
+    expect(chrome.tabs.update).toHaveBeenCalledWith(
+      701,
+      { url: targetUrl, active: true },
+      expect.any(Function)
+    );
   });
 
   // --- TESTES DE REPRODUÇÃO DE BUGS (EPIC 4) ---

@@ -45,6 +45,30 @@ Adotamos um modelo baseado em Feature Branching com Trunk-Based Development na `
 - **Execução**: Altere a estrutura interna mantendo a interface pública inalterada.
 - **Validação**: Testes devem permanecer verdes sem alteração na lógica de asserção.
 
+### 2.3 Protocolo de Segurança
+
+**Gate de Segurança** (Executado em todo commit):
+```
+security:secrets → type-check → test → lint-staged
+```
+
+**Camadas de Proteção:**
+1. **Secretlint**: Detecta API keys, tokens, passwords no código
+2. **Type-check**: Validação de tipos JSDoc
+3. **Tests**: 365 testes automatizados
+4. **Lint**: ESLint + Security rules (anti-injection, anti-XSS)
+
+**Scripts Disponíveis:**
+- `npm run security` - Gate completo (secrets + audit + lint)
+- `npm run security:secrets` - Apenas detecção de secrets
+- `npm run security:audit` - Vulnerabilidades em dependências
+- `npm run security:lint` - Regras de segurança no código
+
+**⚠️ Bloqueadores Automáticos:**
+- Commits com secrets detectados
+- Dependências com CVE high/critical
+- Código com vulnerabilidades conhecidas (eval, injection, etc.)
+
 ---
 
 ## 3. Protocolo de Commit e Integração

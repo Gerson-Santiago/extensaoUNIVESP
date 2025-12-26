@@ -3,6 +3,7 @@
     "module": "esnext",
     "target": "es2024",
     "checkJs": true,
+    "skipLibCheck": true,
     "lib": ["es2024", "dom", "dom.iterable"],
     "types": ["chrome", "jest", "node"],
     "baseUrl": ".",

@@ -33,7 +33,7 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
         update: jest.fn().mockImplementation((id, info, cb) => {
           if (cb) cb({});
           return Promise.resolve({});
-        })
+        }),
       },
     };
     global.chrome = chromeMock;
@@ -44,7 +44,13 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
     // Override update to return COMPLETE (No nav needed)
     // @ts-ignore
     chrome.tabs.update.mockImplementation((id, info, cb) => {
-      if (cb) cb({ id: 123, status: 'complete', url: 'https://ava.univesp.br/ultra/course', active: true });
+      if (cb)
+        cb({
+          id: 123,
+          status: 'complete',
+          url: 'https://ava.univesp.br/ultra/course',
+          active: true,
+        });
     });
 
     // @ts-ignore
@@ -73,7 +79,8 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
     // Override update to return LOADING (Nav started)
     // @ts-ignore
     chrome.tabs.update.mockImplementation((id, info, cb) => {
-      if (cb) cb({ id: 123, status: 'loading', url: 'https://ava.univesp.br/ultra/course', ...info });
+      if (cb)
+        cb({ id: 123, status: 'loading', url: 'https://ava.univesp.br/ultra/course', ...info });
     });
 
     // @ts-ignore
@@ -88,7 +95,11 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
     await flow.start();
 
     // Expect: Switch to tab AND Update URL (Login -> Course) + callback
-    expect(chrome.tabs.update).toHaveBeenCalledWith(123, { active: true, url: 'https://ava.univesp.br/ultra/course' }, expect.any(Function));
+    expect(chrome.tabs.update).toHaveBeenCalledWith(
+      123,
+      { active: true, url: 'https://ava.univesp.br/ultra/course' },
+      expect.any(Function)
+    );
     // Expect: Open LoginWaitModal
     expect(mockLoginWaitModal.open).toHaveBeenCalled();
     // Expect: NOT Open BatchModal

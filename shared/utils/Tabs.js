@@ -84,7 +84,9 @@ export class Tabs {
         }
         chrome.tabs.update(existingTab.id, updateProperties, (tab) => resolve(tab || existingTab));
       });
-      await new Promise((resolve) => chrome.windows.update(existingTab.windowId, { focused: true }, resolve));
+      await new Promise((resolve) =>
+        chrome.windows.update(existingTab.windowId, { focused: true }, resolve)
+      );
       return updatedTab;
     } else {
       const createdTab = await new Promise((resolve) => {

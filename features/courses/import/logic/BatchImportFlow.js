@@ -28,8 +28,10 @@ export class BatchImportFlow {
       // Se o status for 'loading', consideramos newlyCreated/navegando -> Wait Modal
       // Se for 'complete' e a URL já estiver correta -> Import Modal
 
-      const isReadyValue = targetTab.status === 'complete' &&
-        (targetTab.url && (targetTab.url.includes('/ultra/course') || targetTab.url.includes('bb_router')));
+      const isReadyValue =
+        targetTab.status === 'complete' &&
+        targetTab.url &&
+        (targetTab.url.includes('/ultra/course') || targetTab.url.includes('bb_router'));
 
       if (isReadyValue) {
         // Ready to scrape
