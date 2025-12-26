@@ -7,6 +7,16 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [2.8.8] - 2025-12-26
+
+### 🐛 Bugfixes & Manutenção
+- **Correção de Lints**: Ajustes de tipagem em `QuickLinksScraper`, `DomUtils` e `HistoryService`.
+- **DomUtils**: Utilitário para manipulação segura do DOM (fechamento de modais).
+- **HistoryService**: Correção de tipagem no retorno do storage (`Array.isArray`).
+- **QuickLinksScraper**: Tipagem explícita para evitar erros de `Property 'click' does not exist`.
+
+---
+
 ## [2.8.7] - 2025-12-26
 
 ### 📝 Documentação (Auditoria Final)
