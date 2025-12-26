@@ -16,6 +16,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - **HistoryService**: Sistema LRU (Least Recently Used) por matéria.
 - **Integração**: `DetailsActivitiesWeekView` rastreia navegação automaticamente.
 - **CSS**: Estilos completos (pill shape, animações, responsivo).
+- **Configurações**: Painel em Settings para ativar/desativar e ajustar limite (3-10 chips).
 
 ---
 

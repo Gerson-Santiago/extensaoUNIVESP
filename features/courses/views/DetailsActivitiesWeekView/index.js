@@ -107,8 +107,22 @@ export class DetailsActivitiesWeekView {
     const container = document.getElementById('chipsContainer');
     if (!container || !this.week) return;
 
+    // Load user settings
+    const settings = await this.loadChipsSettings();
+
+    // Skip if user disabled chips
+    if (!settings.enabled) {
+      container.innerHTML = '';
+      return;
+    }
+
     // Obter course ID (extrair do courseId ou usar nome como fallback)
     const courseId = this.week.courseId || this.week.courseName || 'default';
+
+    // Use dynamic maxItems from settings
+    if (!this.historyService || this.historyService.maxItems !== settings.maxItems) {
+      this.historyService = new HistoryService(settings.maxItems);
+    }
 
     // Salvar acesso atual no histórico
     await this.historyService.push(courseId, {
@@ -159,6 +173,18 @@ export class DetailsActivitiesWeekView {
     } catch (error) {
       console.error('[DetailsActivitiesWeekView] Erro ao navegar:', error);
     }
+  }
+
+  /**
+   * Load chips settings from storage
+   * @returns {Promise<{enabled: boolean, maxItems: number}>}
+   */
+  async loadChipsSettings() {
+    const result = await chrome.storage.local.get('chips_settings');
+    return (
+      result.chips_settings ||
+      /** @type {{enabled: boolean, maxItems: number}} */ ({ enabled: true, maxItems: 5 })
+    );
   }
 
   /**
