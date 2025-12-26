@@ -149,7 +149,7 @@ export class QuickLinksScraper {
           // 5. Limpeza de casa: Fechar o modal para evitar bloqueios futuros
           const closeBtn = document.querySelector('a.lbAction[href="#close"]');
           if (closeBtn) {
-            closeBtn.click();
+            /** @type {HTMLElement} */ (closeBtn).click();
           }
 
           return items;

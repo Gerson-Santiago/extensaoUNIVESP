@@ -8,10 +8,11 @@ export class DomUtils {
   static ensureModalClosed(dom = document) {
     // Seletor para o botão de fechar nativo do Lightbox do Blackboard
     // Geralmente é um link com classe lbAction e href="#close"
+    /** @type {HTMLElement|null} */
     const closeBtn = dom.querySelector('a.lbAction[href="#close"]');
 
     if (closeBtn) {
-      console.log('[DomUtils] Fechando modal do Blackboard detectado.');
+      console.warn('[DomUtils] Fechando modal do Blackboard detectado.');
       closeBtn.click();
       return true;
     }

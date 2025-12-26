@@ -23,7 +23,11 @@ export class HistoryService {
     const history = await this.getRecent(courseId);
 
     // Remover duplicata se existir (pelo targetId ou url)
-    const filtered = history.filter((h) => h.id !== item.id && h.targetId !== item.targetId);
+    const filtered = history.filter((h) => {
+      const sameId = h.id === item.id;
+      const sameTargetId = item.targetId && h.targetId && h.targetId === item.targetId;
+      return !sameId && !sameTargetId;
+    });
 
     // Adicionar no início (Topo da pilha)
     filtered.unshift(item);
@@ -57,8 +61,9 @@ export class HistoryService {
    */
   async getRecent(courseId) {
     const key = this._getKey(courseId);
+    /** @type {Object.<string, Array>} */
     const result = await chrome.storage.local.get(key);
-    return result[key] || [];
+    return Array.isArray(result[key]) ? result[key] : [];
   }
 
   /**
@@ -74,3 +79,11 @@ export class HistoryService {
     return `${this.storageKeyPrefix}${courseId}`;
   }
 }
+
+/**
+ * @typedef {object} HistoryItem
+ * @property {string} id
+ * @property {string} label
+ * @property {string} [targetId]
+ * @property {string} [url]
+ */
