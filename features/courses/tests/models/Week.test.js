@@ -2,8 +2,9 @@
  * @jest-environment jsdom
  */
 
-describe('Week Model - Status Support', () => {
-  it('should support status property in items', () => {
+describe('Modelo Week - Suporte a Status', () => {
+  it('deve suportar propriedade de status nos itens', () => {
+    // Arrange
     const week = {
       name: 'Semana 1',
       items: [
@@ -12,29 +13,35 @@ describe('Week Model - Status Support', () => {
       ],
     };
 
+    // Act & Assert
     expect(week.items[0].status).toBe('DONE');
     expect(week.items[1].status).toBe('TODO');
   });
 
-  it('should allow DOING status', () => {
+  it('deve permitir status DOING', () => {
+    // Arrange
     const week = {
       name: 'Semana 2',
       items: [{ name: 'Tarefa em andamento', status: 'DOING' }],
     };
 
+    // Act & Assert
     expect(week.items[0].status).toBe('DOING');
   });
 
-  it('should work without status (optional)', () => {
+  it('deve funcionar sem status (opcional)', () => {
+    // Arrange
     const week = {
       name: 'Semana 3',
       items: [{ name: 'Tarefa sem status', url: 'http://test.com', type: 'document' }],
     };
 
+    // Act & Assert
     expect(week.items[0].status).toBeUndefined();
   });
 
-  it('should maintain existing Week structure', () => {
+  it('deve manter a estrutura existente de Week', () => {
+    // Arrange
     const week = {
       name: 'Semana 4',
       url: 'http://test.com/week4',
@@ -49,6 +56,7 @@ describe('Week Model - Status Support', () => {
       ],
     };
 
+    // Act & Assert
     expect(week.name).toBe('Semana 4');
     expect(week.url).toBe('http://test.com/week4');
     expect(week.date).toBe('01/01 a 07/01');

@@ -6,12 +6,12 @@ import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 jest.mock('../../services/WeekActivitiesService.js');
 jest.mock('../../../../shared/ui/feedback/Toaster.js');
 
-describe('Error Handling Integration', () => {
+describe('Integração de Tratamento de Erros', () => {
   let weeksView;
   let mockToasterShow;
 
   beforeEach(() => {
-    // Reset mocks
+    // Arrange (Common)
     jest.clearAllMocks();
     mockToasterShow = jest.fn();
     Toaster.prototype.show = mockToasterShow;
@@ -20,14 +20,14 @@ describe('Error Handling Integration', () => {
   });
 
   describe('CourseWeeksView', () => {
-    it('should show toast error when preview scraping fails', async () => {
-      // Setup
+    it('deve exibir toast de erro quando falhar o scraping do preview', async () => {
+      // Arrange
       const week = { url: 'http://error.com', name: 'Week Error' };
       /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockRejectedValue(
         new Error('Scraping failed')
       );
 
-      // Execute
+      // Act
       await weeksView.showPreview(week);
 
       // Assert
@@ -39,14 +39,14 @@ describe('Error Handling Integration', () => {
   });
 
   describe('CourseWeekTasksView', () => {
-    // Setup logic to test error handling in tasks view
-    // Is there an async method here?
-    // Currently CourseWeekTasksView receives data via setWeek, but usually it might fetch details.
-    // If it's purely display, maybe no toast needed unless specific interactions fail.
-    // Let's assume we might add async loading or error handling for specific user actions later.
-    // For now, testing the hypothesis.
-    it('should handle errors gracefully', () => {
-      // Placeholder for now as the view is synchronous
+    // Lógica de configuração para testar tratamento de erro na visualização de tarefas
+    // Existe algum método assíncrono aqui?
+    // Atualmente CourseWeekTasksView recebe dados via setWeek, mas geralmente pode buscar detalhes.
+    // Se for puramente exibição, talvez nenhum toast seja necessário a menos que interações específicas falhem.
+    // Vamos assumir que podemos adicionar carregamento assíncrono ou tratamento de erro para ações do usuário posteriormente.
+    // Por enquanto, testando a hipótese.
+    it('deve lidar com erros graciosamente', () => {
+      // Arrange & Act & Assert (Placeholder)
       expect(true).toBe(true);
     });
   });

@@ -1,7 +1,8 @@
 import { groupCoursesByTerm } from '@features/courses/logic/CourseGrouper.js';
 
-describe('courseGrouper Utility', () => {
-  test('Should group courses by term and sort groups descending', () => {
+describe('Utilitário CourseGrouper', () => {
+  test('Deve agrupar cursos por período letivo e ordenar grupos decrescente', () => {
+    // Arrange
     const courses = [
       { name: 'Antigo', url: 'u1' },
       { name: '2024/1 - 1º Bimestre - Mat A', url: 'u2' },
@@ -10,24 +11,32 @@ describe('courseGrouper Utility', () => {
       { name: '2025/1 - 1º Bimestre - Mat D', url: 'u5' },
     ];
 
+    // Act
     const groups = groupCoursesByTerm(courses);
 
+    // Assert
     expect(groups).toHaveLength(4);
 
-    // Check First Group (Newest)
+    // Verificar Primeiro Grupo (Mais recente)
     expect(groups[0].title).toContain('2025/2');
     expect(groups[0].courses).toHaveLength(2);
 
-    // Check Second Group
+    // Verificar Segundo Grupo
     expect(groups[1].title).toContain('2025/1');
 
-    // Check Last Group (Unknown term)
+    // Verificar Último Grupo (Termo desconhecido)
     expect(groups[3].title).toBe('Outros');
     expect(groups[3].courses).toHaveLength(1);
   });
 
-  test('Should handle empty list', () => {
-    const groups = groupCoursesByTerm([]);
+  test('Deve lidar com lista vazia', () => {
+    // Arrange
+    const courses = [];
+
+    // Act
+    const groups = groupCoursesByTerm(courses);
+
+    // Assert
     expect(groups).toEqual([]);
   });
 });
