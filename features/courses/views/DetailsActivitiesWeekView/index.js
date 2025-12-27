@@ -17,6 +17,7 @@ import { ClearHandler } from './handlers/ClearHandler.js';
 import { RefreshHandler } from './handlers/RefreshHandler.js';
 import { ActivityItemFactory } from './ActivityItemFactory.js';
 import { ActivityRenderer } from './ActivityRenderer.js';
+import { ChipsManager } from './ChipsManager.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -25,8 +26,9 @@ export class DetailsActivitiesWeekView {
   constructor(callbacks) {
     this.callbacks = callbacks;
     this.week = null;
-    this.historyService = new HistoryService(5); // Max 5 recent items
-    this.chipsComponent = null;
+    this.historyService = new HistoryService(5); // DEPRECATED - migrado para ChipsManager
+    this.chipsComponent = null; // DEPRECATED - migrado para ChipsManager
+    this.chipsManager = null; // Inicializado após render
     this.itemFactory = new ActivityItemFactory((activityId, fallbackUrl) =>
       this.scrollToActivity(activityId, fallbackUrl)
     );
@@ -107,71 +109,18 @@ export class DetailsActivitiesWeekView {
    * Renderiza chips de navegação contextual
    */
   async renderChips() {
-    console.warn('[DetailsActivitiesWeekView] renderChips() chamado');
     const container = document.getElementById('chipsContainer');
-    console.warn(
-      '[DetailsActivitiesWeekView] Container encontrado?',
-      !!container,
-      'this.week?',
-      !!this.week
-    );
-
     if (!container || !this.week) return;
 
-    // Load user settings
-    const settings = await this.loadChipsSettings();
-    console.warn('[DetailsActivitiesWeekView] Settings carregados:', settings);
-
-    // Skip if user disabled chips
-    if (!settings.enabled) {
-      console.warn(
-        '[DetailsActivitiesWeekView] Chips DESATIVADOS por settings.enabled =',
-        settings.enabled
-      );
-      container.innerHTML = '';
-      return;
+    // Inicializar ChipsManager se necessário
+    if (!this.chipsManager) {
+      this.chipsManager = new ChipsManager(container, this.week);
+    } else {
+      // Atualizar week no manager
+      this.chipsManager.setWeek(this.week);
     }
 
-    // Obter course ID (extrair do courseId ou usar nome como fallback)
-    const courseId = this.week.courseId || this.week.courseName || 'default';
-    console.warn('[DetailsActivitiesWeekView] courseId extraído:', courseId);
-
-    // Use dynamic maxItems from settings
-    if (!this.historyService || this.historyService.maxItems !== settings.maxItems) {
-      this.historyService = new HistoryService(settings.maxItems);
-    }
-
-    // Salvar acesso atual no histórico
-    await this.historyService.push(courseId, {
-      id: this.week.url || this.week.name,
-      label: this.week.name,
-      targetId: this.week.url,
-      url: this.week.url,
-    });
-
-    // Buscar histórico recente
-    const recentWeeks = await this.historyService.getRecent(courseId);
-    console.warn('[DetailsActivitiesWeekView] Histórico recente:', recentWeeks);
-
-    // Inicializar componente se necessário
-    if (!this.chipsComponent) {
-      this.chipsComponent = new ContextualChips(container);
-
-      // Conectar evento de navegação
-      this.chipsComponent.on('navigate', (item) => {
-        this.navigateToWeek(item);
-      });
-
-      // Conectar evento de remoção
-      this.chipsComponent.on('remove', async (itemId) => {
-        await this.historyService.remove(courseId, itemId);
-        this.renderChips(); // Re-render após remover
-      });
-    }
-
-    // Renderizar chips
-    console.warn('[DetailsActivitiesWeekView] Renderizando chips com', recentWeeks.length, 'items');
-    this.chipsComponent.render(recentWeeks);
+    await this.chipsManager.renderChips();
   }
 
   /**
