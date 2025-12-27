@@ -183,7 +183,7 @@ export class DetailsActivitiesWeekView {
     const result = await chrome.storage.local.get('chips_settings');
     return (
       result.chips_settings ||
-      /** @type {{enabled: boolean, maxItems: number}} */ ({ enabled: true, maxItems: 5 })
+      /** @type {{enabled: boolean, maxItems: number}} */ ({ enabled: true, maxItems: 3 })
     );
   }
 

@@ -27,17 +27,17 @@ export class SettingsView {
             <p class="config-desc">Configure a barra de navegação rápida entre semanas.</p>
             
             <div class="chips-settings">
-                <label class="setting-item">
+                <label class="setting-item" style="display: none;">
                     <input type="checkbox" id="chipsEnabled" checked>
                     <span>Exibir chips de navegação</span>
                 </label>
                 
-                <div id="chipsOptions" class="chips-options">
+                <div id="chipsOptions" class="chips-options" style="display: block;">
                     <label class="setting-item">
-                        <span>Máximo de chips visíveis:</span>
+                        <span>Quantidade de chips (0 = desativado):</span>
                         <div class="slider-container">
-                            <input type="range" id="chipsMaxItems" min="3" max="10" value="5" step="1">
-                            <span id="chipsMaxValue" class="slider-value">5</span>
+                            <input type="range" id="chipsMaxItems" min="0" max="8" value="3" step="1">
+                            <span id="chipsMaxValue" class="slider-value">3</span>
                         </div>
                     </label>
                 </div>
@@ -144,28 +144,16 @@ export class SettingsView {
    * Initialize chips settings UI and listeners
    */
   async initChipsSettings() {
-    const checkbox = /** @type {HTMLInputElement|null} */ (document.getElementById('chipsEnabled'));
     const slider = /** @type {HTMLInputElement|null} */ (document.getElementById('chipsMaxItems'));
     const valueDisplay = document.getElementById('chipsMaxValue');
     const options = document.getElementById('chipsOptions');
 
-    if (!checkbox || !slider || !valueDisplay || !options) return;
+    if (!slider || !valueDisplay || !options) return;
 
     // Load saved settings
     const settings = await this.loadChipsSettings();
-    checkbox.checked = settings.enabled;
     slider.value = String(settings.maxItems);
     valueDisplay.textContent = String(settings.maxItems);
-    options.style.display = settings.enabled ? 'block' : 'none';
-
-    // Checkbox listener
-    checkbox.addEventListener('change', async () => {
-      options.style.display = checkbox.checked ? 'block' : 'none';
-      await this.saveChipsSettings({
-        enabled: checkbox.checked,
-        maxItems: parseInt(slider.value),
-      });
-    });
 
     // Slider listener
     slider.addEventListener('input', () => {
@@ -173,9 +161,10 @@ export class SettingsView {
     });
 
     slider.addEventListener('change', async () => {
+      const maxItems = parseInt(slider.value);
       await this.saveChipsSettings({
-        enabled: checkbox.checked,
-        maxItems: parseInt(slider.value),
+        enabled: maxItems > 0, // 0 = disabled
+        maxItems: maxItems,
       });
     });
   }
@@ -188,7 +177,7 @@ export class SettingsView {
     const result = await chrome.storage.local.get('chips_settings');
     return (
       result.chips_settings ||
-      /** @type {{enabled: boolean, maxItems: number}} */ ({ enabled: true, maxItems: 5 })
+      /** @type {{enabled: boolean, maxItems: number}} */ ({ enabled: true, maxItems: 3 })
     );
   }
 
