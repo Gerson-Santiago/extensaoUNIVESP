@@ -38,6 +38,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - **Chips Visibility**: Identificado e corrigido bug onde chips renderizavam mas não apareciam (CSS Display issue).
 - **ClearCache**: Corrigido erro `not a function` ao implementar método estático no Service.
 
+### 💾 Persistência & Navegação
+- **Navegação de Chips**: Implementado Hook `onNavigateToWeek` para sincronizar View e Browser.
+- **Auto-Save**: Dados de scraping agora são persistidos automaticamente após carregamento (`CourseRepository.update`).
+
 ---
 
 ## [2.8.8] - 2025-12-26

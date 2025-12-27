@@ -62,7 +62,7 @@ export class ContextualChips {
         const chip = this._createChip(item);
         this.container.appendChild(chip);
       } catch (error) {
-        console.error(`[ContextualChips] Erro ao criar chip:`, error);
+        console.error('[ContextualChips] Erro ao criar chip:', error);
       }
     });
   }

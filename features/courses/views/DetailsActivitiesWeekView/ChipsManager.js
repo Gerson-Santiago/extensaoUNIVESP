@@ -18,33 +18,36 @@ export class ChipsManager {
   constructor(container, week) {
     this.container = container;
     this.week = week;
+    this.onNavigate = null; // Callback para atualizar a view principal
     this.chipsComponent = null;
     this.historyService = null;
+  }
+
+  /**
+   * Define o callback de navegação
+   * @param {Function} callback - Função (weekUrl) => void
+   */
+  setOnNavigate(callback) {
+    this.onNavigate = callback;
   }
 
   /**
    * Renderiza chips de navegação
    */
   async renderChips() {
-    console.warn('[ChipsManager] renderChips() chamado');
-    console.warn('[ChipsManager] Container?', !!this.container, 'Week?', !!this.week);
-
     if (!this.container || !this.week) return;
 
     // Load user settings
     const settings = await this.loadChipsSettings();
-    console.warn('[ChipsManager] Settings carregados:', settings);
 
     // Skip if disabled
     if (!settings.enabled) {
-      console.warn('[ChipsManager] Chips DESATIVADOS por settings.enabled =', settings.enabled);
       this.container.innerHTML = '';
       return;
     }
 
     // Obter course ID
     const courseId = this.week.courseId || this.week.courseName || 'default';
-    console.warn('[ChipsManager] courseId extraído:', courseId);
 
     // Inicializar/atualizar HistoryService
     if (!this.historyService || this.historyService.maxItems !== settings.maxItems) {
@@ -61,7 +64,6 @@ export class ChipsManager {
 
     // Buscar histórico
     const recentWeeks = await this.historyService.getRecent(courseId);
-    console.warn('[ChipsManager] Histórico recente:', recentWeeks);
 
     // Inicializar componente
     if (!this.chipsComponent) {
@@ -80,7 +82,6 @@ export class ChipsManager {
     }
 
     // Renderizar
-    console.warn('[ChipsManager] Renderizando', recentWeeks.length, 'chips');
     this.chipsComponent.render(recentWeeks);
   }
 
@@ -95,6 +96,11 @@ export class ChipsManager {
       const { Tabs } = await import('../../../../shared/utils/Tabs.js');
       await Tabs.openOrSwitchTo(item.url);
       console.warn('[ChipsManager] Navegando para:', item.label);
+
+      // Notificar a aplicação para atualizar a view
+      if (this.onNavigate) {
+        this.onNavigate(item.url);
+      }
     } catch (error) {
       console.error('[ChipsManager] Erro ao navegar:', error);
     }

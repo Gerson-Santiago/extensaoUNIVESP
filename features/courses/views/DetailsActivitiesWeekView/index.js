@@ -20,7 +20,7 @@ import { ChipsManager } from './ChipsManager.js';
 
 export class DetailsActivitiesWeekView {
   /**
-   * @param {Object} callbacks - { onBack }
+   * @param {Object} callbacks - { onBack, onNavigateToWeek }
    */
   constructor(callbacks) {
     this.callbacks = callbacks;
@@ -114,6 +114,9 @@ export class DetailsActivitiesWeekView {
     // Inicializar ChipsManager se necessário
     if (!this.chipsManager) {
       this.chipsManager = new ChipsManager(container, this.week);
+      if (this.callbacks.onNavigateToWeek) {
+        this.chipsManager.setOnNavigate(this.callbacks.onNavigateToWeek);
+      }
     } else {
       // Atualizar week no manager
       this.chipsManager.setWeek(this.week);

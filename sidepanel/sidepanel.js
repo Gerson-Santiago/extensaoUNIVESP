@@ -127,6 +127,29 @@ document.addEventListener('DOMContentLoaded', () => {
     onBack: () => {
       layout.navigateTo('courseDetails');
     },
+    onNavigateToWeek: async (weekUrl) => {
+      // 1. Tenta encontrar a semana no curso carregado em courseWeeksView
+      const currentCourse = courseWeeksView.course;
+
+      if (currentCourse && currentCourse.weeks) {
+        const targetWeek = currentCourse.weeks.find((w) => w.url === weekUrl);
+
+        if (targetWeek) {
+          // 2. Atualiza a view com a nova semana
+          detailsActivitiesWeekView.setWeek(targetWeek);
+
+          // 3. Força a re-renderização da view 'weekActivities'
+          // (Mesmo se já estiver nela, isso recarrega o conteúdo correto)
+          layout.navigateTo('weekActivities');
+
+          // Debug visual para garantir update
+          console.log('[SidePanel] Navegação via Chip para:', targetWeek.name);
+        } else {
+          console.warn('[SidePanel] Semana não encontrada no curso atual para URL:', weekUrl);
+          // Opcional: Tentar recarregar o curso?
+        }
+      }
+    },
   });
 
   const courseWeeksView = new CourseWeeksView({

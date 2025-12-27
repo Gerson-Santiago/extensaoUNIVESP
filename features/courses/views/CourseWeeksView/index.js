@@ -7,6 +7,7 @@
 import { createWeekElement } from '../../components/WeekItem.js';
 import { CourseRefresher } from '../../services/CourseRefresher.js';
 import { WeekActivitiesService } from '../../services/WeekActivitiesService.js';
+import { CourseRepository } from '../../data/CourseRepository.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 
 export class CourseWeeksView {
@@ -112,6 +113,11 @@ export class CourseWeeksView {
               if (this.callbacks.onViewActivities) {
                 this.callbacks.onViewActivities(w);
               }
+
+              // 💾 Persistir dados atualizados no storage
+              if (this.course && this.course.id) {
+                await CourseRepository.update(this.course.id, { weeks: this.course.weeks });
+              }
             } catch (error) {
               console.error('[CourseWeeksView] Erro ao carregar atividades:', error);
               new Toaster().show('Erro ao carregar atividades. Tente novamente.', 'error');
@@ -136,6 +142,11 @@ export class CourseWeeksView {
               // Atualiza view com dados reais (substitui skeleton)
               if (this.callbacks.onViewActivities) {
                 this.callbacks.onViewActivities(w);
+              }
+
+              // 💾 Persistir dados atualizados no storage
+              if (this.course && this.course.id) {
+                await CourseRepository.update(this.course.id, { weeks: this.course.weeks });
               }
             } catch (error) {
               console.error('[CourseWeeksView] Erro ao carregar via QuickLinks:', error);
