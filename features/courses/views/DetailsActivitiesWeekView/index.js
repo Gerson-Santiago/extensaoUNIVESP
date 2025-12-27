@@ -13,6 +13,8 @@ import { NavigationService } from '../../../../shared/services/NavigationService
 import { ContextualChips } from '../../../../shared/ui/ContextualChips.js';
 import { HistoryService } from '../../../../shared/services/HistoryService.js';
 import { SkeletonManager } from './SkeletonManager.js';
+import { ClearHandler } from './handlers/ClearHandler.js';
+import { RefreshHandler } from './handlers/RefreshHandler.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -202,65 +204,16 @@ export class DetailsActivitiesWeekView {
    * @param {HTMLButtonElement} btn - Botão de refresh (para loading state)
    */
   async handleRefresh(btn) {
-    if (!this.week) return;
-
-    const method = this.week.method || 'DOM';
-    const originalText = btn.textContent;
-
-    try {
-      // Loading state
-      btn.disabled = true;
-      btn.textContent = '⏳';
-
-      // Re-executar scraping baseado no método
-      let items = [];
-      if (method === 'QuickLinks') {
-        const { QuickLinksScraper } = await import('../../services/QuickLinksScraper.js');
-        items = await QuickLinksScraper.scrapeFromQuickLinks(this.week.url);
-      } else {
-        const { WeekContentScraper } = await import('../../services/WeekContentScraper.js');
-        items = await WeekContentScraper.scrapeWeekContent(this.week.url);
-      }
-
-      // Atualizar week.items
-      this.week.items = items;
-
-      // Re-renderizar lista
-      this.renderActivities();
-    } catch (error) {
-      console.error('[DetailsActivitiesWeekView] Erro ao atualizar:', error);
-      const { Toaster } = await import('../../../../shared/ui/feedback/Toaster.js');
-      const toaster = new Toaster();
-      toaster.show('Erro ao atualizar lista. Tente novamente.', 'error');
-    } finally {
-      // Restaurar estado
-      btn.disabled = false;
-      btn.textContent = originalText;
-    }
+    const handler = new RefreshHandler(this.week, () => this.renderActivities());
+    await handler.handleRefresh(btn);
   }
 
   /**
    * Limpa cache de atividades e volta para lista de semanas
    */
   handleClear() {
-    if (!this.week) return;
-
-    // Confirmar com usuário
-    const confirmed = confirm(
-      `Deseja limpar o cache de atividades de "${this.week.name}"?\n\n` +
-        'Isso forçará um novo scraping na próxima vez.'
-    );
-
-    if (!confirmed) return;
-
-    // Limpar items do cache
-    this.week.items = [];
-    this.week.method = undefined;
-
-    // Voltar para lista de semanas
-    if (this.callbacks.onBack) {
-      this.callbacks.onBack();
-    }
+    const handler = new ClearHandler(this.week, this.callbacks.onBack);
+    handler.handleClear();
   }
 
   /**
