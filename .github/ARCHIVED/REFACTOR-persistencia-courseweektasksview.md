@@ -1,8 +1,10 @@
 # REFACTOR: Extrair Persistência de CourseWeekTasksView
 
-**Status**: 🔧 Refatoração Pendente  
-**Prioridade**: Média  
-**Estimativa**: 2-3 horas  
+**Status**: ✅ **Concluído** (Implementado ~2025-12)  
+**Prioridade**: ~~Média~~ → N/A (Concluído)  
+**Estimativa Original**: 2-3 horas  
+**Nota**: TaskProgressService implementado e em uso em CourseWeekTasksView
+  
 
 ---
 

@@ -41,9 +41,12 @@
 - [`TECH_DEBT-unificar-estrutura-progresso.md`](TECH_DEBT/TECH_DEBT-unificar-estrutura-progresso.md) - Unificar repositórios
 
 ### 📐 Refatorações Planejadas
-- [`REFACTOR-desacoplar-scraping-view.md`](REFACTOR/REFACTOR-desacoplar-scraping-view.md)
-- [`REFACTOR-modernizacao-es2024.md`](REFACTOR/REFACTOR-modernizacao-es2024.md)
-- [`REFACTOR-persistencia-courseweektasksview.md`](REFACTOR/REFACTOR-persistencia-courseweektasksview.md)
+- [`REFACTOR-modernizacao-es2024.md`](REFACTOR/REFACTOR-modernizacao-es2024.md) - Baixa prioridade
+
+### 📦 Refatorações Concluídas (Arquivadas)
+- [`REFACTOR-desacoplar-scraping-view.md`](ARCHIVED/REFACTOR-desacoplar-scraping-view.md) - WeekActivitiesService
+- [`REFACTOR-persistencia-courseweektasksview.md`](ARCHIVED/REFACTOR-persistencia-courseweektasksview.md) - TaskProgressService
+
 
 ### 🎯 Decisões Arquiteturais (ADRs)
 - [`ADR-001: Console Cleanup`](ADR/ADR-001-tech-debt-console-cleanup.md) - Priorização de TECH_DEBT
