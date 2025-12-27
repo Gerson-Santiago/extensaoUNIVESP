@@ -1,5 +1,13 @@
 # BUG: Interferência do Modal "Quick Links" (Lightbox)
 
+**Status**: ✅ **IMPLEMENTADO** (2025-12-XX)  
+**Localização**: [`DomUtils.js`](file:///home/sant/extensaoUNIVESP/shared/utils/DomUtils.js)  
+**Uso Ativo**: QuickLinksScraper.js, NavigationService.js  
+**Movido para**: `.github/RESOLVED/` em 2025-12-27
+
+---
+
+
 ## Descrição do Problema
 Ao interagir com o AVA (Blackboard) para obter dados de links rápidos (ex: para popular a lista de atividades da semana), o site oficial renderiza um **Modal (Lightbox)** que cobre a tela ou bloqueia a interação. Esse modal precisa ser fechado programaticamente para garantir uma experiência de navegação fluida na extensão.
 

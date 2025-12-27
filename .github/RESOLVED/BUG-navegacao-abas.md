@@ -1,9 +1,11 @@
 # BUG: Navegação entre Abas de Matérias Diferentes
 
-**Status**: 🚧 Parcialmente Resolvido (Auditoria 2025-12-26)  
-**Prioridade**: Média  
-**Afeta**: Navegação entre matérias  
-**Resolução**: `Tabs.js` refatorado com lógica de `course_id` - Necessita validação manual  
+**Status**: ✅ **RESOLVIDO** (2025-12-27)  
+**Prioridade**: ~~Média~~ → N/A (Resolvido)  
+**Afeta**: ~~Navegação entre matérias~~ → Não mais aplicável  
+**Resolução**: Implementado em [`Tabs.js`](file:///home/sant/extensaoUNIVESP/shared/utils/Tabs.js) (linhas 59-67)  
+**Movido para**: `.github/RESOLVED/` em 2025-12-27
+  
 
 ---
 
