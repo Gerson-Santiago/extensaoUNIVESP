@@ -117,7 +117,7 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 
 ## 📜 Release Log (Histórico)
 
-### v2.8.8 (Atual - 2025-12-27)
+### v2.8.9 (Atual - 2025-12-27)
 - Auditoria de alinhamento documental
 - ADRs criados (Console Cleanup, EPICs, BatchScraper)
 - Limpeza de tech debts

@@ -7,9 +7,32 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
-## [2.8.9] - 2025-12-26
+## [2.8.9] - 2025-12-27
 
-### ✨ Chips de Navegação Contextual
+### 📚 Auditoria de Alinhamento Documental
+- **Limpeza Radical do `.github/`**:
+  - SPEC-v2.8.0.md deletado (obsoleto)
+  - 6 EPICs deletados (snapshots v2.8.0 desatualizados)
+  - 2 NEXT arquivados (já implementados)
+  - 2 REFACTORs arquivados (concluídos)
+  - 1 TECH_DEBT arquivado (unificar-estrutura-progresso)
+  - README.md reescrito do zero (conciso, sem links quebrados)
+  - Seção "Por Onde Começar" adicionada (onboarding)
+  
+- **Architecture Decision Records (ADRs)**:
+  - ADR-001: Console Cleanup (Matriz ISO 25010, 92 pontos)
+  - ADR-002: Deletar EPICs (Matriz ISO 25010, 92 vs 73 vs 48)
+  - ADR-003: BatchScraper No Modularization (Injected code constraint)
+  
+- **ROADMAP Reescrito**:
+  - Visão estratégica trimestral (Q4 2025 - 2027+)
+  - Horizonte atual: Estabilização e consolidação arquitetural
+  - Médio prazo: Gamificação + Grade Manager
+  - Processo de priorização ADR-driven documentado
+
+- **Estrutura Final `.github/`**: 7 pastas, 17 arquivos, 0 links quebrados ✅
+
+### ✨ Chips de Navegação Contextual (26/dez)
 - **ContextualChips.js**: Componente UI para lista de navegação contextual (TDD).
 - **Interação**: Suporte a clique (navegar) e remoção de itens.
 - **Acessibilidade**: Layout semântico e suporte a teclado.
@@ -18,7 +41,7 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - **CSS Grid**: Layout robusto para header, garantindo visibilidade dos chips.
 - **Configurações**: Painel em Settings para ativar/desativar e ajustar limite (3-10 chips).
 
-### ♻️ Refatoração (DetailsActivitiesWeekView)
+### ♻️ Refatoração (DetailsActivitiesWeekView - 26/dez)
 - **Modularização Completa**: Componente monolítico (368 linhas) dividido em 6 módulos:
   - `SkeletonManager.js`: Gerenciamento de loading state.
   - `ClearHandler.js`: Lógica de limpeza de cache segura.
@@ -29,22 +52,23 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - **Index.js**: Reduzido para ~200 linhas (Orquestrador Puro).
 - **DRY**: Removido código duplicado de navegação e settings.
 
-### 🎨 UX Improvements
+### 🎨 UX Improvements (26/dez)
 - **Layout**: Header convertido para CSS Grid (2 rows, 3 cols) para melhor disposição dos elementos.
 - **Feedback**: Mensagens claras ao limpar cache ou aguardar carregamento.
 
-### 🐛 Bugfixes
+### 🐛 Bugfixes (26/dez)
 - **Tabs.openOrSwitchTo**: Corrige navegação entre semanas (agora abre novas abas em vez de reutilizar).
 - **Chips Visibility**: Identificado e corrigido bug onde chips renderizavam mas não apareciam (CSS Display issue).
 - **ClearCache**: Corrigido erro `not a function` ao implementar método estático no Service.
 
-### 💾 Persistência & Navegação
+### 💾 Persistência & Navegação (26/dez)
 - **Navegação de Chips**: Implementado Hook `onNavigateToWeek` para sincronizar View e Browser.
 - **Auto-Save**: Dados de scraping agora são persistidos automaticamente após carregamento (`CourseRepository.update`).
 
-### 💅 Interface (UI/UX)
+### 💅 Interface (UI/UX - 26/dez)
 - **Mini Chips**: Adicionado indicador de progresso (ex: `5/10`) na listagem de semanas (`WeekItem`).
 - **Feedback**: `WeekItem` agora exibe status visual imediato de tarefas concluídas.
+
 
 ---
 

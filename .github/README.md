@@ -1,6 +1,6 @@
 # 📋 .github - Gestão de Projeto
 
-**Versão**: v2.8.8  
+**Versão**: v2.8.9  
 **Última atualização**: 2025-12-27
 
 ---
