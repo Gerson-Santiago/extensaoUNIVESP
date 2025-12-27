@@ -23,12 +23,10 @@
 
 ## 🎯 Status Atual
 
-### 🐛 Bugs Ativos
-- [`BUG-botao-abrir-materia.md`](ISSUES/BUG-botao-abrir-materia.md) - Em investigação
-
 ### ✅ Bugs Resolvidos
 - [`BUG-navegacao-abas.md`](RESOLVED/BUG-navegacao-abas.md) - Resolvido (Tabs.js refatorado)
 - [`BUG-fechar-listador-de-atividades-do-site.md`](RESOLVED/BUG-fechar-listador-de-atividades-do-site.md) - Implementado (DomUtils.ensureModalClosed)
+- [`BUG-botao-abrir-materia.md`](RESOLVED/BUG-botao-abrir-materia.md) - Resolvido (Link com data-match-pattern)
 
 ### ✨ Features Implementadas
 - [`FEATURE-checkbox-conclusao.md`](FEATURE/FEATURE-checkbox-conclusao.md) - Sistema de progresso (v2.8.0)

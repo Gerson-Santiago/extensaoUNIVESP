@@ -1,9 +1,10 @@
 # BUG: Botão "Abrir Matéria" Falha em HomeView
 
-**Status**: ⚠️ **EM INVESTIGAÇÃO** (Auditoria 2025-12-27)  
-**Prioridade**: Média  
-**Afeta**: Botão "Abrir Matéria" (todos os cursos)  
-**Nota de Auditoria**: Mensagem de erro "Aba já aberta" não encontrada no código. Possível resolução indireta via refatoração de `Tabs.js`. Necessita validação manual do cenário.
+**Status**: ✅ **RESOLVIDO** (2025-12-27)  
+**Prioridade**: ~~Média~~ → N/A (Resolvido)  
+**Afeta**: ~~Botão "Abrir Matéria"~~ → Não mais aplicável  
+**Resolução**: Link implementado em HomeView com `data-match-pattern` para smart navigation  
+**Movido para**: `.github/RESOLVED/` em 2025-12-27
   
 
 ---
