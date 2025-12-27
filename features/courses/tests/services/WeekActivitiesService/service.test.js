@@ -12,7 +12,7 @@ describe('WeekActivitiesService', () => {
   const mockWeek = {
     url: 'https://ava.univesp.br/web/123/week/456',
     name: 'Semana 1',
-    items: [], // Empty items initially
+    items: [], // Inicialmente vazio
   };
 
   const mockItems = [
@@ -21,16 +21,14 @@ describe('WeekActivitiesService', () => {
   ];
 
   beforeEach(() => {
+    // Preparar (Arrange) - Mocks e reset de dados
     jest.clearAllMocks();
-    // Reset week object before each test
     mockWeek.items = [];
     delete mockWeek.method;
 
-    // Setup mock implementations
     /** @type {jest.Mock} */ (WeekContentScraper.scrapeWeekContent).mockResolvedValue(mockItems);
     /** @type {jest.Mock} */ (QuickLinksScraper.scrapeFromQuickLinks).mockResolvedValue(mockItems);
 
-    // Mock Tabs.openOrSwitchTo para retornar aba válida por padrão
     /** @type {jest.Mock} */ (Tabs.openOrSwitchTo).mockResolvedValue({
       id: 1,
       url: mockWeek.url,
@@ -40,9 +38,11 @@ describe('WeekActivitiesService', () => {
   });
 
   describe('getActivities', () => {
-    it('should fetch activities using WeekContentScraper when method is DOM', async () => {
+    it('deve buscar atividades usando WeekContentScraper quando método for DOM', async () => {
+      // Agir (Act)
       const result = await WeekActivitiesService.getActivities(mockWeek, 'DOM');
 
+      // Verificar (Assert)
       expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalledWith(mockWeek.url);
       expect(QuickLinksScraper.scrapeFromQuickLinks).not.toHaveBeenCalled();
       expect(result).toEqual(mockItems);
@@ -50,9 +50,11 @@ describe('WeekActivitiesService', () => {
       expect(mockWeek.method).toBe('DOM');
     });
 
-    it('should fetch activities using QuickLinksScraper when method is QuickLinks', async () => {
+    it('deve buscar atividades usando QuickLinksScraper quando método for QuickLinks', async () => {
+      // Agir (Act)
       const result = await WeekActivitiesService.getActivities(mockWeek, 'QuickLinks');
 
+      // Verificar (Assert)
       expect(QuickLinksScraper.scrapeFromQuickLinks).toHaveBeenCalledWith(mockWeek.url);
       expect(WeekContentScraper.scrapeWeekContent).not.toHaveBeenCalled();
       expect(result).toEqual(mockItems);
@@ -60,54 +62,53 @@ describe('WeekActivitiesService', () => {
       expect(mockWeek.method).toBe('QuickLinks');
     });
 
-    it('should use default method DOM if not provided', async () => {
+    it('deve usar método DOM por padrão se não fornecido', async () => {
+      // Agir (Act)
       await WeekActivitiesService.getActivities(mockWeek);
 
+      // Verificar (Assert)
       expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalled();
       expect(mockWeek.method).toBe('DOM');
     });
 
-    it('should return cached items if method matches and items exist', async () => {
-      // First call to populate cache
+    it('deve retornar itens do cache se método corresponder e itens existirem', async () => {
+      // Preparar (Arrange) - Popula cache
       await WeekActivitiesService.getActivities(mockWeek, 'DOM');
-
-      // Clear mocks to verify second call logic
       jest.clearAllMocks();
 
-      // Second call
+      // Agir (Act) - Segunda chamada
       const result = await WeekActivitiesService.getActivities(mockWeek, 'DOM');
 
+      // Verificar (Assert)
       expect(WeekContentScraper.scrapeWeekContent).not.toHaveBeenCalled();
-      expect(result).toBe(mockWeek.items); // Should be same reference
+      expect(result).toBe(mockWeek.items); // Mesma referência
     });
 
-    it('should REFETCH if method changed from DOM to QuickLinks', async () => {
-      // First call: DOM
+    it('deve buscar NOVAMENTE se o método mudar de DOM para QuickLinks', async () => {
+      // Preparar (Arrange) - Chamada inicial com DOM
       await WeekActivitiesService.getActivities(mockWeek, 'DOM');
-
       jest.clearAllMocks();
 
-      // Second call: QuickLinks
+      // Agir (Act) - Chamada com QuickLinks
       await WeekActivitiesService.getActivities(mockWeek, 'QuickLinks');
 
+      // Verificar (Assert)
       expect(QuickLinksScraper.scrapeFromQuickLinks).toHaveBeenCalled();
       expect(mockWeek.method).toBe('QuickLinks');
     });
 
-    it('should throw error when scraping fails', async () => {
+    it('deve lançar erro quando o scraping falhar', async () => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (WeekContentScraper.scrapeWeekContent).mockRejectedValue(
-        new Error('Scraping Failed')
+        new Error('Falha no Scraping')
       );
-
-      // Using console spy to suppress error output in test logs
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
+      // Agir & Verificar (Act & Assert)
       await expect(WeekActivitiesService.getActivities(mockWeek, 'DOM')).rejects.toThrow(
-        'Scraping Failed'
+        'Falha no Scraping'
       );
-
       expect(consoleSpy).toHaveBeenCalled();
-
       consoleSpy.mockRestore();
     });
   });

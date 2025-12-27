@@ -41,44 +41,44 @@ describe('HeaderManager (Gerente de Cabeçalho)', () => {
   });
 
   it('deve chamar onOpenCourse com a URL do curso quando o botão de abrir matéria é clicado', () => {
-    // Act
+    // Act (Agir)
     gerente.setup();
     const botao = container.querySelector('#openCourseBtn');
     botao.click();
 
-    // Assert
+    // Assert (Verificar)
     expect(callbacks.onOpenCourse).toHaveBeenCalledWith(curso.url);
   });
 
   it('deve atualizar o curso quando o botão de atualizar semanas é clicado', async () => {
-    // Arrange
+    // Arrange (Preparar)
     const mockSemanas = [{ name: 'Semana 1' }];
     /** @type {jest.Mock} */ (CourseRefresher.refreshCourse).mockResolvedValue({
       success: true,
       weeks: mockSemanas,
     });
 
-    // Act
+    // Act (Agir)
     gerente.setup();
     const botao = container.querySelector('#refreshWeeksBtn');
     await botao.onclick(); // Simula clique assíncrono
 
-    // Assert
+    // Assert (Verificar)
     expect(CourseRefresher.refreshCourse).toHaveBeenCalledWith(curso, botao);
     expect(curso.weeks).toBe(mockSemanas);
     expect(callbacks.onRefresh).toHaveBeenCalledWith(mockSemanas);
   });
 
   it('deve lidar com falha na atualização graciosamente', async () => {
-    // Arrange
+    // Arrange (Preparar)
     /** @type {jest.Mock} */ (CourseRefresher.refreshCourse).mockResolvedValue({ success: false });
 
-    // Act
+    // Act (Agir)
     gerente.setup();
     const botao = container.querySelector('#refreshWeeksBtn');
     await botao.onclick();
 
-    // Assert
+    // Assert (Verificar)
     expect(callbacks.onRefresh).not.toHaveBeenCalled();
   });
 

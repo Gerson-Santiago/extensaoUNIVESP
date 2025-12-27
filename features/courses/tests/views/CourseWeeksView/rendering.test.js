@@ -15,37 +15,36 @@ describe('CourseWeeksView - Comportamento de Preview Dinâmico', () => {
     jest.clearAllMocks();
   });
 
-  it('deve alternar a exibição do preview ao clicar na mesma semana duas vezes', async () => {
-    // Arrange (Preparar)
-    const mockItems = [{ name: 'T1', status: 'DONE', type: 'video', url: 'http://test.com/1' }];
+  it('deve alternar a exibição do preview ao clicar na mesma semana duas vezes (toggle)', async () => {
+    // Preparar (Arrange)
+    const mockItems = [{ name: 'V1', status: 'DONE', type: 'video', url: 'http://test.com/1' }];
     /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
 
     const semana = { name: 'Semana 1', url: 'http://ava.com/semana1' };
     const elementoReal = document.createElement('div');
     elementoReal.className = 'week-item';
 
-    // Act (Agir) - Primeiro clique para mostrar
+    // Agir (Act) - Primeiro clique para mostrar
     await view.showPreview(semana, elementoReal);
 
-    // Assert (Verificar)
+    // Verificar (Assert)
     expect(view.activeWeek).toBe(semana);
     expect(elementoReal.classList.contains('week-item-active')).toBe(true);
 
-    // Act (Agir) - Segundo clique para esconder
-    // Simulamos a existência do preview para o toggle
+    // Agir (Act) - Simular existência do preview e clicar novamente para esconder
     const previewDiv = document.createElement('div');
     previewDiv.className = 'week-preview-dynamic';
     elementoReal.insertAdjacentElement('afterend', previewDiv);
 
     await view.showPreview(semana, elementoReal);
 
-    // Assert (Verificar)
-    expect(view.activeWeek).toBe(semana); // Continua ativa (UX)
+    // Verificar (Assert)
+    expect(view.activeWeek).toBe(semana); // Mantém a referência por UX
     expect(document.querySelector('.week-preview-dynamic')).toBeNull();
   });
 
-  it('deve remover o preview anterior ao clicar em uma semana diferente', async () => {
-    // Arrange (Preparar)
+  it('deve remover o preview anterior ao trocar de semana clicada', async () => {
+    // Preparar (Arrange)
     const mockItems = [{ name: 'T1', status: 'DONE' }];
     /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
 
@@ -59,24 +58,24 @@ describe('CourseWeeksView - Comportamento de Preview Dinâmico', () => {
     document.body.appendChild(el1);
     document.body.appendChild(el2);
 
-    // Act (Agir) - Clicar na semana 1
+    // Agir (Act) - Clicar na semana 1
     await view.showPreview(semana1, el1);
 
-    // Assert (Verificar)
+    // Verificar (Assert)
     expect(view.activeWeek).toBe(semana1);
     expect(el1.classList.contains('week-item-active')).toBe(true);
 
-    // Act (Agir) - Clicar na semana 2
+    // Agir (Act) - Clicar na semana 2
     await view.showPreview(semana2, el2);
 
-    // Assert (Verificar)
+    // Verificar (Assert)
     expect(view.activeWeek).toBe(semana2);
     expect(el1.classList.contains('week-item-active')).toBe(false);
     expect(el2.classList.contains('week-item-active')).toBe(true);
   });
 
-  it('deve lidar com erros de coleta e remover o estado ativo', async () => {
-    // Arrange (Preparar)
+  it('deve limpar o estado ativo caso ocorra erro na coleta de atividades', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockRejectedValue(
       new Error('Falha na coleta')
     );
@@ -85,10 +84,10 @@ describe('CourseWeeksView - Comportamento de Preview Dinâmico', () => {
     const el = document.createElement('div');
     el.className = 'week-item';
 
-    // Act (Agir)
+    // Agir (Act)
     await view.showPreview(semana, el);
 
-    // Assert (Verificar)
+    // Verificar (Assert)
     expect(el.classList.contains('week-item-active')).toBe(false);
     expect(view.activeWeek).toBeNull();
   });

@@ -6,7 +6,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve chamar executeScript corretamente', async () => {
-    // Mock do retorno do script injetado
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
@@ -16,8 +16,10 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
       target: { tabId: 123, allFrames: true },
       func: expect.any(Function),
@@ -29,15 +31,19 @@ describe('Testes de Lógica - Scraper', () => {
     });
   });
 
-  test('scrapeWeeksFromTab deve lidar com retorno vazio', async () => {
-    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([]); // Retorno vazio/falha
+  test('scrapeWeeksFromTab deve lidar com retorno vazio de script', async () => {
+    // Preparar (Arrange)
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result).toEqual({ weeks: [], title: null });
   });
 
   test('scrapeWeeksFromTab deve mesclar resultados de múltiplos frames', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
@@ -53,8 +59,10 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result.weeks).toHaveLength(2);
     expect(result.weeks[0].name).toBe('Semana 1');
     expect(result.weeks[1].name).toBe('Semana 2');
@@ -62,6 +70,7 @@ describe('Testes de Lógica - Scraper', () => {
   });
 
   test('scrapeWeeksFromTab deve remover duplicatas baseado em URL', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
@@ -75,14 +84,17 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result.weeks).toHaveLength(2);
     expect(result.weeks[0].url).toBe('http://test.com/s1');
     expect(result.weeks[1].url).toBe('http://test.com/s2');
   });
 
-  test('scrapeWeeksFromTab deve ordenar semanas por número', async () => {
+  test('scrapeWeeksFromTab deve ordenar semanas numericamente', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
@@ -96,14 +108,17 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result.weeks[0].name).toBe('Semana 1');
     expect(result.weeks[1].name).toBe('Semana 2');
     expect(result.weeks[2].name).toBe('Semana 10');
   });
 
-  test('scrapeWeeksFromTab deve ignorar semanas sem URL', async () => {
+  test('scrapeWeeksFromTab deve ignorar semanas sem URL válida', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
@@ -117,34 +132,43 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result.weeks).toHaveLength(1);
     expect(result.weeks[0].name).toBe('Semana 1');
   });
 
-  test('scrapeWeeksFromTab deve lidar com erro no executeScript', async () => {
+  test('scrapeWeeksFromTab deve lidar com erro na execução do script', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(
       new Error('Falha na injeção')
     );
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result).toEqual({ weeks: [], title: null });
   });
 
-  test('scrapeWeeksFromTab deve lidar com result undefined', async () => {
+  test('scrapeWeeksFromTab deve lidar com resultado (result) indefinido ou nulo', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       { result: undefined },
       { result: null },
     ]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result).toEqual({ weeks: [], title: null });
   });
 
-  test('scrapeWeeksFromTab deve lidar com weeks não sendo array', async () => {
+  test('scrapeWeeksFromTab deve lidar com campo weeks não sendo um array', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
@@ -154,13 +178,16 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result.weeks).toEqual([]);
     expect(result.title).toBe('Curso Teste');
   });
 
-  test('scrapeWeeksFromTab deve usar primeiro título não-null encontrado', async () => {
+  test('scrapeWeeksFromTab deve usar o primeiro título válido (não-nulo) encontrado', async () => {
+    // Preparar (Arrange)
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
       {
         result: {
@@ -182,8 +209,10 @@ describe('Testes de Lógica - Scraper', () => {
       },
     ]);
 
+    // Agir (Act)
     const result = await ScraperService.scrapeWeeksFromTab(123);
 
+    // Verificar (Assert)
     expect(result.title).toBe('Primeiro Título Válido');
   });
 });

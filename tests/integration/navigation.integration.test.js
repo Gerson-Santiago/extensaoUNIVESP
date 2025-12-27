@@ -5,7 +5,7 @@ import { HomeView } from '../../features/home/ui/HomeView.js';
 import { CoursesView } from '../../features/courses/views/CoursesView/index.js';
 import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 
-describe('Integration: Navigation Flow', () => {
+describe('Integração: Fluxo de Navegação', () => {
   let container;
   let layout;
 
@@ -22,8 +22,8 @@ describe('Integration: Navigation Flow', () => {
     // FeedbackManager in SettingsView creates DOM elements, which is fine in jsdom
   });
 
-  test('should navigate between tabs using TopNav', () => {
-    // 1. Setup Views & Layout
+  test('deve navegar entre abas usando o TopNav', () => {
+    // Preparar (Arrange): Configura as Views e o Layout principal
     const homeView = new HomeView({ onAddCurrentInfo: jest.fn() });
     const coursesView = new CoursesView({ onOpenCourse: jest.fn(), onViewDetails: jest.fn() });
     const settingsView = new SettingsView({ onNavigate: jest.fn() });
@@ -66,7 +66,8 @@ describe('Integration: Navigation Flow', () => {
     expect(settingsBtn.classList.contains('active')).toBe(true);
   });
 
-  test('should handle programmatic navigation', () => {
+  test('deve lidar com navegação programática', () => {
+    // Preparar (Arrange)
     const homeView = new HomeView({});
     const coursesView = new CoursesView({});
 
@@ -78,33 +79,14 @@ describe('Integration: Navigation Flow', () => {
     layout = new MainLayout(views);
     layout.init();
 
-    // Initial
+    // Agir (Act) - Verificar estado inicial e navegar programaticamente
     expect(
       document.getElementById('main-content').querySelector('.view-home-dashboard')
     ).toBeTruthy();
 
-    // Programmatic
     layout.navigateTo('courses');
 
+    // Verificar (Assert)
     expect(document.getElementById('main-content').querySelector('.view-courses')).toBeTruthy();
-
-    // TopNav updates via setActive inside layout if wired?
-
-    // Wait, MainLayout.navigateTo sets currentViewId and calls view.render
-    // But TopNav state is separate class instance property 'topNav'.
-    // Does MainLayout.navigateTo update topNav active state?
-    // Checking MainLayout.js logic...
-    // No, construction: this.topNav = new TopNav((viewId) => this.navigateTo(viewId));
-    // TopNav.onclick -> calling this.setActive(tabId) THEN this.onNavigate(tabId)
-    // So clicking updates UI.
-    // But calling layout.navigateTo directly DOES NOT update TopNav active state unless logic is added.
-    // Let's verify this behavior (or lack thereof) which mimics current simple implementation.
-
-    // Actually, SettingsView's onNavigate callback in sidepanel.js does:
-    // layout.topNav.setActive(viewId);
-    // layout.navigateTo(viewId);
-
-    // So the Integration test should probably replicate that wiring or just test `layout.navigateTo` effects on content.
-    // We will just test content switch here.
   });
 });

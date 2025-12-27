@@ -5,10 +5,10 @@
 
 import { QuickLinksScraper } from '../../../services/QuickLinksScraper.js';
 
-describe('QuickLinksScraper - Extraction', () => {
+describe('QuickLinksScraper - Extração', () => {
   describe('extractFromModal', () => {
-    it('should extract items from quick links modal DOM', () => {
-      // Setup DOM
+    it('deve extrair itens do DOM do modal de links rápidos corretamente', () => {
+      // Preparar (Arrange) - Mock DOM
       document.body.innerHTML = `
         <ul>
           <li class="quick_links_header_h3">
@@ -29,45 +29,53 @@ describe('QuickLinksScraper - Extraction', () => {
         </ul>
       `;
 
+      // Agir (Act)
       const items = QuickLinksScraper.extractFromModal();
 
+      // Verificar (Assert)
       expect(items).toHaveLength(3);
       expect(items[0].name).toBe('Videoaula 1 - Inglês sem mistério');
       expect(items[1].name).toBe('Semana 1 - Quiz da Videoaula 1');
       expect(items[2].name).toBe('Texto-base - How technology has revolutionized');
     });
 
-    it('should handle empty modal gracefully', () => {
+    it('deve lidar graciosamente com modal vazio', () => {
+      // Preparar (Arrange)
       document.body.innerHTML = '<ul></ul>';
 
+      // Agir (Act)
       const items = QuickLinksScraper.extractFromModal();
 
+      // Verificar (Assert)
       expect(items).toEqual([]);
     });
 
-    it('should clean whitespace from item names', () => {
+    it('deve limpar espaços em branco dos nomes dos itens', () => {
+      // Preparar (Arrange)
       document.body.innerHTML = `
         <ul>
           <li class="quick_links_header_h3">
             <a href="#">
               
               
-                 Videoaula 1   - Inglês    sem mistério
+                  Videoaula 1   - Inglês    sem mistério
               
             </a>
           </li>
         </ul>
       `;
 
+      // Agir (Act)
       const items = QuickLinksScraper.extractFromModal();
 
+      // Verificar (Assert)
       expect(items).toHaveLength(1);
       expect(items[0].name).toBe('Videoaula 1 - Inglês sem mistério');
-      // Verifica que não tem espaços duplos ou quebras de linha
-      expect(items[0].name).not.toMatch(/\s{2,}/);
+      expect(items[0].name).not.toMatch(/\s{2,}/); // Garante ausência de espaços duplos
     });
 
-    it('should extract ID from onclick attribute', () => {
+    it('deve extrair o ID do atributo onclick', () => {
+      // Preparar (Arrange)
       document.body.innerHTML = `
         <ul>
           <li class="quick_links_header_h3">
@@ -78,13 +86,16 @@ describe('QuickLinksScraper - Extraction', () => {
         </ul>
       `;
 
+      // Agir (Act)
       const items = QuickLinksScraper.extractFromModal();
 
+      // Verificar (Assert)
       expect(items).toHaveLength(1);
-      expect(items[0].id).toBe('anonymous_element_9'); // Extrai 2º parâmetro (elementId), não 1º (frameId)
+      expect(items[0].id).toBe('anonymous_element_9'); // Extrai o 2º parâmetro (elementId)
     });
 
-    it('should handle links without onclick gracefully', () => {
+    it('deve lidar graciosamente com links sem onclick', () => {
+      // Preparar (Arrange)
       document.body.innerHTML = `
         <ul>
           <li class="quick_links_header_h3">
@@ -93,14 +104,17 @@ describe('QuickLinksScraper - Extraction', () => {
         </ul>
       `;
 
+      // Agir (Act)
       const items = QuickLinksScraper.extractFromModal();
 
+      // Verificar (Assert)
       expect(items).toHaveLength(1);
       expect(items[0].name).toBe('Atividade sem onclick');
       expect(items[0].id).toBeNull();
     });
 
-    it('should set default type as document', () => {
+    it('deve definir o tipo padrão como "document"', () => {
+      // Preparar (Arrange)
       document.body.innerHTML = `
         <ul>
           <li class="quick_links_header_h3">
@@ -109,8 +123,10 @@ describe('QuickLinksScraper - Extraction', () => {
         </ul>
       `;
 
+      // Agir (Act)
       const items = QuickLinksScraper.extractFromModal();
 
+      // Verificar (Assert)
       expect(items[0].type).toBe('document');
     });
   });
