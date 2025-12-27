@@ -10,7 +10,6 @@
 import { categorizeTask } from '../../logic/TaskCategorizer.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 import { NavigationService } from '../../../../shared/services/NavigationService.js';
-import { ContextualChips } from '../../../../shared/ui/ContextualChips.js';
 import { HistoryService } from '../../../../shared/services/HistoryService.js';
 import { SkeletonManager } from './SkeletonManager.js';
 import { ClearHandler } from './handlers/ClearHandler.js';
@@ -124,37 +123,6 @@ export class DetailsActivitiesWeekView {
   }
 
   /**
-   * Navega para uma semana selecionada via chip
-   * @param {Object} item - Item do histórico { id, label, url }
-   */
-  async navigateToWeek(item) {
-    if (!item.url) return;
-
-    try {
-      // Abrir/focar aba da semana no navegador
-      const { Tabs } = await import('../../../../shared/utils/Tabs.js');
-      await Tabs.openOrSwitchTo(item.url);
-
-      // TODO: Atualizar view da extensão para mostrar essa semana
-      // (Requer refatoração do fluxo de navegação - fora do escopo atual)
-      console.warn('[DetailsActivitiesWeekView] Navegando para:', item.label);
-    } catch (error) {
-      console.error('[DetailsActivitiesWeekView] Erro ao navegar:', error);
-    }
-  }
-
-  /**
-   * Load chips settings from storage
-   * @returns {Promise<{enabled: boolean, maxItems: number}>}
-   */
-  async loadChipsSettings() {
-    const result = await chrome.storage.local.get('chips_settings');
-    return /** @type {{enabled: boolean, maxItems: number}} */ (
-      result.chips_settings || { enabled: true, maxItems: 3 }
-    );
-  }
-
-  /**
    * Atualiza lista de atividades re-executando scraping
    * @param {HTMLButtonElement} btn - Botão de refresh (para loading state)
    */
@@ -184,37 +152,16 @@ export class DetailsActivitiesWeekView {
    * Renderiza lista de atividades (ordem DOM original)
    */
   renderActivities() {
-    try {
-      const container = document.getElementById('activitiesContainer');
-      if (!container) {
-        console.error('[DetailsActivitiesWeekView] Container activitiesContainer não encontrado!');
-        return;
-      }
+    const container = document.getElementById('activitiesContainer');
+    if (!container) return;
 
-      // Limpar container antes de renderizar (evita duplicação no refresh)
-      container.innerHTML = '';
-
-      if (!this.week?.items || this.week.items.length === 0) {
-        container.innerHTML = '<p style="color:#999;">Nenhuma atividade encontrada.</p>';
-        return;
-      }
-
-      // Lista na ordem exata do DOM
-      const list = document.createElement('ul');
-      list.className = 'activities-list';
-
-      this.week.items.forEach((item, index) => {
-        const categorized = categorizeTask(item);
-        const li = this.itemFactory.createActivityItem(categorized, index + 1);
-        list.appendChild(li);
-      });
-
-      container.appendChild(list);
-    } catch (error) {
-      console.error('[DetailsActivitiesWeekView] Erro ao renderizar atividades:', error);
-      const toaster = new Toaster();
-      toaster.show('Erro ao carregar atividades.', 'error');
+    // Inicializar renderer se necessário
+    if (!this.activityRenderer) {
+      this.activityRenderer = new ActivityRenderer(container, this.itemFactory);
     }
+
+    // Delegar renderização ao ActivityRenderer
+    this.activityRenderer.renderActivities(this.week?.items || []);
   }
 
   /**
