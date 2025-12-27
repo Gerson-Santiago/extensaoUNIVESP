@@ -3,7 +3,7 @@
  */
 import { CourseWeeksView } from '../../../views/CourseWeeksView/index.js';
 
-describe('CourseWeeksView - Progress Calculation', () => {
+describe('CourseWeeksView - Cálculo de Progresso', () => {
   let view;
   let mockCallbacks;
 
@@ -17,53 +17,85 @@ describe('CourseWeeksView - Progress Calculation', () => {
   });
 
   describe('calculateProgress', () => {
-    it('should return 0% for empty items', () => {
-      const progress = view.calculateProgress([]);
-      expect(progress).toBe(0);
+    it('deve retornar 0% para lista de itens vazia', () => {
+      // Arrange
+      const itens = [];
+
+      // Act
+      const progresso = view.calculateProgress(itens);
+
+      // Assert
+      expect(progresso).toBe(0);
     });
 
-    it('should return 100% when all items are DONE', () => {
-      const items = [
+    it('deve retornar 100% quando todos os itens estão CONCLUÍDOS', () => {
+      // Arrange
+      const itens = [
         { name: 'T1', status: 'DONE' },
         { name: 'T2', status: 'DONE' },
       ];
-      const progress = view.calculateProgress(items);
-      expect(progress).toBe(100);
+
+      // Act
+      const progresso = view.calculateProgress(itens);
+
+      // Assert
+      expect(progresso).toBe(100);
     });
 
-    it('should return 0% when all items are TODO', () => {
-      const items = [
+    it('deve retornar 0% quando todos os itens estão A FAZER', () => {
+      // Arrange
+      const itens = [
         { name: 'T1', status: 'TODO' },
         { name: 'T2', status: 'TODO' },
       ];
-      const progress = view.calculateProgress(items);
-      expect(progress).toBe(0);
+
+      // Act
+      const progresso = view.calculateProgress(itens);
+
+      // Assert
+      expect(progresso).toBe(0);
     });
 
-    it('should handle items without status (default to TODO)', () => {
-      const items = [
+    it('deve lidar com itens sem status (considerar A FAZER por padrão)', () => {
+      // Arrange
+      const itens = [
         { name: 'T1', status: 'DONE' },
-        { name: 'T2' }, // no status
+        { name: 'T2' }, // sem status
       ];
-      const progress = view.calculateProgress(items);
-      expect(progress).toBe(50);
+
+      // Act
+      const progresso = view.calculateProgress(itens);
+
+      // Assert
+      expect(progresso).toBe(50);
     });
   });
 
   describe('renderStatusIcons', () => {
-    it('should render correct icons for each status', () => {
-      const items = [
+    it('deve renderizar os ícones corretos para cada status', () => {
+      // Arrange
+      const itens = [
         { name: 'T1', status: 'DONE' },
         { name: 'T2', status: 'TODO' },
-        { name: 'T3' }, // no status = TODO
+        { name: 'T3' }, // sem status = TODO
       ];
-      const icons = view.renderStatusIcons(items);
-      expect(icons).toBe('✅🔵🔵');
+
+      // Act
+      const icones = view.renderStatusIcons(itens);
+
+      // Assert
+      expect(icones).toBe('✅🔵🔵');
     });
 
-    it('should return empty string for empty items', () => {
-      const icons = view.renderStatusIcons([]);
-      expect(icons).toBe('');
+    it('deve retornar string vazia para lista de itens vazia', () => {
+      // Arrange
+      const itens = [];
+
+      // Act
+      const icones = view.renderStatusIcons(itens);
+
+      // Assert
+      expect(icones).toBe('');
     });
   });
 });
