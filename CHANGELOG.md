@@ -15,14 +15,28 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - **Acessibilidade**: Layout semântico e suporte a teclado.
 - **HistoryService**: Sistema LRU (Least Recently Used) por matéria.
 - **Integração**: `DetailsActivitiesWeekView` rastreia navegação automaticamente.
-- **CSS**: Estilos completos (pill shape, animações, responsivo).
+- **CSS Grid**: Layout robusto para header, garantindo visibilidade dos chips.
 - **Configurações**: Painel em Settings para ativar/desativar e ajustar limite (3-10 chips).
 
+### ♻️ Refatoração (DetailsActivitiesWeekView)
+- **Modularização Completa**: Componente monolítico (368 linhas) dividido em 6 módulos:
+  - `SkeletonManager.js`: Gerenciamento de loading state.
+  - `ClearHandler.js`: Lógica de limpeza de cache segura.
+  - `RefreshHandler.js`: Lógica de atualização de conteúdo.
+  - `ActivityItemFactory.js`: Criação de elementos DOM.
+  - `ActivityRenderer.js`: Renderização de listas com delegação parcial.
+  - `ChipsManager.js`: Gerenciamento isolado dos chips.
+- **Index.js**: Reduzido para ~200 linhas (Orquestrador Puro).
+- **DRY**: Removido código duplicado de navegação e settings.
+
 ### 🎨 UX Improvements
-- **DetailsActivitiesWeekView**: Header simplificado (remove textos desnecessários, destaca nome da matéria).
+- **Layout**: Header convertido para CSS Grid (2 rows, 3 cols) para melhor disposição dos elementos.
+- **Feedback**: Mensagens claras ao limpar cache ou aguardar carregamento.
 
 ### 🐛 Bugfixes
 - **Tabs.openOrSwitchTo**: Corrige navegação entre semanas (agora abre novas abas em vez de reutilizar).
+- **Chips Visibility**: Identificado e corrigido bug onde chips renderizavam mas não apareciam (CSS Display issue).
+- **ClearCache**: Corrigido erro `not a function` ao implementar método estático no Service.
 
 ---
 
