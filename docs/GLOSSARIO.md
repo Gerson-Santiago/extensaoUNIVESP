@@ -37,6 +37,11 @@ Metodologia que divide o sistema em fatias (Features) e segmentos técnicos (Seg
 ### Screaming Architecture
 Padrão arquitetural onde a estrutura de diretórios comunica a intenção de negócio do sistema. 
 
+### C
+- **Chips de Navegação**: Componente de UI (`ContextualChips`) que permite navegação rápida entre semanas dentro da view de atividades, mantendo contexto e persistência.
+- **Content Script**: Script que roda no contexto da página web (AVA).
+- **CourseRepository**: Camada de acesso a dados para cursos (Storage).
+
 ### Isolated World
 Contexto de execução dos Content Scripts no Chrome, onde compartilham o DOM da página hospedeira mas possuem um escopo JavaScript isolado (sem acesso às variáveis window da página).
 

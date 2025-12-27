@@ -42,6 +42,10 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - **Navegação de Chips**: Implementado Hook `onNavigateToWeek` para sincronizar View e Browser.
 - **Auto-Save**: Dados de scraping agora são persistidos automaticamente após carregamento (`CourseRepository.update`).
 
+### 💅 Interface (UI/UX)
+- **Mini Chips**: Adicionado indicador de progresso (ex: `5/10`) na listagem de semanas (`WeekItem`).
+- **Feedback**: `WeekItem` agora exibe status visual imediato de tarefas concluídas.
+
 ---
 
 ## [2.8.8] - 2025-12-26

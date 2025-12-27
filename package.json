@@ -8,6 +8,7 @@
     "lint": "eslint . --max-warnings=0",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write .",
+    "format:clean": "prettier --write . --list-different",
     "format:check": "prettier --check .",
     "type-check": "tsc -p jsconfig.json --noEmit",
     "test": "jest",

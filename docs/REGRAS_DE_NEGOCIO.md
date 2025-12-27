@@ -30,6 +30,11 @@ O sistema deve prevenir a duplicação de abas para o mesmo recurso.
 - **Chave Primária**: O ID de Curso extraído da URL do AVA é a chave única.
 - **Conflito**: Importar um curso já existente deve resultar em *Upsert* (Atualização), preservando metadados locais (ex: ordem, tags customizadas).
 
+### 4. Persistência de Dados
+- **RN07 - Auto-Save**: Todas as atividades extraídas (via DOM ou QuickLinks) devem ser persistidas automaticamente no `chrome.storage.local` imediatamente após o sucesso da operação.
+- **RN08 - Cache de Sessão**: Ao navegar entre semanas (Chips), a extensão deve priorizar dados em memória/storage antes de iniciar novo scraping.
+- **RN09 - Sincronia de Navegação**: A seleção de uma semana via Chips na extensão deve forçar a abertura/foco da aba correspondente no navegador e vice-versa.
+
 ### 3.2 Escopo de Dados
 - **Local**: `chrome.storage.local` para dados volumosos (cache de semanas).
 - **Sync**: `chrome.storage.sync` para configurações críticas de usuário (preferências).

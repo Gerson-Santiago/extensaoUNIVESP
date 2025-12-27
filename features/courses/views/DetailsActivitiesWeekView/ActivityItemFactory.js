@@ -37,11 +37,11 @@ export class ActivityItemFactory {
     // Evento de scroll
     const scrollBtn = li.querySelector('.btn-scroll');
     if (scrollBtn) {
-      scrollBtn.onclick = () => {
+      scrollBtn.addEventListener('click', () => {
         if (this.onItemClick) {
           this.onItemClick(task.id, task.original.url);
         }
-      };
+      });
     }
 
     return li;

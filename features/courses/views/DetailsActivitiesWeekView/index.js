@@ -7,16 +7,16 @@
  * Funcionalidade: Lista clicável que faz scroll até a atividade no AVA
  */
 
-import { categorizeTask } from '../../logic/TaskCategorizer.js';
-import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 import { NavigationService } from '../../../../shared/services/NavigationService.js';
 import { HistoryService } from '../../../../shared/services/HistoryService.js';
 import { SkeletonManager } from './SkeletonManager.js';
-import { ClearHandler } from './handlers/ClearHandler.js';
 import { RefreshHandler } from './handlers/RefreshHandler.js';
-import { ActivityItemFactory } from './ActivityItemFactory.js';
+import { ClearHandler } from './handlers/ClearHandler.js';
 import { ActivityRenderer } from './ActivityRenderer.js';
 import { ChipsManager } from './ChipsManager.js';
+import { ActivityItemFactory } from './ActivityItemFactory.js';
+import { ViewTemplate } from './ViewTemplate.js';
+import { HeaderManager } from './HeaderManager.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -53,22 +53,7 @@ export class DetailsActivitiesWeekView {
 
     const div = document.createElement('div');
     div.className = 'view-details-activities';
-    div.innerHTML = `
-      <div class="details-header">
-        <button id="backBtn" class="btn-back">← Voltar</button>
-        <div class="details-header-info">
-          <div class="details-breadcrumb"><strong>${this.week.courseName || 'Matéria'}</strong></div>
-          <h2 class="details-title">${this.week.name}</h2>
-        </div>
-        <div class="details-header-actions">
-          <button id="clearBtn" class="btn-clear" title="Limpar cache e voltar">🗑️</button>
-          <button id="refreshBtn" class="btn-refresh" title="Atualizar lista">↻</button>
-        </div>
-        <!-- Contextual Navigation Chips (inside header, bottom) -->
-        <div id="chipsContainer" class="chips-container"></div>
-      </div>
-      <div id="activitiesContainer" class="activities-container"></div>
-    `;
+    div.innerHTML = ViewTemplate.render(this.week.courseName, this.week.name);
     return div;
   }
 
@@ -76,20 +61,13 @@ export class DetailsActivitiesWeekView {
    * Hook pós-renderização
    */
   afterRender() {
-    const backBtn = document.getElementById('backBtn');
-    if (backBtn) {
-      backBtn.onclick = () => this.callbacks.onBack();
-    }
-
-    const refreshBtn = /** @type {HTMLButtonElement} */ (document.getElementById('refreshBtn'));
-    if (refreshBtn) {
-      refreshBtn.onclick = () => this.handleRefresh(refreshBtn);
-    }
-
-    const clearBtn = /** @type {HTMLButtonElement} */ (document.getElementById('clearBtn'));
-    if (clearBtn) {
-      clearBtn.onclick = () => this.handleClear();
-    }
+    // 🎯 Header Manager: Configura botões (Voltar, Refresh, Clear)
+    const headerManager = new HeaderManager({
+      onBack: () => this.callbacks.onBack(),
+      onRefresh: (e) => this.handleRefresh(e.target),
+      onClear: () => this.handleClear(),
+    });
+    headerManager.setupListeners();
 
     // 🎯 Contextual Chips: Renderizar navegação recente
     this.renderChips();
@@ -185,20 +163,5 @@ export class DetailsActivitiesWeekView {
       // Fallback final
       window.open(fallbackUrl, '_blank');
     }
-  }
-
-  /**
-   * Retorna ícone para o tipo
-   */
-  getTypeIcon(type) {
-    const icons = {
-      VIDEOAULA: '🎬',
-      QUIZ: '📝',
-      VIDEO_BASE: '📹',
-      TEXTO_BASE: '📄',
-      APROFUNDANDO: '📚',
-      OUTROS: '📎',
-    };
-    return icons[type] || '📄';
   }
 }

@@ -62,21 +62,6 @@ describe('DetailsActivitiesWeekView', () => {
     });
   });
 
-  describe('getTypeIcon', () => {
-    it('deve retornar ícone correto para cada tipo', () => {
-      const icons = {
-        VIDEOAULA: expect.stringMatching(/./),
-        QUIZ: expect.stringMatching(/./),
-        TEXTO_BASE: expect.stringMatching(/./),
-        OUTROS: expect.stringMatching(/./),
-      };
-
-      Object.keys(icons).forEach((type) => {
-        expect(view.getTypeIcon(type)).toBeTruthy();
-        expect(typeof view.getTypeIcon(type)).toBe('string');
-      });
-    });
-  });
   describe('scrollToActivity', () => {
     it('deve chamar NavigationService.openActivity com URL da semana', async () => {
       const week = {

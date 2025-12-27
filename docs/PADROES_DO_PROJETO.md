@@ -84,7 +84,14 @@ A estrutura do projeto deve refletir os domínios de negócio.
 
 ---
 
-## 5. Scripts de Automação
+## 5. Padrões de Persistência (Storage)
+- **Repository Pattern**: O acesso a dados deve ser encapsulado em Repositories (ex: `CourseRepository`).
+- **Auto-Save**: Operações de scraping devem persistir dados imediatamente.
+- **Cache-First**: A UI deve sempre tentar renderizar dados do Storage antes de solicitar novo network request.
+
+---
+
+## 6. Scripts de Automação
 
 O projeto disponibiliza scripts organizados por categoria para garantir qualidade, segurança e produtividade.
 
