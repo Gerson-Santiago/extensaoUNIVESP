@@ -17,7 +17,7 @@ import { Tabs } from '../../../../../shared/utils/Tabs.js';
 jest.mock('../../../services/WeekContentScraper.js');
 jest.mock('../../../../../shared/utils/Tabs.js');
 
-describe('WeekActivitiesService - Regression: Bug de Sincronização de Navegação', () => {
+describe('WeekActivitiesService - Regressão: Bug de Sincronização de Navegação', () => {
   const semana2Url =
     'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp' +
     '?course_id=_111_1&content_id=_222_1';
@@ -37,6 +37,7 @@ describe('WeekActivitiesService - Regression: Bug de Sincronização de Navegaç
   ];
 
   beforeEach(() => {
+    // Arrange (Setup comum)
     jest.clearAllMocks();
     semana3.items = [];
     delete semana3.method;
@@ -49,7 +50,8 @@ describe('WeekActivitiesService - Regression: Bug de Sincronização de Navegaç
 
   describe('Cenário: Semana 2 aberta, usuário clica em Ver Atividades da Semana 3', () => {
     it('deve abrir/navegar para Semana 3 ANTES de fazer scraping', async () => {
-      // Arrange: Simula que apenas Semana 2 está aberta
+      // Arrange
+      // Simula que apenas Semana 2 está aberta
       /** @type {jest.Mock} */ (chrome.tabs.query).mockResolvedValue([
         {
           id: 1,
@@ -67,24 +69,27 @@ describe('WeekActivitiesService - Regression: Bug de Sincronização de Navegaç
         windowId: 1,
       });
 
-      // Act: Usuário clica em "Ver Atividades" da Semana 3
+      // Act
+      // Usuário clica em "Ver Atividades" da Semana 3
       const result = await WeekActivitiesService.getActivities(semana3, 'DOM');
 
-      // Assert 1: Deve abrir aba correta ANTES do scraping
+      // Assert
+      // 1. Deve abrir aba correta ANTES do scraping
       expect(Tabs.openOrSwitchTo).toHaveBeenCalledWith(semana3Url);
       expect(Tabs.openOrSwitchTo).toHaveBeenCalled();
 
-      // Assert 2: Scraper deve ser chamado com URL da Semana 3
+      // 2. Scraper deve ser chamado com URL da Semana 3
       expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalledWith(semana3Url);
 
-      // Assert 3: Resultado deve conter dados da Semana 3
+      // 3. Resultado deve conter dados da Semana 3
       expect(result).toEqual(mockItemsSemana3);
       expect(semana3.items).toEqual(mockItemsSemana3);
       expect(semana3.method).toBe('DOM');
     });
 
     it('deve aguardar carregamento da aba se status for "loading"', async () => {
-      // Arrange: Tabs.openOrSwitchTo retorna aba em carregamento
+      // Arrange
+      // Tabs.openOrSwitchTo retorna aba em carregamento
       /** @type {jest.Mock} */ (Tabs.openOrSwitchTo).mockResolvedValue({
         id: 2,
         url: semana3Url,
@@ -107,14 +112,15 @@ describe('WeekActivitiesService - Regression: Bug de Sincronização de Navegaç
       // Act
       await WeekActivitiesService.getActivities(semana3, 'DOM');
 
-      // Assert: Deve ter aguardado carregamento
+      // Assert
       expect(mockAddListener).toHaveBeenCalled();
       expect(mockRemoveListener).toHaveBeenCalled();
       expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalled();
     });
 
     it('deve lançar erro se falhar ao abrir aba', async () => {
-      // Arrange: Tabs.openOrSwitchTo retorna null (falha)
+      // Arrange
+      // Tabs.openOrSwitchTo retorna null (falha)
       /** @type {jest.Mock} */ (Tabs.openOrSwitchTo).mockResolvedValue(null);
 
       // Suprimir console.error no teste
@@ -157,14 +163,16 @@ describe('WeekActivitiesService - Regression: Bug de Sincronização de Navegaç
 
   describe('Cenário: Cache já existe (não deve reabrir aba)', () => {
     it('deve usar cache se items já existem e método é o mesmo (sem reabrir aba)', async () => {
-      // Arrange: Semana 3 já tem cache
+      // Arrange
+      // Semana 3 já tem cache
       semana3.items = mockItemsSemana3;
       semana3.method = 'DOM';
 
       // Act
       const result = await WeekActivitiesService.getActivities(semana3, 'DOM');
 
-      // Assert: NÃO deve abrir aba nem fazer scraping
+      // Assert
+      // NÃO deve abrir aba nem fazer scraping
       expect(Tabs.openOrSwitchTo).not.toHaveBeenCalled();
       expect(WeekContentScraper.scrapeWeekContent).not.toHaveBeenCalled();
       expect(result).toBe(semana3.items); // Mesma referência
