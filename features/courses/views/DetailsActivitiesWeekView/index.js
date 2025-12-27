@@ -42,27 +42,22 @@ export class DetailsActivitiesWeekView {
       return document.createElement('div');
     }
 
-    const method = this.week.method || 'DOM';
-    const methodLabel = method === 'QuickLinks' ? 'Links Rápidos' : 'Scraping DOM';
-
     const div = document.createElement('div');
     div.className = 'view-details-activities';
     div.innerHTML = `
       <div class="details-header">
         <button id="backBtn" class="btn-back">← Voltar</button>
         <div class="details-header-info">
-          <div class="details-breadcrumb">${this.week.courseName || 'Matéria'}</div>
-          <h2 class="details-title">${this.week.name} - Atividades</h2>
-          <p class="details-subtitle">Clique em uma atividade para rolar até ela no AVA</p>
-          <p class="method-indicator">Método: ${methodLabel}</p>
+          <div class="details-breadcrumb"><strong>${this.week.courseName || 'Matéria'}</strong></div>
+          <h2 class="details-title">${this.week.name}</h2>
         </div>
         <div class="details-header-actions">
-          <button id="clearBtn" class="btn-clear" title="Limpar cache e voltar">🗑️ Limpar</button>
+          <button id="clearBtn" class="btn-clear" title="Limpar cache e voltar">🗑️</button>
           <button id="refreshBtn" class="btn-refresh" title="Atualizar lista">↻</button>
         </div>
       </div>
-      <!-- Contextual Navigation Chips -->
-      <div id="chipsContainer"></div>
+      <!-- Contextual Navigation Chips (inside header) -->
+      <div id="chipsContainer" class="chips-container"></div>
       <div id="activitiesContainer" class="activities-container"></div>
     `;
     return div;
@@ -181,9 +176,8 @@ export class DetailsActivitiesWeekView {
    */
   async loadChipsSettings() {
     const result = await chrome.storage.local.get('chips_settings');
-    return (
-      result.chips_settings ||
-      /** @type {{enabled: boolean, maxItems: number}} */ ({ enabled: true, maxItems: 3 })
+    return /** @type {{enabled: boolean, maxItems: number}} */ (
+      result.chips_settings || { enabled: true, maxItems: 3 }
     );
   }
 

@@ -18,6 +18,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - **CSS**: Estilos completos (pill shape, animações, responsivo).
 - **Configurações**: Painel em Settings para ativar/desativar e ajustar limite (3-10 chips).
 
+### 🎨 UX Improvements
+- **DetailsActivitiesWeekView**: Header simplificado (remove textos desnecessários, destaca nome da matéria).
+
 ---
 
 ## [2.8.8] - 2025-12-26

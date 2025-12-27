@@ -175,9 +175,8 @@ export class SettingsView {
    */
   async loadChipsSettings() {
     const result = await chrome.storage.local.get('chips_settings');
-    return (
-      result.chips_settings ||
-      /** @type {{enabled: boolean, maxItems: number}} */ ({ enabled: true, maxItems: 3 })
+    return /** @type {{enabled: boolean, maxItems: number}} */ (
+      result.chips_settings || { enabled: true, maxItems: 3 }
     );
   }
 
