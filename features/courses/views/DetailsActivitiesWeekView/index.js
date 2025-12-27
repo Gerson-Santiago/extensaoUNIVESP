@@ -55,9 +55,9 @@ export class DetailsActivitiesWeekView {
           <button id="clearBtn" class="btn-clear" title="Limpar cache e voltar">🗑️</button>
           <button id="refreshBtn" class="btn-refresh" title="Atualizar lista">↻</button>
         </div>
+        <!-- Contextual Navigation Chips (inside header, bottom) -->
+        <div id="chipsContainer" class="chips-container"></div>
       </div>
-      <!-- Contextual Navigation Chips (inside header) -->
-      <div id="chipsContainer" class="chips-container"></div>
       <div id="activitiesContainer" class="activities-container"></div>
     `;
     return div;
