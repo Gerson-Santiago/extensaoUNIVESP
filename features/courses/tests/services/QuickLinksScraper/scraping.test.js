@@ -5,11 +5,11 @@
 
 import { QuickLinksScraper } from '../../../services/QuickLinksScraper.js';
 
-describe('QuickLinksScraper - Scraping', () => {
+describe('QuickLinksScraper - Scraping (Coleta)', () => {
   let mockChrome;
 
   beforeEach(() => {
-    // Mock global chrome API
+    // Preparar (Arrange) - Mock global chrome API
     mockChrome = {
       tabs: {
         query: jest.fn(),
@@ -29,7 +29,8 @@ describe('QuickLinksScraper - Scraping', () => {
   });
 
   describe('scrapeFromQuickLinks', () => {
-    it('should find AVA tab and execute scraping', async () => {
+    it('deve encontrar a aba do AVA e executar a coleta (scraping)', async () => {
+      // Preparar (Arrange)
       const mockTab = {
         id: 123,
         url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763491_1',
@@ -45,10 +46,12 @@ describe('QuickLinksScraper - Scraping', () => {
         },
       ]);
 
+      // Agir (Act)
       const items = await QuickLinksScraper.scrapeFromQuickLinks(
         'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763491_1'
       );
 
+      // Verificar (Assert)
       expect(mockChrome.tabs.query).toHaveBeenCalledWith({
         active: true,
         currentWindow: true,
@@ -57,7 +60,8 @@ describe('QuickLinksScraper - Scraping', () => {
       expect(items[0].name).toBe('Videoaula 1');
     });
 
-    it('should fallback to background tab query if active tab is not AVA', async () => {
+    it('deve recorrer (fallback) à busca de abas em segundo plano se a aba ativa não for do AVA', async () => {
+      // Preparar (Arrange)
       const mockActiveTab = { id: 999, url: 'https://google.com' };
       const mockAvaTab = { id: 123, url: 'https://ava.univesp.br/webapps/...' };
 
@@ -70,8 +74,10 @@ describe('QuickLinksScraper - Scraping', () => {
         { result: [{ name: 'Fallback Item', id: '1', type: 'document' }] },
       ]);
 
+      // Agir (Act)
       const items = await QuickLinksScraper.scrapeFromQuickLinks('https://ava.univesp.br/...');
 
+      // Verificar (Assert)
       // Deve ter tentado a ativa primeiro
       expect(mockChrome.tabs.query).toHaveBeenNthCalledWith(1, {
         active: true,
@@ -86,21 +92,26 @@ describe('QuickLinksScraper - Scraping', () => {
       expect(items[0].name).toBe('Fallback Item');
     });
 
-    it('should throw error if no AVA tab found', async () => {
+    it('deve lançar erro se nenhuma aba do AVA for encontrada', async () => {
+      // Preparar (Arrange)
       mockChrome.tabs.query.mockResolvedValue([]);
 
+      // Agir & Verificar (Act & Assert)
       await expect(QuickLinksScraper.scrapeFromQuickLinks('https://example.com')).rejects.toThrow(
         'Nenhuma aba do AVA encontrada'
       );
     });
 
-    it('should return empty array if modal returns no items', async () => {
+    it('deve retornar array vazio se o modal não retornar itens', async () => {
+      // Preparar (Arrange)
       const mockTab = { id: 123, url: 'https://ava.univesp.br/' };
       mockChrome.tabs.query.mockResolvedValue([mockTab]);
       mockChrome.scripting.executeScript.mockResolvedValue([{ result: [] }]);
 
+      // Agir (Act)
       const items = await QuickLinksScraper.scrapeFromQuickLinks('https://ava.univesp.br/');
 
+      // Verificar (Assert)
       expect(items).toEqual([]);
     });
   });

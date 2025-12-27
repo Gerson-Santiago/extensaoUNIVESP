@@ -1,17 +1,17 @@
 import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 import { CourseService } from '../../features/courses/logic/CourseService.js'; // Added import
 
-describe('Integration: Scrape Course Flow', () => {
+describe('Integração: Fluxo de Coleta de Curso', () => {
   let settingsView;
   let container;
   const mockNavigate = jest.fn();
 
   beforeEach(() => {
+    // Preparar (Arrange) - Mocks e DOM
     document.body.innerHTML = '<div id="app"></div>';
     container = document.getElementById('app');
     jest.clearAllMocks();
 
-    // Mock Storage
     /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) =>
       callback({})
     );
@@ -19,7 +19,6 @@ describe('Integration: Scrape Course Flow', () => {
       callback()
     );
 
-    // Mock Tabs
     /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((query, callback) => {
       callback([
         {
@@ -30,16 +29,13 @@ describe('Integration: Scrape Course Flow', () => {
       ]);
     });
 
-    // Mock Scripting (Scraper Logic)
     chrome.scripting = /** @type {any} */ ({
       executeScript: jest.fn(),
     });
   });
 
-  test('should scrape current tab and save course', async () => {
-    // 1. Setup Mock Scraper Result
-
-    // 1. Setup Mock Scraper Result
+  test('deve coletar dados da aba atual e salvar o curso', async () => {
+    // Preparar (Arrange) - Mock da Coleta
     const mockScrapedData = {
       weeks: [
         { name: 'Semana 1', url: 'https://ava.univesp.br/s1' },
@@ -52,38 +48,35 @@ describe('Integration: Scrape Course Flow', () => {
       { result: mockScrapedData },
     ]);
 
-    // 2. Render Settings
+    // Renderizar Configurações
     settingsView = new SettingsView({ onNavigate: mockNavigate });
     container.appendChild(settingsView.render());
     settingsView.afterRender();
 
-    // Mock Sidepanel Orchestrator for Scrape
+    // Mock do Orquestrador
     const courseService = new CourseService();
     window.addEventListener('request:scrape-current-tab', () => {
-      // We replicate what sidepanel handles
       courseService.addFromCurrentTab(
         () => (document.getElementById('settingsFeedback').textContent = 'sucesso'),
         (msg) => console.error(msg)
       );
     });
 
+    // Agir (Act) - Clicar em "Adicionar Atual"
     const btnAddCurrent = document.getElementById('btnAddCurrent');
-    expect(btnAddCurrent).toBeTruthy();
-
-    // 3. Trigger Scrape
     btnAddCurrent.click();
 
-    // 4. Wait for Async Operations
-    // Click -> tabs.query -> scrapeWeeksFromTab -> executeScript -> addItem -> storage.set
+    // Aguardar Operações Assíncronas
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // 5. Verify Script Execution
+    // Verificar (Assert)
+    // 1. Script foi injetado
     expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
       target: { tabId: 123, allFrames: true },
       func: expect.any(Function),
     });
 
-    // 6. Verify Storage Save
+    // 2. Storage foi atualizado
     expect(chrome.storage.sync.set).toHaveBeenCalled();
     const setCall = /** @type {jest.Mock} */ (chrome.storage.sync.set).mock.calls[0][0];
 
@@ -93,22 +86,21 @@ describe('Integration: Scrape Course Flow', () => {
     expect(setCall.savedCourses[0].weeks).toHaveLength(2);
     expect(setCall.savedCourses[0].weeks[0].name).toBe('Semana 1');
 
-    // 7. Verify Feedback
+    // 3. Feedback visual exibido
     const feedbackEl = document.getElementById('settingsFeedback');
     expect(feedbackEl.textContent).toContain('sucesso');
   });
 
-  test('should handle scrape failure gracefully', async () => {
-    // Mock Scraper Failure
+  test('deve lidar graciosamente com falha na coleta (fallback)', async () => {
+    // Preparar (Arrange) - Falha no Script
     /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockRejectedValue(
-      new Error('Injection failed')
+      new Error('Falha na injeção')
     );
 
     settingsView = new SettingsView({ onNavigate: mockNavigate });
     container.appendChild(settingsView.render());
     settingsView.afterRender();
 
-    // Mock Sidepanel Orchestrator (Again for new instance)
     const courseService = new CourseService();
     window.addEventListener('request:scrape-current-tab', () => {
       courseService.addFromCurrentTab(
@@ -117,21 +109,17 @@ describe('Integration: Scrape Course Flow', () => {
       );
     });
 
+    // Agir (Act)
     const btnAddCurrent = document.getElementById('btnAddCurrent');
     btnAddCurrent.click();
 
     await new Promise((resolve) => setTimeout(resolve, 100));
 
-    // Should try to save anyway using tab title/url (fallback in handleAddCurrent?)
-    // Looking at handleAddCurrent:
-    // if (tab.url.startsWith('http')) { scrape... }
-    // addItem(name ...) is called AFTER await scrapeWeeksFromTab
-    // If scraper throws, scrapeWeeksFromTab returns { weeks: [], title: null } (it catches error)
-
-    // So it SHOULD still save, but with 0 weeks.
+    // Verificar (Assert)
+    // Deve salvar mesmo assim, usando título da aba e sem semanas (fallback)
     expect(chrome.storage.sync.set).toHaveBeenCalled();
     const setCall = /** @type {jest.Mock} */ (chrome.storage.sync.set).mock.calls[0][0];
-    expect(setCall.savedCourses[0].name).toBe('Matéria Real'); // Initial tab title fallback
+    expect(setCall.savedCourses[0].name).toBe('Matéria Real'); // Fallback para título da aba (com sanitize)
     expect(setCall.savedCourses[0].weeks).toEqual([]);
   });
 });

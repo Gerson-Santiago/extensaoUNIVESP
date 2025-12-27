@@ -4,13 +4,15 @@ import { ActivityProgressRepository } from '../../repository/ActivityProgressRep
 // Mock Repository
 jest.mock('../../repository/ActivityProgressRepository.js');
 
-describe('TaskProgressService', () => {
+describe('TaskProgressService (Serviço de Progresso de Tarefas)', () => {
   beforeEach(() => {
+    // Preparar (Arrange) - Limpar Mocks
     jest.clearAllMocks();
   });
 
   describe('toggleTask', () => {
-    it('should toggle task using ActivityProgressRepository', async () => {
+    it('deve alternar o status da tarefa usando ActivityProgressRepository', async () => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (ActivityProgressRepository.toggle).mockResolvedValue({
         activityId: 'course_week_task1',
         status: 'DONE',
@@ -19,13 +21,16 @@ describe('TaskProgressService', () => {
         lastUpdated: Date.now(),
       });
 
+      // Agir (Act)
       const result = await TaskProgressService.toggleTask('courseId', 'weekId', 'task1');
 
+      // Verificar (Assert)
       expect(result).toBe(true);
       expect(ActivityProgressRepository.toggle).toHaveBeenCalledWith('courseId_weekId_task1');
     });
 
-    it('should return false when toggling to TODO', async () => {
+    it('deve retornar false ao alternar para pendente (TODO)', async () => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (ActivityProgressRepository.toggle).mockResolvedValue({
         activityId: 'course_week_task2',
         status: 'TODO',
@@ -34,14 +39,17 @@ describe('TaskProgressService', () => {
         lastUpdated: Date.now(),
       });
 
+      // Agir (Act)
       const result = await TaskProgressService.toggleTask('courseId', 'weekId', 'task2');
 
+      // Verificar (Assert)
       expect(result).toBe(false);
     });
   });
 
   describe('calculateProgress', () => {
-    it('should calculate progress using repository', async () => {
+    it('deve calcular o progresso usando os dados do repositório', async () => {
+      // Preparar (Arrange)
       const mockWeek = {
         name: 'Week 1',
         items: [
@@ -54,11 +62,13 @@ describe('TaskProgressService', () => {
       /** @type {jest.Mock} */ (ActivityProgressRepository.getMany).mockResolvedValue({
         'courseId_Week 1_task1': { status: 'DONE' },
         'courseId_Week 1_task2': { status: 'TODO' },
-        // task3 não tem progresso
+        // task3 não tem registro (assumido TODO)
       });
 
+      // Agir (Act)
       const result = await TaskProgressService.calculateProgress(mockWeek, 'courseId');
 
+      // Verificar (Assert)
       expect(result).toEqual({
         completed: 1, // apenas task1
         total: 3,
@@ -66,12 +76,15 @@ describe('TaskProgressService', () => {
       });
     });
 
-    it('should handle empty weeks', async () => {
+    it('deve lidar com semanas vazias', async () => {
+      // Preparar (Arrange)
       /** @type {import('../../models/Week.js').Week} */
       const emptyWeek = { name: 'Empty Week', items: [] };
 
+      // Agir (Act)
       const result = await TaskProgressService.calculateProgress(emptyWeek, 'courseId');
 
+      // Verificar (Assert)
       expect(result).toEqual({
         completed: 0,
         total: 0,
@@ -79,7 +92,8 @@ describe('TaskProgressService', () => {
       });
     });
 
-    it('should fallback to scraped status if no repository data', async () => {
+    it('deve usar o status do scraping (fallback) se não houver dados no repositório', async () => {
+      // Preparar (Arrange)
       /** @type {import('../../models/Week.js').Week} */
       const mockWeek = {
         name: 'Week 1',
@@ -89,13 +103,14 @@ describe('TaskProgressService', () => {
         ],
       };
 
-      // Repository retorna vazio
       /** @type {jest.Mock} */ (ActivityProgressRepository.getMany).mockResolvedValue({});
 
+      // Agir (Act)
       const result = await TaskProgressService.calculateProgress(mockWeek, 'courseId');
 
+      // Verificar (Assert)
       expect(result).toEqual({
-        completed: 1, // task1 scraped como DONE
+        completed: 1, // task1 coletado como DONE
         total: 2,
         percentage: 50,
       });
@@ -103,7 +118,8 @@ describe('TaskProgressService', () => {
   });
 
   describe('isTaskCompleted', () => {
-    it('should return true when task is completed', async () => {
+    it('deve retornar true quando a tarefa estiver concluída (DONE)', async () => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (ActivityProgressRepository.get).mockResolvedValue({
         activityId: 'course_week_task1',
         status: 'DONE',
@@ -112,12 +128,15 @@ describe('TaskProgressService', () => {
         lastUpdated: Date.now(),
       });
 
+      // Agir (Act)
       const result = await TaskProgressService.isTaskCompleted('courseId', 'weekId', 'task1');
 
+      // Verificar (Assert)
       expect(result).toBe(true);
     });
 
-    it('should return false when task is not completed', async () => {
+    it('deve retornar false quando a tarefa estiver pendente (TODO)', async () => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (ActivityProgressRepository.get).mockResolvedValue({
         activityId: 'course_week_task2',
         status: 'TODO',
@@ -126,16 +145,21 @@ describe('TaskProgressService', () => {
         lastUpdated: Date.now(),
       });
 
+      // Agir (Act)
       const result = await TaskProgressService.isTaskCompleted('courseId', 'weekId', 'task2');
 
+      // Verificar (Assert)
       expect(result).toBe(false);
     });
 
-    it('should return false when no progress found', async () => {
+    it('deve retornar false quando nenhum progresso for encontrado', async () => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (ActivityProgressRepository.get).mockResolvedValue(null);
 
+      // Agir (Act)
       const result = await TaskProgressService.isTaskCompleted('courseId', 'weekId', 'task3');
 
+      // Verificar (Assert)
       expect(result).toBe(false);
     });
   });

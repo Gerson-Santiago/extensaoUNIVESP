@@ -1,7 +1,8 @@
 import { CourseRepository } from '@features/courses/data/CourseRepository.js';
 
-describe('CourseRepository - Add Operations', () => {
+describe('CourseRepository - Operações de Adição', () => {
   beforeEach(() => {
+    // Preparar (Arrange) - Limpar Mocks globais
     jest.clearAllMocks();
     jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
@@ -24,9 +25,9 @@ describe('CourseRepository - Add Operations', () => {
     weeks: [],
   };
 
-  describe('addItem()', () => {
+  describe('addItem() - Adicionar Curso Único', () => {
     beforeEach(() => {
-      // Mock Date.now() para gerar IDs previsíveis
+      // Mock Date.now() para previsibilidade
       jest.spyOn(Date, 'now').mockReturnValue(1234567890);
     });
 
@@ -34,7 +35,8 @@ describe('CourseRepository - Add Operations', () => {
       /** @type {jest.Mock} */ (Date.now).mockRestore();
     });
 
-    test('Deve adicionar curso com sucesso', (done) => {
+    test('deve adicionar um curso com sucesso', (done) => {
+      // Preparar (Arrange) - Mocks de Storage
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
         callback({ savedCourses: [] });
       });
@@ -42,7 +44,9 @@ describe('CourseRepository - Add Operations', () => {
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.add('Novo Curso', 'https://ava.univesp.br/new', [], (success, message) => {
+        // Verificar (Assert)
         expect(success).toBe(true);
         expect(message).toBe('Matéria adicionada com sucesso!');
         expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -50,31 +54,37 @@ describe('CourseRepository - Add Operations', () => {
       });
     });
 
-    test('Deve gerar ID único usando Date.now()', (done) => {
+    test('deve gerar um ID único baseado em Date.now()', (done) => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
         callback({ savedCourses: [] });
       });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        // Verificar (Assert) - dentro do callback
         const savedCourses = data.savedCourses;
         expect(savedCourses[0].id).toBe(1234567890);
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.add('Curso', 'https://test.com', [], () => {
         done();
       });
     });
 
-    test('Deve rejeitar duplicata (mesma URL)', (done) => {
+    test('deve rejeitar curso duplicado (mesma URL)', (done) => {
+      // Preparar (Arrange) - Storage possui mockCourse1
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
         callback({ savedCourses: [mockCourse1] });
       });
 
+      // Agir (Act)
       CourseRepository.add(
         'Duplicado',
-        'https://ava.univesp.br/course1',
+        'https://ava.univesp.br/course1', // URL existente
         [],
         (success, message) => {
+          // Verificar (Assert)
           expect(success).toBe(false);
           expect(message).toBe('Matéria já adicionada anteriormente.');
           expect(chrome.storage.sync.set).not.toHaveBeenCalled();
@@ -86,47 +96,56 @@ describe('CourseRepository - Add Operations', () => {
       );
     });
 
-    test('Deve incluir weeks vazio por padrão', (done) => {
+    test('deve inicializar semanas vazias por padrão', (done) => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
         callback({ savedCourses: [] });
       });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        // Verificar (Assert)
         const course = data.savedCourses[0];
         expect(course.weeks).toEqual([]);
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.add('Curso', 'https://test.com', /** @type {any} */ (undefined), () => {
         done();
       });
     });
 
-    test('Deve passar weeks customizado', (done) => {
+    test('deve aceitar semanas customizadas', (done) => {
+      // Preparar (Arrange)
       const customWeeks = [{ name: 'Semana 1', url: 'http://s1.com' }];
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
         callback({ savedCourses: [] });
       });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        // Verificar (Assert)
         const course = data.savedCourses[0];
         expect(course.weeks).toEqual(customWeeks);
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.add('Curso', 'https://test.com', customWeeks, () => {
         done();
       });
     });
 
-    test('Deve persistir termName passado via options', (done) => {
+    test('deve persistir nome do termo (semestre/bimestre) passado via options', (done) => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
         callback({ savedCourses: [] });
       });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        // Verificar (Assert)
         const course = data.savedCourses[0];
         expect(course.termName).toBe('2025/1 - 1º Bimestre');
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.add(
         'Curso Termo',
         'https://term.com',
@@ -140,8 +159,9 @@ describe('CourseRepository - Add Operations', () => {
     });
   });
 
-  describe('addItemsBatch()', () => {
-    test('Deve adicionar múltiplos cursos', (done) => {
+  describe('addItemsBatch() - Adicionar Múltiplos Cursos', () => {
+    test('deve adicionar múltiplos cursos corretamente', (done) => {
+      // Preparar (Arrange)
       const newItems = [
         { name: 'Curso A', url: 'https://a.com', weeks: [] },
         { name: 'Curso B', url: 'https://b.com', weeks: [] },
@@ -155,7 +175,9 @@ describe('CourseRepository - Add Operations', () => {
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
+        // Verificar (Assert)
         expect(addedCount).toBe(3);
         expect(ignoredCount).toBe(0);
         expect(chrome.storage.sync.set).toHaveBeenCalled();
@@ -163,7 +185,8 @@ describe('CourseRepository - Add Operations', () => {
       });
     });
 
-    test('Deve gerar IDs únicos para cada curso', (done) => {
+    test('deve gerar IDs únicos para cada curso do lote', (done) => {
+      // Preparar (Arrange)
       const newItems = [
         { name: 'Curso A', url: 'https://a.com' },
         { name: 'Curso B', url: 'https://b.com' },
@@ -173,17 +196,20 @@ describe('CourseRepository - Add Operations', () => {
         callback({ savedCourses: [] });
       });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        // Verificar (Assert)
         const courses = data.savedCourses;
         expect(courses[0].id).not.toBe(courses[1].id);
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.addBatch(newItems, () => {
         done();
       });
     });
 
-    test('Deve ignorar duplicatas', (done) => {
+    test('deve ignorar cursos duplicados dentro do lote', (done) => {
+      // Preparar (Arrange)
       const newItems = [
         { name: 'Novo', url: 'https://novo.com' },
         { name: 'Duplicado', url: 'https://ava.univesp.br/course1' }, // Já existe
@@ -196,40 +222,24 @@ describe('CourseRepository - Add Operations', () => {
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
+        // Verificar (Assert)
         expect(addedCount).toBe(1);
         expect(ignoredCount).toBe(1);
         done();
       });
     });
 
-    test('Deve retornar contadores corretos', (done) => {
-      const newItems = [
-        { name: 'A', url: 'https://a.com' },
-        { name: 'B', url: 'https://ava.univesp.br/course1' }, // duplicata
-        { name: 'C', url: 'https://c.com' },
-      ];
-
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [mockCourse1] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
-      });
-
-      CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
-        expect(addedCount).toBe(2);
-        expect(ignoredCount).toBe(1);
-        done();
-      });
-    });
-
-    test('Deve lidar com lista vazia', (done) => {
+    test('deve lidar com lote vazio sem erros', (done) => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
         callback({ savedCourses: [] });
       });
 
+      // Agir (Act)
       CourseRepository.addBatch([], (addedCount, ignoredCount) => {
+        // Verificar (Assert)
         expect(addedCount).toBe(0);
         expect(ignoredCount).toBe(0);
         expect(chrome.storage.sync.set).not.toHaveBeenCalled();
@@ -237,7 +247,8 @@ describe('CourseRepository - Add Operations', () => {
       });
     });
 
-    test('Deve não salvar se todos são duplicatas', (done) => {
+    test('deve não chamar save() se todos os itens forem duplicatas', (done) => {
+      // Preparar (Arrange)
       const newItems = [
         { name: 'Dup1', url: 'https://ava.univesp.br/course1' },
         { name: 'Dup2', url: 'https://ava.univesp.br/course2' },
@@ -247,7 +258,9 @@ describe('CourseRepository - Add Operations', () => {
         callback({ savedCourses: [mockCourse1, mockCourse2] });
       });
 
+      // Agir (Act)
       CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
+        // Verificar (Assert)
         expect(addedCount).toBe(0);
         expect(ignoredCount).toBe(2);
         expect(chrome.storage.sync.set).not.toHaveBeenCalled();
@@ -255,18 +268,21 @@ describe('CourseRepository - Add Operations', () => {
       });
     });
 
-    test('Deve persistir termName nos itens do lote', (done) => {
+    test('deve persistir termName nos itens do lote', (done) => {
+      // Preparar (Arrange)
       const newItems = [{ name: 'Curso T', url: 'https://t.com', termName: 'Termo Teste' }];
 
       /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
         callback({ savedCourses: [] });
       });
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+        // Verificar (Assert)
         const course = data.savedCourses[0];
         expect(course.termName).toBe('Termo Teste');
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.addBatch(newItems, (added) => {
         expect(added).toBe(1);
         done();

@@ -1,13 +1,13 @@
 import { Modal } from '../Modal.js';
 
-describe('Modal Component', () => {
+describe('Componente Modal', () => {
   let modal;
   const modalId = 'test-modal';
-  const modalTitle = 'Test Modal';
-  const modalContent = '<p>Test Content</p>';
+  const modalTitle = 'Modal de Teste';
+  const modalContent = '<p>Conteúdo de Teste</p>';
 
   beforeEach(() => {
-    // Clear DOM
+    // Preparar (Arrange) - Limpar DOM
     document.body.innerHTML = '';
   });
 
@@ -18,10 +18,12 @@ describe('Modal Component', () => {
     jest.clearAllMocks();
   });
 
-  test('should render modal correctly', () => {
+  test('deve renderizar o modal corretamente', () => {
+    // Agir (Act)
     modal = new Modal(modalId, modalTitle);
     modal.render(modalContent);
 
+    // Verificar (Assert)
     const overlay = document.getElementById(modalId);
     expect(overlay).not.toBeNull();
     expect(overlay.querySelector('.modal-card')).not.toBeNull();
@@ -29,72 +31,87 @@ describe('Modal Component', () => {
     expect(overlay.querySelector('.modal-body').innerHTML).toBe(modalContent);
   });
 
-  test('should remove existing modal with same id before rendering', () => {
-    // First modal
-    const firstModal = new Modal(modalId, 'First');
-    firstModal.render('First Content');
+  test('deve remover modal existente com mesmo id antes de renderizar', () => {
+    // Preparar (Arrange) - Primeiro modal
+    const firstModal = new Modal(modalId, 'Primeiro');
+    firstModal.render('Primeiro Conteúdo');
 
-    // Second modal with same ID
-    modal = new Modal(modalId, 'Second');
-    modal.render('Second Content');
+    // Agir (Act) - Segundo modal com mesmo ID
+    modal = new Modal(modalId, 'Segundo');
+    modal.render('Segundo Conteúdo');
 
-    // Should only have one element with that ID
+    // Verificar (Assert)
     const elements = document.querySelectorAll(`#${modalId}`);
     expect(elements.length).toBe(1);
-    expect(elements[0].querySelector('h3').textContent).toBe('Second');
+    expect(elements[0].querySelector('h3').textContent).toBe('Segundo');
   });
 
-  test('should close modal when close() is called', () => {
+  test('deve fechar o modal quando close() for chamado', () => {
+    // Preparar (Arrange)
     modal = new Modal(modalId, modalTitle);
     modal.render(modalContent);
 
+    // Agir (Act)
     modal.close();
 
+    // Verificar (Assert)
     const overlay = document.getElementById(modalId);
     expect(overlay).toBeNull();
   });
 
-  test('should close modal when clicking on close button', () => {
+  test('deve fechar o modal ao clicar no botão de fechar', () => {
+    // Preparar (Arrange)
     modal = new Modal(modalId, modalTitle);
     modal.render(modalContent);
-
     const closeBtn = /** @type {HTMLElement} */ (document.querySelector('.btn-close-modal'));
+
+    // Agir (Act)
     closeBtn.click();
 
+    // Verificar (Assert)
     const overlay = document.getElementById(modalId);
     expect(overlay).toBeNull();
   });
 
-  test('should close modal when clicking on overlay', () => {
+  test('deve fechar o modal ao clicar no overlay', () => {
+    // Preparar (Arrange)
     modal = new Modal(modalId, modalTitle);
     modal.render(modalContent);
-
     const overlay = /** @type {HTMLElement} */ (document.getElementById(modalId));
+
+    // Agir (Act)
     overlay.click();
 
+    // Verificar (Assert)
     const checkOverlay = document.getElementById(modalId);
     expect(checkOverlay).toBeNull();
   });
 
-  test('should NOT close modal when clicking inside the card', () => {
+  test('NÃO deve fechar o modal ao clicar dentro do card', () => {
+    // Preparar (Arrange)
     modal = new Modal(modalId, modalTitle);
     modal.render(modalContent);
-
     const card = /** @type {HTMLElement} */ (document.querySelector('.modal-card'));
-    card.click(); // Click inside card
 
+    // Agir (Act) - Clique dentro do card
+    card.click();
+
+    // Verificar (Assert)
     const overlay = document.getElementById(modalId);
-    expect(overlay).not.toBeNull(); // Should still exist
+    expect(overlay).not.toBeNull(); // Ainda deve existir
   });
 
-  test('should execute onCloseCallback when closed', () => {
+  test('deve executar onCloseCallback quando fechado', () => {
+    // Preparar (Arrange)
     const callback = jest.fn();
     modal = new Modal(modalId, modalTitle);
     modal.setOnClose(callback);
     modal.render(modalContent);
 
+    // Agir (Act)
     modal.close();
 
+    // Verificar (Assert)
     expect(callback).toHaveBeenCalledTimes(1);
   });
 });

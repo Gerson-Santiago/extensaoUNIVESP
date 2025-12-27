@@ -1,7 +1,8 @@
 import { CourseRepository } from '@features/courses/data/CourseRepository.js';
 
-describe('CourseRepository - Save Operations', () => {
+describe('CourseRepository - Operações de Salvamento', () => {
   beforeEach(() => {
+    // Preparar (Arrange) - Limpar Mocks
     jest.clearAllMocks();
     jest.spyOn(console, 'warn').mockImplementation(() => {});
   });
@@ -25,13 +26,16 @@ describe('CourseRepository - Save Operations', () => {
   };
 
   describe('saveItems()', () => {
-    test('Deve salvar lista de cursos', (done) => {
+    test('deve salvar a lista de cursos no storage corretamente', (done) => {
+      // Preparar (Arrange)
       const coursesToSave = [mockCourse1, mockCourse2];
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.saveItems(coursesToSave, () => {
+        // Verificar (Assert)
         expect(chrome.storage.sync.set).toHaveBeenCalledWith(
           { savedCourses: coursesToSave },
           expect.any(Function)
@@ -40,23 +44,30 @@ describe('CourseRepository - Save Operations', () => {
       });
     });
 
-    test('Deve executar callback após salvar', (done) => {
+    test('deve executar o callback após o salvamento', (done) => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.saveItems([mockCourse1], () => {
+        // Verificar (Assert)
         expect(chrome.storage.sync.set).toHaveBeenCalled();
         done();
       });
     });
 
-    test('Deve funcionar sem callback', () => {
+    test('deve funcionar corretamente mesmo sem passar callback', () => {
+      // Preparar (Arrange)
       /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
         callback();
       });
 
+      // Agir (Act)
       CourseRepository.saveItems([mockCourse1]);
+
+      // Verificar (Assert)
       expect(chrome.storage.sync.set).toHaveBeenCalled();
     });
   });
