@@ -15,6 +15,7 @@ import { HistoryService } from '../../../../shared/services/HistoryService.js';
 import { SkeletonManager } from './SkeletonManager.js';
 import { ClearHandler } from './handlers/ClearHandler.js';
 import { RefreshHandler } from './handlers/RefreshHandler.js';
+import { ActivityItemFactory } from './ActivityItemFactory.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -25,6 +26,9 @@ export class DetailsActivitiesWeekView {
     this.week = null;
     this.historyService = new HistoryService(5); // Max 5 recent items
     this.chipsComponent = null;
+    this.itemFactory = new ActivityItemFactory((activityId, fallbackUrl) =>
+      this.scrollToActivity(activityId, fallbackUrl)
+    );
   }
 
   /**
@@ -250,7 +254,7 @@ export class DetailsActivitiesWeekView {
 
       this.week.items.forEach((item, index) => {
         const categorized = categorizeTask(item);
-        const li = this.createActivityItem(categorized, index + 1);
+        const li = this.itemFactory.createActivityItem(categorized, index + 1);
         list.appendChild(li);
       });
 
@@ -260,32 +264,6 @@ export class DetailsActivitiesWeekView {
       const toaster = new Toaster();
       toaster.show('Erro ao carregar atividades.', 'error');
     }
-  }
-
-  /**
-   * Cria item de atividade com scroll automático
-   * @param {Object} task - Tarefa categorizada
-   * @param {number} position - Posição na lista (1-indexed)
-   * @returns {HTMLElement}
-   */
-  createActivityItem(task, position) {
-    const li = document.createElement('li');
-    li.className = 'activity-item';
-
-    const icon = this.getTypeIcon(task.type);
-
-    li.innerHTML = `
-      <span class="activity-position">#${position}</span>
-      <span class="activity-icon">${icon}</span>
-      <span class="activity-name">${task.original.name}</span>
-      <button class="btn-scroll" data-id="${task.id}">Ir →</button>
-    `;
-
-    // Evento de scroll
-    const btn = /** @type {HTMLButtonElement} */ (li.querySelector('.btn-scroll'));
-    btn.onclick = () => this.scrollToActivity(task.id, task.original.url);
-
-    return li;
   }
 
   /**
