@@ -100,4 +100,15 @@ export class WeekActivitiesService {
       chrome.tabs.onUpdated.addListener(listener);
     });
   }
+  /**
+   * Limpa o cache de atividades de uma semana.
+   * @param {Object} week - Objeto da semana
+   */
+  static clearCache(week) {
+    if (week) {
+      week.items = [];
+      week.method = undefined;
+      console.warn(`[WeekActivitiesService] Cache limpo para: ${week.name}`);
+    }
+  }
 }

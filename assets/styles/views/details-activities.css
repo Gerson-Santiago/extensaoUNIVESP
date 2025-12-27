@@ -18,22 +18,39 @@
 
 /* Header */
 .details-header {
-  display: flex;
-  align-items: center;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  grid-template-rows: auto auto;
+  grid-template-areas:
+    'voltar info acoes'
+    'chips  chips chips';
   gap: 12px;
   padding: 15px;
   border-bottom: 1px solid var(--border-color);
   background: var(--bg-white);
+  align-items: center;
+}
+
+/* Áreas do Grid */
+.btn-back {
+  grid-area: voltar;
 }
 
 .details-header-info {
-  flex: 1;
+  grid-area: info;
+  text-align: center;
 }
 
 .details-header-actions {
-  margin-left: auto;
+  grid-area: acoes;
   display: flex;
   gap: 8px;
+}
+
+.chips-container {
+  grid-area: chips;
+  margin-top: 5px;
+  width: 100%;
 }
 
 /* Breadcrumb */

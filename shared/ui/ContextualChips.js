@@ -53,9 +53,17 @@ export class ContextualChips {
     // Pela spec, o container principal pode ser o .chips-container
     this.container.classList.add('chips-container');
 
+    if (!items || items.length === 0) {
+      return;
+    }
+
     items.forEach((item) => {
-      const chip = this._createChip(item);
-      this.container.appendChild(chip);
+      try {
+        const chip = this._createChip(item);
+        this.container.appendChild(chip);
+      } catch (error) {
+        console.error(`[ContextualChips] Erro ao criar chip:`, error);
+      }
     });
   }
 
