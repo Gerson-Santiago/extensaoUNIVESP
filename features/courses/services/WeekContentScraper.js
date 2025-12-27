@@ -2,6 +2,8 @@
  * @typedef {import('../models/Week.js').WeekItem} WeekItem
  */
 
+import { StrategyRegistry } from './WeekContentScraper/StrategyRegistry.js';
+
 export class WeekContentScraper {
   /**
    * Scrapes week content from AVA by injecting script into active tab
@@ -90,87 +92,94 @@ export class WeekContentScraper {
           `🔍 WeekContentScraper: Tentativa ${4 - retries} - Executando script na aba ${tab.id}`
         );
 
+        // AQUI ESTÁ A MUDANÇA PRINCIPAL:
+        // Como o script executado no contexto da página não tem acesso aos nossos módulos JS importados,
+        // precisamos injetar a lógica de extração de uma forma que ela funcione "inline".
+        // Porém, como refatoramos para Strategy Pattern com várias classes, não podemos injetar classes facilmente via `func`.
+        //
+        // SOLUÇÃO HYBRID:
+        // O `executeScript` vai extrair APENAS o HTML bruto dos itens (serializado) ou
+        // continuaremos a usar a lógica de DOM parsing, mas agora vamos replicar o comportamento simplificado
+        // OU (melhor), vamos usar `extractItemsFromDOM` localmente se estivermos rodando em teste unitário (JSDOM),
+        // mas em produção (Chrome), precisamos injetar o código concatenado ou manter uma versão simplificada inline.
+        //
+        // PERA! `extractItemsFromDOM` é estático e usado tanto no teste quanto (potencialmente) injetado?
+        // No código original, `executeScript` tinha uma função `func` GIGANTE que duplicava a lógica.
+        // E `extractItemsFromDOM` TAMBÉM existia repetindo código.
+        //
+        // Abordagem Segura para Refatoração Green-Green:
+        // O `WeekContentScraper.scrapeWeekContent` (Contexto Chrome) precisa injetar código que rode na página.
+        // Se usarmos classes ES6 no `func`, o Chrome pode reclamar se não bundlarmos.
+        //
+        // VAMOS MANTER A LÓGICA DE INJEÇÃO EXTRAINDO DADOS ESTRUTURADOS SIMPLES (JSON),
+        // E PROCESSAR COM AS ESTRATÉGIAS NO LADO DA EXTENSÃO?
+        //
+        // Não, porque elementos do DOM como `element.querySelector` só existem lá.
+        //
+        // NOVA ESTRATÉGIA:
+        // O `func` dentro de `executeScript` vai coletar dados brutos (básicos) do DOM
+        // e retornar para o contexto da extensão (Service Worker / Popup).
+        // Aí sim, no lado de cá, passamos pelas Strategies?
+        // Não, porque as Strategies dependem de analisar a estrutura do DOM (classes, ícones, hrefs).
+        //
+        // VOLTANDO AO PLANO: O `extractItemsFromDOM` é o método testável.
+        // O `executeScript` deve injetar e chamar `extractItemsFromDOM`?
+        // Não tem como injetar métodos estáticos complexos com dependências sem bundler.
+
+        // VAMOS FAZER O SEGUINTE:
+        // Vamos focar em limpar o `extractItemsFromDOM` que roda no ambiente de TESTE (JSDOM) e que provavelmente
+        // é usado em outros lugares (como `DetailsActivitiesWeekView` se ele fizer parse local).
+        //
+        // Mas espere, o `scrapeWeekContent` chama `chrome.scripting.executeScript`.
+        // A função passada para `func` NÃO tem acesso ao escopo externo.
+        // Então minhas Strategies criadas em arquivos separados NÃO VÃO FUNCIONAR dentro do `executeScript`
+        // a menos que eu as injete como arquivos (`files: [...]`).
+        //
+        // CORREÇÃO DE ROTA AUTOMÁTICA (SELF-CORRECTION):
+        // Para usar Strategy Pattern dentro do Content Script (injetado), precisamos carregar os arquivos JS na página
+        // OU bundlar tudo num arquivo só.
+        // Como o projeto não usa Webpack/Rollup para esse "injected script", a injeção via `func` fica limitada.
+        //
+        // Alternative: Usar `files` em vez de `func` no executeScript.
+        // await chrome.scripting.executeScript({ target: { tabId }, files: ['scraper-bundle.js'] });
+        // Mas não temos bundler.
+        //
+        // PLANO ATUALIZADO (ADAPTIVE):
+        // Vou refatorar `extractItemsFromDOM` para usar as Strategies.
+        // No `scrapeWeekContent`, em vez de `func: () => { ...código duplicado... }`,
+        // eu vou fazer algo mais inteligente:
+        // Vou ler o DOM bruto da página através de um script simples que retorna o HTML do `ul.content`.
+        // E aí, no lado seguro da extensão (onde minhas classes existem), eu crio um DOM virtual (DOMParser)
+        // e rodo o `extractItemsFromDOM` refatorado.
+        //
+        // ISSO RESOLVE TUDO!
+        // 1. Remove código duplicado e inseguro de dentro do `executeScript`.
+        // 2. Traz a lógica para o ambiente controlado da extensão onde módulos funcionam.
+        // 3. Facilita testes (não precisa mockar injeção de script, só input HTML).
+
         const results = await chrome.scripting.executeScript({
           target: { tabId: tab.id },
           func: () => {
-            // ===== EXECUTA INLINE NA PÁGINA =====
-            console.warn('🔍 [INLINE] Script executando NA PÁGINA');
-            console.warn('🔍 [INLINE] URL:', document.location.href);
-            console.warn('🔍 [INLINE] readyState:', document.readyState);
+            // Script levíssimo que só extrai o HTML relevante
+            const root1 = document.querySelector('ul.content');
+            if (root1) return root1.outerHTML;
 
-            const items = [];
+            const root2 = document.querySelector('#contentList');
+            if (root2) return root2.outerHTML;
 
-            // Tentar múltiplos seletores
-            let listItems = document.querySelectorAll('li[id^="contentListItem:"]');
-            console.warn(`🔍 [INLINE] Seletor principal encontrou ${listItems.length} elementos`);
-
-            if (listItems.length === 0) {
-              listItems = document.querySelectorAll('li.liItem');
-              console.warn(
-                `🔍 [INLINE] Fallback 1 (li.liItem) encontrou ${listItems.length} elementos`
-              );
-            }
-
-            if (listItems.length === 0) {
-              listItems = document.querySelectorAll(
-                '#contentList li, .contentList li, ul.contentList li'
-              );
-              console.warn(
-                `🔍 [INLINE] Fallback 2 (contentList) encontrou ${listItems.length} elementos`
-              );
-            }
-
-            console.warn(`🔍 [INLINE] TOTAL de elementos para processar: ${listItems.length}`);
-
-            listItems.forEach((li, index) => {
-              try {
-                const h3Link = /** @type {HTMLAnchorElement|null} */ (li.querySelector('h3 a'));
-                if (!h3Link || !h3Link.href) return;
-
-                const span = h3Link.querySelector('span');
-                const name = (span ? span.textContent : h3Link.textContent)
-                  .trim()
-                  .replace(/\s+/g, ' ');
-                const url = h3Link.href;
-
-                if (!name || !url) return;
-
-                // Status
-                let status = undefined;
-                const button = li.querySelector('.button-5');
-                if (button) {
-                  const btnText = button.textContent.trim();
-                  if (btnText.includes('Revisto')) status = 'DONE';
-                  else if (btnText.includes('Marca Revista')) status = 'TODO';
-                }
-
-                // Type (simplificado)
-                let type = 'document';
-                const iconImg = /** @type {HTMLImageElement|null} */ (
-                  li.querySelector('img.item_icon')
-                );
-                if (iconImg) {
-                  const src = (iconImg.src || '').toLowerCase();
-                  const alt = (iconImg.alt || '').toLowerCase();
-                  if (src.includes('quiz') || alt.includes('quiz')) type = 'quiz';
-                  else if (src.includes('video') || alt.includes('video')) type = 'video';
-                  else if (src.includes('pdf') || alt.includes('pdf')) type = 'pdf';
-                  else if (src.includes('forum') || alt.includes('forum')) type = 'forum';
-                }
-
-                items.push({ name, url, type, ...(status && { status }) });
-                console.warn(`🔍 [INLINE] Item ${index + 1}: ${name.substring(0, 50)}...`);
-              } catch (e) {
-                console.error('🔍 [INLINE] Erro ao processar item:', e);
-              }
-            });
-
-            console.warn(`🔍 [INLINE] Retornando ${items.length} itens`);
-            return items;
+            // Fallback: retornar body (caro, mas garantido) ou null
+            return document.body.outerHTML;
           },
         });
 
-        items = results[0]?.result || [];
+        const htmlContent = results[0]?.result;
+
+        if (htmlContent) {
+          // Parse no lado da extensão
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(htmlContent, 'text/html');
+          items = WeekContentScraper.extractItemsFromDOM(doc);
+        }
 
         console.error(
           `🔍 WeekContentScraper: Tentativa ${4 - retries} RETORNOU ${items.length} itens`
@@ -191,183 +200,46 @@ export class WeekContentScraper {
   }
 
   /**
-   * Extrai itens de tarefa do DOM atual - VERSÃO ROBUSTA COM ESPERA
+   * Extrai itens de tarefa do DOM atual usando Strategy Pattern
    * @param {Document} dom - Documento onde buscar (padrão: document global)
    * @returns {WeekItem[]}
    */
   static extractItemsFromDOM(dom = document) {
     try {
-      // Debug: Verificar contexto
-      console.warn('[WeekContentScraper] extractItemsFromDOM iniciado');
-      console.warn('[WeekContentScraper] URL atual:', dom.location?.href || 'N/A');
-      console.warn('[WeekContentScraper] DOM readyState:', dom.readyState);
-
+      // Registrar estratégias
+      const registry = new StrategyRegistry();
       const items = [];
 
-      // Tentar múltiplos seletores (fallback)
+      // Seletores de lista (mantidos da lógica original para compatibilidade)
       let listItems = dom.querySelectorAll('li[id^="contentListItem:"]');
-
-      if (listItems.length === 0) {
-        console.warn(
-          '[WeekContentScraper] Seletor principal retornou 0. Tentando seletores alternativos...'
-        );
-
-        // Fallback 1: Qualquer LI com class liItem
-        listItems = dom.querySelectorAll('li.liItem');
-        console.warn('[WeekContentScraper] Fallback 1 (li.liItem):', listItems.length, 'elementos');
-      }
-
-      if (listItems.length === 0) {
-        // Fallback 2: Qualquer LI dentro de contentList
+      if (listItems.length === 0) listItems = dom.querySelectorAll('li.liItem');
+      if (listItems.length === 0)
         listItems = dom.querySelectorAll('#contentList li, .contentList li, ul.contentList li');
-        console.warn(
-          '[WeekContentScraper] Fallback 2 (contentList li):',
-          listItems.length,
-          'elementos'
-        );
-      }
 
-      console.warn(`[WeekContentScraper] Total de elementos encontrados: ${listItems.length}`);
+      console.warn(`[WeekContentScraper] Total de elementos para processar: ${listItems.length}`);
 
-      listItems.forEach((li, _index) => {
+      listItems.forEach((li) => {
         try {
-          // Estratégia SIMPLES: pegar todo o texto e qualquer link
-          const fullText = li.textContent || '';
-
-          // Buscar QUALQUER link dentro do li
-          const allLinks = li.querySelectorAll('a');
-          let url = '';
-          let name = '';
-
-          // Prioridade: link dentro de h3, senão primeiro link, senão iframe
-          const h3Link = /** @type {HTMLAnchorElement} */ (li.querySelector('h3 a'));
-          if (h3Link && h3Link.href) {
-            url = h3Link.href;
-            // Pegar apenas o texto do SPAN ou do próprio link (ignorando imgs/outros elementos)
-            const span = h3Link.querySelector('span');
-            if (span) {
-              name = span.textContent.trim();
-            } else {
-              name = h3Link.textContent.trim();
+          const strategy = registry.getStrategy(/** @type {HTMLElement} */ (li));
+          if (strategy) {
+            const item = strategy.extract(/** @type {HTMLElement} */ (li));
+            if (item) {
+              items.push(item);
             }
-
-            // Limpar possíveis espaços/quebras extras
-            name = name.replace(/\s+/g, ' ').trim();
-          } else if (allLinks.length > 0) {
-            // Pega o primeiro link que não seja vazio ou "ally"
-            for (const link of allLinks) {
-              const anchorLink = /** @type {HTMLAnchorElement} */ (link);
-              if (
-                anchorLink.href &&
-                !anchorLink.href.includes('#') &&
-                !anchorLink.className.includes('ally')
-              ) {
-                url = anchorLink.href;
-                name = anchorLink.textContent.trim().replace(/\s+/g, ' ');
-                break;
-              }
-            }
-          }
-
-          // Se ainda não tem URL, tenta iframe
-          if (!url) {
-            const iframe = li.querySelector('iframe');
-            if (iframe && iframe.src) {
-              url = iframe.src;
-            }
-          }
-
-          // Se ainda não tem nome, extrai do h3 ou do texto completo
-          if (!name) {
-            const h3 = li.querySelector('h3');
-            if (h3) {
-              name = h3.textContent.trim().replace(/\s+/g, ' ');
-            } else {
-              // Última opção: primeiras 100 chars do texto
-              name = fullText.substring(0, 100).trim().replace(/\s+/g, ' ');
-            }
-          }
-
-          // Detect Status
-          let status = undefined;
-          const button = li.querySelector('.button-5');
-          if (button) {
-            const btnText = button.textContent.trim();
-            if (btnText.includes('Revisto')) {
-              status = 'DONE';
-            } else if (btnText.includes('Marca Revista')) {
-              status = 'TODO';
-            }
-          }
-
-          // Detect Type
-          let type = 'document';
-          const iconImg = /** @type {HTMLImageElement} */ (li.querySelector('img.item_icon'));
-          if (iconImg) {
-            type = this.detectType(iconImg.src, iconImg.alt);
-          } else {
-            type = this.detectTypeFromUrl(url);
-          }
-
-          // Só adiciona item se tiver pelo menos nome E URL
-          if (name && url) {
-            items.push({
-              name,
-              url,
-              type,
-              ...(status && { status }),
-            });
-          } else {
-            console.warn('[WeekContentScraper] Item ignorado (sem name ou url):', { name, url });
           }
         } catch (e) {
-          console.error('[WeekContentScraper] Error parsing week item:', e);
+          console.error('[WeekContentScraper] Erro ao processar item individual:', e);
         }
       });
 
-      console.warn(`[WeekContentScraper] Retornando ${items.length} itens válidos`);
       return items;
     } catch (error) {
       console.error('[WeekContentScraper] Erro ao extrair dados do DOM:', error);
-      console.error('[WeekContentScraper] Stack trace:', error.stack);
-      return []; // Retorna array vazio em caso de erro
+      return [];
     }
   }
 
-  /**
-   * Detecta o tipo de tarefa baseado no ícone
-   * @param {string} iconSrc - URL do ícone
-   * @param {string} altText - Texto alternativo do ícone
-   * @returns {string} - Tipo normalizado
-   */
-  static detectType(iconSrc, altText) {
-    const src = (iconSrc || '').toLowerCase();
-    const alt = (altText || '').toLowerCase();
-
-    if (src.includes('video') || alt.includes('video')) return 'video';
-    if (src.includes('pdf') || alt.includes('pdf') || alt.includes('arquivo')) return 'pdf';
-    if (
-      src.includes('quiz') ||
-      alt.includes('quiz') ||
-      alt.includes('questionário') ||
-      alt.includes('questionario')
-    )
-      return 'quiz';
-    if (src.includes('forum') || alt.includes('forum') || alt.includes('fórum')) return 'forum';
-    if (src.includes('url') || alt.includes('url')) return 'url';
-
-    return 'document';
-  }
-
-  static detectTypeFromUrl(url) {
-    if (!url) return 'document';
-    const lower = url.toLowerCase();
-    if (lower.includes('/mod/quiz/')) return 'quiz';
-    if (lower.includes('/mod/forum/')) return 'forum';
-    if (lower.includes('/mod/url/')) return 'url';
-    if (lower.includes('/mod/resource/')) return 'pdf';
-    return 'document';
-  }
+  // Métodos auxiliares de navegação (mantidos idênticos)
 
   /**
    * Valida se a URL da aba corresponde aos IDs esperados
