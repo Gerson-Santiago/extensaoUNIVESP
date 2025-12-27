@@ -85,7 +85,7 @@ describe('Tabs.openOrSwitchTo', () => {
       expect(chrome.tabs.update).not.toHaveBeenCalled();
     });
 
-    test('should reuse tab from SAME Subject (Subject A -> Subject A)', async () => {
+    test('should open NEW tab for same course but different content', async () => {
       const WEEK_A_PART2_URL =
         'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_AAA_1&content_id=_333_1';
 
@@ -95,12 +95,11 @@ describe('Tabs.openOrSwitchTo', () => {
 
       await Tabs.openOrSwitchTo(WEEK_A_PART2_URL);
 
-      expect(chrome.tabs.update).toHaveBeenCalledWith(
-        101,
-        expect.objectContaining({ url: WEEK_A_PART2_URL, active: true }),
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
+        expect.objectContaining({ url: WEEK_A_PART2_URL }),
         expect.anything()
       );
-      expect(chrome.tabs.create).not.toHaveBeenCalled();
+      expect(chrome.tabs.update).not.toHaveBeenCalled();
     });
   });
 
@@ -145,7 +144,7 @@ describe('Tabs.openOrSwitchTo', () => {
       );
     });
 
-    test('B2. Cross-Week: Should reuse tab but UPDATE url when navigating Week 1 -> Week 2', async () => {
+    test('B2. Cross-Week: Should open NEW tab when navigating Week 1 -> Week 2', async () => {
       // Setup: Browser has Week 1 open
       /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
         if (callback) callback([{ id: 101, url: COURSE_X_WEEK_1_URL, windowId: 999 }]);
@@ -154,18 +153,15 @@ describe('Tabs.openOrSwitchTo', () => {
       // Action: User clicks Week 2 in extension
       await Tabs.openOrSwitchTo(COURSE_X_WEEK_2_URL);
 
-      // Expectation: Reuse tab 101, but UPDATE URL to Week 2
-      expect(chrome.tabs.update).toHaveBeenCalledWith(
-        101,
-        expect.objectContaining({
-          url: COURSE_X_WEEK_2_URL,
-          active: true,
-        }),
+      // Expectation: Create NEW tab for Week 2 (don't reuse Week 1)
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
+        expect.objectContaining({ url: COURSE_X_WEEK_2_URL }),
         expect.anything()
       );
+      expect(chrome.tabs.update).not.toHaveBeenCalled();
     });
 
-    test('A2. Deep Link: Should update URL (and thus scroll) if hash/anchor changes', async () => {
+    test('A2. Deep Link: Should create new tab when hash changes (different content)', async () => {
       const URL_NO_HASH = COURSE_X_WEEK_1_URL;
       const URL_WITH_HASH = COURSE_X_WEEK_1_URL + '#video-123';
 
@@ -177,9 +173,8 @@ describe('Tabs.openOrSwitchTo', () => {
       // Action: Click deep link
       await Tabs.openOrSwitchTo(URL_WITH_HASH);
 
-      // Expectation: Update URL to include hash (browser handles scrolling)
-      expect(chrome.tabs.update).toHaveBeenCalledWith(
-        101,
+      // Expectation: Create new tab (URLs don't match exactly)
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
         expect.objectContaining({ url: URL_WITH_HASH }),
         expect.anything()
       );

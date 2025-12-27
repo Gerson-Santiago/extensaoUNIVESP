@@ -21,6 +21,9 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ### 🎨 UX Improvements
 - **DetailsActivitiesWeekView**: Header simplificado (remove textos desnecessários, destaca nome da matéria).
 
+### 🐛 Bugfixes
+- **Tabs.openOrSwitchTo**: Corrige navegação entre semanas (agora abre novas abas em vez de reutilizar).
+
 ---
 
 ## [2.8.8] - 2025-12-26

@@ -41,12 +41,8 @@ export class Tabs {
         (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
       );
     }
-    // 2. Busca apenas course_id
-    if (!existingTab && targetCourseId) {
-      existingTab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
-    }
 
-    // 3. Fallback: URL exata ou prefixo
+    // Fallback: URL exata ou prefixo
     if (!existingTab) {
       // Prioridade 1: Match Exato
       existingTab = tabs.find((t) => t.url === url);
