@@ -16,6 +16,7 @@ import { SkeletonManager } from './SkeletonManager.js';
 import { ClearHandler } from './handlers/ClearHandler.js';
 import { RefreshHandler } from './handlers/RefreshHandler.js';
 import { ActivityItemFactory } from './ActivityItemFactory.js';
+import { ActivityRenderer } from './ActivityRenderer.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -29,6 +30,7 @@ export class DetailsActivitiesWeekView {
     this.itemFactory = new ActivityItemFactory((activityId, fallbackUrl) =>
       this.scrollToActivity(activityId, fallbackUrl)
     );
+    this.activityRenderer = null; // Inicializado após render
   }
 
   /**
