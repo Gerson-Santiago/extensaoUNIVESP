@@ -50,6 +50,7 @@
 
 ### 🎯 Decisões Arquiteturais (ADRs)
 - [`ADR-001: Console Cleanup`](ADR/ADR-001-tech-debt-console-cleanup.md) - Priorização de TECH_DEBT
+- [`ADR-002: Deletar EPICs`](ADR/ADR-002-deletar-epics-obsoletos.md) - Organização documental
 
 ---
 
