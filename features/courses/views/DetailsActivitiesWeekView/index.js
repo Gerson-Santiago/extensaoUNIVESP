@@ -10,9 +10,9 @@
 import { categorizeTask } from '../../logic/TaskCategorizer.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 import { NavigationService } from '../../../../shared/services/NavigationService.js';
-import { SkeletonLoader } from '../../../../shared/ui/SkeletonLoader.js';
 import { ContextualChips } from '../../../../shared/ui/ContextualChips.js';
 import { HistoryService } from '../../../../shared/services/HistoryService.js';
+import { SkeletonManager } from './SkeletonManager.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -269,10 +269,7 @@ export class DetailsActivitiesWeekView {
    */
   renderSkeleton() {
     const container = document.getElementById('activitiesContainer');
-    if (!container) return;
-
-    // Mostra skeleton imediatamente
-    container.innerHTML = SkeletonLoader.renderActivitiesSkeleton(5);
+    SkeletonManager.renderSkeleton(container, 5);
   }
 
   /**
