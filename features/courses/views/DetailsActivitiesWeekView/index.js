@@ -99,20 +99,34 @@ export class DetailsActivitiesWeekView {
    * Renderiza chips de navegação contextual
    */
   async renderChips() {
+    console.warn('[DetailsActivitiesWeekView] renderChips() chamado');
     const container = document.getElementById('chipsContainer');
+    console.warn(
+      '[DetailsActivitiesWeekView] Container encontrado?',
+      !!container,
+      'this.week?',
+      !!this.week
+    );
+
     if (!container || !this.week) return;
 
     // Load user settings
     const settings = await this.loadChipsSettings();
+    console.warn('[DetailsActivitiesWeekView] Settings carregados:', settings);
 
     // Skip if user disabled chips
     if (!settings.enabled) {
+      console.warn(
+        '[DetailsActivitiesWeekView] Chips DESATIVADOS por settings.enabled =',
+        settings.enabled
+      );
       container.innerHTML = '';
       return;
     }
 
     // Obter course ID (extrair do courseId ou usar nome como fallback)
     const courseId = this.week.courseId || this.week.courseName || 'default';
+    console.warn('[DetailsActivitiesWeekView] courseId extraído:', courseId);
 
     // Use dynamic maxItems from settings
     if (!this.historyService || this.historyService.maxItems !== settings.maxItems) {
@@ -129,6 +143,7 @@ export class DetailsActivitiesWeekView {
 
     // Buscar histórico recente
     const recentWeeks = await this.historyService.getRecent(courseId);
+    console.warn('[DetailsActivitiesWeekView] Histórico recente:', recentWeeks);
 
     // Inicializar componente se necessário
     if (!this.chipsComponent) {
@@ -147,6 +162,7 @@ export class DetailsActivitiesWeekView {
     }
 
     // Renderizar chips
+    console.warn('[DetailsActivitiesWeekView] Renderizando chips com', recentWeeks.length, 'items');
     this.chipsComponent.render(recentWeeks);
   }
 
