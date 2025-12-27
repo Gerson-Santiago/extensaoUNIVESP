@@ -49,8 +49,14 @@
 
 
 ### 🎯 Decisões Arquiteturais (ADRs)
+
+**Processo/Organização** (`.github/ADR/`):
 - [`ADR-001: Console Cleanup`](ADR/ADR-001-tech-debt-console-cleanup.md) - Priorização de TECH_DEBT
 - [`ADR-002: Deletar EPICs`](ADR/ADR-002-deletar-epics-obsoletos.md) - Organização documental
+
+**Técnicas/Arquiteturais** (`docs/architecture/`):
+- [`ADR-003: BatchScraper No Modularization`](../docs/architecture/ADR_003_BATCHSCRAPER_NO_MODULARIZATION.md) - Injected code constraint
+
 
 ---
 
