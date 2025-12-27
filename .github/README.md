@@ -60,6 +60,63 @@
 - [`ADR-003: BatchScraper No Modularization`](../docs/architecture/ADR_003_BATCHSCRAPER_NO_MODULARIZATION.md) - Injected code constraint
 
 
+
+---
+
+## 🚀 Por Onde Começar?
+
+### Para Novos Desenvolvedores
+
+1. **Entenda o Projeto**:
+   - Leia [`README.md`](../README.md) principal
+   - Revise [`docs/ROADMAP_FEATURES.md`](../docs/ROADMAP_FEATURES.md)
+
+2. **Estude as Decisões Arquiteturais**:
+   - Comece pelos ADRs em ordem (ADR-001, ADR-002, ADR-003)
+   - Entenda **por que** certas escolhas foram feitas
+
+3. **Escolha Sua Primeira Tarefa**:
+   - **Fácil**: Bugs em investigação (`ISSUES/`)
+   - **Médio**: Débitos técnicos (`TECH_DEBT/`)
+   - **Avançado**: Refatorações (`REFACTOR/`)
+
+### Priorização Recomendada (2025-12-27)
+
+#### 🔴 Alta Prioridade
+1. **BUG-botao-abrir-materia** (ISSUES/) - Investigar e resolver
+2. **TECH_DEBT-breadcrumb-estado-global** - Impacta UX
+
+#### 🟡 Média Prioridade
+3. **TECH_DEBT-console-cleanup** - ADR-001 documenta, implementar
+4. **TECH_DEBT-cobertura-testes** - Aumentar cobertura para 85%+
+
+#### 🟢 Baixa Prioridade
+5. **REFACTOR-modernizacao-es2024** - Melhorias de código (ROI questionável)
+
+### Workflow de Trabalho
+
+```mermaid
+graph LR
+    A[Escolher Issue] --> B[Ler Documentação]
+    B --> C[Criar Branch]
+    C --> D[Implementar + Testes]
+    D --> E[npm run verify]
+    E --> F{Passou?}
+    F -->|Sim| G[Commit + PR]
+    F -->|Não| D
+    G --> H[Code Review]
+    H --> I[Merge]
+```
+
+### Regras de Ouro
+
+- ✅ **Sempre** rode `npm run verify` antes de commitar
+- ✅ **Sempre** escreva testes (TDD quando possível)
+- ✅ **Sempre** siga convenções de commit (ver `docs/PADROES_COMMITS.md`)
+- ✅ **Sempre** atualize documentação relevante
+- ❌ **Nunca** commite código comentado ou console.log
+- ❌ **Nunca** faça refactor sem testes passando (Green-Green)
+
 ---
 
 ## 🗂️ Convenções
