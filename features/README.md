@@ -116,6 +116,7 @@ Gestão completa do ciclo de vida acadêmico.
   - `CoursesView/`: Lista principal de cursos.
   - `CourseWeeksView/`: Detalhes de um curso (Lista de Semanas).
   - `CourseWeekTasksView/`: Detalhes de uma semana (Lista de Tarefas).
+  - `DetailsActivitiesWeekView/`: View modular (Template, Header, Chips) para atividades.
 
 ### `home` (Utility)
 Dashboard central de acesso rápido.

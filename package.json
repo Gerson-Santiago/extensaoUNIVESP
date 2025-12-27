@@ -78,7 +78,8 @@
     "*.{js,mjs}": [
       "eslint --fix",
       "prettier --write",
-      "jest --bail --findRelatedTests"
+      "jest --bail --findRelatedTests",
+      "bash -c \"npm run type-check\" --"
     ],
     "*.{json,css,md}": [
       "prettier --write"

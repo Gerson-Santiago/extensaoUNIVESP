@@ -44,9 +44,10 @@ Adiciona múltiplos cursos de uma vez. Ideal para importação em massa.
 
 #### `update(id, updates, callback?)`
 Atualiza propriedades parciais de um curso existente.
+*   **Auto-Save**: Usado extensivamente para persistir `weeks` e `items` após scraping.
 *   **Params**:
     *   `id`: number
-    *   `updates`: Object (ex: `{ name: 'Novo Nome' }`)
+    *   `updates`: Object (ex: `{ name: 'Novo Nome', weeks: [...] }`)
 
 #### `delete(id, callback?)`
 Remove um curso pelo ID.
