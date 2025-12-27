@@ -1,6 +1,7 @@
-# 📋 Gestão de Issues e Planejamento
+# 📋 .github - Gestão de Projeto
 
-Este diretório organiza **issues**, **bugs**, **features**, **refatorações** e **planejamento** do projeto.
+**Versão**: v2.8.8  
+**Última atualização**: 2025-12-27
 
 ---
 
@@ -8,89 +9,76 @@ Este diretório organiza **issues**, **bugs**, **features**, **refatorações** 
 
 ```
 .github/
-├── README.md              ← Este arquivo
-├── EPICS/                 ← Épicos de planejamento estratégico
-│   ├── EPIC-1-arquitetura-refatoracao.md
-│   ├── EPIC-2-debito-tecnico-qualidade.md
-│   ├── EPIC-3-features-gestao-tarefas.md
-│   ├── EPIC-4-bugs-estabilidade.md
-│   ├── EPIC-5-documentacao-conhecimento.md
-│   └── README.md
-├── ISSUES/                ← Bugs e problemas identificados
-│   ├── BUG-navegacao-abas.md (🚧 Parcialmente Resolvido)
-│   └── BUG-botao-abrir-materia.md
-├── FEATURE/               ← Features implementadas
-│   └── FEATURE-checkbox-conclusao.md ✅ [CONCLUÍDA]
-├── NEXT/                  ← Próximas features planejadas
-│   ├── NEXT-CSS-details-activities.md ✅ [CONCLUÍDA]
-│   └── NEXT-doc-chrome-tabs-api.md
-├── REFACTOR/              ← Refatorações planejadas
-│   ├── REFACTOR-desacoplar-scraping-view.md
-│   ├── REFACTOR-modernizacao-es2024.md
-│   └── REFACTOR-persistencia-courseweektasksview.md
-├── TECH_DEBT/             ← Débitos técnicos catalogados
-│   ├── TECH_DEBT-breadcrumb-estado-global.md
-│   ├── TECH_DEBT-cobertura-testes-courses.md
-│   └── TECH_DEBT-unificar-estrutura-progresso.md
-└── SPEC-v2.8.0.md         ← Especificação da versão atual (v2.8.7 LTS)
+├── ADR/           ← Architecture Decision Records (decisões técnicas)
+├── EPICS/         ← Meta-categorias de organização (sempre ativas)
+├── FEATURE/       ← Features implementadas (histórico)
+├── ISSUES/        ← Bugs ATIVOS
+├── RESOLVED/      ← Bugs RESOLVIDOS (histórico)
+├── REFACTOR/      ← Refatorações planejadas
+├── TECH_DEBT/     ← Débitos técnicos catalogados
+└── ARCHIVED/      ← Documentação obsoleta
 ```
 
 ---
 
-## 🐛 Issues Abertas (Bugs)
+## 🎯 Status Atual
 
-### 1. **BUG-navegacao-abas.md** 🚧
-**Problema**: Navegação entre matérias diferentes reusa aba errada  
-**Status**: Parcialmente Resolvido (Tabs.js refatorado, aguarda validação)  
-**Impacto**: Médio (UX confusa)  
-**Prioridade**: Média  
+### 🐛 Bugs Ativos
+- [`BUG-botao-abrir-materia.md`](ISSUES/BUG-botao-abrir-materia.md) - Em investigação
 
-### 2. **BUG-botao-abrir-materia.md**
-**Problema**: Botão "Abrir Matéria" falha quando há aba de semana aberta  
-**Impacto**: Médio (bloqueia acesso)  
-**Prioridade**: Média  
+### ✅ Bugs Resolvidos
+- [`BUG-navegacao-abas.md`](RESOLVED/BUG-navegacao-abas.md) - Resolvido (Tabs.js refatorado)
+- [`BUG-fechar-listador-de-atividades-do-site.md`](RESOLVED/BUG-fechar-listador-de-atividades-do-site.md) - Implementado (DomUtils.ensureModalClosed)
 
----
+### ✨ Features Implementadas
+- [`FEATURE-checkbox-conclusao.md`](FEATURE/FEATURE-checkbox-conclusao.md) - Sistema de progresso (v2.8.0)
+- [`FEATURE-chips-navegacao-contextual.md`](FEATURE/FEATURE-chips-navegacao-contextual.md) - Navegação contextual
 
-## ✅ Features Concluídas
+### 🔧 Débitos Técnicos
+- [`ISSUE-console-cleanup.md`](TECH_DEBT/ISSUE-console-cleanup.md) - Limpeza de console statements
+- [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Estado de navegação
+- [`TECH_DEBT-cobertura-testes-courses.md`](TECH_DEBT/TECH_DEBT-cobertura-testes-courses.md) - Cobertura de testes
+- [`TECH_DEBT-unificar-estrutura-progresso.md`](TECH_DEBT/TECH_DEBT-unificar-estrutura-progresso.md) - Unificar repositórios
 
-- **FEATURE-checkbox-conclusao.md** ✅ - Sistema de progresso de atividades (v2.8.0, 2025-12-22)
-- **NEXT-CSS-details-activities.md** ✅ - Padronização CSS (v2.8.0, 2025-12-23)
+### 📐 Refatorações Planejadas
+- [`REFACTOR-desacoplar-scraping-view.md`](REFACTOR/REFACTOR-desacoplar-scraping-view.md)
+- [`REFACTOR-modernizacao-es2024.md`](REFACTOR/REFACTOR-modernizacao-es2024.md)
+- [`REFACTOR-persistencia-courseweektasksview.md`](REFACTOR/REFACTOR-persistencia-courseweektasksview.md)
 
----
-
-## 📝 Como Usar
-
-### Criar Nova Issue:
-1. Copiar template de issue existente
-2. Criar arquivo em diretório apropriado (`ISSUES/`, `FEATURE/`, `REFACTOR/`, `TECH_DEBT/`)
-3. Nomear: `BUG-descricao.md`, `FEATURE-nome.md`, `REFACTOR-nome.md`, `TECH_DEBT-nome.md`
-4. Commitar
-
-### Marcar como Concluída:
-1. Atualizar header do arquivo com ✅ e data de conclusão
-2. Atualizar status neste README
-3. Mover informação para seção "Concluídas"
+### 🎯 Decisões Arquiteturais (ADRs)
+- [`ADR-001: Console Cleanup`](ADR/ADR-001-tech-debt-console-cleanup.md) - Priorização de TECH_DEBT
 
 ---
 
-## 🎯 Convenções
+## 📖 EPICs (Meta-Categorias)
 
-**Nomenclatura**:
+> **Nota**: EPICs são categorias organizacionais **sempre ativas** (nunca "concluídas").
+
+1. **EPIC-1**: Arquitetura e Refatoração
+2. **EPIC-2**: Débito Técnico e Qualidade
+3. **EPIC-3**: Features - Gestão de Tarefas
+4. **EPIC-4**: Bugs e Estabilidade
+5. **EPIC-5**: Documentação e Conhecimento
+
+Detalhes: [EPICS/README.md](EPICS/README.md)
+
+---
+
+## 🗂️ Convenções
+
+### Nomenclatura
+- `ADR-XXX-*.md` - Architecture Decision Records
 - `BUG-*.md` - Bugs identificados
-- `FEATURE-*.md` - Novas funcionalidades planejadas ou implementadas
+- `FEATURE-*.md` - Features implementadas
 - `REFACTOR-*.md` - Refatorações planejadas
-- `TECH_DEBT-*.md` - Débitos técnicos catalogados
-- `NEXT-*.md` - Melhorias e próximas features
+- `TECH_DEBT-*.md` - Débitos técnicos
 
-**Status**:
-- 🐛 Bug Identificado
-- 🚧 Em Progresso / Parcialmente Resolvido
+### Status
+- 🐛 Bug Ativo
+- ✅ Resolvido/Implementado
+- 🔧 Débito Técnico Catalogado
 - 📋 Planejado
-- ✅ Concluído
 
 ---
 
-**Última atualização**: 2025-12-26 (Auditoria de Documentação)  
-**Versão do projeto**: v2.8.7 LTS
-
+**Auditoria**: 2025-12-27 (Limpeza radical - docs obsoletas arquivadas)
