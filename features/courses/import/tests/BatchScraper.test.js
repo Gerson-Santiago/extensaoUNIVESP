@@ -1,7 +1,7 @@
 import {
   scrapeAvailableTerms,
   processSelectedCourses,
-} from '@features/courses/import/services/BatchScraper.js';
+} from '@features/courses/import/services/BatchScraper/index.js';
 
 describe('Lógica - Batch Scraper', () => {
   beforeEach(() => {

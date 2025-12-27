@@ -3,7 +3,7 @@
  * @testEnvironmentOptions {"url": "https://ava.univesp.br/ultra/course"}
  */
 
-import { DOM_scanTermsAndCourses_Injected } from '@features/courses/import/services/BatchScraper.js';
+import { DOM_scanTermsAndCourses_Injected } from '@features/courses/import/services/BatchScraper/index.js';
 
 describe('BatchScraper DOM Logic', () => {
   beforeEach(() => {
