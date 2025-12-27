@@ -5,42 +5,42 @@ describe('HomeView - Renderização', () => {
   let mockCallback;
 
   beforeEach(() => {
-    // Preparar (Arrange)
+    // Arrange (Preparar)
     mockCallback = jest.fn();
     homeView = new HomeView({ onAddCurrentInfo: mockCallback });
   });
 
   test('Deve renderizar a view com a classe CSS de dashboard principal', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     expect(element.className).toBe('view-home-dashboard');
   });
 
   test('Deve conter a seção de acesso rápido aos serviços Univesp', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     const quickAccess = element.querySelector('.quick-access-section');
     expect(quickAccess).toBeTruthy();
   });
 
   test('Deve renderizar exatamente os 4 cartões de links principais', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     const links = element.querySelectorAll('.link-card');
     expect(links.length).toBe(4);
   });
 
   test('Deve conter link funcional e rotulado para o Portal SEI', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     const seiLink = Array.from(element.querySelectorAll('a')).find(
       (a) => a.href === 'https://sei.univesp.br/index.xhtml'
     );
@@ -49,10 +49,10 @@ describe('HomeView - Renderização', () => {
   });
 
   test('Deve conter link funcional e rotulado para o AVA (Blackboard)', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     const avaLink = Array.from(element.querySelectorAll('a')).find(
       (a) => a.href === 'https://ava.univesp.br/ultra/course'
     );
@@ -61,10 +61,10 @@ describe('HomeView - Renderização', () => {
   });
 
   test('Deve conter link funcional para a Área do Aluno', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     const alunoLink = Array.from(element.querySelectorAll('a')).find(
       (a) => a.href === 'https://univesp.br/acesso_aluno.html'
     );
@@ -72,10 +72,10 @@ describe('HomeView - Renderização', () => {
   });
 
   test('Deve conter link funcional para o Sistema de Provas', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     const provaLink = Array.from(element.querySelectorAll('a')).find(
       (a) => a.href === 'https://prova.univesp.br/'
     );
@@ -83,30 +83,30 @@ describe('HomeView - Renderização', () => {
   });
 
   test('Deve conter rodapé identificando o desenvolvedor Gerson Santiago', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     const footer = element.querySelector('.footer-info');
     expect(footer).toBeTruthy();
     expect(footer.textContent).toContain('Gerson Santiago');
   });
 
   test('afterRender deve ser executado no ciclo de vida sem erros', () => {
-    // Preparar (Arrange)
+    // Arrange (Preparar)
     const element = homeView.render();
     document.body.appendChild(element);
 
-    // Agir & Verificar (Act & Assert)
+    // Act & Assert (Agir e Verificar)
     expect(() => homeView.afterRender()).not.toThrow();
     document.body.innerHTML = '';
   });
 
   test('Links inteligentes devem possuir atributos de comportamento (js-smart-link e data-match-pattern)', () => {
-    // Agir (Act)
+    // Act (Agir)
     const element = homeView.render();
 
-    // Verificar (Assert)
+    // Assert (Verificar)
     const seiLink = element.querySelector('a[href*="sei.univesp.br"]');
     expect(seiLink.classList.contains('js-smart-link')).toBe(true);
     expect(seiLink.getAttribute('data-match-pattern')).toBe('sei.univesp.br');

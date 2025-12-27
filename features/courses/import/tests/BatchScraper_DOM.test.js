@@ -5,8 +5,9 @@
 
 import { DOM_scanTermsAndCourses_Injected } from '@features/courses/import/services/BatchScraper/index.js';
 
-describe('BatchScraper DOM Logic', () => {
+describe('Lógica DOM do BatchScraper', () => {
   beforeEach(() => {
+    // Arrange (Setup)
     // Reset DOM
     document.body.innerHTML = '';
 
@@ -20,14 +21,20 @@ describe('BatchScraper DOM Logic', () => {
   });
 
   test('Deve retornar erro se não estiver logado ou na página errada', async () => {
+    // Arrange
     // Navigate away to invalid URL
     window.history.pushState({}, 'Test', '/other');
+
+    // Act
     const result = await DOM_scanTermsAndCourses_Injected();
+
+    // Assert
     expect(result.success).toBe(false);
     expect(result.message).toContain('acesse a página de Cursos');
   });
 
   test('Deve tentar realizar auto-scroll', async () => {
+    // Arrange
     // Mock elements to pass the first check
     const info = document.createElement('div');
     info.id = 'courses-overview-content';
@@ -36,6 +43,7 @@ describe('BatchScraper DOM Logic', () => {
     // Mock setTimeout to be instant
     jest.useFakeTimers();
 
+    // Act
     const promise = DOM_scanTermsAndCourses_Injected();
 
     // Advance time repeatedly to handle the async loop
@@ -48,6 +56,7 @@ describe('BatchScraper DOM Logic', () => {
     // but we want to check if it tried to scroll
     const result = await promise;
 
+    // Assert
     expect(window.scrollTo).toHaveBeenCalled();
     expect(result.success).toBe(false); // No courses found
 
@@ -55,6 +64,7 @@ describe('BatchScraper DOM Logic', () => {
   });
 
   test('Deve extrair cursos corretamente do DOM', async () => {
+    // Arrange
     // Setup DOM structure simulating Blackboard
     document.body.innerHTML = `
       <ul>
@@ -78,6 +88,8 @@ describe('BatchScraper DOM Logic', () => {
 
     // Skip scroll wait
     jest.useFakeTimers();
+
+    // Act
     const promise = DOM_scanTermsAndCourses_Injected();
 
     for (let i = 0; i < 15; i++) {
@@ -88,6 +100,7 @@ describe('BatchScraper DOM Logic', () => {
     const result = await promise;
     jest.useRealTimers();
 
+    // Assert
     expect(result.success).toBe(true);
     expect(result.terms.length).toBeGreaterThan(0);
     expect(result.terms[0].courses[0].name).toBe('Engenharia de Software');

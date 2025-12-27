@@ -9,7 +9,7 @@ import { QuickLinksScraper } from '../../../services/QuickLinksScraper.js';
 describe('QuickLinksScraper - Race Condition', () => {
   describe('Timeout e Retry', () => {
     test('deve aguardar até 20s para modal popular (site lento)', async () => {
-      // ARRANGE: Simula site lento (modal demora 12s para aparecer)
+      // Arrange: Simula site lento (modal demora 12s para aparecer)
       const mockExecuteScript = jest.fn().mockResolvedValue([
         {
           result: [
@@ -24,16 +24,16 @@ describe('QuickLinksScraper - Race Condition', () => {
         .fn()
         .mockResolvedValue([{ id: 123, url: 'https://ava.univesp.br/test', title: 'Test' }]);
 
-      // ACT
+      // Act
       const items = await QuickLinksScraper.scrapeFromQuickLinks('https://test.com');
 
-      // ASSERT: Deve retornar items mesmo com site lento
+      // Assert: Deve retornar items mesmo com site lento
       expect(items).toHaveLength(2);
       expect(items[0].name).toBe('Atividade 1');
     });
 
     test('deve retornar array vazio após timeout máximo (30s)', async () => {
-      // ARRANGE: Simula timeout real (modal nunca carrega)
+      // Arrange: Simula timeout real (modal nunca carrega)
       const mockExecuteScript = jest.fn().mockResolvedValue([{ result: [] }]);
 
       global.chrome.scripting.executeScript = mockExecuteScript;
@@ -41,10 +41,10 @@ describe('QuickLinksScraper - Race Condition', () => {
         .fn()
         .mockResolvedValue([{ id: 123, url: 'https://ava.univesp.br/test', title: 'Test' }]);
 
-      // ACT
+      // Act
       const items = await QuickLinksScraper.scrapeFromQuickLinks('https://test.com');
 
-      // ASSERT: Deve retornar vazio e NÃO travar
+      // Assert: Deve retornar vazio e NÃO travar
       expect(items).toEqual([]);
     });
   });

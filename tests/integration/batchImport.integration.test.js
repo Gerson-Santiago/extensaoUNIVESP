@@ -1,11 +1,12 @@
 import { BatchImportFlow } from '@features/courses/import/logic/BatchImportFlow.js';
 
-describe('Integration: Batch Import Flow (Split Architecture)', () => {
+describe('Integração: Fluxo de Importação em Lote', () => {
   let mockBatchModal;
   let mockLoginWaitModal;
   let flow;
 
   beforeEach(() => {
+    // Arrange (Setup)
     jest.clearAllMocks();
 
     // Mock Modals
@@ -39,8 +40,8 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
     global.chrome = chromeMock;
   });
 
-  test('Should open BatchImportModal directly if AVA course tab is found', async () => {
-    // Setup: Existing Tab on Course Page
+  test('Deve abrir BatchImportModal diretamente se a aba do curso no AVA for encontrada', async () => {
+    // Arrange
     // Override update to return COMPLETE (No nav needed)
     // @ts-ignore
     chrome.tabs.update.mockImplementation((id, info, cb) => {
@@ -64,8 +65,10 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
       return Promise.resolve(result);
     });
 
+    // Act
     await flow.start();
 
+    // Assert
     // Expect: Switch to tab (Same URL -> Only active) + callback
     expect(chrome.tabs.update).toHaveBeenCalledWith(123, { active: true }, expect.any(Function));
     // Expect: Open BatchModal
@@ -74,8 +77,8 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
     expect(mockLoginWaitModal.open).not.toHaveBeenCalled();
   });
 
-  test('Should open LoginWaitModal if AVA tab is found but NOT on course page', async () => {
-    // Setup: Existing Tab on Login Page
+  test('Deve abrir LoginWaitModal se a aba do AVA for encontrada mas NÃO estiver na página de cursos', async () => {
+    // Arrange
     // Override update to return LOADING (Nav started)
     // @ts-ignore
     chrome.tabs.update.mockImplementation((id, info, cb) => {
@@ -92,8 +95,10 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
       return Promise.resolve(result);
     });
 
+    // Act
     await flow.start();
 
+    // Assert
     // Expect: Switch to tab AND Update URL (Login -> Course) + callback
     expect(chrome.tabs.update).toHaveBeenCalledWith(
       123,
@@ -106,8 +111,8 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
     expect(mockBatchModal.open).not.toHaveBeenCalled();
   });
 
-  test('Should create new tab and open LoginWaitModal if no AVA tab found', async () => {
-    // Setup: No AVA tabs
+  test('Deve criar nova aba e abrir LoginWaitModal se nenhuma aba do AVA for encontrada', async () => {
+    // Arrange
     // @ts-ignore
     chrome.tabs.query = jest.fn((q, cb) => {
       /** @type {any[]} */
@@ -117,8 +122,10 @@ describe('Integration: Batch Import Flow (Split Architecture)', () => {
       return Promise.resolve(result);
     });
 
+    // Act
     await flow.start();
 
+    // Assert
     // Expect: Create Tab
     expect(chrome.tabs.create).toHaveBeenCalledWith(
       expect.objectContaining({ url: 'https://ava.univesp.br/ultra/course' }),

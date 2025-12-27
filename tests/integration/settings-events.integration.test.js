@@ -4,11 +4,12 @@
 
 import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 
-describe('Integration: Settings Event Decoupling', () => {
+describe('Integração: Desacoplamento de Eventos de Settings', () => {
   let settingsView;
   let container;
 
   beforeEach(() => {
+    // Arrange (Setup)
     container = document.createElement('div');
     document.body.appendChild(container);
     settingsView = new SettingsView({ onNavigate: jest.fn() });
@@ -23,8 +24,9 @@ describe('Integration: Settings Event Decoupling', () => {
     jest.restoreAllMocks();
   });
 
-  describe('Adding Manual Course Event', () => {
-    test('should emit request:add-manual-course event when Add Manual button is clicked', () => {
+  describe('Adicionar Curso Manualmente', () => {
+    test('Deve emitir evento request:add-manual-course quando botão de Adicionar Manual for clicado', () => {
+      // Arrange
       const eventSpy = jest.fn();
       window.addEventListener('request:add-manual-course', eventSpy);
 
@@ -35,8 +37,11 @@ describe('Integration: Settings Event Decoupling', () => {
       const addManualBtn = settingsEl.querySelector('#btnManualAdd');
 
       expect(addManualBtn).toBeTruthy();
+
+      // Act
       addManualBtn.click();
 
+      // Assert
       expect(eventSpy).toHaveBeenCalledTimes(1);
       expect(eventSpy).toHaveBeenCalledWith(
         expect.objectContaining({
@@ -49,8 +54,9 @@ describe('Integration: Settings Event Decoupling', () => {
     });
   });
 
-  describe('Scraping Current Tab Event', () => {
-    test('should emit request:scrape-current-tab event when Scrape button is clicked', () => {
+  describe('Extrair Dados da Aba Atual (Scrape)', () => {
+    test('Deve emitir evento request:scrape-current-tab quando botão Scrape for clicado', () => {
+      // Arrange
       const eventSpy = jest.fn();
       window.addEventListener('request:scrape-current-tab', eventSpy);
 
@@ -61,16 +67,20 @@ describe('Integration: Settings Event Decoupling', () => {
       const scrapeBtn = settingsEl.querySelector('#btnAddCurrent');
 
       expect(scrapeBtn).toBeTruthy();
+
+      // Act
       scrapeBtn.click();
 
+      // Assert
       expect(eventSpy).toHaveBeenCalledTimes(1);
 
       window.removeEventListener('request:scrape-current-tab', eventSpy);
     });
   });
 
-  describe('Clear All Courses Event', () => {
-    test('should emit request:clear-all-courses event when Clear All button is clicked and confirmed', async () => {
+  describe('Limpar Todos os Cursos', () => {
+    test('Deve emitir evento request:clear-all-courses quando botão Limpar Tudo for clicado e confirmado', async () => {
+      // Arrange
       const eventSpy = jest.fn();
       window.addEventListener('request:clear-all-courses', eventSpy);
 
@@ -81,9 +91,11 @@ describe('Integration: Settings Event Decoupling', () => {
       const clearBtn = settingsEl.querySelector('#btnClearAll');
       expect(clearBtn).toBeTruthy();
 
+      // Act
       // Simula clique e aguarda promessa se houver
       await clearBtn.click();
 
+      // Assert
       expect(window.confirm).toHaveBeenCalled();
       expect(eventSpy).toHaveBeenCalledTimes(1);
       expect(eventSpy).toHaveBeenCalledWith(

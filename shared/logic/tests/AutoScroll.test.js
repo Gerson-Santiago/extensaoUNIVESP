@@ -1,4 +1,4 @@
-// import { jest, describe, it, expect, beforeEach, afterEach } from '@jest/globals';
+// AutoScroll.test.js
 import { AutoScroll } from '../AutoScroll.js';
 
 describe('Lógica de AutoScroll', () => {

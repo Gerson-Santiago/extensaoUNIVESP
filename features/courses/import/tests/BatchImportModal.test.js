@@ -13,103 +13,116 @@ jest.mock('@features/courses/data/CourseRepository.js', () => ({
 }));
 
 /**
- * Test Suite for BatchImportModal Rendering Logic
- * Verifies:
- * 1. Sorting order (Newest first)
- * 2. Grouping display
- * 3. Granular course checkboxes
+ * Suíte de Testes para Lógica de Renderização do BatchImportModal
+ * Verifica:
+ * 1. Ordem de classificação (Mais recente primeiro)
+ * 2. Exibição de agrupamento
+ * 3. Checkboxes granulares por curso
  */
-describe('BatchImportModal Render Logic', () => {
+describe('Lógica de Renderização do BatchImportModal', () => {
   let modal;
   let container;
 
   beforeEach(() => {
+    // Arrange (Setup Comum)
     // Reset DOM
     document.body.innerHTML = '';
     container = document.createElement('div');
     modal = new BatchImportModal(() => {});
   });
 
-  test('Should sort terms descending (newest first) and render courses with checkboxes', () => {
-    // Setup Data
+  test('Deve ordenar termos decrescente (mais recente primeiro) e renderizar cursos com checkboxes', () => {
+    // Arrange
     const mockTerms = [
       {
         name: '2024/1 - 1º Bimestre',
-        courses: [{ name: 'Old Course', url: 'http://old', courseId: '1' }],
+        courses: [{ name: 'Curso Antigo', url: 'http://old', courseId: '1' }],
       },
       {
         name: '2025/2 - 4º Bimestre',
         courses: [
-          { name: 'Recent Course A', url: 'http://recA', courseId: '2' },
-          { name: 'Recent Course B', url: 'http://recB', courseId: '3' },
+          { name: 'Curso Recente A', url: 'http://recA', courseId: '2' },
+          { name: 'Curso Recente B', url: 'http://recB', courseId: '3' },
         ],
       },
       {
         name: '2025/1 - 1º Bimestre',
-        courses: [{ name: 'Mid Course', url: 'http://mid', courseId: '4' }],
+        courses: [{ name: 'Curso Intermediário', url: 'http://mid', courseId: '4' }],
       },
     ];
 
     modal.foundTerms = mockTerms;
 
-    // Execute
+    // Act
     modal.renderTerms(container);
 
-    // Assertions
+    // Assert
     const termHeaders = container.querySelectorAll('.term-header');
     expect(termHeaders.length).toBe(3);
 
-    // Check Order: Expect 2025/2 - 4º Bimestre FIRST
+    // Verificar Ordem: Espera 2025/2 - 4º Bimestre PRIMEIRO
     expect(termHeaders[0].textContent).toContain('2025/2 - 4º Bimestre');
     expect(termHeaders[1].textContent).toContain('2025/1 - 1º Bimestre');
     expect(termHeaders[2].textContent).toContain('2024/1 - 1º Bimestre');
 
-    // Check Courses
+    // Verificar Cursos
     const recentGroup = container.querySelector('.term-group:nth-child(1)');
     const coursesInRecent = recentGroup.querySelectorAll('.course-item');
     expect(coursesInRecent.length).toBe(2);
-    expect(coursesInRecent[0].textContent).toContain('Recent Course A');
-    expect(coursesInRecent[1].textContent).toContain('Recent Course B');
+    expect(coursesInRecent[0].textContent).toContain('Curso Recente A');
+    expect(coursesInRecent[1].textContent).toContain('Curso Recente B');
 
-    // Check Checkboxes
+    // Verificar Checkboxes
     const checkboxes = container.querySelectorAll('input[type="checkbox"]');
-    // We expect 1 checkbox per course = 1 + 2 + 1 = 4 checkboxes
+    // Esperamos 1 checkbox por curso = 1 + 2 + 1 = 4 checkboxes
     expect(checkboxes.length).toBe(4);
   });
 
-  test('Should handle empty terms gracefully', () => {
+  test('Deve lidar graciosamente com termos vazios', () => {
+    // Arrange
     modal.foundTerms = [];
+
+    // Act
     modal.renderTerms(container);
+
+    // Assert
     expect(container.textContent).toContain('Nenhum termo encontrado');
   });
 });
 
-describe('BatchImportModal Interactions', () => {
+describe('Interações do BatchImportModal', () => {
   let modal;
 
   beforeEach(() => {
+    // Arrange
     document.body.innerHTML = '';
     modal = new BatchImportModal(() => {});
   });
 
-  test('Should have a reload button that triggers loadTerms', () => {
-    // 1. Spy on loadTerms (the method we want to re-trigger)
+  test('Deve ter um botão de recarregar que dispara loadTerms', () => {
+    // Arrange
+    // 1. Spy em loadTerms (o método que queremos re-disparar)
     const loadTermsSpy = jest.spyOn(modal, 'loadTerms').mockImplementation(() => {});
 
-    // 2. Open the modal (renders UI)
+    // Act
+    // 2. Abrir o modal (renderiza UI)
     modal.open();
     const overlay = document.querySelector('.modal-overlay');
 
-    // 3. Find Reload Button
+    // 3. Encontrar botão de reload
     /** @type {HTMLButtonElement} */
     const reloadBtn = overlay.querySelector('.btn-refresh');
+
+    // Assert Pré-click
     expect(reloadBtn).not.toBeNull();
     expect(reloadBtn.title).toBe('Recarregar Cursos');
 
-    // 4. Click it
+    // Act 2
+    // 4. Clicar nele
     reloadBtn.click();
 
-    // 5. Assert loadTerms was called twice (once by open(), once by click)
+    // Assert
+    // 5. Verificar se loadTerms foi chamado duas vezes (uma pelo open(), outra pelo click)
     expect(loadTermsSpy).toHaveBeenCalledTimes(2);
   });
 });

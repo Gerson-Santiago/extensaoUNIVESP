@@ -1,7 +1,6 @@
 import { MainLayout } from '../../shared/ui/layout/MainLayout.js';
 import { HomeView } from '../../features/home/ui/HomeView.js';
-// We can use mocks for other views to simplify dependencies if we just want to test navigation
-// But let's import real classes since it's an integration test
+// Mocks para Views são aceitáveis, mas classes reais em testes de integração são melhores
 import { CoursesView } from '../../features/courses/views/CoursesView/index.js';
 import { SettingsView } from '../../features/settings/ui/SettingsView.js';
 
@@ -10,26 +9,24 @@ describe('Integração: Fluxo de Navegação', () => {
   let layout;
 
   beforeEach(() => {
+    // Arrange (Setup)
     document.body.innerHTML = '<div id="app"></div>';
     container = document.getElementById('app');
     jest.clearAllMocks();
 
-    // Mocks for dependencies found in Views
+    // Mocks para dependências encontradas nas Views
     // Storage
     /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) =>
       callback({ savedCourses: [] })
     );
-    // FeedbackManager in SettingsView creates DOM elements, which is fine in jsdom
+    // FeedbackManager (SettingsView) cria DOM, o que ok no jsdom
   });
 
-  test('deve navegar entre abas usando o TopNav', () => {
-    // Preparar (Arrange): Configura as Views e o Layout principal
+  test('Deve navegar entre abas usando o TopNav', () => {
+    // Arrange: Configura as Views e o Layout principal
     const homeView = new HomeView({ onAddCurrentInfo: jest.fn() });
     const coursesView = new CoursesView({ onOpenCourse: jest.fn(), onViewDetails: jest.fn() });
     const settingsView = new SettingsView({ onNavigate: jest.fn() });
-
-    // Mock render methods to easily identify them if we wanted,
-    // but let's trust real render() outputs distinctive classes
 
     const views = {
       home: homeView,
@@ -40,34 +37,36 @@ describe('Integração: Fluxo de Navegação', () => {
     layout = new MainLayout(views);
     layout.init();
 
-    // 2. Verify Initial State (Home)
+    // Act & Assert 1: Verificar Estado Inicial (Home)
     const mainContent = document.getElementById('main-content');
     expect(mainContent.querySelector('.view-home-dashboard')).toBeTruthy();
     expect(container.querySelector('.view-courses')).toBeFalsy();
 
-    // Verify Nav Active State
+    // Verificar Estado Ativo na Nav
     const homeBtn = document.querySelectorAll('.nav-item')[0];
     expect(homeBtn.classList.contains('active')).toBe(true);
 
-    // 3. Navigate to Courses
+    // Act 2: Navegar para Cursos
     const coursesBtn = document.querySelectorAll('.nav-item')[1];
     /** @type {HTMLElement} */ (coursesBtn).click();
 
+    // Assert 2
     expect(mainContent.querySelector('.view-courses')).toBeTruthy();
     expect(mainContent.querySelector('.view-home-dashboard')).toBeFalsy();
     expect(coursesBtn.classList.contains('active')).toBe(true);
     expect(homeBtn.classList.contains('active')).toBe(false);
 
-    // 4. Navigate to Settings
+    // Act 3: Navegar para Configurações (Settings)
     const settingsBtn = document.querySelectorAll('.nav-item')[2];
     /** @type {HTMLElement} */ (settingsBtn).click();
 
+    // Assert 3
     expect(mainContent.querySelector('.view-settings')).toBeTruthy();
     expect(settingsBtn.classList.contains('active')).toBe(true);
   });
 
-  test('deve lidar com navegação programática', () => {
-    // Preparar (Arrange)
+  test('Deve lidar com navegação programática', () => {
+    // Arrange
     const homeView = new HomeView({});
     const coursesView = new CoursesView({});
 
@@ -79,14 +78,15 @@ describe('Integração: Fluxo de Navegação', () => {
     layout = new MainLayout(views);
     layout.init();
 
-    // Agir (Act) - Verificar estado inicial e navegar programaticamente
+    // Act 1: Verificar estado inicial
     expect(
       document.getElementById('main-content').querySelector('.view-home-dashboard')
     ).toBeTruthy();
 
+    // Act 2: Navegar programaticamente
     layout.navigateTo('courses');
 
-    // Verificar (Assert)
+    // Assert
     expect(document.getElementById('main-content').querySelector('.view-courses')).toBeTruthy();
   });
 });
