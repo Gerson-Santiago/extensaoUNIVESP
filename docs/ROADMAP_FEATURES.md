@@ -42,25 +42,8 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 
 **Objetivo**: Aumentar valor percebido e retenção de usuários
 
-### 🎮 Sistema de Gamificação
-**Status**: Análise Técnica (Q1 2026)
-
-**Proposta de Valor**:
-- Recompensas visuais por progresso acadêmico
-- Sistema de XP por tarefa concluída
-- Persistência de conquistas
-
-**Perguntas a Responder**:
-- Viabilidade técnica: Como persistir achievements local-first?
-- UX: Gamificação motiva ou distrai?
-- Escopo: MVP vs Full Feature
-
-**Decisão Go/No-Go**: Fim de Q1 2026
-
----
-
 ### 📊 Grade Manager (Gestão de Notas)
-**Status**: Planejado (Q2-Q3 2026)
+**Status**: Análise Técnica (Q1 2026)
 
 **Proposta de Valor**:
 - Monitoramento de desempenho acadêmico
@@ -68,11 +51,16 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 - Projeção de médias necessárias
 - Alertas de risco de reprovação
 
-**Dependências**:
-- Gamificação (se aprovada) deve estar estável
-- Scraping do boletim validado tecnicamente
+**Perguntas a Responder**:
+- Viabilidade técnica: Scraping de notas possível no AVA atual?
+- UX: Quanto valor isso agrega vs esforço?
+- Privacidade: Como garantir que dados sensíveis (notas) permanecem locais?
 
-**Decisão de Priorização**: Q1 2026
+**Decisão Go/No-Go**: Fim de Q1 2026 (após validação técnica)
+
+**Dependências**:
+- Estabilização (v2.9.0) deve estar completa
+- POC de scraping de boletim validado
 
 ---
 
@@ -80,7 +68,7 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 
 ### Tema: **Ecossistema Acadêmico Completo**
 
-**Visão Aspiracional**:
+**Visão Aspiracional** (Candidatos, não compromissos):
 
 1. **Integração com Comunidade**:
    - Fórum de dúvidas integrado
@@ -88,14 +76,14 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
    - Grupos de estudo
 
 2. **Análise Preditiva**:
-   - IA para sugerir próximos passos
-   - Identificação de padrões de estudo eficazes
+   - Sugestão de próximos passos baseada em padrões
+   - Identificação de tópicos com maior dificuldade
 
 3. **Multiplataforma**:
    - Mobile app (se demanda validar)
-   - Sync cross-device (se migrar de Local-First)
+   - Sync cross-device (requer decisão sobre Local-First)
 
-> **Nota**: Itens de 2027+ são **candidatos**, não compromissos. Priorização depende de feedback de usuários e viabilidade técnica.
+> **Nota**: Itens de 2027+ são **exploratórios**. Priorização depende de validação com usuários reais e análise de viabilidade técnica (ADR-driven).
 
 ---
 
