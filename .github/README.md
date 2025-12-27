@@ -35,10 +35,12 @@
 - [`FEATURE-chips-navegacao-contextual.md`](FEATURE/FEATURE-chips-navegacao-contextual.md) - Navegação contextual
 
 ### 🔧 Débitos Técnicos
-- [`ISSUE-console-cleanup.md`](TECH_DEBT/ISSUE-console-cleanup.md) - Limpeza de console statements
+- [`ISSUE-console-cleanup.md`](TECH_DEBT/ISSUE-console-cleanup.md) - Limpeza de console statements (ADR-001)
 - [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Estado de navegação
 - [`TECH_DEBT-cobertura-testes-courses.md`](TECH_DEBT/TECH_DEBT-cobertura-testes-courses.md) - Cobertura de testes
-- [`TECH_DEBT-unificar-estrutura-progresso.md`](TECH_DEBT/TECH_DEBT-unificar-estrutura-progresso.md) - Unificar repositórios
+
+### 📦 Débitos Técnicos Resolvidos (Arquivados)
+- [`TECH_DEBT-unificar-estrutura-progresso.md`](ARCHIVED/TECH_DEBT-unificar-estrutura-progresso.md) - ActivityProgress implementado
 
 ### 📐 Refatorações Planejadas
 - [`REFACTOR-modernizacao-es2024.md`](REFACTOR/REFACTOR-modernizacao-es2024.md) - Baixa prioridade
@@ -57,20 +59,6 @@
 **Técnicas/Arquiteturais** (`docs/architecture/`):
 - [`ADR-003: BatchScraper No Modularization`](../docs/architecture/ADR_003_BATCHSCRAPER_NO_MODULARIZATION.md) - Injected code constraint
 
-
----
-
-## 📖 EPICs (Meta-Categorias)
-
-> **Nota**: EPICs são categorias organizacionais **sempre ativas** (nunca "concluídas").
-
-1. **EPIC-1**: Arquitetura e Refatoração
-2. **EPIC-2**: Débito Técnico e Qualidade
-3. **EPIC-3**: Features - Gestão de Tarefas
-4. **EPIC-4**: Bugs e Estabilidade
-5. **EPIC-5**: Documentação e Conhecimento
-
-Detalhes: [EPICS/README.md](EPICS/README.md)
 
 ---
 
