@@ -105,7 +105,12 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 
 ## 📜 Release Log (Histórico)
 
-### v2.8.9 (Atual - 2025-12-27)
+### v2.8.14 (Atual - 2025-12-28)
+- Modernização de Testes (Promises + ChunkedStorage)
+- Correção total de Lint e TypeScript (Zero Errors)
+- Novos scripts de teste (summary/failed)
+
+### v2.8.9 (2025-12-27)
 - Auditoria de alinhamento documental
 - ADRs criados (Console Cleanup, EPICs, BatchScraper)
 - Limpeza de tech debts

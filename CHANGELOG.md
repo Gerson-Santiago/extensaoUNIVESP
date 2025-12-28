@@ -7,6 +7,26 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [2.8.14] - 2025-12-28
+
+### 🧪 Modernização de Testes & Qualidade
+- **Migração Promises (Async/Await)**:
+  - Substituição de todos os mocks antigos (`callbacks`) por Promises modernas.
+  - Alinhamento total com ES2024 e Manifest V3.
+- **Mock de Storage com Persistência**:
+  - Implementação de mock inteligente para `chunkedStorage` e `storage.local`.
+  - Dados persistem em memória durante testes de integração (simulando comportamento real).
+- **Lint Cleanup**:
+  - Remoção de consoles debug (log -> warn).
+  - Limpeza de variáveis não utilizadas e try/catch vazios.
+- **Novos Scripts**:
+  - `test:summary`: Visão rápida de sucesso/falha.
+  - `test:failed`: Reexecução focada apenas em falhas.
+
+### 🧹 Manutenção
+- **TypeScript**: Correção de tipagem em `ChunkedStorage` e `CompressionUtils`.
+- **Zero Errors**: Atingido status de 0 erros de lint e 0 falhas de teste (411 passing).
+
 ## [2.8.9] - 2025-12-27
 
 ### 📚 Auditoria de Alinhamento Documental

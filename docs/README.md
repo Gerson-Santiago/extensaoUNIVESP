@@ -1,6 +1,6 @@
 # Extensão UNIVESP - Suíte de Produtividade Acadêmica
 
-> **Versão Atual**: v2.8.9
+> **Versão Atual**: v2.8.14
 > **Status**: Ativo / Em Desenvolvimento
 
 A **Extensão UNIVESP** é uma ferramenta de produtividade e gestão acadêmica projetada para automatizar o acesso e organização de tarefas no AVA. Priorizando a soberania de dados (Local-First) e uma arquitetura robusta.
