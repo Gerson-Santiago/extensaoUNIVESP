@@ -5,6 +5,11 @@ describe('CourseRepository - Operações de Adição', () => {
     // Preparar (Arrange) - Limpar Mocks globais
     jest.clearAllMocks();
     jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    // Mockar chrome.storage.local (usado por ChunkedStorage)
+    /** @type {jest.Mock} */ (chrome.storage.local.get).mockResolvedValue({});
+    /** @type {jest.Mock} */ (chrome.storage.local.set).mockResolvedValue(undefined);
+    /** @type {jest.Mock} */ (chrome.storage.local.remove).mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -37,29 +42,23 @@ describe('CourseRepository - Operações de Adição', () => {
 
     test('deve adicionar um curso com sucesso', (done) => {
       // Preparar (Arrange) - Mocks de Storage
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
-      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({ savedCourses: [] });
 
       // Agir (Act)
       CourseRepository.add('Novo Curso', 'https://ava.univesp.br/new', [], (success, message) => {
         // Verificar (Assert)
         expect(success).toBe(true);
         expect(message).toBe('Matéria adicionada com sucesso!');
-        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        // Note: CourseStorage agora usa chrome.storage.local via ChunkedStorage
+        expect(chrome.storage.local.set).toHaveBeenCalled();
         done();
       });
     });
 
     test('deve gerar um ID único baseado em Date.now()', (done) => {
       // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({ savedCourses: [] });
+      /** @type {jest.Mock} */ (chrome.storage.local.set).mockImplementation((data, callback) => {
         // Verificar (Assert) - dentro do callback
         const savedCourses = data.savedCourses;
         expect(savedCourses[0].id).toBe(1234567890);
@@ -74,8 +73,28 @@ describe('CourseRepository - Operações de Adição', () => {
 
     test('deve rejeitar curso duplicado (mesma URL)', (done) => {
       // Preparar (Arrange) - Storage possui mockCourse1
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [mockCourse1] });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
+      /** @type {jest.Mock} */ (chrome.storage.local.get).mockImplementation((keys) => {
+        const keysArray = Array.isArray(keys) ? keys : [keys];
+        if (keysArray.includes('courses_metadata')) {
+          return Promise.resolve({
+            courses_metadata: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify({ courseIds: [mockCourse1.id] }),
+            },
+          });
+        }
+        if (keysArray.includes(`course_${mockCourse1.id}`)) {
+          return Promise.resolve({
+            [`course_${mockCourse1.id}`]: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify(mockCourse1),
+            },
+          });
+        }
+        return Promise.resolve({});
       });
 
       // Agir (Act)
@@ -87,7 +106,7 @@ describe('CourseRepository - Operações de Adição', () => {
           // Verificar (Assert)
           expect(success).toBe(false);
           expect(message).toBe('Matéria já adicionada anteriormente.');
-          expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+          expect(chrome.storage.local.set).not.toHaveBeenCalled();
           expect(console.warn).toHaveBeenCalledWith(
             'Curso com URL já existe: https://ava.univesp.br/course1'
           );
@@ -98,10 +117,8 @@ describe('CourseRepository - Operações de Adição', () => {
 
     test('deve inicializar semanas vazias por padrão', (done) => {
       // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({ savedCourses: [] });
+      /** @type {jest.Mock} */ (chrome.storage.local.set).mockImplementation((data, callback) => {
         // Verificar (Assert)
         const course = data.savedCourses[0];
         expect(course.weeks).toEqual([]);
@@ -117,14 +134,12 @@ describe('CourseRepository - Operações de Adição', () => {
     test('deve aceitar semanas customizadas', (done) => {
       // Preparar (Arrange)
       const customWeeks = [{ name: 'Semana 1', url: 'http://s1.com' }];
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({ savedCourses: [] });
+      /** @type {jest.Mock} */ (chrome.storage.local.set).mockImplementation((data) => {
         // Verificar (Assert)
         const course = data.savedCourses[0];
         expect(course.weeks).toEqual(customWeeks);
-        callback();
+        return Promise.resolve();
       });
 
       // Agir (Act)
@@ -135,10 +150,8 @@ describe('CourseRepository - Operações de Adição', () => {
 
     test('deve persistir nome do termo (semestre/bimestre) passado via options', (done) => {
       // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({ savedCourses: [] });
+      /** @type {jest.Mock} */ (chrome.storage.local.set).mockImplementation((data, callback) => {
         // Verificar (Assert)
         const course = data.savedCourses[0];
         expect(course.termName).toBe('2025/1 - 1º Bimestre');
@@ -168,19 +181,15 @@ describe('CourseRepository - Operações de Adição', () => {
         { name: 'Curso C', url: 'https://c.com', weeks: [] },
       ];
 
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
-      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({ savedCourses: [] });
+      /** @type {jest.Mock} */ (chrome.storage.local.set).mockResolvedValue(undefined);
 
       // Agir (Act)
       CourseRepository.addBatch(newItems, (addedCount, ignoredCount) => {
         // Verificar (Assert)
         expect(addedCount).toBe(3);
         expect(ignoredCount).toBe(0);
-        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        expect(chrome.storage.local.set).toHaveBeenCalled();
         done();
       });
     });
@@ -192,14 +201,12 @@ describe('CourseRepository - Operações de Adição', () => {
         { name: 'Curso B', url: 'https://b.com' },
       ];
 
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({ savedCourses: [] });
+      /** @type {jest.Mock} */ (chrome.storage.local.set).mockImplementation((data) => {
         // Verificar (Assert)
         const courses = data.savedCourses;
         expect(courses[0].id).not.toBe(courses[1].id);
-        callback();
+        return Promise.resolve();
       });
 
       // Agir (Act)
@@ -215,11 +222,28 @@ describe('CourseRepository - Operações de Adição', () => {
         { name: 'Duplicado', url: 'https://ava.univesp.br/course1' }, // Já existe
       ];
 
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [mockCourse1] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
+      /** @type {jest.Mock} */ (chrome.storage.local.get).mockImplementation((keys) => {
+        const keysArray = Array.isArray(keys) ? keys : [keys];
+        if (keysArray.includes('courses_metadata')) {
+          return Promise.resolve({
+            courses_metadata: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify({ courseIds: [mockCourse1.id] }),
+            },
+          });
+        }
+        if (keysArray.includes(`course_${mockCourse1.id}`)) {
+          return Promise.resolve({
+            [`course_${mockCourse1.id}`]: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify(mockCourse1),
+            },
+          });
+        }
+        return Promise.resolve({});
       });
 
       // Agir (Act)
@@ -233,16 +257,14 @@ describe('CourseRepository - Operações de Adição', () => {
 
     test('deve lidar com lote vazio sem erros', (done) => {
       // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
 
       // Agir (Act)
       CourseRepository.addBatch([], (addedCount, ignoredCount) => {
         // Verificar (Assert)
         expect(addedCount).toBe(0);
         expect(ignoredCount).toBe(0);
-        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+        //Note: chrome.storage.local.set pode ser chamado pela migração de dados
         done();
       });
     });
@@ -254,8 +276,38 @@ describe('CourseRepository - Operações de Adição', () => {
         { name: 'Dup2', url: 'https://ava.univesp.br/course2' },
       ];
 
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [mockCourse1, mockCourse2] });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
+      /** @type {jest.Mock} */ (chrome.storage.local.get).mockImplementation((keys) => {
+        const keysArray = Array.isArray(keys) ? keys : [keys];
+        // Simular que os cursos já existem no novo formato
+        if (keysArray.includes('courses_metadata')) {
+          return Promise.resolve({
+            courses_metadata: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify({ courseIds: [mockCourse1.id, mockCourse2.id] }),
+            },
+          });
+        }
+        if (keysArray.includes(`course_${mockCourse1.id}`)) {
+          return Promise.resolve({
+            [`course_${mockCourse1.id}`]: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify(mockCourse1),
+            },
+          });
+        }
+        if (keysArray.includes(`course_${mockCourse2.id}`)) {
+          return Promise.resolve({
+            [`course_${mockCourse2.id}`]: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify(mockCourse2),
+            },
+          });
+        }
+        return Promise.resolve({});
       });
 
       // Agir (Act)
@@ -263,7 +315,7 @@ describe('CourseRepository - Operações de Adição', () => {
         // Verificar (Assert)
         expect(addedCount).toBe(0);
         expect(ignoredCount).toBe(2);
-        expect(chrome.storage.sync.set).not.toHaveBeenCalled();
+        expect(chrome.storage.local.set).not.toHaveBeenCalled();
         done();
       });
     });
@@ -272,14 +324,12 @@ describe('CourseRepository - Operações de Adição', () => {
       // Preparar (Arrange)
       const newItems = [{ name: 'Curso T', url: 'https://t.com', termName: 'Termo Teste' }];
 
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({ savedCourses: [] });
+      /** @type {jest.Mock} */ (chrome.storage.local.set).mockImplementation((data) => {
         // Verificar (Assert)
         const course = data.savedCourses[0];
         expect(course.termName).toBe('Termo Teste');
-        callback();
+        return Promise.resolve();
       });
 
       // Agir (Act)

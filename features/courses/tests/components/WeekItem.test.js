@@ -52,10 +52,14 @@ describe('WeekItem com botão de Tarefas', () => {
     expect(callbacks.onViewTasks).toHaveBeenCalledWith(week);
   });
 
-  it('deve renderizar botão entre nome e seta', () => {
+  it('deve renderizar botões entre nome e seta', () => {
     // Arrange
     const week = { name: 'Semana 1', items: [] };
-    const callbacks = { onViewTasks: jest.fn() };
+    const callbacks = {
+      onViewTasks: jest.fn(),
+      onViewQuickLinks: jest.fn(),
+      onViewActivities: jest.fn(),
+    };
 
     // Act
     const element = createWeekElement(week, callbacks);
@@ -64,8 +68,9 @@ describe('WeekItem com botão de Tarefas', () => {
     // Assert
     expect(children[0].className).toBe('week-name');
     expect(children[1].className).toBe('btn-grid-action'); // Tarefas
-    expect(children[2].className).toBe('btn-grid-action btn-activities'); // @Atividades (QuickLinks)
-    expect(children[3].className).toBe('week-arrow');
+    expect(children[2].className).toBe('btn-grid-action btn-activities-quick'); // Rápido (QuickLinks)
+    expect(children[3].className).toBe('btn-grid-action btn-activities-dom'); // Completo (DOM)
+    expect(children[4].className).toBe('week-arrow');
   });
 
   it('deve funcionar sem callback onViewTasks', () => {

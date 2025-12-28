@@ -1,16 +1,37 @@
 import { CourseRepository } from '@features/courses/data/CourseRepository.js';
 
-// Mock chrome.storage.sync
+// Mock chrome.storage (sync + local) com persistência em memória
 const storageMock = {};
+const localStorageMock = {};
+
 global.chrome = /** @type {any} */ ({
   storage: {
     sync: {
-      get: jest.fn((keys, callback) => {
-        callback(storageMock);
-      }),
-      set: jest.fn((items, callback) => {
+      get: jest.fn((_keys) => Promise.resolve(Object.keys(storageMock).length ? storageMock : {})),
+      set: jest.fn((items) => {
         Object.assign(storageMock, items);
-        if (callback) callback();
+        return Promise.resolve();
+      }),
+    },
+    local: {
+      get: jest.fn((_keys) => {
+        const keysArray = Array.isArray(_keys) ? _keys : [_keys];
+        const result = {};
+        keysArray.forEach((_key) => {
+          if (localStorageMock[_key] !== undefined) {
+            result[_key] = localStorageMock[_key];
+          }
+        });
+        return Promise.resolve(result);
+      }),
+      set: jest.fn((items) => {
+        Object.assign(localStorageMock, items);
+        return Promise.resolve();
+      }),
+      remove: jest.fn((keys) => {
+        const keysArray = Array.isArray(keys) ? keys : [keys];
+        keysArray.forEach((key) => delete localStorageMock[key]);
+        return Promise.resolve();
       }),
     },
   },
@@ -21,8 +42,9 @@ global.chrome = /** @type {any} */ ({
 
 describe('Storage Logic - Persistence & v2.4.1 Features', () => {
   beforeEach(() => {
-    // Limpa mock
+    // Limpa mocks
     for (const key in storageMock) delete storageMock[key];
+    for (const key in localStorageMock) delete localStorageMock[key];
     jest.clearAllMocks();
   });
 

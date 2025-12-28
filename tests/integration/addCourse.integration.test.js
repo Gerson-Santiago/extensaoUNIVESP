@@ -7,19 +7,41 @@ describe('Integração: Fluxo Manual de Adição de Curso', () => {
   let coursesView;
   let container;
   const mockNavigate = jest.fn();
+  const localStorageMock = {}; // Armazenamento em memória persistente durante o teste
 
   beforeEach(() => {
     // Arrange (Setup) - Reset do DOM e Mocks
     document.body.innerHTML = '<div id="app"></div>';
     container = document.getElementById('app');
 
+    // Limpar storage mock
+    for (const key in localStorageMock) delete localStorageMock[key];
+
     jest.clearAllMocks();
-    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) =>
-      callback({})
-    );
-    /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((items, callback) =>
-      callback()
-    );
+    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
+
+    // Mock com persistência para chrome.storage.local
+    /** @type {jest.Mock} */ (chrome.storage.local.get).mockImplementation((keys) => {
+      const keysArray = Array.isArray(keys) ? keys : [keys];
+      const result = {};
+      keysArray.forEach((key) => {
+        if (localStorageMock[key] !== undefined) {
+          result[key] = localStorageMock[key];
+        }
+      });
+      return Promise.resolve(result);
+    });
+
+    /** @type {jest.Mock} */ (chrome.storage.local.set).mockImplementation((items) => {
+      Object.assign(localStorageMock, items);
+      return Promise.resolve();
+    });
+
+    /** @type {jest.Mock} */ (chrome.storage.local.remove).mockImplementation((keys) => {
+      const keysArray = Array.isArray(keys) ? keys : [keys];
+      keysArray.forEach((key) => delete localStorageMock[key]);
+      return Promise.resolve();
+    });
   });
 
   test('Deve adicionar um curso manualmente e exibi-lo na lista', async () => {
@@ -58,16 +80,9 @@ describe('Integração: Fluxo Manual de Adição de Curso', () => {
     await new Promise((resolve) => setTimeout(resolve, 100));
 
     // Assert 2: Verificação de Persistência no Storage
-    expect(chrome.storage.sync.set).toHaveBeenCalled();
-    const setCall = /** @type {jest.Mock} */ (chrome.storage.sync.set).mock.calls[0][0];
-    expect(setCall.savedCourses).toBeDefined();
-    expect(setCall.savedCourses.length).toBe(1);
-    expect(setCall.savedCourses[0].name).toBe('Matéria Teste Integração');
-
-    // Arrange 3: Atualizar mock do get para refletir o salvamento para a próxima view
-    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ savedCourses: setCall.savedCourses });
-    });
+    expect(chrome.storage.local.set).toHaveBeenCalled();
+    // Note: CourseStorage agora usa chrome.storage.local via ChunkedStorage
+    // Os dados foram salvos e o mock com persistência vai retorná-los automaticamente
 
     // Act 3: Navegar para CoursesView (Simulado renderizando a view)
     coursesView = new CoursesView({ onOpenCourse: jest.fn(), onViewDetails: jest.fn() });

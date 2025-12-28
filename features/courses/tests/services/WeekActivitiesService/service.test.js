@@ -102,14 +102,11 @@ describe('WeekActivitiesService', () => {
       /** @type {jest.Mock} */ (WeekContentScraper.scrapeWeekContent).mockRejectedValue(
         new Error('Falha no Scraping')
       );
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
       // Agir & Verificar (Act & Assert)
       await expect(WeekActivitiesService.getActivities(mockWeek, 'DOM')).rejects.toThrow(
         'Falha no Scraping'
       );
-      expect(consoleSpy).toHaveBeenCalled();
-      consoleSpy.mockRestore();
     });
   });
 });

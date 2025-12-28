@@ -1,6 +1,6 @@
 # Especificação de Arquitetura
 
-> **Status**: Produção (v2.8.7)
+> **Status**: Produção (v2.8.9)
 > **Padrão**: Hybrid (Screaming Arch + Modular Monolith)
 > **Runtime**: Google Chrome V3
 

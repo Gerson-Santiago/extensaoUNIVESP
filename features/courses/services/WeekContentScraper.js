@@ -11,192 +11,122 @@ export class WeekContentScraper {
    * @returns {Promise<WeekItem[]>}
    */
   static async scrapeWeekContent(_weekUrl) {
-    try {
-      // For testing: mock in jest will intercept this
-      if (typeof chrome === 'undefined' || !chrome.tabs) {
-        throw new Error('Chrome APIs not available');
-      }
+    // For testing: mock in jest will intercept this
+    if (typeof chrome === 'undefined' || !chrome.tabs) {
+      throw new Error('Chrome APIs not available');
+    }
 
-      // 0. Parse target Course ID and Content ID from week URL
-      let targetCourseId = null;
-      let targetContentId = null;
+    // 0. Parse target Course ID and Content ID from week URL
+    let targetCourseId = null;
+    let targetContentId = null;
 
-      if (_weekUrl) {
-        const courseMatch = _weekUrl.match(/course_id=(_\d+_\d+)/);
-        const contentMatch = _weekUrl.match(/content_id=(_\d+_\d+)/);
-        if (courseMatch) targetCourseId = courseMatch[1];
-        if (contentMatch) targetContentId = contentMatch[1];
-      }
+    if (_weekUrl) {
+      const courseMatch = _weekUrl.match(/course_id=(_\d+_\d+)/);
+      const contentMatch = _weekUrl.match(/content_id=(_\d+_\d+)/);
+      if (courseMatch) targetCourseId = courseMatch[1];
+      if (contentMatch) targetContentId = contentMatch[1];
+    }
 
-      // 1. Get all AVA tabs
-      const tabs = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
+    // 1. Get all AVA tabs
+    const tabs = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
+    console.warn('[DEBUG-RACE] Total de abas AVA encontradas:', tabs.length);
+    tabs.forEach((t, i) => console.warn(`[DEBUG-RACE] Aba ${i}: id=${t.id}, url=${t.url}`));
 
-      let tab = null;
+    let tab = null;
 
-      // 2. Try to find EXACT match (course AND week)
-      if (targetCourseId && targetContentId) {
-        tab = tabs.find(
-          (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
+    // 2. Try to find EXACT match (course AND week)
+    if (targetCourseId && targetContentId) {
+      tab = tabs.find(
+        (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
+      );
+      console.warn(
+        '[DEBUG-RACE] Tentou match EXATO (course + content):',
+        tab ? `ENCONTROU id=${tab.id}` : 'NÃO ENCONTROU'
+      );
+
+      // 3. If exact not found, find course tab and navigate
+      if (!tab) {
+        tab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
+        console.warn(
+          '[DEBUG-RACE] Tentou match por CURSO:',
+          tab ? `ENCONTROU id=${tab.id}` : 'NÃO ENCONTROU'
         );
+        if (tab && _weekUrl) {
+          await chrome.tabs.update(tab.id, { url: _weekUrl, active: true });
 
-        // 3. If exact not found, find course tab and navigate
-        if (!tab) {
-          console.warn(
-            `WeekContentScraper: Aba exata não encontrada (course: ${targetCourseId}, content: ${targetContentId})`
+          // Wait for navigation using chrome.tabs.onUpdated listener (more reliable)
+          await WeekContentScraper.waitForTabLoad(tab.id, 10000);
+
+          // Validate navigation succeeded
+          const isValid = await WeekContentScraper.validateTabUrl(
+            tab.id,
+            targetCourseId,
+            targetContentId
           );
-          tab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
-          if (tab && _weekUrl) {
-            // eslint-disable-next-line no-console
-            console.log(`WeekContentScraper: Navegando aba ${tab.id} para ${_weekUrl}`);
-            await chrome.tabs.update(tab.id, { url: _weekUrl, active: true });
-
-            // Wait for navigation using chrome.tabs.onUpdated listener (more reliable)
-            await WeekContentScraper.waitForTabLoad(tab.id, 10000);
-
-            // Validate navigation succeeded
-            const isValid = await WeekContentScraper.validateTabUrl(
-              tab.id,
-              targetCourseId,
-              targetContentId
-            );
-            if (!isValid) {
-              console.warn(
-                `WeekContentScraper: Navegação falhou - URL não corresponde ao esperado após ${tab.id}`
-              );
-            }
+          if (!isValid) {
+            throw new Error('Navegação falhou - URL não corresponde ao esperado');
           }
         }
       }
-
-      // 4. Fallback: Active Tab or First Available
-      if (!tab) {
-        console.warn('WeekContentScraper: Fallback para aba ativa ou primeira disponível');
-        tab = tabs.find((t) => t.active) || tabs[0];
-      }
-
-      if (!tab || !tab.id) {
-        throw new Error('Nenhuma aba do AVA encontrada para realizar o scraping.');
-      }
-
-      console.error('🔍 WeekContentScraper: ANTES de executeScript, tab:', tab.id, tab.url);
-
-      // Wait for page to be fully loaded (more robust approach)
-      let retries = 3;
-      let items = [];
-
-      while (retries > 0) {
-        // Wait a bit between retries
-        await new Promise((resolve) => setTimeout(resolve, 1500));
-
-        console.error(
-          `🔍 WeekContentScraper: Tentativa ${4 - retries} - Executando script na aba ${tab.id}`
-        );
-
-        // AQUI ESTÁ A MUDANÇA PRINCIPAL:
-        // Como o script executado no contexto da página não tem acesso aos nossos módulos JS importados,
-        // precisamos injetar a lógica de extração de uma forma que ela funcione "inline".
-        // Porém, como refatoramos para Strategy Pattern com várias classes, não podemos injetar classes facilmente via `func`.
-        //
-        // SOLUÇÃO HYBRID:
-        // O `executeScript` vai extrair APENAS o HTML bruto dos itens (serializado) ou
-        // continuaremos a usar a lógica de DOM parsing, mas agora vamos replicar o comportamento simplificado
-        // OU (melhor), vamos usar `extractItemsFromDOM` localmente se estivermos rodando em teste unitário (JSDOM),
-        // mas em produção (Chrome), precisamos injetar o código concatenado ou manter uma versão simplificada inline.
-        //
-        // PERA! `extractItemsFromDOM` é estático e usado tanto no teste quanto (potencialmente) injetado?
-        // No código original, `executeScript` tinha uma função `func` GIGANTE que duplicava a lógica.
-        // E `extractItemsFromDOM` TAMBÉM existia repetindo código.
-        //
-        // Abordagem Segura para Refatoração Green-Green:
-        // O `WeekContentScraper.scrapeWeekContent` (Contexto Chrome) precisa injetar código que rode na página.
-        // Se usarmos classes ES6 no `func`, o Chrome pode reclamar se não bundlarmos.
-        //
-        // VAMOS MANTER A LÓGICA DE INJEÇÃO EXTRAINDO DADOS ESTRUTURADOS SIMPLES (JSON),
-        // E PROCESSAR COM AS ESTRATÉGIAS NO LADO DA EXTENSÃO?
-        //
-        // Não, porque elementos do DOM como `element.querySelector` só existem lá.
-        //
-        // NOVA ESTRATÉGIA:
-        // O `func` dentro de `executeScript` vai coletar dados brutos (básicos) do DOM
-        // e retornar para o contexto da extensão (Service Worker / Popup).
-        // Aí sim, no lado de cá, passamos pelas Strategies?
-        // Não, porque as Strategies dependem de analisar a estrutura do DOM (classes, ícones, hrefs).
-        //
-        // VOLTANDO AO PLANO: O `extractItemsFromDOM` é o método testável.
-        // O `executeScript` deve injetar e chamar `extractItemsFromDOM`?
-        // Não tem como injetar métodos estáticos complexos com dependências sem bundler.
-
-        // VAMOS FAZER O SEGUINTE:
-        // Vamos focar em limpar o `extractItemsFromDOM` que roda no ambiente de TESTE (JSDOM) e que provavelmente
-        // é usado em outros lugares (como `DetailsActivitiesWeekView` se ele fizer parse local).
-        //
-        // Mas espere, o `scrapeWeekContent` chama `chrome.scripting.executeScript`.
-        // A função passada para `func` NÃO tem acesso ao escopo externo.
-        // Então minhas Strategies criadas em arquivos separados NÃO VÃO FUNCIONAR dentro do `executeScript`
-        // a menos que eu as injete como arquivos (`files: [...]`).
-        //
-        // CORREÇÃO DE ROTA AUTOMÁTICA (SELF-CORRECTION):
-        // Para usar Strategy Pattern dentro do Content Script (injetado), precisamos carregar os arquivos JS na página
-        // OU bundlar tudo num arquivo só.
-        // Como o projeto não usa Webpack/Rollup para esse "injected script", a injeção via `func` fica limitada.
-        //
-        // Alternative: Usar `files` em vez de `func` no executeScript.
-        // await chrome.scripting.executeScript({ target: { tabId }, files: ['scraper-bundle.js'] });
-        // Mas não temos bundler.
-        //
-        // PLANO ATUALIZADO (ADAPTIVE):
-        // Vou refatorar `extractItemsFromDOM` para usar as Strategies.
-        // No `scrapeWeekContent`, em vez de `func: () => { ...código duplicado... }`,
-        // eu vou fazer algo mais inteligente:
-        // Vou ler o DOM bruto da página através de um script simples que retorna o HTML do `ul.content`.
-        // E aí, no lado seguro da extensão (onde minhas classes existem), eu crio um DOM virtual (DOMParser)
-        // e rodo o `extractItemsFromDOM` refatorado.
-        //
-        // ISSO RESOLVE TUDO!
-        // 1. Remove código duplicado e inseguro de dentro do `executeScript`.
-        // 2. Traz a lógica para o ambiente controlado da extensão onde módulos funcionam.
-        // 3. Facilita testes (não precisa mockar injeção de script, só input HTML).
-
-        const results = await chrome.scripting.executeScript({
-          target: { tabId: tab.id },
-          func: () => {
-            // Script levíssimo que só extrai o HTML relevante
-            const root1 = document.querySelector('ul.content');
-            if (root1) return root1.outerHTML;
-
-            const root2 = document.querySelector('#contentList');
-            if (root2) return root2.outerHTML;
-
-            // Fallback: retornar body (caro, mas garantido) ou null
-            return document.body.outerHTML;
-          },
-        });
-
-        const htmlContent = results[0]?.result;
-
-        if (htmlContent) {
-          // Parse no lado da extensão
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(htmlContent, 'text/html');
-          items = WeekContentScraper.extractItemsFromDOM(doc);
-        }
-
-        console.error(
-          `🔍 WeekContentScraper: Tentativa ${4 - retries} RETORNOU ${items.length} itens`
-        );
-
-        if (items.length > 0) {
-          break; // Success!
-        }
-
-        retries--;
-      }
-
-      return items;
-    } catch (error) {
-      console.error('Error scraping week content:', error);
-      throw error;
     }
+
+    // 4. Fallback: Active Tab or First Available
+    if (!tab) {
+      tab = tabs.find((t) => t.active) || tabs[0];
+      console.warn(
+        '[DEBUG-RACE] FALLBACK para aba ativa ou primeira:',
+        tab ? `id=${tab.id}` : 'NENHUMA'
+      );
+    }
+
+    if (!tab || !tab.id) {
+      throw new Error('Nenhuma aba do AVA encontrada para realizar o scraping.');
+    }
+
+    console.warn('[DEBUG-RACE] ✅ ABA ESCOLHIDA FINAL: id=' + tab.id + ', url=' + tab.url);
+    console.warn('[DEBUG-RACE] URL esperada (week.url): ' + _weekUrl);
+
+    // Wait for page to be fully loaded (more robust approach)
+    let retries = 3;
+    let items = [];
+
+    while (retries > 0) {
+      // Wait a bit between retries
+      await new Promise((resolve) => setTimeout(resolve, 1500));
+
+      // Extract HTML content from page
+      const results = await chrome.scripting.executeScript({
+        target: { tabId: tab.id },
+        func: () => {
+          // Script levíssimo que só extrai o HTML relevante
+          const root1 = document.querySelector('ul.content');
+          if (root1) return root1.outerHTML;
+
+          const root2 = document.querySelector('#contentList');
+          if (root2) return root2.outerHTML;
+
+          // Fallback: retornar body (caro, mas garantido) ou null
+          return document.body.outerHTML;
+        },
+      });
+
+      const htmlContent = results[0]?.result;
+
+      if (htmlContent) {
+        // Parse no lado da extensão
+        const parser = new DOMParser();
+        const doc = parser.parseFromString(htmlContent, 'text/html');
+        items = WeekContentScraper.extractItemsFromDOM(doc);
+      }
+
+      if (items.length > 0) {
+        break; // Success!
+      }
+
+      retries--;
+    }
+
+    return items;
   }
 
   /**
@@ -216,8 +146,6 @@ export class WeekContentScraper {
       if (listItems.length === 0)
         listItems = dom.querySelectorAll('#contentList li, .contentList li, ul.contentList li');
 
-      console.warn(`[WeekContentScraper] Total de elementos para processar: ${listItems.length}`);
-
       listItems.forEach((li) => {
         try {
           const strategy = registry.getStrategy(/** @type {HTMLElement} */ (li));
@@ -227,14 +155,13 @@ export class WeekContentScraper {
               items.push(item);
             }
           }
-        } catch (e) {
-          console.error('[WeekContentScraper] Erro ao processar item individual:', e);
+        } catch {
+          // Silently skip broken items
         }
       });
 
       return items;
-    } catch (error) {
-      console.error('[WeekContentScraper] Erro ao extrair dados do DOM:', error);
+    } catch {
       return [];
     }
   }
@@ -257,8 +184,7 @@ export class WeekContentScraper {
       const hasContent = expectedContentId ? tab.url.includes(expectedContentId) : true;
 
       return hasCourse && hasContent;
-    } catch (error) {
-      console.error('WeekContentScraper: Erro ao validar URL da aba:', error);
+    } catch {
       return false;
     }
   }
@@ -280,8 +206,6 @@ export class WeekContentScraper {
         if (updatedTabId === tabId && changeInfo.status === 'complete') {
           clearTimeout(timer);
           chrome.tabs.onUpdated.removeListener(listener);
-          // eslint-disable-next-line no-console
-          console.log(`WeekContentScraper: Aba ${tabId} carregada completamente`);
           resolve();
         }
       };

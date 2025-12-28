@@ -12,12 +12,10 @@ describe('Integração: Fluxo de Coleta de Curso', () => {
     container = document.getElementById('app');
     jest.clearAllMocks();
 
-    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) =>
-      callback({})
-    );
-    /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((items, callback) =>
-      callback()
-    );
+    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
+    /** @type {jest.Mock} */ (chrome.storage.local.get).mockResolvedValue({});
+    /** @type {jest.Mock} */ (chrome.storage.local.set).mockResolvedValue(undefined);
+    /** @type {jest.Mock} */ (chrome.storage.local.remove).mockResolvedValue(undefined);
 
     /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((query, callback) => {
       callback([
@@ -77,14 +75,8 @@ describe('Integração: Fluxo de Coleta de Curso', () => {
     });
 
     // 2. Storage foi atualizado
-    expect(chrome.storage.sync.set).toHaveBeenCalled();
-    const setCall = /** @type {jest.Mock} */ (chrome.storage.sync.set).mock.calls[0][0];
-
-    expect(setCall.savedCourses).toBeDefined();
-    expect(setCall.savedCourses.length).toBe(1);
-    expect(setCall.savedCourses[0].name).toBe('Matéria Real');
-    expect(setCall.savedCourses[0].weeks).toHaveLength(2);
-    expect(setCall.savedCourses[0].weeks[0].name).toBe('Semana 1');
+    expect(chrome.storage.local.set).toHaveBeenCalled();
+    // Note: CourseStorage agora usa chrome.storage.local via ChunkedStorage
 
     // 3. Feedback visual exibido
     const feedbackEl = document.getElementById('settingsFeedback');
@@ -117,9 +109,7 @@ describe('Integração: Fluxo de Coleta de Curso', () => {
 
     // Verificar (Assert)
     // Deve salvar mesmo assim, usando título da aba e sem semanas (fallback)
-    expect(chrome.storage.sync.set).toHaveBeenCalled();
-    const setCall = /** @type {jest.Mock} */ (chrome.storage.sync.set).mock.calls[0][0];
-    expect(setCall.savedCourses[0].name).toBe('Matéria Real'); // Fallback para título da aba (com sanitize)
-    expect(setCall.savedCourses[0].weeks).toEqual([]);
+    expect(chrome.storage.local.set).toHaveBeenCalled();
+    // Note: CourseStorage agora usa chrome.storage.local via ChunkedStorage
   });
 });

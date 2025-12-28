@@ -81,12 +81,11 @@
 ### Priorização Recomendada (2025-12-27)
 
 #### 🔴 Alta Prioridade
-1. **BUG-botao-abrir-materia** (ISSUES/) - Investigar e resolver
-2. **TECH_DEBT-breadcrumb-estado-global** - Impacta UX
+1. **TECH_DEBT-breadcrumb-estado-global** - Impacta UX
 
 #### 🟡 Média Prioridade
-3. **TECH_DEBT-console-cleanup** - ADR-001 documenta, implementar
-4. **TECH_DEBT-cobertura-testes** - Aumentar cobertura para 85%+
+2. **TECH_DEBT-console-cleanup** - ADR-001 documenta, implementar
+3. **TECH_DEBT-cobertura-testes** - Aumentar cobertura para 85%+
 
 #### 🟢 Baixa Prioridade
 5. **REFACTOR-modernizacao-es2024** - Melhorias de código (ROI questionável)

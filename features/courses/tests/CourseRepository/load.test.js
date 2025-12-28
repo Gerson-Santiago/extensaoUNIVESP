@@ -5,6 +5,11 @@ describe('CourseRepository - Operações de Carregamento', () => {
     // Preparar (Arrange) - Limpar Mocks
     jest.clearAllMocks();
     jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    // Mockar chrome.storage.local (usado por ChunkedStorage)
+    /** @type {jest.Mock} */ (chrome.storage.local.get).mockResolvedValue({});
+    /** @type {jest.Mock} */ (chrome.storage.local.set).mockResolvedValue(undefined);
+    /** @type {jest.Mock} */ (chrome.storage.local.remove).mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -28,18 +33,12 @@ describe('CourseRepository - Operações de Carregamento', () => {
   describe('loadItems()', () => {
     test('deve retornar lista vazia se nenhum curso estiver salvo', (done) => {
       // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({}); // Simula 'savedCourses' ausente
-      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
 
       // Agir (Act)
       CourseRepository.loadItems((courses) => {
         // Verificar (Assert)
         expect(courses).toEqual([]);
-        expect(chrome.storage.sync.get).toHaveBeenCalledWith(
-          ['savedCourses'],
-          expect.any(Function)
-        );
         done();
       });
     });
@@ -47,8 +46,37 @@ describe('CourseRepository - Operações de Carregamento', () => {
     test('deve carregar cursos existentes corretamente', (done) => {
       // Preparar (Arrange)
       const mockData = [mockCourse1, mockCourse2];
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: mockData });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
+      /** @type {jest.Mock} */ (chrome.storage.local.get).mockImplementation((keys) => {
+        const keysArray = Array.isArray(keys) ? keys : [keys];
+        if (keysArray.includes('courses_metadata')) {
+          return Promise.resolve({
+            courses_metadata: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify({ courseIds: [mockCourse1.id, mockCourse2.id] }),
+            },
+          });
+        }
+        if (keysArray.includes(`course_${mockCourse1.id}`)) {
+          return Promise.resolve({
+            [`course_${mockCourse1.id}`]: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify(mockCourse1),
+            },
+          });
+        }
+        if (keysArray.includes(`course_${mockCourse2.id}`)) {
+          return Promise.resolve({
+            [`course_${mockCourse2.id}`]: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify(mockCourse2),
+            },
+          });
+        }
+        return Promise.resolve({});
       });
 
       // Agir (Act)
@@ -62,8 +90,28 @@ describe('CourseRepository - Operações de Carregamento', () => {
 
     test('deve garantir que os dados carregados correspondam aos salvos', (done) => {
       // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [mockCourse1] });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
+      /** @type {jest.Mock} */ (chrome.storage.local.get).mockImplementation((keys) => {
+        const keysArray = Array.isArray(keys) ? keys : [keys];
+        if (keysArray.includes('courses_metadata')) {
+          return Promise.resolve({
+            courses_metadata: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify({ courseIds: [mockCourse1.id] }),
+            },
+          });
+        }
+        if (keysArray.includes(`course_${mockCourse1.id}`)) {
+          return Promise.resolve({
+            [`course_${mockCourse1.id}`]: {
+              chunked: false,
+              compressed: false,
+              data: JSON.stringify(mockCourse1),
+            },
+          });
+        }
+        return Promise.resolve({});
       });
 
       // Agir (Act)

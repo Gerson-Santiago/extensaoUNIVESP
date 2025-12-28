@@ -12,7 +12,6 @@ export class DomUtils {
     const closeBtn = dom.querySelector('a.lbAction[href="#close"]');
 
     if (closeBtn) {
-      console.warn('[DomUtils] Fechando modal do Blackboard detectado.');
       closeBtn.click();
       return true;
     }

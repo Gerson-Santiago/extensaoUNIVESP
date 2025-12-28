@@ -48,36 +48,59 @@ export function createWeekElement(week, callbacks) {
     if (callbacks.onViewTasks) callbacks.onViewTasks(week);
   });
 
-  // Botão de Atividades (usa QuickLinksScraper - Issue #011)
-  const activitiesBtn = document.createElement('button');
-  activitiesBtn.className = 'btn-grid-action btn-activities';
-  activitiesBtn.textContent = '🔍 Atividades';
-  activitiesBtn.title = 'Ver atividades da semana';
-  activitiesBtn.addEventListener('click', async (e) => {
+  // Botão de Atividades RÁPIDO (QuickLinks)
+  const activitiesQuickBtn = document.createElement('button');
+  activitiesQuickBtn.className = 'btn-grid-action btn-activities-quick';
+  activitiesQuickBtn.textContent = '⚡ Rápido';
+  activitiesQuickBtn.title = 'Atividades via QuickLinks (mais rápido, pode ser inconsistente)';
+  activitiesQuickBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
 
-    // Previne múltiplos cliques
-    if (activitiesBtn.disabled) {
-      return;
-    }
+    if (activitiesQuickBtn.disabled) return;
 
-    // Loading state
-    const originalText = activitiesBtn.textContent;
-    activitiesBtn.disabled = true;
-    activitiesBtn.textContent = '⏳ Carregando...';
-    activitiesBtn.style.opacity = '0.6';
+    const originalText = activitiesQuickBtn.textContent;
+    activitiesQuickBtn.disabled = true;
+    activitiesQuickBtn.textContent = '⏳';
+    activitiesQuickBtn.style.opacity = '0.6';
 
     try {
       if (callbacks.onViewQuickLinks) {
         await callbacks.onViewQuickLinks(week);
       }
     } catch (error) {
-      console.error('Erro ao carregar atividades:', error);
+      console.error('Erro ao carregar atividades (QuickLinks):', error);
     } finally {
-      // Restaura botão
-      activitiesBtn.disabled = false;
-      activitiesBtn.textContent = originalText;
-      activitiesBtn.style.opacity = '1';
+      activitiesQuickBtn.disabled = false;
+      activitiesQuickBtn.textContent = originalText;
+      activitiesQuickBtn.style.opacity = '1';
+    }
+  });
+
+  // Botão de Atividades COMPLETO (DOM)
+  const activitiesDomBtn = document.createElement('button');
+  activitiesDomBtn.className = 'btn-grid-action btn-activities-dom';
+  activitiesDomBtn.textContent = '🔍 Completo';
+  activitiesDomBtn.title = 'Atividades via DOM (mais confiável, com logs de debug)';
+  activitiesDomBtn.addEventListener('click', async (e) => {
+    e.stopPropagation();
+
+    if (activitiesDomBtn.disabled) return;
+
+    const originalText = activitiesDomBtn.textContent;
+    activitiesDomBtn.disabled = true;
+    activitiesDomBtn.textContent = '⏳';
+    activitiesDomBtn.style.opacity = '0.6';
+
+    try {
+      if (callbacks.onViewActivities) {
+        await callbacks.onViewActivities(week);
+      }
+    } catch (error) {
+      console.error('Erro ao carregar atividades (DOM):', error);
+    } finally {
+      activitiesDomBtn.disabled = false;
+      activitiesDomBtn.textContent = originalText;
+      activitiesDomBtn.style.opacity = '1';
     }
   });
 
@@ -87,7 +110,8 @@ export function createWeekElement(week, callbacks) {
 
   div.appendChild(nameSpan);
   div.appendChild(tasksBtn);
-  div.appendChild(activitiesBtn);
+  div.appendChild(activitiesQuickBtn);
+  div.appendChild(activitiesDomBtn);
   div.appendChild(arrow);
 
   return div;

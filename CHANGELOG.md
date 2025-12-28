@@ -229,4 +229,4 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ---
 
 > 📦 **Histórico Completo**: Versões anteriores a 2.8.0 foram arquivadas.  
-> Consulte [CHANGELOG_ARCHIVE.md](./docs/history_changelog/CHANGELOG_ARCHIVE.md)
+> Consulte [CHANGELOG_ARCHIVE.md](./docs/changelog_archive/CHANGELOG_ARCHIVE.md)

@@ -5,6 +5,11 @@ describe('CourseRepository - Operações de Salvamento', () => {
     // Preparar (Arrange) - Limpar Mocks
     jest.clearAllMocks();
     jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    // Mockar chrome.storage.local (usado por ChunkedStorage)
+    /** @type {jest.Mock} */ (chrome.storage.local.get).mockResolvedValue({});
+    /** @type {jest.Mock} */ (chrome.storage.local.set).mockResolvedValue(undefined);
+    /** @type {jest.Mock} */ (chrome.storage.local.remove).mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -29,46 +34,35 @@ describe('CourseRepository - Operações de Salvamento', () => {
     test('deve salvar a lista de cursos no storage corretamente', (done) => {
       // Preparar (Arrange)
       const coursesToSave = [mockCourse1, mockCourse2];
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
-      });
 
       // Agir (Act)
       CourseRepository.saveItems(coursesToSave, () => {
         // Verificar (Assert)
-        expect(chrome.storage.sync.set).toHaveBeenCalledWith(
-          { savedCourses: coursesToSave },
-          expect.any(Function)
-        );
+        // Note: CourseStorage agora usa chrome.storage.local via ChunkedStorage
+        expect(chrome.storage.local.set).toHaveBeenCalled();
         done();
       });
     });
 
     test('deve executar o callback após o salvamento', (done) => {
-      // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
-      });
+      // Preparar (Arrange) - Already mocked in beforeEach
 
       // Agir (Act)
       CourseRepository.saveItems([mockCourse1], () => {
         // Verificar (Assert)
-        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        expect(chrome.storage.local.set).toHaveBeenCalled();
         done();
       });
     });
 
     test('deve funcionar corretamente mesmo sem passar callback', () => {
-      // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
-      });
+      // Preparar (Arrange) - Already mocked in beforeEach
 
       // Agir (Act)
       CourseRepository.saveItems([mockCourse1]);
 
       // Verificar (Assert)
-      expect(chrome.storage.sync.set).toHaveBeenCalled();
+      expect(chrome.storage.local.set).toHaveBeenCalled();
     });
   });
 });

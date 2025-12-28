@@ -5,6 +5,11 @@ describe('CourseRepository - Operações de Atualização e Remoção', () => {
     // Preparar (Arrange) - Limpar Mocks
     jest.clearAllMocks();
     jest.spyOn(console, 'warn').mockImplementation(() => {});
+
+    // Mockar chrome.storage.local (usado por ChunkedStorage)
+    /** @type {jest.Mock} */ (chrome.storage.local.get).mockResolvedValue({});
+    /** @type {jest.Mock} */ (chrome.storage.local.set).mockResolvedValue(undefined);
+    /** @type {jest.Mock} */ (chrome.storage.local.remove).mockResolvedValue(undefined);
   });
 
   afterEach(() => {
@@ -65,17 +70,12 @@ describe('CourseRepository - Operações de Atualização e Remoção', () => {
 
     test('deve executar o callback após a tentativa de remoção', (done) => {
       // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-        callback({ savedCourses: [] });
-      });
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
-      });
+      /** @type {jest.Mock} */ (chrome.storage.sync.get).mockResolvedValue({});
 
       // Agir (Act)
       CourseRepository.delete(123, () => {
         // Verificar (Assert)
-        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        expect(chrome.storage.local.set).toHaveBeenCalled();
         done();
       });
     });
@@ -181,15 +181,12 @@ describe('CourseRepository - Operações de Atualização e Remoção', () => {
     });
 
     test('deve executar o callback após o clear', (done) => {
-      // Preparar (Arrange)
-      /** @type {jest.Mock} */ (chrome.storage.sync.set).mockImplementation((data, callback) => {
-        callback();
-      });
+      // Preparar (Arrange) - Already mocked in beforeEach
 
       // Agir (Act)
       CourseRepository.clear(() => {
         // Verificar (Assert)
-        expect(chrome.storage.sync.set).toHaveBeenCalled();
+        expect(chrome.storage.local.set).toHaveBeenCalled();
         done();
       });
     });

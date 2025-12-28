@@ -38,7 +38,10 @@ export class CourseRepository {
       await storage.saveAll(courses);
       if (callback) callback();
     } catch (error) {
-      console.error('Erro ao salvar cursos:', error);
+      console.error('[DEBUG-RACE] 🔴 ERRO AO SALVAR CURSOS:', error);
+      console.error('[DEBUG-RACE] Tipo erro:', typeof error);
+      console.error('[DEBUG-RACE] Error.message:', error?.message);
+      console.error('[DEBUG-RACE] Error.stack:', error?.stack);
     }
   }
 

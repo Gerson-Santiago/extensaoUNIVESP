@@ -35,15 +35,10 @@ export class WeeksManager {
     if (this.course.weeks && this.course.weeks.length > 0) {
       this.course.weeks.forEach((week) => {
         const wDiv = createWeekElement(week, {
-          onClick: (url) => {
-            this.setActiveWeek(week, wDiv);
-            if (typeof this.callbacks.onOpenCourse === 'function') {
-              this.callbacks.onOpenCourse(url);
-            }
-          },
+          onClick: (url) => window.open(url, '_blank'),
           onViewTasks: (w) => this.showPreview(w, wDiv),
-          onViewActivities: (w) => this.handleViewActivities(w, 'DOM'),
           onViewQuickLinks: (w) => this.handleViewActivities(w, 'QuickLinks'),
+          onViewActivities: (w) => this.handleViewActivities(w, 'DOM'),
         });
         weeksList.appendChild(wDiv);
       });
