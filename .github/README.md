@@ -9,55 +9,43 @@
 
 ```
 .github/
-├── ADR/           ← Architecture Decision Records (decisões técnicas)
-├── EPICS/         ← Meta-categorias de organização (sempre ativas)
-├── FEATURE/       ← Features implementadas (histórico)
-├── ISSUES/        ← Bugs ATIVOS
-├── RESOLVED/      ← Bugs RESOLVIDOS (histórico)
-├── REFACTOR/      ← Refatorações planejadas
-├── TECH_DEBT/     ← Débitos técnicos catalogados
-└── ARCHIVED/      ← Documentação obsoleta
+├── TECH_DEBT/     ← Débitos técnicos ATIVOS
+├── README.md      ← Este guia
+└── ROADMAP.md     ← Visão estratégica (Q1 2026)
 ```
+
+> [!NOTE]
+> Os diretórios de histórico (`FEATURE`, `RESOLVED`, `ARCHIVED`) foram removidos. O histórico de implementações reside no Git e no `CHANGELOG.md`.
 
 ---
 
-## 🎯 Status Atual
+## 🎯 Débitos Técnicos Ativos
 
-### ✅ Bugs Resolvidos
-- [`BUG-navegacao-abas.md`](RESOLVED/BUG-navegacao-abas.md) - Resolvido (Tabs.js refatorado)
-- [`BUG-fechar-listador-de-atividades-do-site.md`](RESOLVED/BUG-fechar-listador-de-atividades-do-site.md) - Implementado (DomUtils.ensureModalClosed)
-- [`BUG-botao-abrir-materia.md`](RESOLVED/BUG-botao-abrir-materia.md) - Resolvido (Link com data-match-pattern)
+As prioridades atuais de manutenção são:
 
-### ✨ Features Implementadas
-- [`FEATURE-checkbox-conclusao.md`](FEATURE/FEATURE-checkbox-conclusao.md) - Sistema de progresso (v2.8.0)
-- [`FEATURE-chips-navegacao-contextual.md`](FEATURE/FEATURE-chips-navegacao-contextual.md) - Navegação contextual
+1. [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Impacta UX de navegação.
+2. [`TECH_DEBT-cobertura-testes-courses.md`](TECH_DEBT/TECH_DEBT-cobertura-testes-courses.md) - Meta de 85% de cobertura.
 
-### 🔧 Débitos Técnicos
-- [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Estado de navegação
-- [`TECH_DEBT-cobertura-testes-courses.md`](TECH_DEBT/TECH_DEBT-cobertura-testes-courses.md) - Cobertura de testes
+---
 
-### 📦 Débitos Técnicos Resolvidos (Arquivados)
-- [`TECH_DEBT-unificar-estrutura-progresso.md`](ARCHIVED/TECH_DEBT-unificar-estrutura-progresso.md) - ActivityProgress implementado
+## 📐 Decisões Técnicas (ADRs)
 
-### 📐 Refatorações Planejadas
-- [`REFACTOR-modernizacao-es2024.md`](REFACTOR/REFACTOR-modernizacao-es2024.md) - Baixa prioridade
+A fundação e evolução da arquitetura (2025):
 
-### 📦 Refatorações Concluídas (Arquivadas)
-- [`REFACTOR-desacoplar-scraping-view.md`](ARCHIVED/REFACTOR-desacoplar-scraping-view.md) - WeekActivitiesService
-- [`REFACTOR-persistencia-courseweektasksview.md`](ARCHIVED/REFACTOR-persistencia-courseweektasksview.md) - TaskProgressService
+### Fundações (Core Strategy)
+- [**ADR 000-A: Screaming Architecture**](../docs/architecture/ADR_000_A_SCREAMING_ARCHITECTURE.md) (Organização por Features)
+- [**ADR 000-B: JSDoc Typing**](../docs/architecture/ADR_000_B_JSDOC_TYPING.md) (Tipagem sem Build Step)
+- [**ADR 000-C: Padrão AAA**](../docs/architecture/ADR_000_C_AAA_TESTING_PATTERN.md) (Qualidade de Testes)
 
-
-### 🎯 Decisões Arquiteturais (ADRs)
-
-**Processo/Organização** (`.github/ADR/`):
-- [`ADR-001: Console Cleanup`](ADR/ADR-001-tech-debt-console-cleanup.md) - Priorização de TECH_DEBT
-- [`ADR-002: Deletar EPICs`](ADR/ADR-002-deletar-epics-obsoletos.md) - Organização documental
-
-**Técnicas/Arquiteturais** (`docs/architecture/`):
-- [`ADR-003: BatchScraper No Modularization`](../docs/architecture/ADR_003_BATCHSCRAPER_NO_MODULARIZATION.md) - Injected code constraint
-- [`ADR-004: Navigation Breadcrumb Logic`](../docs/architecture/ADR_004_NAVIGATION_BREADCRUMB_LOGIC.md) - Navegação hierárquica
-- [`ADR-005: SafeResult Pattern`](../docs/architecture/ADR_005_SAFERESULT_PATTERN.md) - Error handling robusto
-- [`ADR-006: Container Freshness`](../docs/architecture/ADR_006_CONTAINER_FRESHNESS.md) - DOM Zumbi fix
+### Ciclo de Estabilização (v2.8.9 → v2.9.1)
+- [**📊 Plano de Observabilidade**](../docs/architecture/OBSERVABILITY_PLAN.md) (Structured Logging)
+1. [**ADR 001: Higiene Documental**](../docs/architecture/ADR_001_DOCS_CLEANUP.md) (27/dez)
+2. [**ADR 002: BatchScraper Architecture**](../docs/architecture/ADR_002_BATCHSCRAPER_ARCHITECTURE.md) (27/dez)
+3. [**ADR 003: SafeResult Pattern**](../docs/architecture/ADR_003_SAFERESULT_PATTERN.md) (29/dez am)
+4. [**ADR 004: Container Freshness**](../docs/architecture/ADR_004_CONTAINER_FRESHNESS.md) (29/dez am)
+5. [**ADR 005: Observabilidade**](../docs/architecture/ADR_005_OBSERVABILITY_LOGGER.md) (29/dez pm)
+6. [**ADR 006: Robust Scroll Navigation**](../docs/architecture/ADR_006_ROBUST_SCROLL_NAVIGATION.md) (29/dez pm)
+7. [**ADR 007: Navigation Hierarchy**](../docs/architecture/ADR_007_NAVIGATION_HIERARCHY.md) (v2.9.1)
 
 
 

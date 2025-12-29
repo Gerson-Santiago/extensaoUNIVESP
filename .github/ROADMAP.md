@@ -34,31 +34,26 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 
 ---
 
+## 📅 Horizonte Próximo: Q1 2026
+
+### Tema: **Evolução de UX e Ciclo de Vida** (v2.10.0)
+
+**Objetivo**: Resolver o "Bug do Chip" e consolidar o estado global de navegação.
+
+**Marcos**:
+- 🔄 **v2.10.0 (Chip Musculoso)**: Implementar navegação bidirecional e gestão de abas ativas como chips.
+- 🔧 **Refatoração Tática**: Migrar Breadcrumb para estado global (Opção 2 do Tech Debt).
+
+---
+
 ## 📅 Médio Prazo: Q2-Q3 2026
 
-### Tema: **Expansão de UX e Engajamento**
+### Tema: **Gestão de Notas e Inteligência** (v3.0.0)
 
-**Objetivo**: Aumentar valor percebido e retenção de usuários
+**Objetivo**: A entrega da "Grande Feature" de Notas.
 
-### 📊 Grade Manager (Gestão de Notas)
-**Status**: Análise Técnica (Q1 2026)
-
-**Proposta de Valor**:
-- Monitoramento de desempenho acadêmico
-- Scraping de boletim do AVA
-- Projeção de médias necessárias
-- Alertas de risco de reprovação
-
-**Perguntas a Responder**:
-- Viabilidade técnica: Scraping de notas possível no AVA atual?
-- UX: Quanto valor isso agrega vs esforço?
-- Privacidade: Como garantir que dados sensíveis (notas) permanecem locais?
-
-**Decisão Go/No-Go**: Fim de Q1 2026 (após validação técnica)
-
-**Dependências**:
-- Estabilização (v2.9.1) deve estar completa
-- POC de scraping de boletim validado
+### 📊 Grade Manager (v3.0.0)
+**Status**: Planejado / Futuro Distante
 
 ---
 
@@ -104,38 +99,10 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 ## 📜 Release Log (Histórico)
 
 ### v2.9.1 (Atual - 2025-12-29)
-- **Refatoração de Logging**: Centralização com `Logger.js` e tagging semântico (#LOG_UI, #LOG_SYSTEM).
-- **Navigation Fix**: Navegação de scroll robusta com `MutationObserver` e fallbacks (ADR-007).
-- **Security**: Fix de Regex insegura em `TaskCategorizer.js`.
-- **Qualidade**: 455 testes passando e zero warnings no lint.
+- **Robustez**: Fix de Scroll (ADR-007) e Centralização de Logs (#LOG_*).
+- **Segurança**: Fix de Regex ReDoS e Zero Warnings de Lint.
 
-### v2.9.0 (2025-12-29)
-- Release com SafeResult Pattern e Correção de DOM Zumbi (Container Freshness).
-- ADRs 005 e 006.
-
-### v2.8.14 (2025-12-28)
-- Modernização de Testes (Promises + ChunkedStorage)
-- Correção total de Lint e TypeScript (Zero Errors)
-- Novos scripts de teste (summary/failed)
-
-### v2.8.9 (2025-12-27)
-- Auditoria de alinhamento documental
-- ADRs criados (Console Cleanup, EPICs, BatchScraper)
-- Limpeza de tech debts
-
-### v2.8.0 (2025-12-22)
-- Sistema de checklist por semana
-- Persistência granular de status de tarefa
-- Cálculo visual de progresso
-- ActivityProgress model unificado
-
-### v2.7.0 (2025-12-XX)
-- Screaming Architecture implementada
-- Refatoração completa de estrutura
-- Modularização em Features
-
-### Versões Anteriores
-Ver [CHANGELOG.md](../CHANGELOG.md) para histórico completo
+> 📦 Para histórico detalhado das versões v2.0.0 a v2.9.0, consulte o [CHANGELOG.md](../CHANGELOG.md).
 
 ---
 

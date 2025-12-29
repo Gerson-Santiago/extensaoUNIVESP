@@ -192,16 +192,16 @@ cat coverage/lcov-report/index.html
 ---
 
 **Criado em**: 2025-12-23  
-**Resolvido em**: 2025-12-25 (v2.8.0)
-**Solução**: Aumentado total de testes para 335. Mocks corrigidos (`chrome.storage`), Services testados.
+**Resolvido em**: 2025-12-29 (v2.9.1)
+**Solução**: Cobertura expandida para 455 testes. Mocks de storage e observers auditados.
 
 ---
 
-## ✅ Resolução (v2.8.0)
+## ✅ Resolução (v2.9.1)
 
 Auditoria e implementação de testes concluídas:
 
-1. **Total de Testes**: 335 testes passando (Meta atingida).
-2. **Mock Storage**: Corrigido mock de `chrome.storage.local` para persistência em memória.
-3. **Services Cobertos**: `TaskProgressService`, `ActivityProgressRepository` (100% coated).
-4. **Pipeline**: `npm run verify` garante qualidade contínua.
+1. **Total de Testes**: 455 testes passando (100% Green).
+2. **Qualidade**: Zero warnings de lint e type-check (`npm run verify`).
+3. **Regressão**: 5 novos testes de regressão para DOM Zumbi (ADR 004).
+4. **Pipeline**: Integrado ao workflow de release.

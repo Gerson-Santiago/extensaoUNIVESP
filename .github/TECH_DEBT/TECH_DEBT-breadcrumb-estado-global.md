@@ -1,8 +1,8 @@
 # TECH_DEBT: Avaliar Breadcrumb como Estado Global
 
-**Status**: 🤔 Análise Técnica Necessária  
+**Status**: 🤔 Análise Técnica (v2.9.1 - Mantido)  
 **Prioridade**: Média  
-**Estimativa**: 2-3 horas (análise + POC)  
+**Última Revisão**: 2025-12-29  
 
 ---
 
