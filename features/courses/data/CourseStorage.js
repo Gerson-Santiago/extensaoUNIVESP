@@ -3,6 +3,7 @@
  * @typedef {import('../models/Course.js').Course} Course
  */
 
+import { Logger } from '../../../shared/utils/Logger.js';
 import { ChunkedStorage } from '../../../shared/utils/ChunkedStorage.js';
 
 /**
@@ -40,7 +41,7 @@ export class CourseStorage {
 
       return courses;
     } catch {
-      console.warn('[CourseStorage] Erro ao carregar cursos.');
+      Logger.warn('CourseStorage', 'Erro ao carregar cursos.'); /**#LOG_SYSTEM*/
       return [];
     }
   }
@@ -52,8 +53,10 @@ export class CourseStorage {
    */
   async saveAll(courses) {
     try {
-      // eslint-disable-next-line no-console
-      console.debug(`[STORAGE] Iniciando salvamento de ${courses.length} cursos...`);
+      Logger.debug(
+        'CourseStorage',
+        `[STORAGE] Iniciando salvamento de ${courses.length} cursos...`
+      ); /**#LOG_SYSTEM*/
 
       // 0. Carrega metadados ATUAIS (antes de sobrescrever) para saber o que deletar depois
       const currentMetadata = await ChunkedStorage.loadChunked(this.METADATA_KEY);
@@ -68,17 +71,20 @@ export class CourseStorage {
         try {
           await ChunkedStorage.saveChunked(`course_${course.id}`, course);
         } catch (err) {
-          console.error(`[STORAGE] Falha ao salvar curso ${course.id} (${course.name})`, err);
+          Logger.error(
+            'CourseStorage',
+            `[STORAGE] Falha ao salvar curso ${course.id} (${course.name})`,
+            err
+          ); /**#LOG_SYSTEM*/
         }
       }
 
       // 3. Remove cursos deletados (IDs que estavam no oldIds mas não no newCourseIds)
       await this.cleanupDeletedCourses(oldCourseIds, newCourseIds);
 
-      // eslint-disable-next-line no-console
-      console.debug('[STORAGE] Salvamento concluído com sucesso.');
+      Logger.debug('CourseStorage', '[STORAGE] Salvamento concluído com sucesso.'); /**#LOG_SYSTEM*/
     } catch (error) {
-      console.error('[CourseStorage] Erro CRÍTICO ao salvar cursos:', error);
+      Logger.error('CourseStorage', 'Erro CRÍTICO ao salvar cursos:', error); /**#LOG_SYSTEM*/
       throw error;
     }
   }
@@ -96,14 +102,17 @@ export class CourseStorage {
       const deletedIds = oldIds.filter((id) => !newIds.includes(id));
 
       if (deletedIds.length > 0) {
-        console.warn(`[STORAGE] Limpando ${deletedIds.length} cursos órfãos...`);
+        Logger.warn(
+          'CourseStorage',
+          `[STORAGE] Limpando ${deletedIds.length} cursos órfãos...`
+        ); /**#LOG_SYSTEM*/
       }
 
       for (const id of deletedIds) {
         await ChunkedStorage.deleteChunked(`course_${id}`);
       }
     } catch (error) {
-      console.warn('[CourseStorage] Erro ao cleanup:', error);
+      Logger.warn('CourseStorage', 'Erro ao cleanup:', error); /**#LOG_SYSTEM*/
     }
   }
 
@@ -121,18 +130,24 @@ export class CourseStorage {
         return [];
       }
 
-      console.warn(`[CourseStorage] Migrando ${legacyCourses.length} cursos para novo formato...`);
+      Logger.warn(
+        'CourseStorage',
+        `Migrando ${legacyCourses.length} cursos para novo formato...`
+      ); /**#LOG_SYSTEM*/
 
       // Salvar no novo formato
       await this.saveAll(legacyCourses);
 
-      console.warn('[CourseStorage] Migração concluída. Removendo dados antigos...');
+      Logger.warn(
+        'CourseStorage',
+        'Migração concluída. Removendo dados antigos...'
+      ); /**#LOG_SYSTEM*/
       await chrome.storage.sync.remove(['savedCourses']);
 
-      console.warn('[CourseStorage] Migração concluída!');
+      Logger.warn('CourseStorage', 'Migração concluída!'); /**#LOG_SYSTEM*/
       return legacyCourses;
     } catch (error) {
-      console.error('[CourseStorage] Erro na migração:', error);
+      Logger.error('CourseStorage', 'Erro na migração:', error); /**#LOG_SYSTEM*/
       return [];
     }
   }

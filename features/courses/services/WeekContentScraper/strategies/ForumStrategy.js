@@ -32,6 +32,7 @@ export class ForumStrategy extends ContentStrategy {
       name,
       url,
       type: 'forum',
+      contentId: this.extractContentId(element),
       ...(status && { status }),
     };
   }

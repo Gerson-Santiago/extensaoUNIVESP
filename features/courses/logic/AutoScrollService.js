@@ -4,6 +4,8 @@
  * por isso não pode ter dependências externas importadas.
  */
 
+import { Logger } from '../../../shared/utils/Logger.js';
+
 // Esta função será serializada e injetada na aba.
 export function DOM_autoScroll_Injected() {
   const STEP = 300;
@@ -100,7 +102,8 @@ export const AutoScrollService = {
         func: DOM_autoScroll_Injected,
       });
     } catch (e) {
-      console.error('Erro ao injetar auto-scroll:', e);
+      /**#LOG_SERVICE*/
+      Logger.error('AutoScrollService', 'Erro ao injetar auto-scroll:', e);
       alert('Não foi possível iniciar o scroll nesta página.');
     }
   },

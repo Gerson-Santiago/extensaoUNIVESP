@@ -1,9 +1,4 @@
-/**
- * Lógica para scraping em lote de cursos na página /ultra/course
- */
-
-// Variável para controlar logs de debug (desativar em produção)
-const DEBUG = false;
+import { Logger } from '../../../../../shared/utils/Logger.js';
 
 // -- FUNÇÃO INJETADA PARA LER BIMESTRES E CURSOS --
 
@@ -79,6 +74,7 @@ export async function DOM_scanTermsAndCourses_Injected() {
       attempts++;
     }
   } catch (e) {
+    /**#LOG_SCRAPER*/
     console.error('Erro no auto-scroll:', e);
   }
 
@@ -330,6 +326,7 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
         original: course,
       });
     } catch (e) {
+      /**#LOG_SCRAPER*/
       console.error('Erro deep scraping', course.name, e);
       results.push({
         name: course.name,
@@ -355,7 +352,8 @@ export async function scrapeAvailableTerms(tabId) {
     }
     return { success: false, message: 'Falha na comunicação com a página.' };
   } catch (error) {
-    if (DEBUG) console.error(error);
+    /**#LOG_SCRAPER*/
+    Logger.error('BatchScraper', error);
     return { success: false, message: 'Erro ao executar script: ' + error.message };
   }
 }
@@ -373,7 +371,8 @@ export async function processSelectedCourses(tabId, courses) {
     }
     return [];
   } catch (error) {
-    if (DEBUG) console.error(error);
+    /**#LOG_SCRAPER*/
+    Logger.error('BatchScraper', error);
     return [];
   }
 }

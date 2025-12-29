@@ -4,6 +4,8 @@
  * @architecture View Layer - Handler
  */
 
+import { Logger } from '../../../../../shared/utils/Logger.js';
+
 /**
  * Gerencia refresh de atividades
  */
@@ -45,7 +47,8 @@ export class RefreshHandler {
         this.onRefreshComplete();
       }
     } catch (error) {
-      console.error('[RefreshHandler] Erro ao atualizar:', error);
+      /**#LOG_UI*/
+      Logger.error('RefreshHandler', 'Erro ao atualizar:', error);
       const { Toaster } = await import('../../../../../shared/ui/feedback/Toaster.js');
       const toaster = new Toaster();
       toaster.show('Erro ao atualizar lista. Tente novamente.', 'error');

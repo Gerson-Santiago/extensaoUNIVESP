@@ -35,6 +35,7 @@ describe('WeekContentScraper', () => {
       // Verificar (Assert)
       expect(items).toHaveLength(1);
       expect(items[0]).toEqual({
+        contentId: '123',
         name: 'Videoaula 1 - Introdução',
         url: 'https://ava.univesp.br/mod/url/view.php?id=123',
         type: 'url',

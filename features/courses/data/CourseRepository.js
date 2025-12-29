@@ -1,3 +1,4 @@
+import { Logger } from '../../../shared/utils/Logger.js';
 import { CourseStorage } from './CourseStorage.js';
 
 /**
@@ -22,7 +23,8 @@ export class CourseRepository {
       if (callback) callback(courses);
       return courses;
     } catch (error) {
-      console.error('Erro ao carregar cursos:', error);
+      /**#LOG_REPOSITORY*/
+      Logger.error('CourseRepository', 'Erro ao carregar cursos:', error);
       if (callback) callback([]);
       return [];
     }
@@ -38,10 +40,13 @@ export class CourseRepository {
       await storage.saveAll(courses);
       if (callback) callback();
     } catch (error) {
-      console.error('[DEBUG-RACE] 🔴 ERRO AO SALVAR CURSOS:', error);
-      console.error('[DEBUG-RACE] Tipo erro:', typeof error);
-      console.error('[DEBUG-RACE] Error.message:', error?.message);
-      console.error('[DEBUG-RACE] Error.stack:', error?.stack);
+      /**#LOG_REPOSITORY*/
+      Logger.error('CourseRepository', '[DEBUG-RACE] 🔴 ERRO AO SALVAR CURSOS:', {
+        error,
+        type: typeof error,
+        message: error?.message,
+        stack: error?.stack,
+      });
     }
   }
 
@@ -71,7 +76,8 @@ export class CourseRepository {
       const exists = courses.some((c) => c.url === url);
 
       if (exists) {
-        console.warn(`Curso com URL já existe: ${url}`);
+        /**#LOG_REPOSITORY*/
+        Logger.warn('CourseRepository', `Curso com URL já existe: ${url}`);
         if (callback) callback(false, 'Matéria já adicionada anteriormente.');
         return;
       }
@@ -90,7 +96,8 @@ export class CourseRepository {
 
       if (callback) callback(true, 'Matéria adicionada com sucesso!');
     } catch (error) {
-      console.error(error);
+      /**#LOG_REPOSITORY*/
+      Logger.error('CourseRepository', 'Erro ao adicionar curso', error);
       if (callback) callback(false, 'Erro ao adicionar.');
     }
   }
@@ -130,7 +137,8 @@ export class CourseRepository {
 
       if (callback) callback(addedCount, ignoredCount);
     } catch (error) {
-      console.error(error);
+      /**#LOG_REPOSITORY*/
+      Logger.error('CourseRepository', 'Erro ao adicionar em lote', error);
       if (callback) callback(0, 0);
     }
   }
@@ -145,7 +153,8 @@ export class CourseRepository {
       const newCourses = courses.filter((item) => item.id !== id);
       await this.saveItems(newCourses, callback);
     } catch (e) {
-      console.error(e);
+      /**#LOG_REPOSITORY*/
+      Logger.error('CourseRepository', 'Erro ao deletar curso', e);
     }
   }
 
@@ -162,11 +171,13 @@ export class CourseRepository {
         courses[index] = { ...courses[index], ...updates };
         await this.saveItems(courses, callback);
       } else {
-        console.warn(`Item com id ${id} não encontrado para atualização.`);
+        /**#LOG_REPOSITORY*/
+        Logger.warn('CourseRepository', `Item com id ${id} não encontrado para atualização.`);
         if (callback) callback();
       }
     } catch (e) {
-      console.error(e);
+      /**#LOG_REPOSITORY*/
+      Logger.error('CourseRepository', 'Erro ao atualizar curso', e);
     }
   }
 }

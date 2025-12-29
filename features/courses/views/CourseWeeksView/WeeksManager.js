@@ -8,6 +8,7 @@ import { WeekActivitiesService } from '../../services/WeekActivitiesService.js';
 import { CourseRepository } from '../../data/CourseRepository.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 import { PreviewManager } from './PreviewManager.js';
+import { Logger } from '../../../../shared/utils/Logger.js';
 
 export class WeeksManager {
   /**
@@ -117,10 +118,14 @@ export class WeeksManager {
 
       if (this.course && this.course.id) {
         // Run update in background, do not block
-        CourseRepository.update(this.course.id, { weeks: this.course.weeks }).catch(console.error);
+        CourseRepository.update(this.course.id, { weeks: this.course.weeks }).catch((err) => {
+          /**#LOG_REPOSITORY*/
+          Logger.error('WeeksManager', 'Erro ao persistir atualização:', err);
+        });
       }
     } catch (error) {
-      console.error(`[CourseWeeksView] Erro ao carregar atividades [${method}]:`, error);
+      /**#LOG_UI*/
+      Logger.error('WeeksManager', `Erro ao carregar atividades [${method}]:`, error);
       this.toaster.show('Erro ao carregar atividades. Tente novamente.', 'error');
       week.items = [];
 
@@ -167,7 +172,8 @@ export class WeeksManager {
       week.items = data;
       PreviewManager.renderPreview(week, weekElement);
     } catch (error) {
-      console.error('Erro ao carregar preview:', error);
+      /**#LOG_UI*/
+      Logger.error('WeeksManager', 'Erro ao carregar preview:', error);
       this.toaster.show('Erro ao carregar preview. Tente novamente.', 'error');
       if (weekElement) weekElement.classList.remove('week-item-active');
       this.activeWeek = null;

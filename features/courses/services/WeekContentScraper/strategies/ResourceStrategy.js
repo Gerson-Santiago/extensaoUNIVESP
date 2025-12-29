@@ -32,6 +32,7 @@ export class ResourceStrategy extends ContentStrategy {
       name,
       url,
       type: 'pdf', // Mapping resource to 'pdf' type as per original logic
+      contentId: this.extractContentId(element),
       ...(status && { status }),
     };
   }

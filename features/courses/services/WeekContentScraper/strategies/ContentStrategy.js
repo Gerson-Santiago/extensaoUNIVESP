@@ -48,4 +48,21 @@ export class ContentStrategy {
     }
     return undefined;
   }
+
+  /**
+   * Helper para extrair o ID do conteúdo (usado para navegação/scroll).
+   * @param {HTMLElement} element
+   * @returns {string|null}
+   */
+  extractContentId(element) {
+    if (element.id && element.id.startsWith('contentListItem:')) {
+      return element.id.replace('contentListItem:', '');
+    }
+    // Fallback: tentar pegar do div.item interno
+    const itemDiv = element.querySelector('.item');
+    if (itemDiv && itemDiv.id) {
+      return itemDiv.id;
+    }
+    return null;
+  }
 }

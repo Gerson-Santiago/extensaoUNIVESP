@@ -2,14 +2,10 @@
  * @typedef {import('../models/Week.js').WeekItem} WeekItem
  */
 
+import { Logger } from '../../../shared/utils/Logger.js';
 import { StrategyRegistry } from './WeekContentScraper/StrategyRegistry.js';
 
 export class WeekContentScraper {
-  /**
-   * Scrapes week content from AVA by injecting script into active tab
-   * @param {string} _weekUrl - URL da semana
-   * @returns {Promise<WeekItem[]>}
-   */
   /**
    * Scrapes week content from AVA by injecting script into active tab
    * @param {string} _weekUrl - URL da semana
@@ -29,7 +25,7 @@ export class WeekContentScraper {
       try {
         tab = await chrome.tabs.get(targetTabId);
       } catch (e) {
-        console.warn('[WeekContentScraper] Falha ao obter aba explicita:', e);
+        Logger.warn('WeekContentScraper', 'Falha ao obter aba explicita:', e); /**#LOG_SCRAPER*/
       }
     }
 
@@ -48,26 +44,40 @@ export class WeekContentScraper {
 
       // 1. Get all AVA tabs
       const tabs = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
-      console.warn('[DEBUG-RACE] Total de abas AVA encontradas:', tabs.length);
-      tabs.forEach((t, i) => console.warn(`[DEBUG-RACE] Aba ${i}: id=${t.id}, url=${t.url}`));
+      Logger.debug(
+        'WeekContentScraper',
+        `[DEBUG-RACE] Total de abas AVA encontradas: ${tabs.length}`
+      ); /**#LOG_SCRAPER*/
+
+      tabs.forEach((t, i) => {
+        Logger.debug(
+          'WeekContentScraper',
+          `[DEBUG-RACE] Aba ${i}: id=${t.id}, url=${t.url}`
+        ); /**#LOG_SCRAPER*/
+      });
 
       // 2. Try to find EXACT match (course AND week)
       if (targetCourseId && targetContentId) {
         tab = tabs.find(
           (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
         );
-        console.warn(
+
+        Logger.debug(
+          'WeekContentScraper',
           '[DEBUG-RACE] Tentou match EXATO (course + content):',
           tab ? `ENCONTROU id=${tab.id}` : 'NÃO ENCONTROU'
-        );
+        ); /**#LOG_SCRAPER*/
 
         // 3. If exact not found, find course tab and navigate
         if (!tab) {
           tab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
-          console.warn(
+
+          Logger.debug(
+            'WeekContentScraper',
             '[DEBUG-RACE] Tentou match por CURSO:',
             tab ? `ENCONTROU id=${tab.id}` : 'NÃO ENCONTROU'
-          );
+          ); /**#LOG_SCRAPER*/
+
           if (tab && _weekUrl) {
             await chrome.tabs.update(tab.id, { url: _weekUrl, active: true });
 
@@ -81,19 +91,21 @@ export class WeekContentScraper {
               targetContentId
             );
             if (!isValid) {
-              // throw new Error('Navegação falhou - URL não corresponde ao esperado');
-              console.warn(
-                '[WeekContentScraper] Falha na validação pós-navegação, mas tentando continuar...'
-              );
+              Logger.warn(
+                'WeekContentScraper',
+                'Falha na validação pós-navegação, mas tentando continuar...'
+              ); /**#LOG_SCRAPER*/
             }
           }
         }
       }
 
       // 4. Strict Validation: If no specific tab found, FAIL.
-      // Do NOT fallback to active tab or first tab, as this causes cross-contamination.
       if (!tab) {
-        console.warn('[WeekContentScraper] Nenhuma aba encontrada com match de URL exato.');
+        Logger.warn(
+          'WeekContentScraper',
+          'Nenhuma aba encontrada com match de URL exato.'
+        ); /**#LOG_SCRAPER*/
       }
     }
 
@@ -101,8 +113,14 @@ export class WeekContentScraper {
       throw new Error('Nenhuma aba do AVA encontrada para realizar o scraping.');
     }
 
-    console.warn('[DEBUG-RACE] ✅ ABA ESCOLHIDA FINAL: id=' + tab.id + ', url=' + tab.url);
-    console.warn('[DEBUG-RACE] URL esperada (week.url): ' + _weekUrl);
+    Logger.debug(
+      'WeekContentScraper',
+      `[DEBUG-RACE] ✅ ABA ESCOLHIDA FINAL: id=${tab.id}, url=${tab.url}`
+    ); /**#LOG_SCRAPER*/
+    Logger.debug(
+      'WeekContentScraper',
+      `[DEBUG-RACE] URL esperada (week.url): ${_weekUrl}`
+    ); /**#LOG_SCRAPER*/
 
     // Wait for page to be fully loaded (more robust approach)
     let retries = 3;

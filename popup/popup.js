@@ -1,6 +1,7 @@
 import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../shared/utils/settings.js';
 import { BrowserUtils } from '../shared/utils/BrowserUtils.js';
 import { Tabs } from '../shared/utils/Tabs.js';
+import { Logger } from '../shared/utils/Logger.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   /** @type {HTMLInputElement | null} */
@@ -63,7 +64,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (openSidePanelBtn) {
     openSidePanelBtn.addEventListener('click', () => {
       BrowserUtils.openSidePanel().catch((error) => {
-        console.error('Erro ao abrir painel:', error);
+        /**#LOG_UI*/
+        Logger.error('Popup', 'Erro ao abrir painel:', error);
         alert(error.message);
       });
     });

@@ -1,100 +1,346 @@
-# Guia de Revisão de Testes com Jest (Foco em Engenharia e Qualidade)
+# Scripts de Debug para Diagnóstico do Bug de Scroll
 
-Ao revisar testes, a mentalidade deve mudar em relação à revisão de código de produção. O objetivo não é apenas "ver se passa", mas garantir que o teste seja **confiável**, **útil a longo prazo** e **comunicativo**.
+## 📌 Como Usar
 
-Na engenharia de software, tratamos o código de teste como **cidadão de primeira classe**. Ele deve ser tão bem cuidado quanto o código da aplicação.
-
-Aqui estão os pontos cruciais para analisar, divididos por conceitos de engenharia e especificidades do Jest:
-
-## 1. O Princípio F.I.R.S.T.
-
-Antes de olhar a sintaxe, avalie se os testes seguem este acrônimo clássico da engenharia de qualidade:
-
-* **F - Fast (Rápido):** O teste demora muito? Se sim, os desenvolvedores vão parar de rodá-lo localmente.
-* *Dica:* Verifique se estão fazendo chamadas de rede reais em vez de usar Mocks.
-
-
-* **I - Independent (Independente):** Um teste falha se for rodado numa ordem diferente? Eles compartilham estado global?
-* *No Jest:* Cuidado com variáveis declaradas fora do `beforeEach`.
-
-
-* **R - Repeatable (Repetível):** O teste passa na sua máquina mas falha no CI/CD?
-* *Causas comuns:* Fuso horário (`Date`), aleatoriedade (`Math.random`) ou dependência de dados externos não mockados.
-
-
-* **S - Self-validating (Auto-validável):** O teste diz claramente "Passou" ou "Falhou"? Evite testes que exigem inspeção manual de logs para saber se funcionou.
-* **T - Timely (Oportuno):** O teste foi escrito junto com a feature (ou antes, no TDD) ou meses depois apenas para cumprir tabela?
-
-## 2. O Que Validar na Revisão (Checklist Técnico)
-
-### A. Testando Comportamento vs. Implementação
-
-Este é o erro mais comum. O teste deve validar **o que** o código faz, não **como** ele faz.
-
-* **Sinal de Alerta:** O teste quebra toda vez que você refatora uma função interna, mesmo que o resultado final para o usuário não tenha mudado.
-* **No Jest:** Evite espionar (`jest.spyOn`) funções privadas ou internas demais. Foque na API pública do módulo.
-
-### B. Qualidade das Asserções (Expects)
-
-* **Asserções Fracas:** Evite `expect(resultado).toBeDefined()` ou `expect(resultado).toBeTruthy()`. Isso deixa passar muitos bugs.
-* **O que buscar:** Seja específico. Prefira `expect(resultado).toEqual({ id: 1, status: 'ativo' })`.
-* **Falsos Positivos:** Verifique se o teste não está passando "por sorte". Por exemplo: testar se um array tem `length > 0` quando deveria testar se ele contém exatamente o item `X`.
-
-### C. Isolamento e Mocks
-
-* **Limpeza:** O `jest.clearAllMocks()` ou `resetAllMocks()` está configurado? Se não, a contagem de chamadas de um teste pode vazar para o próximo.
-* **Over-mocking:** Se você tem 50 linhas de configuração de mock para 2 linhas de teste, algo está errado. Talvez o código esteja muito acoplado ou você esteja mockando coisas desnecessárias (como bibliotecas utilitárias simples).
-
-### D. Tratamento de Assincronicidade
-
-O Jest é síncrono por padrão. Erros aqui geram os piores *flaky tests* (testes intermitentes).
-
-* **Verifique:** O teste usa `async/await` corretamente?
-* **Promessas:** Se houver uma Promise, o teste retorna a Promise ou usa `await`? Se não, o Jest pode finalizar o teste antes da asserção rodar (dando um falso "Sucesso").
-
-## 3. Manutenibilidade, Legibilidade e Idioma
-
-### A. Idioma e Localização (pt-BR)
-
-A comunicação do teste é fundamental para a equipe.
-
-* **Regra:** Todo o contexto textual deve estar em **Português (pt-BR)**. Isso inclui:
-* Descrições dos blocos `describe` e `it`.
-* Comentários explicativos no código.
-* Logs de erro ou mensagens de debug deixadas no teste.
-
-
-
-### B. Descrições Narrativas
-
-O nome do teste deve ser uma frase que descreve a regra de negócio claramente em português.
-
-* *Ruim:* `it('should work', ...)` ou `test('login', ...)`
-* *Bom:* `it('deve lançar um erro caso o formato do email seja inválido', ...)`
-* *Dica:* Ao ler o output do terminal, deve parecer uma documentação do sistema em pt-BR.
-
-### C. Padrão AAA (Arrange, Act, Assert)
-
-O corpo do teste está organizado visualmente?
-
-1. **Arrange (Preparar):** Prepara os dados e mocks.
-2. **Act (Agir):** Executa a função.
-3. **Assert (Verificar):** Verifica o resultado.
-Isso ajuda muito na leitura rápida.
-
-### D. Snapshots com Cautela
-
-Snapshots do Jest (`expect(x).toMatchSnapshot()`) são úteis, mas perigosos.
-
-* **O Risco:** Desenvolvedores tendem a atualizar snapshots (`-u`) sem ler o que mudou quando o teste falha.
-* **Na Revisão:** Se o snapshot for muito grande (ex: 200 linhas de HTML/JSON), peça para mudar para asserções específicas em campos chave. Snapshot serve para garantir que a estrutura não mudou acidentalmente, não para validar lógica complexa.
+1. Abra a página do AVA onde estão as atividades (semana/módulo)
+2. Abra o DevTools (F12) → Console
+3. Cole e execute os scripts abaixo
 
 ---
 
-### Resumo para o Revisor
+## Script 1: Análise de Estrutura DOM das Atividades
 
-Ao olhar o Pull Request, faça a si mesmo estas três perguntas:
+```javascript
+// 🔍 DEBUG: Analisar estrutura DOM das atividades
+(function analyzeActivityDOM() {
+  console.group('🔍 [DEBUG] Análise DOM - Atividades');
+  
+  // 1. Encontrar todos os elementos de atividade
+  const activities = document.querySelectorAll('li[id^="contentListItem"]');
+  console.log('✅ Total de atividades encontradas:', activities.length);
+  
+  if (activities.length === 0) {
+    console.warn('⚠️ Nenhuma atividade encontrada com seletor padrão!');
+    console.log('💡 Tentando seletores alternativos...');
+    
+    const alternatives = [
+      'li[id*="content"]',
+      '.activity-item',
+      '[data-content-id]',
+      'li.listitem'
+    ];
+    
+    alternatives.forEach(selector => {
+      const found = document.querySelectorAll(selector);
+      if (found.length > 0) {
+        console.log(`   ✓ ${selector}: ${found.length} elementos`);
+      }
+    });
+  }
+  
+  // 2. Analisar os primeiros 3 elementos em detalhes
+  console.group('📋 Amostra de IDs e Estrutura (primeiros 3)');
+  Array.from(activities).slice(0, 3).forEach((el, idx) => {
+    console.group(`Atividade #${idx + 1}`);
+    console.log('ID completo:', el.id);
+    console.log('Classes:', el.className);
+    console.log('Data attributes:', Object.keys(el.dataset));
+    console.log('Altura:', el.offsetHeight, 'px');
+    console.log('Visível:', el.offsetParent !== null);
+    console.log('Nome da atividade:', el.querySelector('.item-title, h3, .title')?.textContent?.trim() || 'N/A');
+    console.groupEnd();
+  });
+  console.groupEnd();
+  
+  // 3. Container com scroll
+  console.group('📦 Container de Scroll');
+  const mainContent = document.getElementById('main-content-inner');
+  if (mainContent) {
+    console.log('✅ #main-content-inner encontrado');
+    console.log('   Altura total:', mainContent.scrollHeight, 'px');
+    console.log('   Altura visível:', mainContent.clientHeight, 'px');
+    console.log('   Scrollável:', mainContent.scrollHeight > mainContent.clientHeight);
+  } else {
+    console.warn('⚠️ #main-content-inner não encontrado');
+  }
+  console.groupEnd();
+  
+  // 4. Exportar IDs para clipboard (útil!)
+  const ids = Array.from(activities).map(el => el.id);
+  console.log('\n📋 IDs exportados (copie abaixo):');
+  console.log(JSON.stringify(ids, null, 2));
+  
+  console.groupEnd();
+  
+  return {
+    totalActivities: activities.length,
+    ids: ids,
+    mainContent: mainContent
+  };
+})();
+```
 
-1. **Confiança:** Se eu quebrar o código de produção intencionalmente agora, este teste vai falhar? (Se não falhar, o teste é inútil).
-2. **Clareza:** Se este teste falhar daqui a 6 meses, eu vou entender o porquê lendo apenas a descrição (em pt-BR) e a mensagem de erro?
-3. **Valor:** Estamos testando regras de negócio ou apenas testando se o JavaScript funciona (ex: testar se `a = b` atribui o valor)?
+---
+
+## Script 2: Testar Scroll para ID Específico
+
+```javascript
+// 🎯 DEBUG: Testar scroll ROBUSTO (Lógica igual ao NavigationService)
+(async function testScrollToActivity(activityIds) {
+  console.group('🎯 [DEBUG] Teste de Scroll Robusto - Batch');
+  
+  // Lista de IDs para teste (extraídos dos logs)
+  const targets = Array.isArray(activityIds) ? activityIds : [activityIds];
+  console.log('Targets:', targets);
+
+  // 1. Estratégia de Identificação
+  const normalizeStrategy = (id) => {
+     const shortId = id.replace('contentListItem:', '');
+     return {
+        fullId: id.includes('contentListItem:') ? id : `contentListItem:${id}`,
+        shortId: shortId,
+        selectors: [
+           `#${id.includes('contentListItem:') ? id.replace(/:/g, '\\:') : 'contentListItem\\:' + id}`,
+           `li[id^="contentListItem:${shortId}"]`,
+           `li[id*="${shortId}"]`,
+           `#${shortId}`
+        ]
+     };
+  };
+
+  const delay = ms => new Promise(r => setTimeout(r, ms));
+
+  for (const activityId of targets) {
+      console.group(`Testando ID: ${activityId}`);
+      
+      const { fullId, shortId, selectors } = normalizeStrategy(activityId);
+      
+      // 2. Busca
+      let element = document.getElementById(fullId) || document.getElementById(shortId);
+      if (!element) {
+         for (const sel of selectors) {
+            element = document.querySelector(sel);
+            if (element) {
+               console.log(`✓ Elemento encontrado via seletor: ${sel}`);
+               break;
+            }
+         }
+      }
+
+      if (!element) {
+        console.error('❌ Elemento NÃO encontrado!');
+        console.groupEnd();
+        continue;
+      }
+      
+      // 3. Scroll e Highlight
+      console.log('🚀 Scroll...');
+      element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      
+      // Efeito Visual
+      const originalBg = element.style.backgroundColor;
+      element.style.transition = 'all 0.5s';
+      element.style.backgroundColor = '#fff3cd'; // Amarelo
+      element.style.outline = '2px solid #ffc107';
+
+      await delay(1000); // Pausa para ver o scroll
+
+      // Reset
+      element.style.backgroundColor = originalBg || '';
+      element.style.outline = '';
+      
+      console.log('✅ OK');
+      console.groupEnd();
+      await delay(500);
+  }
+  
+  console.log('🏁 Teste Batch Finalizado.');
+  console.groupEnd();
+  
+})([
+  '_1767543_1', // Semana 3 – Formato
+  '_1767545_1', // Videoaula 7
+  '_1767547_1', // Quiz Videoaula 7
+  '_1767549_1', // Videoaula 8
+  '_1767551_1'  // Quiz Videoaula 8
+]);
+```
+
+---
+
+## ✅ Checklist de Verificação (Pós-Correção)
+
+Agora que a extensão foi atualizada, use este checklist para validar:
+
+1.  **Teste de Scroll Simples**: Clique em "Ir" de uma atividade visível. O scroll deve apenas ajustar levemente.
+2.  **Teste de Scroll Longo**: Clique em "Ir" de uma atividade no final da página. A página deve rolar até lá.
+3.  **Teste de Carregamento**: Abra a aba do AVA, dê refresh (F5) e **imediatamente** tente clicar em "Ir" no popup da extensão antes da página carregar totalmente. A extensão deve aguardar (MutationObserver) e rolar assim que o item aparecer.
+
+
+---
+
+## Script 3: Monitorar Logs da Extensão
+
+```javascript
+// 📡 DEBUG: Interceptar console.log da extensão
+(function interceptExtensionLogs() {
+  const originalLog = console.log;
+  const originalWarn = console.warn;
+  const originalError = console.error;
+  
+  console.log = function(...args) {
+    if (args[0]?.includes?.('[Extension]')) {
+      console.group('📨 [EXTENSION LOG]');
+      originalLog.apply(console, args);
+      console.trace(); // Stack trace
+      console.groupEnd();
+    } else {
+      originalLog.apply(console, args);
+    }
+  };
+  
+  console.warn = function(...args) {
+    if (args[0]?.includes?.('[NavigationService]')) {
+      console.group('⚠️ [EXTENSION WARN]');
+      originalWarn.apply(console, args);
+      console.trace();
+      console.groupEnd();
+    } else {
+      originalWarn.apply(console, args);
+    }
+  };
+  
+  console.error = function(...args) {
+    if (args[0]?.includes?.('[NavigationService]')) {
+      console.group('❌ [EXTENSION ERROR]');
+      originalError.apply(console, args);
+      console.trace();
+      console.groupEnd();
+    } else {
+      originalError.apply(console, args);
+    }
+  };
+  
+  originalLog('✅ [DEBUG] Logs da extensão interceptados! Clique em "Ir" e observe.');
+})();
+```
+
+---
+
+## Script 4: Medir Performance de Estratégias de Scroll
+
+```javascript
+// ⚡ DEBUG: Comparar performance de estratégias de scroll
+(async function compareScrollStrategies(targetId) {
+  console.group('⚡ [DEBUG] Comparação de Performance');
+  
+  const normalizeId = (id) => id.includes('contentListItem:') ? id : `contentListItem:${id}`;
+  const fullId = normalizeId(targetId);
+  const shortId = targetId.replace('contentListItem:', '');
+  
+  const strategies = {
+    'getElementById (full)': () => document.getElementById(fullId),
+    'getElementById (short)': () => document.getElementById(shortId),
+    'querySelector (partial)': () => document.querySelector(`li[id*="${shortId}"]`),
+    'querySelector (starts-with)': () => document.querySelector(`li[id^="contentListItem:${shortId}"]`)
+  };
+  
+  const results = {};
+  
+  for (const [name, fn] of Object.entries(strategies)) {
+    performance.mark(`${name}-start`);
+    const element = fn();
+    performance.mark(`${name}-end`);
+    const measure = performance.measure(`${name}-measure`, `${name}-start`, `${name}-end`);
+    
+    results[name] = {
+      found: !!element,
+      time: measure.duration,
+      element: element?.id || null
+    };
+  }
+  
+  console.table(results);
+  
+  // Recomendar melhor estratégia
+  const fastest = Object.entries(results)
+    .filter(([_, r]) => r.found)
+    .sort((a, b) => a[1].time - b[1].time)[0];
+  
+  if (fastest) {
+    console.log(`\n🏆 Estratégia mais rápida: ${fastest[0]} (${fastest[1].time.toFixed(4)}ms)`);
+  }
+  
+  console.groupEnd();
+  return results;
+})(/* COLE O ID AQUI */);
+```
+
+---
+
+## Script 5: Capturar Estado Completo para Relatório
+
+```javascript
+// 📸 DEBUG: Capturar estado completo do DOM
+(function captureFullState() {
+  const report = {
+    timestamp: new Date().toISOString(),
+    url: window.location.href,
+    pageTitle: document.title,
+    activities: [],
+    scrollContainer: null,
+    viewport: {
+      width: window.innerWidth,
+      height: window.innerHeight,
+      scrollY: window.scrollY
+    }
+  };
+  
+  // Atividades
+  const activities = document.querySelectorAll('li[id^="contentListItem"]');
+  report.activities = Array.from(activities).map((el, idx) => ({
+    index: idx + 1,
+    id: el.id,
+    offsetTop: el.offsetTop,
+    offsetHeight: el.offsetHeight,
+    visible: el.offsetParent !== null,
+    name: el.querySelector('.item-title, h3, .title')?.textContent?.trim() || 'N/A'
+  }));
+  
+  // Container
+  const mainContent = document.getElementById('main-content-inner');
+  if (mainContent) {
+    report.scrollContainer = {
+      id: 'main-content-inner',
+      scrollHeight: mainContent.scrollHeight,
+      clientHeight: mainContent.clientHeight,
+      scrollTop: mainContent.scrollTop,
+      isScrollable: mainContent.scrollHeight > mainContent.clientHeight
+    };
+  }
+  
+  console.log('📸 Estado capturado:');
+  console.log(JSON.stringify(report, null, 2));
+  
+  // Copiar para clipboard (se suportado)
+  if (navigator.clipboard) {
+    navigator.clipboard.writeText(JSON.stringify(report, null, 2))
+      .then(() => console.log('✅ Relatório copiado para clipboard!'))
+      .catch(() => console.log('⚠️ Não foi possível copiar automaticamente'));
+  }
+  
+  return report;
+})();
+```
+
+---
+
+## 🎯 Próximos Passos
+
+Após executar os scripts:
+
+1. Capturar outputs de todos os scripts
+2. Identificar padrões nos IDs e seletores
+3. Medir performance das estratégias
+4. Documentar findings no `implementation_plan.md`
+5. Criar solução otimizada baseada em dados reais

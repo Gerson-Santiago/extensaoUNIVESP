@@ -11,6 +11,8 @@
  * @property {Object} storage - Dados brutos do chrome.storage.local
  */
 
+import { Logger } from '../../../shared/utils/Logger.js';
+
 export class BackupService {
   static VERSION = '1.0.0';
 
@@ -48,7 +50,8 @@ export class BackupService {
         saveAs: true,
       });
     } catch (error) {
-      console.error('[BackupService] Erro ao exportar:', error);
+      /**#LOG_SYSTEM*/
+      Logger.error('BackupService', 'Erro ao exportar:', error);
       throw new Error('Falha ao criar backup dos dados.');
     }
   }
@@ -67,9 +70,9 @@ export class BackupService {
         throw new Error('Formato de arquivo inválido.');
       }
 
-      // eslint-disable-next-line no-console
-      console.log(
-        `[BackupService] Importando backup de ${backup.meta.date} (v${backup.meta.version})`
+      Logger.info(
+        'BackupService',
+        `Importando backup de ${backup.meta.date} (v${backup.meta.version})`
       );
 
       // Salvar dados
@@ -85,7 +88,8 @@ export class BackupService {
         date: backup.meta.date,
       };
     } catch (error) {
-      console.error('[BackupService] Erro ao importar:', error);
+      /**#LOG_SYSTEM*/
+      Logger.error('BackupService', 'Erro ao importar:', error);
       throw error;
     }
   }

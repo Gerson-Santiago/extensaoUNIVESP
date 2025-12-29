@@ -3,6 +3,7 @@ import { scrapeAvailableTerms, processSelectedCourses } from '../services/BatchS
 import { CourseRepository } from '../../data/CourseRepository.js';
 import { parseTerm } from '../../logic/TermParser.js';
 import { Tabs } from '../../../../shared/utils/Tabs.js';
+import { Logger } from '../../../../shared/utils/Logger.js';
 
 export class BatchImportModal extends Modal {
   constructor(onSuccess) {
@@ -82,7 +83,8 @@ export class BatchImportModal extends Modal {
           '<div style="color:red; text-align:center;">Não foi possível ler os cursos.</div>';
       }
     } catch (e) {
-      console.error(e);
+      /**#LOG_UI*/
+      Logger.error('BatchImportModal', 'Erro de comunicação com a página.', e);
       status.textContent = 'Erro de comunicação com a página.';
       status.style.color = 'red';
     }
@@ -200,7 +202,8 @@ export class BatchImportModal extends Modal {
           });
         }
       } catch (err) {
-        console.error(err);
+        /**#LOG_UI*/
+        Logger.error('BatchImportModal', 'Erro ao processar importação em lote:', err);
         status.textContent = 'Erro ao processar. Tente recarregar a página.';
         status.style.color = 'red';
       } finally {

@@ -4,6 +4,7 @@
  * @architecture Data Layer (repository/)
  */
 
+import { Logger } from '../../../shared/utils/Logger.js';
 import { ActivityProgress } from '../models/ActivityProgress.js';
 
 /**
@@ -28,7 +29,8 @@ export class ActivityProgressRepository {
       const allProgress = result[this.STORAGE_KEY] || {};
       return allProgress[activityId] || null;
     } catch (error) {
-      console.error('[ActivityProgressRepository] Error getting progress:', error);
+      /**#LOG_REPOSITORY*/
+      Logger.error('ActivityProgressRepository', 'Error getting progress:', error);
       return null;
     }
   }
@@ -53,7 +55,8 @@ export class ActivityProgressRepository {
 
       return filtered;
     } catch (error) {
-      console.error('[ActivityProgressRepository] Error getting many:', error);
+      /**#LOG_REPOSITORY*/
+      Logger.error('ActivityProgressRepository', 'Error getting many:', error);
       return /** @type {Record<string, ActivityProgressData>} */ ({});
     }
   }
@@ -72,7 +75,8 @@ export class ActivityProgressRepository {
 
       await chrome.storage.local.set({ [this.STORAGE_KEY]: allProgress });
     } catch (error) {
-      console.error('[ActivityProgressRepository] Error saving:', error);
+      /**#LOG_REPOSITORY*/
+      Logger.error('ActivityProgressRepository', 'Error saving:', error);
       throw error;
     }
   }
@@ -106,7 +110,8 @@ export class ActivityProgressRepository {
 
       await chrome.storage.local.set({ [this.STORAGE_KEY]: allProgress });
     } catch (error) {
-      console.error('[ActivityProgressRepository] Error deleting:', error);
+      /**#LOG_REPOSITORY*/
+      Logger.error('ActivityProgressRepository', 'Error deleting:', error);
       throw error;
     }
   }

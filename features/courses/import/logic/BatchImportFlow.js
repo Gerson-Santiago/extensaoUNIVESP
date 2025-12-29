@@ -1,4 +1,5 @@
 import { NavigationService } from '../../../../shared/services/NavigationService.js';
+import { Logger } from '../../../../shared/utils/Logger.js';
 
 export class BatchImportFlow {
   /**
@@ -41,7 +42,8 @@ export class BatchImportFlow {
         this.loginWaitModal.open();
       }
     } catch (err) {
-      console.error('BatchImportFlow Error:', err);
+      /**#LOG_SCRAPER*/
+      Logger.error('BatchImportFlow', 'BatchImportFlow Error:', err);
       // We could use a generic error modal or alert
       // alert('Erro no fluxo de importação: ' + err.message);
     }

@@ -84,19 +84,21 @@ Checklist simples para controle manual de tarefas.
 
 ---
 
-## 🛠️ Status da Feature (v2.9.0)
+## 🛠️ Status da Feature (v2.9.1)
 
-- ✅ **Navegação**: 100% Funcional (Abas e Chips sincronizados).
+- ✅ **Navegação**: 100% Funcional (Robust Scroll Navigation v2.9.1).
 - ✅ **Persistência**: Auto-save implementado em todas as etapas.
 - ✅ **Modularização**: Views complexas refatoradas.
 - ✅ **Error Handling**: SafeResult pattern em WeekActivitiesService.
+- ✅ **Logging**: Sistema centralizado com `Logger.js` e tags semânticas (#LOG_*).
 - ✅ **Renderização**: Container Freshness fix (DOM Zumbi eliminado).
-- ✅ **Testes**: 437 testes, 77.81% cobertura + 5 regression tests.
+- ✅ **Testes**: 455 testes passando (100% Green).
 
-**Destaques v2.9.0:**
-- 🛡️ **Blindagem**: `rendering-regression.test.js` protege contra bug de renderização
-- 🏗️ **Dual Storage**: localStorage (atividades) + sync storage (progresso)
-- ⚡ **Robustez**: Tratamento de erro estruturado (`{success, data, error}`)
+**Destaques v2.9.1:**
+- 🕵️ **Observabilidade**: Logging estruturado com tags semânticas em toda a feature.
+- 🚀 **Resiliência**: Navegação de scroll com `MutationObserver` (adeus timeouts arbitrários).
+- 🛡️ **Segurança**: Regex de tarefas otimizada contra ataques de negação de serviço (ReDoS).
+- 🧪 **Estabilidade**: 455 testes garantindo que nenhuma regressão ocorra.
 
 ---
-*Última atualização: 29/Dezembro/2025*
+*Última atualização: 29/Dezembro/2025 (Release v2.9.1)*

@@ -6,7 +6,10 @@ function updatePanelBehavior(behavior) {
       .setPanelBehavior({
         openPanelOnActionClick: behavior === 'sidepanel',
       })
-      .catch((err) => console.error(err));
+      .catch((err) => {
+        /**#LOG_SYSTEM*/
+        console.error(err);
+      });
   }
 
   // Explicitly set/unset popup to avoid conflicts

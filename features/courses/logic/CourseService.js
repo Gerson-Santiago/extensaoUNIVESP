@@ -1,6 +1,7 @@
 import { CourseRepository } from '../data/CourseRepository.js';
 import { ScraperService } from '../services/ScraperService.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
+import { Logger } from '../../../shared/utils/Logger.js';
 
 export class CourseService {
   /**
@@ -41,7 +42,8 @@ export class CourseService {
       await CourseRepository.add(name, tab.url, weeks);
       if (onSuccess) onSuccess('Matéria adicionada com sucesso!');
     } catch (error) {
-      console.error('Erro ao adicionar curso da aba atual:', error);
+      /**#LOG_SERVICE*/
+      Logger.error('CourseService', 'Erro ao adicionar curso da aba atual:', error);
       if (onError) onError('Erro interno ao processar aba.');
     }
   }

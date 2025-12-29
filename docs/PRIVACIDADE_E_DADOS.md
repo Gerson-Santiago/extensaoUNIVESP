@@ -1,7 +1,7 @@
 # 🔐 Privacidade, Dados e Conformidade LGPD
 
 > **Última Atualização:** 29/12/2025
-> **Versão:** 2.9.0
+> **Versão:** 2.9.1
 
 Este documento detalha como a extensão **AutoPreencher UNIVESP** coleta, processa e protege os dados dos usuários, servindo como referência para conformidade com a LGPD (Lei Geral de Proteção de Dados) e normas da UNIVESP.
 
@@ -28,8 +28,8 @@ A extensão visa apenas facilitar o acesso a serviços educacionais já contrata
 | :--- | :--- | :--- | :--- |
 | **Email do Aluno** | Auto-preenchimento no login do SEI | `chrome.storage.sync` | Google (Sync) |
 | **Estrutura de Cursos** | Organização no Painel Lateral (IDs, Nomes) | `chrome.storage.sync` | Google (Sync) |
-| **Cache de Atividades** (v2.9.0) | Performance (evita re-scraping) | `chrome.storage.local` (5MB quota) | **Nenhum** (local-only) |
-| **Progresso de Tarefas** (v2.9.0) | Checklist de conclusão | `chrome.storage.sync` | Google (Sync) |
+| **Cache de Atividades** (v2.9.1) | Performance (evita re-scraping) | `chrome.storage.local` (5MB quota) | **Nenhum** (local-only) |
+| **Progresso de Tarefas** (v2.9.1) | Checklist de conclusão | `chrome.storage.sync` | Google (Sync) |
 | **Links de Aulas** | Navegação rápida (Deep Linking) | `chrome.storage.sync` | Google (Sync) |
 | **Cookies de Sessão** | Autenticação no AVA/SEI | Memória/Browser | Servidores UNIVESP (Nativo) |
 

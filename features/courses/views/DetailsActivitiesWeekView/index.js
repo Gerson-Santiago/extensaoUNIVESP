@@ -7,6 +7,8 @@
  * Funcionalidade: Lista clicável que faz scroll até a atividade no AVA
  */
 
+import { Logger } from '../../../../shared/utils/Logger.js';
+import { ActivityFocusService } from '../../logic/ActivityFocusService.js';
 import { NavigationService } from '../../../../shared/services/NavigationService.js';
 import { HistoryService } from '../../../../shared/services/HistoryService.js';
 import { SkeletonManager } from './SkeletonManager.js';
@@ -77,9 +79,6 @@ export class DetailsActivitiesWeekView {
 
     // 🎯 UX Otimizada: Primeiro mostra Skeleton
     this.renderSkeleton();
-
-    // 🆕 Verificação de Persistência (Resgate de dados salvos)
-    // 🎯 UX Otimizada: Primeiro mostra Skeleton
 
     // 🎯 UX Otimizada: Se tem erro, mostra estado de erro
     if (this.week?.error) {
@@ -154,8 +153,11 @@ export class DetailsActivitiesWeekView {
     if (!container) return;
 
     // 🔧 FIX: Sempre criar novo renderer com container fresco
-    // Isso evita renderizar em um container "zumbi" se a view for re-renderizada
-    const renderer = new ActivityRenderer(container, this.itemFactory);
+    const context = {
+      courseName: this.week?.courseName || 'Unknown Course',
+      weekName: this.week?.name || 'Unknown Week',
+    };
+    const renderer = new ActivityRenderer(container, this.itemFactory, context);
     renderer.renderActivities(this.week?.items || []);
   }
 
@@ -181,22 +183,43 @@ export class DetailsActivitiesWeekView {
   }
 
   /**
-   * Faz scroll até a atividade na página do AVA usando o NavigationService.
+   * Faz scroll até a atividade na página do AVA usando o ActivityFocusService.
    * @param {string} activityId - ID único da atividade
    * @param {string} fallbackUrl - URL de fallback (não usada se week.url existir)
    */
   async scrollToActivity(activityId, fallbackUrl) {
+    // Log detalhado para debug de navegação
+    const context = {
+      course: this.week?.courseName || 'unknown',
+      week: this.week?.name || 'unknown',
+      weekUrl: this.week?.url || 'missing',
+      activityId,
+      fallbackUrl,
+    };
+
+    /**#LOG_UI*/
+    Logger.info(
+      'DetailsActivitiesWeekView',
+      `🖱️ Clique em "Ir" para Atividade: ${activityId}`,
+      context
+    );
+
     try {
       if (this.week && this.week.url) {
-        await NavigationService.openActivity(this.week.url, activityId);
+        await ActivityFocusService.focusActivity(this.week.url, activityId);
       } else {
+        /**#LOG_UI*/
+        Logger.warn('DetailsActivitiesWeekView', 'URL da semana ausente, usando fallback direto.', {
+          fallbackUrl,
+        });
         // Fallback se não tiver URL da semana (abre direto)
-        NavigationService.openCourse(fallbackUrl);
+        await NavigationService.openCourse(fallbackUrl);
       }
     } catch (error) {
-      console.error('[DetailsActivitiesWeekView] Erro ao navegar:', error);
+      /**#LOG_UI*/
+      Logger.error('DetailsActivitiesWeekView', 'Erro ao navegar:', error);
       // Fallback final
-      window.open(fallbackUrl, '_blank');
+      await NavigationService.openCourse(fallbackUrl);
     }
   }
 }

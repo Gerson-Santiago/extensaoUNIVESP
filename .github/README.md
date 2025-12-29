@@ -1,6 +1,6 @@
 # 📋 .github - Gestão de Projeto
 
-**Versão**: v2.9.0  
+**Versão**: v2.9.1  
 **Última atualização**: 2025-12-29
 
 ---
@@ -33,7 +33,6 @@
 - [`FEATURE-chips-navegacao-contextual.md`](FEATURE/FEATURE-chips-navegacao-contextual.md) - Navegação contextual
 
 ### 🔧 Débitos Técnicos
-- [`ISSUE-console-cleanup.md`](TECH_DEBT/ISSUE-console-cleanup.md) - Limpeza de console statements (ADR-001)
 - [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Estado de navegação
 - [`TECH_DEBT-cobertura-testes-courses.md`](TECH_DEBT/TECH_DEBT-cobertura-testes-courses.md) - Cobertura de testes
 
@@ -87,8 +86,7 @@
 1. **TECH_DEBT-breadcrumb-estado-global** - Impacta UX
 
 #### 🟡 Média Prioridade
-2. **TECH_DEBT-console-cleanup** - ADR-001 documenta, implementar
-3. **TECH_DEBT-cobertura-testes** - Aumentar cobertura para 85%+
+2. **TECH_DEBT-cobertura-testes** - Aumentar cobertura para 85%+
 
 #### 🟢 Baixa Prioridade
 5. **REFACTOR-modernizacao-es2024** - Melhorias de código (ROI questionável)
@@ -136,4 +134,4 @@ graph LR
 
 ---
 
-**Auditoria**: 2025-12-29 (v2.9.0 - Release com SafeResult Pattern e DOM Zumbi fix)
+**Auditoria**: 2025-12-29 (v2.9.1 - Release de Robustez com Logging Estruturado e Fix de Scroll)

@@ -4,6 +4,8 @@
  * Implementa o padrão "SafeResult" para evitar try/catch aninhados.
  */
 
+import { Logger } from './Logger.js';
+
 /**
  * Estrutura padronizada de resposta segura.
  * @template T
@@ -37,8 +39,9 @@ export async function trySafe(promise) {
     // Garante que o erro seja uma instância de Error
     const error = originalError instanceof Error ? originalError : new Error(String(originalError));
 
-    // Aqui poderíamos injetar um Logger centralizado no futuro
-    // console.error('[SafeResult Captured]:', error.message);
+    // Log de debug para rastreabilidade
+    /**#LOG_SYSTEM*/
+    Logger.debug('ErrorHandler', '[SafeResult Captured]', error);
 
     return { data: null, error, success: false };
   }

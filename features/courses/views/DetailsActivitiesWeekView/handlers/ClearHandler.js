@@ -5,6 +5,7 @@
  */
 
 import { WeekActivitiesService } from '../../../services/WeekActivitiesService.js';
+import { Logger } from '../../../../../shared/utils/Logger.js';
 
 /**
  * Gerencia limpeza de cache de atividades
@@ -42,7 +43,8 @@ export class ClearHandler {
         this.onBack();
       }
     } catch (error) {
-      console.error('[ClearHandler] Erro ao limpar cache:', error);
+      /**#LOG_UI*/
+      Logger.error('ClearHandler', 'Erro ao limpar cache:', error);
       alert('Erro ao limpar cache. Tente novamente.');
     }
   }

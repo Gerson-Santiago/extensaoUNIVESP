@@ -39,6 +39,7 @@ export class QuizStrategy extends ContentStrategy {
       name,
       url,
       type: 'quiz',
+      contentId: this.extractContentId(element),
       ...(status && { status }),
     };
   }

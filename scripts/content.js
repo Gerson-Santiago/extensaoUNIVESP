@@ -5,8 +5,8 @@ function preencherEmail() {
 
     // Só executa se o usuário tiver configurado um email válido
     if (typeof emailSalvo !== 'string' || !emailSalvo) {
-      // eslint-disable-next-line no-console
-      console.log('Extensão UNIVESP: Nenhum e-mail configurado na extensão.');
+      /**#LOG_CONTENT*/
+      console.warn('Extensão UNIVESP: Nenhum e-mail configurado na extensão.');
       return;
     }
 
@@ -24,8 +24,8 @@ function preencherEmail() {
 
       // Pinta de amarelo suave para confirmar
       campoEmail.style.backgroundColor = '#ffffd0';
-      // eslint-disable-next-line no-console
-      console.log('Extensão UNIVESP: Email preenchido automaticamente.');
+      /**#LOG_CONTENT*/
+      console.warn('Extensão UNIVESP: Email preenchido automaticamente.');
     }
   });
 }

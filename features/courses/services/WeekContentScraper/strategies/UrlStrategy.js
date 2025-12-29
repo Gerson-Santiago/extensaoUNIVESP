@@ -32,6 +32,7 @@ export class UrlStrategy extends ContentStrategy {
       name,
       url,
       type: 'url',
+      contentId: this.extractContentId(element),
       ...(status && { status }),
     };
   }

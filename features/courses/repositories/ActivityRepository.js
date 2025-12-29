@@ -1,8 +1,4 @@
-/**
- * @file ActivityRepository.js
- * @description Repositório para persistência de atividades das semanas
- * @architecture Screaming Architecture - Repository Layer
- */
+import { Logger } from '../../../shared/utils/Logger.js';
 
 export class ActivityRepository {
   /**
@@ -26,8 +22,8 @@ export class ActivityRepository {
    */
   static async save(courseId, contentId, items, method) {
     const key = this.#getKey(courseId, contentId);
-    // eslint-disable-next-line no-console
-    console.debug(`[ActivityRepository] Salvando dados na chave: ${key} (${items.length} itens)`);
+    /**#LOG_REPOSITORY*/
+    Logger.debug('ActivityRepository', `Salvando dados na chave: ${key} (${items.length} itens)`);
     const data = {
       items,
       method,
@@ -47,8 +43,8 @@ export class ActivityRepository {
    */
   static async get(courseId, contentId) {
     const key = this.#getKey(courseId, contentId);
-    // eslint-disable-next-line no-console
-    console.debug(`[ActivityRepository] Acessando cache para chave: ${key}`);
+    /**#LOG_REPOSITORY*/
+    Logger.debug('ActivityRepository', `Acessando cache para chave: ${key}`);
     const result = await chrome.storage.local.get([key]);
     return /** @type {Object<string, any>} */ (result)[key] || null;
   }

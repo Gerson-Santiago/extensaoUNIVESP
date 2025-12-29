@@ -3,6 +3,8 @@
  * @description Componente UI para exibição de chips de navegação contextual
  */
 
+import { Logger } from '../utils/Logger.js';
+
 /**
  * @typedef {import('../services/HistoryService.js').HistoryItem} HistoryItem
  */
@@ -62,7 +64,8 @@ export class ContextualChips {
         const chip = this._createChip(item);
         this.container.appendChild(chip);
       } catch (error) {
-        console.error('[ContextualChips] Erro ao criar chip:', error);
+        /**#LOG_UI*/
+        Logger.error('ContextualChips', 'Erro ao criar chip:', error);
       }
     });
   }

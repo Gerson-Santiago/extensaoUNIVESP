@@ -1,3 +1,4 @@
+import { Logger } from '../../../shared/utils/Logger.js';
 import { WeekContentScraper } from './WeekContentScraper.js';
 import { QuickLinksScraper } from './QuickLinksScraper.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
@@ -45,19 +46,16 @@ export class WeekActivitiesService {
         }
 
         if (!courseId || !contentId) {
-          console.warn(
-            '[WeekActivitiesService] ID do curso ou contentId ausente. Abortando cache.',
-            {
-              courseId,
-              contentId,
-            }
-          );
+          Logger.warn(
+            'WeekActivitiesService',
+            'ID do curso ou contentId ausente. Abortando cache.',
+            { courseId, contentId }
+          ); /**#LOG_SYSTEM*/
           // Se não tem ID, não tem como usar cache seguro. Prossegue para scraping se tiver URL.
         } else {
           // 1. Memória Cache Hit: Return if already scraped with the SAME method
           if (week.items && week.items.length > 0 && week.method === method) {
-            // eslint-disable-next-line no-console
-            console.debug('[WeekActivitiesService] Cache de memória utilizado.');
+            Logger.debug('WeekActivitiesService', 'Cache de memória utilizado.'); /**#LOG_SYSTEM*/
             return week.items;
           }
 
@@ -69,24 +67,25 @@ export class WeekActivitiesService {
             const isCompatible = cached && (cached.method === method || cached.method === 'DOM');
 
             if (isCompatible && cached.items && cached.items.length > 0) {
-              // eslint-disable-next-line no-console
-              console.debug(
-                '[WeekActivitiesService] Cache persistente encontrado e VÁLIDO:',
-                cached.items.length,
-                'items'
-              );
+              Logger.debug(
+                'WeekActivitiesService',
+                `Cache persistente encontrado e VÁLIDO: ${cached.items.length} items`
+              ); /**#LOG_SYSTEM*/
               week.items = cached.items;
               week.method = cached.method; // Restaurar método original
               return week.items;
             } else if (cached) {
-              // eslint-disable-next-line no-console
-              console.debug('[WeekActivitiesService] Cache encontrado mas incompatível ou vazio.', {
+              Logger.debug('WeekActivitiesService', 'Cache encontrado mas incompatível ou vazio.', {
                 req: method,
                 cached: cached.method,
-              });
+              }); /**#LOG_SYSTEM*/
             }
           } catch (e) {
-            console.warn('[WeekActivitiesService] Erro ao ler cache persistente:', e);
+            Logger.warn(
+              'WeekActivitiesService',
+              'Erro ao ler cache persistente:',
+              e
+            ); /**#LOG_SYSTEM*/
           }
         }
 
@@ -103,10 +102,19 @@ export class WeekActivitiesService {
         let toaster = null;
 
         try {
-          console.warn('[DEBUG-RACE] ========================================');
-          console.warn('[DEBUG-RACE] Iniciando scraping:', week.name);
-          console.warn('[DEBUG-RACE] URL alvo:', week.url);
-          console.warn('[DEBUG-RACE] Método:', method);
+          Logger.debug(
+            'WeekActivitiesService',
+            '[DEBUG-RACE] ========================================'
+          ); /**#LOG_SCRAPER*/
+          Logger.debug(
+            'WeekActivitiesService',
+            `[DEBUG-RACE] Iniciando scraping: ${week.name}`
+          ); /**#LOG_SCRAPER*/
+          Logger.debug(
+            'WeekActivitiesService',
+            `[DEBUG-RACE] URL alvo: ${week.url}`
+          ); /**#LOG_SCRAPER*/
+          Logger.debug('WeekActivitiesService', `[DEBUG-RACE] Método: ${method}`); /**#LOG_SCRAPER*/
 
           // 🆕 1. Garantir que aba correta está aberta ANTES do scraping
           const tab = await Tabs.openOrSwitchTo(week.url);
@@ -115,9 +123,10 @@ export class WeekActivitiesService {
             throw new Error('Falha ao abrir aba da semana');
           }
 
-          console.warn(
-            '[DEBUG-RACE] Tabs.openOrSwitchTo retornou: id=' + tab.id + ', status=' + tab.status
-          );
+          Logger.debug(
+            'WeekActivitiesService',
+            `[DEBUG-RACE] Tabs.openOrSwitchTo retornou: id=${tab.id}, status=${tab.status}`
+          ); /**#LOG_SCRAPER*/
 
           // 🆕 2. Aguardar carregamento completo se aba estiver carregando
           if (tab.status === 'loading') {
@@ -156,13 +165,16 @@ export class WeekActivitiesService {
           try {
             items = await scraper[scrapeMethod](week.url, tab.id);
           } catch (error) {
-            console.error('[WeekActivitiesService] Scraping falhou:', error);
+            Logger.error('WeekActivitiesService', 'Scraping falhou:', error); /**#LOG_SCRAPER*/
             if (toaster) {
               toaster.show('❌ Falha ao ler atividades da aba.', 'error', 4000);
             }
             throw error; // Propaga erro para impedir atualização de cache com dados vazios
           }
-          console.warn('[DEBUG-RACE] Scraping retornou:', items.length, 'itens');
+          Logger.debug(
+            'WeekActivitiesService',
+            `[DEBUG-RACE] Scraping retornou: ${items.length} itens`
+          ); /**#LOG_SCRAPER*/
 
           // 🎨 Feedback de sucesso ou FALLBACK
           if (items.length > 0) {
@@ -174,13 +186,19 @@ export class WeekActivitiesService {
               );
           } else if (method === 'QuickLinks') {
             // ⚠️ FALLBACK AUTOMÁTICO: QuickLinks falhou (0 itens), tentar DOM
-            console.warn('[DEBUG-RACE] QuickLinks retornou 0 itens. Tentando fallback para DOM...');
+            Logger.warn(
+              'WeekActivitiesService',
+              '[DEBUG-RACE] QuickLinks retornou 0 itens. Tentando fallback para DOM...'
+            ); /**#LOG_SCRAPER*/
             if (toaster)
               toaster.show('⚠️ Modo rápido vazio. Buscando modo completo...', 'info', 4000);
 
             // Executar fallback (passando tab.id também!)
             items = await WeekContentScraper.scrapeWeekContent(week.url, tab.id);
-            console.warn('[DEBUG-RACE] Fallback DOM retornou:', items.length, 'itens');
+            Logger.debug(
+              'WeekActivitiesService',
+              `[DEBUG-RACE] Fallback DOM retornou: ${items.length} itens`
+            ); /**#LOG_SCRAPER*/
 
             // Atualizar método para refletir a fonte real dos dados
             method = 'DOM';
@@ -201,7 +219,10 @@ export class WeekActivitiesService {
           // 7. Salvar cache PERSISTENTE
           if (items.length > 0) {
             await ActivityRepository.save(week.courseId, week.contentId, items, method);
-            console.warn('[WeekActivitiesService] Atividades persistidas com sucesso.');
+            Logger.debug(
+              'WeekActivitiesService',
+              'Atividades persistidas com sucesso.'
+            ); /**#LOG_SYSTEM*/
           }
 
           return items;

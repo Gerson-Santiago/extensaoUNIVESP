@@ -107,7 +107,7 @@ O uso de validação de tipos é mandatório.
 
 ---
 
-## 4. Features Implementadas (v2.9.0)
+## 4. Features Implementadas (v2.9.1)
 
 ### `courses` (Core) 🏆
 Gestão completa do ciclo de vida acadêmico com 56 diretórios e 105 arquivos.
@@ -152,7 +152,7 @@ courses/
 │   │   ├── strategies/ (7 strategies)
 │   │   └── StrategyRegistry.js
 │   └── WeekContentScraper.js
-├── tests/              # Unit & Integration Tests (437 totes)
+├── tests/              # Unit & Integration Tests (455 testes)
 │   ├── components/
 │   ├── CourseRepository/ (4 suites)
 │   ├── integration/
@@ -175,11 +175,11 @@ courses/
         └── ViewTemplate.js
 ```
 
-**Destaques v2.9.0:**
-- **SafeResult Pattern**: `WeekActivitiesService.js` usa `trySafe()` para error handling robusto
-- **Container Freshness**: `DetailsActivitiesWeekView` sempre usa container fresco (fix DOM Zumbi)
-- **Testes de Regressão**: [`rendering-regression.test.js`](courses/tests/views/DetailsActivitiesWeekView/rendering-regression.test.js) com 5 cenários blindando bug crítico
-- **Dual Repository**: `ActivityRepository` (localStorage) + `ActivityProgressRepository` (sync storage)
+**Destaques v2.9.1:**
+- **Logging Estruturado**: Centralização com `Logger.js` e tags semânticas (#LOG_UI, #LOG_SYSTEM).
+- **Navegação Robusta (Scroll)**: Nova lógica Resilience-First no `NavigationService` (ADR-007).
+- **Zero Warnings**: Linting estrito (`max-warnings=0`) e remoção de débitos técnicos de console.
+- **Segurança de Regex**: Proteção contra ReDoS no `TaskCategorizer`.
 
 ### `home` (Utility) 📦
 Dashboard central de acesso rápido.
@@ -207,15 +207,15 @@ Interface de reporte de erros e sugestões.
 
 ---
 
-## 5. Métricas (v2.9.0)
+## 5. Métricas (v2.9.1)
 
-| Métrica | Valor |
+| **Métrica | Valor |
 | :--- | :--- |
 | **Total de Diretórios** | 56 |
-| **Total de Arquivos** | 105 |
-| **Testes** | 437 passando (59 suites) |
-| **Cobertura** | 77.81% |
-| **Linhas de Código** | ~14.383 (apenas .js) |
+| **Total de Arquivos** | 108 |
+| **Testes** | 455 passando (60 suites) |
+| **Cobertura** | 78.5% (estimado) |
+| **Linhas de Código** | ~15.100 (apenas .js) |
 
 ---
 

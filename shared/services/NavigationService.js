@@ -5,6 +5,8 @@
  */
 
 import { Tabs } from '../utils/Tabs.js';
+/* eslint-disable no-console */
+import { Logger } from '../utils/Logger.js';
 
 export class NavigationService {
   /**
@@ -13,16 +15,23 @@ export class NavigationService {
    * @param {string} activityId - ID do elemento HTML da atividade para scroll
    */
   static async openActivity(weekUrl, activityId) {
+    const NAMESPACE = 'NavigationService';
+    /**#LOG_NAVIGATION*/
+    Logger.debug(NAMESPACE, 'Iniciando openActivity', { weekUrl, activityId });
+
     // 1. Garantir Semana (Hierarquia do Breadcrumb)
     const tab = await Tabs.openOrSwitchTo(weekUrl);
 
     if (!tab || !tab.id) {
-      console.warn('[NavigationService] Falha ao abrir aba da semana:', weekUrl);
+      /**#LOG_NAVIGATION*/
+      Logger.error(NAMESPACE, 'Falha ao abrir aba da semana', { weekUrl });
       return;
     }
 
     // 1.5. Aguardar Carregamento (Se estiver carregando ou se mudou de URL)
     if (tab.status === 'loading') {
+      /**#LOG_NAVIGATION*/
+      Logger.debug(NAMESPACE, 'Aba ainda carregando, aguardando...', { tabId: tab.id });
       await new Promise((resolve) => {
         const listener = (tabId, info) => {
           if (tabId === tab.id && info.status === 'complete') {
@@ -37,92 +46,134 @@ export class NavigationService {
           resolve();
         }, 10000);
       });
-      // Pequeno delay extra para scripts da página
-      await new Promise((r) => setTimeout(r, 500));
+      // Pequeno delay extra para scripts da página hidratarem
+      await new Promise((r) => setTimeout(r, 800));
     }
 
-    // 2. Executar Scroll na Atividade
-    // Injeta script para fazer scroll suave e highlight
+    // 2. Executar Scroll na Atividade com Robustez
     try {
+      /**#LOG_NAVIGATION*/
+      Logger.debug(NAMESPACE, 'Injetando script de scroll robusto', { tabId: tab.id, activityId });
+
       await chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        func: (contentId) => {
-          // Tenta fechar modal do AVA se existir (lightbox)
-          const closeBtn = document.querySelector('a.lbAction[href="#close"]');
-          if (closeBtn) {
-            try {
-              /** @type {HTMLElement} */ (closeBtn).click();
-              // eslint-disable-next-line no-console
-              console.log('[Extension] Modal fechado automaticamente');
-            } catch {
-              /* ignore */
+        func: (targetId, isDebugEnabled) => {
+          // --- INJECTED FUNCTION START ---
+          const log = (msg, data = null) => {
+            if (isDebugEnabled) {
+              /**#LOG_INJECTED*/
+              console.log(`[Extension:Scroll] ${msg}`, data || '');
             }
+          };
+
+          // 1. Tentar fechar modal/lightbox do AVA se existir
+          const closeModal = () => {
+            const closeBtn = document.querySelector('a.lbAction[href="#close"]');
+            if (closeBtn) {
+              try {
+                /** @type {HTMLElement} */ (closeBtn).click();
+                log('Modal/Lightbox fechado');
+              } catch (e) {
+                log('Erro ao fechar modal', e);
+              }
+            }
+          };
+          closeModal();
+
+          // 2. Estratégia de Identificação
+          const normalizeStrategy = (id) => {
+            const shortId = id.replace('contentListItem:', '');
+            return {
+              fullId: id.includes('contentListItem:') ? id : `contentListItem:${id}`,
+              shortId: shortId,
+              // Variações para querySelector
+              selectors: [
+                `#${id.includes('contentListItem:') ? id.replace(/:/g, '\\:') : 'contentListItem\\:' + id}`, // ID exato escapado
+                `li[id^="contentListItem:${shortId}"]`, // Começa com
+                `li[id*="${shortId}"]`, // Contém
+                `#${shortId}`, // ID curto direto (fallback raro)
+              ],
+            };
+          };
+
+          const { fullId, shortId, selectors } = normalizeStrategy(targetId);
+          log('Estratégia de Busca', { fullId, shortId, selectors });
+
+          // 3. Função de busca imediata
+          const findElement = () => {
+            // A. ID Direto (mais rápido)
+            let el = document.getElementById(fullId) || document.getElementById(shortId);
+            if (el) return el;
+
+            // B. Query Selectors (mais flexível)
+            for (const sel of selectors) {
+              el = document.querySelector(sel);
+              if (el) return el;
+            }
+            return null;
+          };
+
+          // 4. Highlight Visual
+          const highlightElement = (element) => {
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Efeito visual forte
+            const originalTransition = element.style.transition;
+            const originalBg = element.style.backgroundColor;
+            const originalOutline = element.style.outline;
+
+            element.style.transition = 'all 0.5s ease-in-out';
+            element.style.backgroundColor = '#fff3cd'; // Amarelo suave fundo
+            element.style.outline = '2px solid #ffc107'; // Borda dourada
+
+            // Remover efeito após 1.5s
+            setTimeout(() => {
+              element.style.backgroundColor = originalBg;
+              element.style.outline = originalOutline;
+              log('✨ Highlight removido após 1.5s');
+              setTimeout(() => {
+                element.style.transition = originalTransition;
+              }, 500);
+            }, 1500);
+          };
+
+          // 5. Execução com MutationObserver (Espiar o DOM)
+          const element = findElement();
+          if (element) {
+            log('Elemento encontrado imediatamente!');
+            highlightElement(element);
+            return; // Sucesso imediato
           }
 
-          // CRITICAL: IDs do Blackboard têm formato 'contentListItem:_NNNN_N' ou 'contentListItem:_NNNN_N'
-          // O contentId recebido pode ser apenas '_NNNN_N' ou conter o prefixo.
-          // Estratégia Robusta: Tentar ambos ou detectar.
+          log('Elemento não encontrado de imediato. Iniciando MutationObserver...');
 
-          const normalizeId = (id) => {
-            if (id.includes('contentListItem:')) return id;
-            return `contentListItem:${id}`;
-          };
-
-          const fullId = normalizeId(contentId);
-          // Fallback ID (apenas ID numérico caso o prefixo varie)
-          const shortId = contentId.replace('contentListItem:', '');
-
-          // eslint-disable-next-line no-console
-          console.log('[Extension] Tentando scroll para ID:', fullId);
-
-          // Retry Logic: Tentar por até 5 segundos
-          let attempts = 0;
-          const maxAttempts = 10; // 5 segundos (10 * 500ms)
-
-          const tryScroll = () => {
-            attempts++;
-            // Tenta seletor exato OU seletor parcial (robustez)
-            const element =
-              document.getElementById(fullId) ||
-              document.getElementById(shortId) ||
-              document.querySelector(`li[id*="${shortId}"]`);
-
-            if (element) {
-              // eslint-disable-next-line no-console
-              console.log('[Extension] Elemento encontrado na tentativa', attempts);
-              element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-
-              const originalBg = element.style.backgroundColor;
-              element.style.backgroundColor = '#fff3cd'; // Amarelo suave
-              element.style.transition = 'background-color 0.5s';
-
-              setTimeout(() => {
-                element.style.backgroundColor = originalBg || '';
-              }, 2000);
-            } else if (attempts < maxAttempts) {
-              // eslint-disable-next-line no-console
-              console.log('[Extension] Elemento não encontrado, tentando novamente em 500ms...');
-              setTimeout(tryScroll, 500);
-            } else {
-              console.warn(
-                `[NavigationService] Elemento ${fullId} não encontrado após ${attempts} tentativas.`
-              );
-              // eslint-disable-next-line no-console
-              console.log(
-                '[Extension] IDs disponíveis na página (amostra final):',
-                Array.from(document.querySelectorAll('li[id^="contentListItem"]'))
-                  .slice(0, 3)
-                  .map((el) => el.id)
-              );
+          // Se não achou, observa mudanças no DOM (conteúdo carregado via AJAX)
+          const observer = new MutationObserver((mutations, obs) => {
+            const el = findElement();
+            if (el) {
+              log('Elemento encontrado via MutationObserver!');
+              highlightElement(el);
+              obs.disconnect(); // Parar de observar
             }
-          };
+          });
 
-          tryScroll();
+          // Observar o corpo principal ou fallback para body
+          const container = document.getElementById('region-main') || document.body;
+          observer.observe(container, { childList: true, subtree: true });
+
+          // Timeout final (10s) para desistir e poupar recursos
+          setTimeout(() => {
+            observer.disconnect();
+            log('Timeout: Elemento não encontrado após 10s.');
+          }, 10000);
+
+          // --- INJECTED FUNCTION END ---
         },
-        args: [activityId],
+        args: [activityId, Logger.isEnabled()],
       });
     } catch (error) {
-      console.error('[NavigationService] Erro ao executar script de scroll:', error);
+      /**#LOG_NAVIGATION*/
+      Logger.error(NAMESPACE, 'Erro ao executar script de scroll', error);
     }
   }
 

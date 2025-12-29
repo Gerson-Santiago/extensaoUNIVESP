@@ -1,9 +1,9 @@
 # AutoPreencher UNIVESP (Extensão Chrome)
 
-> **Versão Atual**: v2.9.0
+> **Versão Atual**: v2.9.1
 > **Descrição**: Ferramenta de produtividade Open Source para alunos da UNIVESP.
 
-![Version](https://img.shields.io/badge/version-2.9.0-blue)
+![Version](https://img.shields.io/badge/version-2.9.1-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 
@@ -55,6 +55,7 @@ Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o
     *   🔒 Secretlint - Detecta API keys, tokens, passwords
     *   🔒 npm audit - Bloqueia CVE high/critical
     *   🔒 ESLint Security - Anti-injection, anti-XSS, anti-eval
+*   **Logging Estruturado**: Sistema centralizado de logs com tags semânticas para auditoria e debug eficiente.
 *   **Zero Erros**: Política de 0 erros de lint, 0 warnings e 0 erros de tipagem em código de produção.
 
 ---

@@ -131,6 +131,7 @@ describe('CourseRepository - Operações de Atualização e Remoção', () => {
       CourseRepository.update(99999999, { name: 'Teste' }, () => {
         // Verificar (Assert)
         expect(console.warn).toHaveBeenCalledWith(
+          '[CourseRepository]',
           'Item com id 99999999 não encontrado para atualização.'
         );
         expect(chrome.storage.sync.set).not.toHaveBeenCalled();

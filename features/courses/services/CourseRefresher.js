@@ -1,6 +1,7 @@
 import { ScraperService } from './ScraperService.js';
 import { CourseRepository } from '../data/CourseRepository.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
+import { Logger } from '../../../shared/utils/Logger.js';
 
 /**
  * @typedef {import('../models/Course.js').Course} Course
@@ -55,7 +56,8 @@ export class CourseRefresher {
         return { success: false, weeks: [] };
       }
     } catch (error) {
-      console.error(error);
+      /**#LOG_SERVICE*/
+      Logger.error('CourseRefresher', error);
       alert('Erro ao buscar semanas.');
       return { success: false, weeks: [], error };
     } finally {

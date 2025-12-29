@@ -6,6 +6,7 @@
 
 import { categorizeTask } from '../../logic/TaskCategorizer.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
+import { Logger } from '../../../../shared/utils/Logger.js';
 
 /**
  * Renderiza lista de atividades no container
@@ -14,10 +15,12 @@ export class ActivityRenderer {
   /**
    * @param {HTMLElement} container - Container onde renderizar
    * @param {Object} itemFactory - Factory de items de atividade
+   * @param {Object} [context] - Contexto opcional { courseName, weekName }
    */
-  constructor(container, itemFactory) {
+  constructor(container, itemFactory, context = null) {
     this.container = container;
     this.itemFactory = itemFactory;
+    this.context = context; // { courseName, weekName }
   }
 
   /**
@@ -26,22 +29,24 @@ export class ActivityRenderer {
    */
   renderActivities(items) {
     if (!this.container || !items) {
-      console.warn('[ActivityRenderer] Container ou items nulos', {
+      Logger.warn('ActivityRenderer', 'Container ou items nulos', {
         container: !!this.container,
         items: !!items,
-      });
+      }); /**#LOG_UI*/
       return;
     }
 
-    // eslint-disable-next-line no-console
-    console.log('[ActivityRenderer] Renderizando', items.length, 'atividades:', items);
+    Logger.debug('ActivityRenderer', 'Renderizando atividades', {
+      count: items.length,
+      items,
+    }); /**#LOG_UI*/
 
     try {
       const list = document.createElement('ul');
       list.className = 'activities-list';
 
       items.forEach((item, index) => {
-        const categorized = categorizeTask(item);
+        const categorized = categorizeTask(item, this.context);
         const li = this.itemFactory.createActivityItem(categorized, index + 1);
         list.appendChild(li);
       });
@@ -49,7 +54,7 @@ export class ActivityRenderer {
       this.container.innerHTML = '';
       this.container.appendChild(list);
     } catch (error) {
-      console.error('[ActivityRenderer] Erro ao renderizar atividades:', error);
+      Logger.error('ActivityRenderer', 'Erro ao renderizar atividades:', error); /**#LOG_UI*/
       const toaster = new Toaster();
       toaster.show('Erro ao carregar atividades.', 'error');
     }

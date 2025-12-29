@@ -54,14 +54,33 @@ export class ActivityItemFactory {
    */
   static getTypeIcon(type) {
     const icons = {
+      // Tipos do TaskCategorizer (UPPERCASE)
+      VIDEOAULA: '🎥',
+      QUIZ: '📝',
+      TEXTO_BASE: '📖',
+      VIDEO_BASE: '🎬',
+      APROFUNDANDO: '🔍',
+
+      // Novos Tipos
+      ATIVIDADE_AVALIATIVA: '📋',
+      FORUM_TEMATICO: '💬',
+      FORUM_DUVIDAS: '❓',
+      QUIZ_OBJETO_EDUCACIONAL: '🎮',
+      MATERIAL_BASE: '📚',
+      VIDEO_BASE_COMPLEMENTAR: '🎬',
+
+      // Fallback/Legacy
       videoaula: '🎥',
       quiz: '📝',
       forum: '💬',
       tarefa: '📄',
       leitura: '📚',
       link: '🔗',
-      desconhecido: '📌',
+
+      OUTROS: '📌',
     };
-    return icons[type] || icons.desconhecido;
+
+    // Tenta encontrar direto ou lowercase
+    return icons[type] || icons[type ? type.toLowerCase() : ''] || icons['OUTROS'];
   }
 }

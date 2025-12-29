@@ -24,15 +24,13 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 **Objetivo**: Alcançar base sólida para expansão futura
 
 **Marcos**:
-- ✅ **Screaming Architecture** (v2.7.0) - Modularização em Features
-- ✅ **Gestão de Tarefas** (v2.8.0) - Sistema de checklist e progresso
-- 🔄 **Resolução de Dívidas Técnicas** - Console cleanup, cobertura de testes
-- 🔄 **Estabilidade de Navegação** - Resolução de bugs críticos de UX
+- ✅ **Estabilização e Robustez** (v2.9.1) - Logging estruturado e Navegação resiliente (ADR-007)
+- 🔄 **Resolução de Dívidas Técnicas** - Cobertura de testes (alcançar 85%+)
 
-**Entregáveis Esperados** (v2.9.0):
-- Cobertura de testes: 85%+
-- Zero bugs críticos de navegação
-- Documentação técnica completa (ADRs, READMEs)
+**Entregáveis Esperados** (v2.9.1):
+- Cobertura de testes: 80% (atual) -> Alvo 85% (Q1 2026)
+- Zero bugs de navegação (Scroll Navigation robusta)
+- Sistema de Log centralizado (Logger.js) com tags semânticas
 
 ---
 
@@ -59,7 +57,7 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 **Decisão Go/No-Go**: Fim de Q1 2026 (após validação técnica)
 
 **Dependências**:
-- Estabilização (v2.9.0) deve estar completa
+- Estabilização (v2.9.1) deve estar completa
 - POC de scraping de boletim validado
 
 ---
@@ -105,7 +103,17 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 
 ## 📜 Release Log (Histórico)
 
-### v2.8.14 (Atual - 2025-12-28)
+### v2.9.1 (Atual - 2025-12-29)
+- **Refatoração de Logging**: Centralização com `Logger.js` e tagging semântico (#LOG_UI, #LOG_SYSTEM).
+- **Navigation Fix**: Navegação de scroll robusta com `MutationObserver` e fallbacks (ADR-007).
+- **Security**: Fix de Regex insegura em `TaskCategorizer.js`.
+- **Qualidade**: 455 testes passando e zero warnings no lint.
+
+### v2.9.0 (2025-12-29)
+- Release com SafeResult Pattern e Correção de DOM Zumbi (Container Freshness).
+- ADRs 005 e 006.
+
+### v2.8.14 (2025-12-28)
 - Modernização de Testes (Promises + ChunkedStorage)
 - Correção total de Lint e TypeScript (Zero Errors)
 - Novos scripts de teste (summary/failed)
@@ -139,4 +147,4 @@ Ver [CHANGELOG.md](../CHANGELOG.md) para histórico completo
 
 ---
 
-**Última Atualização**: 2025-12-27 (Auditoria de Alinhamento Documental)
+**Última Atualização**: 2025-12-29 (Consolidação v2.9.1)

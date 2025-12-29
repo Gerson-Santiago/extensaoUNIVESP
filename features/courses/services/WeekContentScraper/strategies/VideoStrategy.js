@@ -24,6 +24,7 @@ export class VideoStrategy extends ContentStrategy {
       name,
       url,
       type: 'video',
+      contentId: this.extractContentId(element),
       ...(status && { status }),
     };
   }

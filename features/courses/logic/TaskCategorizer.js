@@ -2,7 +2,12 @@
  * @file TaskCategorizer.js
  * @description Categoriza tarefas do AVA por tipo (Videoaula, Quiz, etc.)
  * @architecture Screaming Architecture - Logic Layer
+ *
+ * DEBUG: Para ver logs de categorização, ative no console:
+ *   localStorage.setItem('UNIVESP_DEBUG', 'true');
  */
+
+import { Logger } from '../../../shared/utils/Logger.js';
 
 /**
  * DESIGN DECISION: Typedef inline (não em models/)
@@ -21,19 +26,20 @@
 /**
  * Categoriza uma tarefa baseado no título
  * @param {Object} task - Tarefa com { name, title, id, ... }
+ * @param {Object} [context] - Contexto opcional { courseName, weekName }
  * @returns {CategorizedTask}
  */
-export function categorizeTask(task) {
+export function categorizeTask(task, context = null) {
   // Aceita 'name' ou 'title' (compatibilidade com diferentes fontes)
   const text = task.name || task.title || '';
 
   // Validação básica
   if (!text) {
-    console.warn('[TaskCategorizer] Task sem name/title:', task);
+    Logger.warn('TaskCategorizer', 'Task sem name/title:', task); /**#LOG_CATEGORIZER*/
     return {
       type: 'OUTROS',
       number: null,
-      id: task.id || 'unknown',
+      id: task.contentId || task.id || 'unknown',
       original: task,
     };
   }
@@ -45,26 +51,52 @@ export function categorizeTask(task) {
     VIDEO_BASE: /Video-base/i,
     TEXTO_BASE: /Texto-base/i,
     APROFUNDANDO: /Aprofundando\s+o\s+Tema/i,
+    ATIVIDADE_AVALIATIVA: /(?:Atividade\s+[Aa]valiativa|Avaliação\s+Institucional)/i,
+    FORUM_TEMATICO: /Fórum\s+[Tt]emático/i,
+    FORUM_DUVIDAS: /Fórum\s+de\s+dúvidas/i,
+    QUIZ_OBJETO_EDUCACIONAL: /Quiz\s+de\s+Objeto\s+Educacional|Quiz\s+Objeto\s+Educacional/i,
+    MATERIAL_BASE: /Material(?:-|\s+de\s+)(?:base|apoio)/i,
+    VIDEO_BASE_COMPLEMENTAR: /Vídeo-base/i,
   };
 
   // Tenta encontrar match para cada padrão
   for (const [type, pattern] of Object.entries(patterns)) {
     const match = text.match(pattern);
     if (match) {
-      return {
+      const result = {
         type,
         number: match[1] ? parseInt(match[1], 10) : null,
-        id: task.id || 'unknown',
+        id: task.contentId || task.id || 'unknown',
         original: task,
       };
+
+      // Log de atividade categorizada (para validação)
+      Logger.debug('TaskCategorizer', `✅ Categorizada: ${type}`, {
+        ...(context && { courseName: context.courseName, weekName: context.weekName }),
+        name: text,
+        type,
+        number: result.number,
+        id: result.id,
+      }); /**#LOG_CATEGORIZER*/
+
+      return result;
     }
   }
 
-  // Fallback: OUTROS
+  // Fallback: OUTROS (atividades sem padrão específico)
+  Logger.debug('TaskCategorizer', '⚠️ Atividade NÃO categorizada (OUTROS)', {
+    ...(context && { courseName: context.courseName, weekName: context.weekName }),
+    name: text,
+    type: task.type,
+    contentId: task.contentId,
+    id: task.id,
+    url: task.url,
+  }); /**#LOG_CATEGORIZER*/
+
   return {
     type: 'OUTROS',
     number: null,
-    id: task.id || 'unknown',
+    id: task.contentId || task.id || 'unknown',
     original: task,
   };
 }

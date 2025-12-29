@@ -65,9 +65,56 @@ describe('TaskCategorizer', () => {
       expect(result.type).toBe('APROFUNDANDO');
     });
 
+    it('deve categorizar Atividade Avaliativa', () => {
+      const cases = [
+        'Semana 1 - Atividade Avaliativa',
+        'Semana 2 - Atividade avaliativa',
+        'Semana 7 - Avaliação Institucional',
+      ];
+      cases.forEach((title) => {
+        const result = categorizeTask({ title });
+        expect(result.type).toBe('ATIVIDADE_AVALIATIVA');
+      });
+    });
+
+    it('deve categorizar Fórum Temático', () => {
+      const task = { title: 'Semana 1 - Fórum temático - Congressos...' };
+      const result = categorizeTask(task);
+      expect(result.type).toBe('FORUM_TEMATICO');
+    });
+
+    it('deve categorizar Fórum de Dúvidas', () => {
+      const task = { title: 'Fórum de dúvidas das semanas 1-7' };
+      const result = categorizeTask(task);
+      expect(result.type).toBe('FORUM_DUVIDAS');
+    });
+
+    it('deve categorizar Quiz Objeto Educacional', () => {
+      const task = { title: 'Semana 1 - Quiz Objeto Educacional Semana 1' };
+      const result = categorizeTask(task);
+      expect(result.type).toBe('QUIZ_OBJETO_EDUCACIONAL');
+    });
+
+    it('deve categorizar Material Base/Apoio', () => {
+      const cases = [
+        'Material-base - How to write an abstract',
+        'Material de apoio - Estratégias de leitura',
+      ];
+      cases.forEach((title) => {
+        const result = categorizeTask({ title });
+        expect(result.type).toBe('MATERIAL_BASE');
+      });
+    });
+
+    it('deve categorizar Vídeo-base (Complementar)', () => {
+      const task = { title: 'Vídeo-base - Conjuntos Numéricos' };
+      const result = categorizeTask(task);
+      expect(result.type).toBe('VIDEO_BASE_COMPLEMENTAR');
+    });
+
     it('deve retornar OUTROS para tarefas não reconhecidas', () => {
       // Arrange
-      const task = { title: 'Material de Apoio Especial' };
+      const task = { title: 'Tarefa Completamente Desconhecida' };
 
       // Act
       const result = categorizeTask(task);

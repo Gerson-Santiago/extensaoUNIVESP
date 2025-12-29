@@ -108,6 +108,7 @@ describe('CourseRepository - Operações de Adição', () => {
           expect(message).toBe('Matéria já adicionada anteriormente.');
           expect(chrome.storage.local.set).not.toHaveBeenCalled();
           expect(console.warn).toHaveBeenCalledWith(
+            '[CourseRepository]',
             'Curso com URL já existe: https://ava.univesp.br/course1'
           );
           done();

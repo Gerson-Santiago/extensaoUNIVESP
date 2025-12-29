@@ -2,6 +2,7 @@
 // Events emitted: 'request:add-manual-course', 'request:scrape-current-tab'
 import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
 import { ConfigForm } from '../components/ConfigForm.js';
+import { Logger } from '../../../shared/utils/Logger.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {
@@ -208,7 +209,8 @@ export class SettingsView {
           // Recarregar app após 2s
           setTimeout(() => window.location.reload(), 2000);
         } catch (err) {
-          console.error(err);
+          /**#LOG_UI*/
+          Logger.error('SettingsView', 'Erro na leitura do backup:', err);
           this.feedback.show('Arquivo de backup inválido.', 'error');
         }
       };
@@ -316,6 +318,7 @@ export class SettingsView {
    */
   async saveChipsSettings(settings) {
     await chrome.storage.local.set({ chips_settings: settings });
-    console.warn('[SettingsView] Chips settings saved:', settings);
+    /**#LOG_UI*/
+    Logger.warn('SettingsView', 'Chips settings saved:', settings);
   }
 }

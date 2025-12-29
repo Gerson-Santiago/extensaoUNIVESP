@@ -4,7 +4,7 @@
 
 > **Localização**: `features/courses/views/DetailsActivitiesWeekView/`
 > **Tipo**: View Complexa (Modularizada)
-> **Versão**: v2.9.0 - **Container Freshness Fix**
+> **Versão**: v2.9.1 - **Robust Scroll Navigation**
 
 Esta é a view mais crítica do sistema, responsável por transformar a abstração do AVA em uma **lista de tarefas acionáveis e navegáveis**. É aqui que o aluno passa a maior parte do tempo de estudo.
 
@@ -69,14 +69,16 @@ graph TD
 - **Problema**: Dados de scraping eram perdidos ao fechar a extensão.
 - **Solução**: Atividades são salvas em `ActivityRepository` (localStorage, 5MB quota) imediatamente após scraping.
 - **Chave**: `activities_{courseId}_{contentId}` para isolar por semana.
-- **Fonte da Verdade v2.9.0**: [`ActivityRepository.js`](../../repositories/ActivityRepository.js)
+- **Fonte da Verdade v2.9.1**: [`ActivityRepository.js`](../../repositories/ActivityRepository.js)
 
-### 3. Scroll Automático (`scrollToActivity`)
-- Lógica complexa que:
+### 3. Scroll Automático Robusto (`scrollToActivity`) (v2.9.1)
+- Lógica resiliente (ADR-007) que:
     1. Verifica se a aba do AVA está aberta.
     2. Navega para a URL da semana correta.
-    3. Injeta script na página para rolar até o elemento HTML específico.
-    4. Destaca o elemento visualmente.
+    3. Monitora o DOM com `MutationObserver` (até 10s) para encontrar o elemento alvo.
+    4. Tenta múltiplas estratégias de seleção de IDs.
+    5. Destaca o elemento visualmente (Piscada dourada).
+    6. **Logs Semânticos**: Registro detalhado com `/**#LOG_NAVIGATION*/` para debug.
 
 ---
 
@@ -93,7 +95,7 @@ new DetailsActivitiesWeekView({
 
 ---
 
-## 🛡️ v2.9.0: Bug do DOM Zumbi Corrigido
+## 🛡️ v2.9.1: Estabilidade, Logs e Robustez de Navegação
 
 **Problema:** Após re-renderização da view, `ActivityRenderer` renderizava no container **antigo** (zumbi), deixando UI com Skeleton infinito.
 

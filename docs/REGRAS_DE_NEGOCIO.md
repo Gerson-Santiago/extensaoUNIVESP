@@ -1,6 +1,6 @@
 # Regras de Negócio (Business Domain Rules)
 
-> **Princípio:** Código é a fonte da verdade. Este documento reflete o comportamento **REAL** implementado na v2.9.0.
+> **Princípio:** Código é a fonte da verdade. Este documento reflete o comportamento **REAL** implementado na v2.9.1.
 
 ---
 
@@ -111,7 +111,7 @@ Progresso de atividade pode vir de **duas fontes independentes**:
 
 ## 3. Persistência e Cache
 
-### 3.1 Dual Storage Strategy (v2.9.0)
+### 3.1 Dual Storage Strategy (v2.9.1)
 
 **Implementação:**
 - [`ActivityRepository.js`](file:///home/sant/extensaoUNIVESP/features/courses/repositories/ActivityRepository.js) - localStorage
@@ -154,7 +154,7 @@ Atividades extraídas do AVA são **persistidas imediatamente** após scraping b
 
 ## 4. Error Handling (Business Rules)
 
-### 4.1 SafeResult Pattern (v2.9.0)
+### 4.1 SafeResult Pattern (v2.9.1)
 
 **Implementação:** [`ErrorHandler.js`](file:///home/sant/extensaoUNIVESP/shared/utils/ErrorHandler.js), usado em [`WeekActivitiesService.js`](file:///home/sant/extensaoUNIVESP/features/courses/services/WeekActivitiesService.js)
 
@@ -202,7 +202,7 @@ Sistema previne abertura de **abas duplicadas** para o mesmo recurso (Curso, Sem
 
 ---
 
-### 5.2 Container Freshness (Anti DOM Zombie) (v2.9.0)
+### 5.2 Container Freshness (Anti DOM Zombie) (v2.9.1)
 
 **Implementação:** [`DetailsActivitiesWeekView/index.js`](file:///home/sant/extensaoUNIVESP/features/courses/views/DetailsActivitiesWeekView/index.js)
 
@@ -219,7 +219,22 @@ Renderer de atividades **sempre recebe container DOM fresco** (atual), nunca cac
 
 **Proteção:** 5 testes de regressão em [`rendering-regression.test.js`](file:///home/sant/extensaoUNIVESP/features/courses/tests/views/DetailsActivitiesWeekView/rendering-regression.test.js)
 
-**Referência:** [`ADR_006_CONTAINER_FRESHNESS.md`](file:///home/sant/extensaoUNIVESP/docs/architecture/ADR_006_CONTAINER_FRESHNESS.md)
+### 5.3 Navegação de Scroll Robusta (v2.9.1)
+
+**Implementação:** [`NavigationService.js`](file:///home/sant/extensaoUNIVESP/shared/services/NavigationService.js)
+
+**Regra:**
+Sistema garante que o scroll para uma atividade ocorra mesmo em condições de carregamento lento do DOM.
+
+**Decisões de Negócio:**
+1. **MutationObserver:** Monitora o DOM por até 10s se o elemento não for encontrado imediatamente.
+2. **Estratégias de Seleção:** Tenta múltiplos seletores (`[data-id]`, `[id]`, `[name]`).
+3. **Feedback Visual:** Pisca o elemento em dourado após o scroll para confirmação visual.
+
+**Invariante:**
+- O scroll só é considerado falho após o timeout de 10s sem o elemento aparecer no DOM.
+
+**Referência:** [`ADR_007_ROBUST_SCROLL_NAVIGATION.md`](file:///home/sant/extensaoUNIVESP/docs/architecture/ADR_007_ROBUST_SCROLL_NAVIGATION.md)
 
 ---
 
@@ -232,5 +247,5 @@ Renderer de atividades **sempre recebe container DOM fresco** (atual), nunca cac
 
 ---
 
-**Última Auditoria:** 2025-12-29 (v2.9.0)  
+**Última Auditoria:** 2025-12-29 (v2.9.1)  
 **Próxima Revisão:** Sempre que houver mudança em lógica de domínio

@@ -6,6 +6,7 @@
 
 import { ContextualChips } from '../../../../shared/ui/ContextualChips.js';
 import { HistoryService } from '../../../../shared/services/HistoryService.js';
+import { Logger } from '../../../../shared/utils/Logger.js';
 
 /**
  * Gerencia chips de navegação contextual com histórico
@@ -95,14 +96,16 @@ export class ChipsManager {
     try {
       const { Tabs } = await import('../../../../shared/utils/Tabs.js');
       await Tabs.openOrSwitchTo(item.url);
-      console.warn('[ChipsManager] Navegando para:', item.label);
+      /**#LOG_UI*/
+      Logger.warn('ChipsManager', 'Navegando para:', item.label);
 
       // Notificar a aplicação para atualizar a view
       if (this.onNavigate) {
         this.onNavigate(item.url);
       }
     } catch (error) {
-      console.error('[ChipsManager] Erro ao navegar:', error);
+      /**#LOG_UI*/
+      Logger.error('ChipsManager', 'Erro ao navegar:', error);
     }
   }
 

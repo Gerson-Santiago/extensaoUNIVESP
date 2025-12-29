@@ -1,3 +1,5 @@
+import { Logger } from '../../../shared/utils/Logger.js';
+
 /**
  * @file WeekItem.js
  * @description Componente de Item de Semana. Filho de CourseWeeksView.
@@ -70,7 +72,8 @@ export function createWeekElement(
       try {
         if (callbacks.onViewQuickLinks) await callbacks.onViewQuickLinks(week);
       } catch (err) {
-        console.error(err);
+        /**#LOG_UI*/
+        Logger.error('WeekItem', err);
       }
     });
     div.appendChild(activitiesQuickBtn);
@@ -96,7 +99,8 @@ export function createWeekElement(
         await callbacks.onViewActivities(week);
       }
     } catch (error) {
-      console.error('Erro ao carregar atividades (DOM):', error);
+      /**#LOG_UI*/
+      Logger.error('WeekItem', 'Erro ao carregar atividades (DOM):', error);
     } finally {
       activitiesDomBtn.disabled = false;
       activitiesDomBtn.textContent = originalText;

@@ -4,6 +4,8 @@
  * Usa compressão nativa do JavaScript (não precisa de biblioteca externa)
  */
 
+import { Logger } from './Logger.js';
+
 export class CompressionUtils {
   /**
    * Comprime string usando LZ-based algorithm nativo
@@ -28,7 +30,8 @@ export class CompressionUtils {
         .then((buf) => btoa(String.fromCharCode(...new Uint8Array(buf))));
     } catch (error) {
       // Fallback: retorna string original se compressão falhar
-      console.warn('[CompressionUtils] Compressão falhou, usando original:', error);
+      /**#LOG_SYSTEM*/
+      Logger.warn('CompressionUtils', 'Compressão falhou, usando original:', error);
       return Promise.resolve(str);
     }
   }
@@ -59,7 +62,8 @@ export class CompressionUtils {
       return decoder.decode(buffer);
     } catch (error) {
       // Fallback: assume que é string não comprimida
-      console.warn('[CompressionUtils] Descompressão falhou, usando como original:', error);
+      /**#LOG_SYSTEM*/
+      Logger.warn('CompressionUtils', 'Descompressão falhou, usando como original:', error);
       return compressed;
     }
   }

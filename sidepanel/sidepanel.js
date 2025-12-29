@@ -34,6 +34,7 @@ import { LoginWaitModal } from '../features/session/components/LoginWaitModal.js
 import { CourseService } from '../features/courses/logic/CourseService.js';
 import { BatchImportFlow } from '../features/courses/import/logic/BatchImportFlow.js';
 import { CourseRepository } from '../features/courses/data/CourseRepository.js'; // Added for Clear All listener
+import { Logger } from '../shared/utils/Logger.js';
 
 // ========== INICIALIZAÇÃO ==========
 
@@ -57,7 +58,8 @@ document.addEventListener('DOMContentLoaded', () => {
       if (batchImportFlow) batchImportFlow.start();
     },
     onCancel: () => {
-      console.warn('Importação bloqueada pelo usuário (Login Wait Cancelado)');
+      /**#LOG_UI*/
+      Logger.warn('SidePanel', 'Importação bloqueada pelo usuário (Login Wait Cancelado)');
     },
   });
 
@@ -113,7 +115,8 @@ document.addEventListener('DOMContentLoaded', () => {
       },
       (errorMsg) => {
         // Callback de erro
-        console.error(errorMsg);
+        /**#LOG_UI*/
+        Logger.error('SidePanel', errorMsg);
         alert(errorMsg);
       }
     );
@@ -142,7 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
           // (Mesmo se já estiver nela, isso recarrega o conteúdo correto)
           layout.navigateTo('weekActivities');
         } else {
-          console.warn('[SidePanel] Semana não encontrada no curso atual para URL:', weekUrl);
+          /**#LOG_UI*/
+          Logger.warn('SidePanel', 'Semana não encontrada no curso atual para URL:', { weekUrl });
           // Opcional: Tentar recarregar o curso?
         }
       }
@@ -210,7 +214,8 @@ document.addEventListener('DOMContentLoaded', () => {
       // Recarregamos a view ativa se necessário?
       // Por simplicidade, alert por enquanto, ou apenas reload.
     } catch (err) {
-      console.error('Erro ao limpar cursos:', err);
+      /**#LOG_UI*/
+      Logger.error('SidePanel', 'Erro ao limpar cursos:', err);
     }
   });
 });

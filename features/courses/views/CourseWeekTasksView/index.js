@@ -1,5 +1,6 @@
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 import { TaskProgressService } from '../../services/TaskProgressService.js';
+import { Logger } from '../../../../shared/utils/Logger.js';
 
 export class CourseWeekTasksView {
   /**
@@ -136,7 +137,8 @@ export class CourseWeekTasksView {
         container.appendChild(taskDiv);
       }
     } catch (error) {
-      console.error('CourseWeekTasksView: Erro ao renderizar tarefas', error);
+      /**#LOG_UI*/
+      Logger.error('CourseWeekTasksView', 'Erro ao renderizar tarefas', error);
       const toaster = new Toaster();
       toaster.show('Erro ao renderizar tarefas.', 'error');
     }
@@ -148,7 +150,8 @@ export class CourseWeekTasksView {
    */
   async handleToggle(taskId) {
     if (!this.course || !this.week) {
-      console.error('Missing context for toggle');
+      /**#LOG_UI*/
+      Logger.error('CourseWeekTasksView', 'Missing context for toggle');
       return;
     }
 
@@ -160,7 +163,8 @@ export class CourseWeekTasksView {
       await this.renderProgress();
       await this.renderTasks();
     } catch (error) {
-      console.error('Error toggling task:', error);
+      /**#LOG_UI*/
+      Logger.error('CourseWeekTasksView', 'Error toggling task:', error);
       new Toaster().show('Erro ao atualizar tarefa.', 'error');
     }
   }

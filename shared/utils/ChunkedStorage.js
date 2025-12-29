@@ -4,6 +4,7 @@
  */
 
 import { CompressionUtils } from './CompressionUtils.js';
+import { Logger } from './Logger.js';
 
 /**
  * @typedef {Object} ChunkedMetadata
@@ -76,7 +77,7 @@ export class ChunkedStorage {
 
       await chrome.storage.local.set(chunkData);
     } catch (error) {
-      console.error(`[ChunkedStorage] Erro ao salvar ${key}:`, error);
+      Logger.error('ChunkedStorage', `Erro ao salvar ${key}:`, error); /**#LOG_SYSTEM*/
       throw error;
     }
   }
@@ -124,7 +125,7 @@ export class ChunkedStorage {
 
       return JSON.parse(combinedStr);
     } catch (error) {
-      console.error(`[ChunkedStorage] Erro ao carregar ${key}:`, error);
+      Logger.error('ChunkedStorage', `Erro ao carregar ${key}:`, error); /**#LOG_SYSTEM*/
       return null;
     }
   }
@@ -153,7 +154,7 @@ export class ChunkedStorage {
         await chrome.storage.local.remove(chunkKeys);
       }
     } catch (error) {
-      console.error(`[ChunkedStorage] Erro ao deletar ${key}:`, error);
+      Logger.error('ChunkedStorage', `Erro ao deletar ${key}:`, error); /**#LOG_SYSTEM*/
     }
   }
 }

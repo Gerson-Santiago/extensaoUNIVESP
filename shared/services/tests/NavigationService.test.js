@@ -52,7 +52,7 @@ describe('NavigationService', () => {
       expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
         target: { tabId: 888 },
         func: expect.any(Function), // A função de scroll
-        args: [activityId],
+        args: [activityId, expect.anything()],
       });
     });
 

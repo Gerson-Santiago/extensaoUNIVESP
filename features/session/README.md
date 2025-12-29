@@ -1,6 +1,6 @@
 # 🔐 Features/Session - Autenticação & Identidade
 
-**Status**: Produção (v2.9.0)  
+**Status**: Produção (v2.9.1)  
 **Responsabilidade**: Gerenciar a validação de identidade do aluno e o estado de acesso ao AVA.
 
 ---
