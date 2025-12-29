@@ -85,6 +85,8 @@ export class WeeksManager {
    */
   async handleViewActivities(week, method) {
     week.courseName = this.course.name;
+    week.courseId = this.course.id; // Garantir ID para cache correto
+    week.error = null; // Reset de erro antes de nova tentativa
 
     if (typeof this.callbacks.onViewActivities === 'function') {
       this.callbacks.onViewActivities(week);
@@ -106,6 +108,19 @@ export class WeeksManager {
       console.error(`[CourseWeeksView] Erro ao carregar atividades [${method}]:`, error);
       this.toaster.show('Erro ao carregar atividades. Tente novamente.', 'error');
       week.items = [];
+
+      // Tratamento amigável para erro de Login/Permissão
+      const isLoginError = error.message && error.message.includes('Cannot access contents of url');
+      const friendlyError = isLoginError
+        ? 'Acesso restrito. Verifique se você está logado no AVA.'
+        : error.message || 'Erro ao carregar';
+
+      week.error = friendlyError; // Flag de erro para a UI
+
+      // Forçar atualização da UI para remover estado de loading/exibir erro
+      if (typeof this.callbacks.onViewActivities === 'function') {
+        this.callbacks.onViewActivities(week);
+      }
     }
   }
 

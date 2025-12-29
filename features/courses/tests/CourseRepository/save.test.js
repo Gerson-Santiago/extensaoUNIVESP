@@ -55,11 +55,11 @@ describe('CourseRepository - Operações de Salvamento', () => {
       });
     });
 
-    test('deve funcionar corretamente mesmo sem passar callback', () => {
+    test('deve funcionar corretamente mesmo sem passar callback', async () => {
       // Preparar (Arrange) - Already mocked in beforeEach
 
       // Agir (Act)
-      CourseRepository.saveItems([mockCourse1]);
+      await CourseRepository.saveItems([mockCourse1]);
 
       // Verificar (Assert)
       expect(chrome.storage.local.set).toHaveBeenCalled();

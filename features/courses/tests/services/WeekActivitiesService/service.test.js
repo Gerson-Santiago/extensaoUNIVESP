@@ -7,6 +7,9 @@ import { Tabs } from '../../../../../shared/utils/Tabs.js';
 jest.mock('../../../services/WeekContentScraper.js');
 jest.mock('../../../services/QuickLinksScraper.js');
 jest.mock('../../../../../shared/utils/Tabs.js');
+jest.mock('../../../repositories/ActivityRepository.js');
+
+import { ActivityRepository } from '../../../repositories/ActivityRepository.js';
 
 describe('WeekActivitiesService', () => {
   const mockWeek = {
@@ -35,6 +38,9 @@ describe('WeekActivitiesService', () => {
       status: 'complete',
       windowId: 1,
     });
+
+    /** @type {jest.Mock} */ (ActivityRepository.get).mockResolvedValue(null);
+    /** @type {jest.Mock} */ (ActivityRepository.save).mockResolvedValue(true);
   });
 
   describe('getActivities', () => {
@@ -43,7 +49,7 @@ describe('WeekActivitiesService', () => {
       const result = await WeekActivitiesService.getActivities(mockWeek, 'DOM');
 
       // Verificar (Assert)
-      expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalledWith(mockWeek.url);
+      expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalledWith(mockWeek.url, 1);
       expect(QuickLinksScraper.scrapeFromQuickLinks).not.toHaveBeenCalled();
       expect(result).toEqual(mockItems);
       expect(mockWeek.items).toEqual(mockItems);
@@ -55,7 +61,7 @@ describe('WeekActivitiesService', () => {
       const result = await WeekActivitiesService.getActivities(mockWeek, 'QuickLinks');
 
       // Verificar (Assert)
-      expect(QuickLinksScraper.scrapeFromQuickLinks).toHaveBeenCalledWith(mockWeek.url);
+      expect(QuickLinksScraper.scrapeFromQuickLinks).toHaveBeenCalledWith(mockWeek.url, 1);
       expect(WeekContentScraper.scrapeWeekContent).not.toHaveBeenCalled();
       expect(result).toEqual(mockItems);
       expect(mockWeek.items).toEqual(mockItems);

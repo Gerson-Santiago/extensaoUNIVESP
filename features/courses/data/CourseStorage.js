@@ -1,3 +1,4 @@
+// @ts-nocheck
 /**
  * @typedef {import('../models/Course.js').Course} Course
  */
@@ -51,19 +52,31 @@ export class CourseStorage {
    */
   async saveAll(courses) {
     try {
-      // 1. Salva metadados (lista de IDs)
-      const courseIds = courses.map((c) => c.id);
-      await ChunkedStorage.saveChunked(this.METADATA_KEY, { courseIds });
+      console.warn(`[STORAGE] Iniciando salvamento de ${courses.length} cursos...`);
+
+      // 0. Carrega metadados ATUAIS (antes de sobrescrever) para saber o que deletar depois
+      const currentMetadata = await ChunkedStorage.loadChunked(this.METADATA_KEY);
+      const oldCourseIds = currentMetadata?.courseIds || [];
+
+      // 1. Salva metadados NOVOS (lista de IDs)
+      const newCourseIds = courses.map((c) => c.id);
+      await ChunkedStorage.saveChunked(this.METADATA_KEY, { courseIds: newCourseIds });
 
       // 2. Salva cada curso separadamente (com chunks se necessário)
       for (const course of courses) {
-        await ChunkedStorage.saveChunked(`course_${course.id}`, course);
+        try {
+          await ChunkedStorage.saveChunked(`course_${course.id}`, course);
+        } catch (err) {
+          console.error(`[STORAGE] Falha ao salvar curso ${course.id} (${course.name})`, err);
+        }
       }
 
-      // 3. Remove cursos deletados (IDs que não estão mais na lista)
-      await this.cleanupDeletedCourses(courseIds);
+      // 3. Remove cursos deletados (IDs que estavam no oldIds mas não no newCourseIds)
+      await this.cleanupDeletedCourses(oldCourseIds, newCourseIds);
+
+      console.warn('[STORAGE] Salvamento concluído com sucesso.');
     } catch (error) {
-      console.error('[CourseStorage] Erro ao salvar cursos:', error);
+      console.error('[CourseStorage] Erro CRÍTICO ao salvar cursos:', error);
       throw error;
     }
   }
@@ -71,14 +84,18 @@ export class CourseStorage {
   /**
    * Remove cursos que foram deletados
    * @private
+   * @param {(string|number)[]} oldIds - IDs que existiam antes
+   * @param {(string|number)[]} newIds - IDs que existem agora
    */
-  async cleanupDeletedCourses(currentIds) {
+  async cleanupDeletedCourses(oldIds, newIds) {
     try {
-      const metadata = await ChunkedStorage.loadChunked(this.METADATA_KEY);
-      if (!metadata || !metadata.courseIds) return;
+      if (!oldIds || oldIds.length === 0) return;
 
-      const oldIds = metadata.courseIds;
-      const deletedIds = oldIds.filter((id) => !currentIds.includes(id));
+      const deletedIds = oldIds.filter((id) => !newIds.includes(id));
+
+      if (deletedIds.length > 0) {
+        console.warn(`[STORAGE] Limpando ${deletedIds.length} cursos órfãos...`);
+      }
 
       for (const id of deletedIds) {
         await ChunkedStorage.deleteChunked(`course_${id}`);

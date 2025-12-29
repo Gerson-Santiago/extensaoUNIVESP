@@ -33,14 +33,9 @@ export class RefreshHandler {
       btn.textContent = '⏳';
 
       // Re-executar scraping baseado no método
-      let items = [];
-      if (method === 'QuickLinks') {
-        const { QuickLinksScraper } = await import('../../../services/QuickLinksScraper.js');
-        items = await QuickLinksScraper.scrapeFromQuickLinks(this.week.url);
-      } else {
-        const { WeekContentScraper } = await import('../../../services/WeekContentScraper.js');
-        items = await WeekContentScraper.scrapeWeekContent(this.week.url);
-      }
+      // Re-executar scraping via Service (garante consistência, retry e persistência)
+      const { WeekActivitiesService } = await import('../../../services/WeekActivitiesService.js');
+      const items = await WeekActivitiesService.getActivities(this.week, method);
 
       // Atualizar week.items
       this.week.items = items;

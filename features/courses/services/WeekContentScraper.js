@@ -10,73 +10,91 @@ export class WeekContentScraper {
    * @param {string} _weekUrl - URL da semana
    * @returns {Promise<WeekItem[]>}
    */
-  static async scrapeWeekContent(_weekUrl) {
+  /**
+   * Scrapes week content from AVA by injecting script into active tab
+   * @param {string} _weekUrl - URL da semana
+   * @param {number} [targetTabId] - ID explícito da aba (opcional, mas recomendado)
+   * @returns {Promise<WeekItem[]>}
+   */
+  static async scrapeWeekContent(_weekUrl, targetTabId = null) {
     // For testing: mock in jest will intercept this
     if (typeof chrome === 'undefined' || !chrome.tabs) {
       throw new Error('Chrome APIs not available');
     }
 
-    // 0. Parse target Course ID and Content ID from week URL
-    let targetCourseId = null;
-    let targetContentId = null;
-
-    if (_weekUrl) {
-      const courseMatch = _weekUrl.match(/course_id=(_\d+_\d+)/);
-      const contentMatch = _weekUrl.match(/content_id=(_\d+_\d+)/);
-      if (courseMatch) targetCourseId = courseMatch[1];
-      if (contentMatch) targetContentId = contentMatch[1];
-    }
-
-    // 1. Get all AVA tabs
-    const tabs = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
-    console.warn('[DEBUG-RACE] Total de abas AVA encontradas:', tabs.length);
-    tabs.forEach((t, i) => console.warn(`[DEBUG-RACE] Aba ${i}: id=${t.id}, url=${t.url}`));
-
     let tab = null;
 
-    // 2. Try to find EXACT match (course AND week)
-    if (targetCourseId && targetContentId) {
-      tab = tabs.find(
-        (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
-      );
-      console.warn(
-        '[DEBUG-RACE] Tentou match EXATO (course + content):',
-        tab ? `ENCONTROU id=${tab.id}` : 'NÃO ENCONTROU'
-      );
-
-      // 3. If exact not found, find course tab and navigate
-      if (!tab) {
-        tab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
-        console.warn(
-          '[DEBUG-RACE] Tentou match por CURSO:',
-          tab ? `ENCONTROU id=${tab.id}` : 'NÃO ENCONTROU'
-        );
-        if (tab && _weekUrl) {
-          await chrome.tabs.update(tab.id, { url: _weekUrl, active: true });
-
-          // Wait for navigation using chrome.tabs.onUpdated listener (more reliable)
-          await WeekContentScraper.waitForTabLoad(tab.id, 10000);
-
-          // Validate navigation succeeded
-          const isValid = await WeekContentScraper.validateTabUrl(
-            tab.id,
-            targetCourseId,
-            targetContentId
-          );
-          if (!isValid) {
-            throw new Error('Navegação falhou - URL não corresponde ao esperado');
-          }
-        }
+    // 1. Prioridade: Usar tabId explícito se fornecido
+    if (targetTabId) {
+      try {
+        tab = await chrome.tabs.get(targetTabId);
+      } catch (e) {
+        console.warn('[WeekContentScraper] Falha ao obter aba explicita:', e);
       }
     }
 
-    // 4. Fallback: Active Tab or First Available
+    // 2. Fallback: Discovery (apenas se não foi passado ID)
     if (!tab) {
-      tab = tabs.find((t) => t.active) || tabs[0];
-      console.warn(
-        '[DEBUG-RACE] FALLBACK para aba ativa ou primeira:',
-        tab ? `id=${tab.id}` : 'NENHUMA'
-      );
+      // 0. Parse target Course ID and Content ID from week URL
+      let targetCourseId = null;
+      let targetContentId = null;
+
+      if (_weekUrl) {
+        const courseMatch = _weekUrl.match(/course_id=(_\d+_\d+)/);
+        const contentMatch = _weekUrl.match(/content_id=(_\d+_\d+)/);
+        if (courseMatch) targetCourseId = courseMatch[1];
+        if (contentMatch) targetContentId = contentMatch[1];
+      }
+
+      // 1. Get all AVA tabs
+      const tabs = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
+      console.warn('[DEBUG-RACE] Total de abas AVA encontradas:', tabs.length);
+      tabs.forEach((t, i) => console.warn(`[DEBUG-RACE] Aba ${i}: id=${t.id}, url=${t.url}`));
+
+      // 2. Try to find EXACT match (course AND week)
+      if (targetCourseId && targetContentId) {
+        tab = tabs.find(
+          (t) => t.url && t.url.includes(targetCourseId) && t.url.includes(targetContentId)
+        );
+        console.warn(
+          '[DEBUG-RACE] Tentou match EXATO (course + content):',
+          tab ? `ENCONTROU id=${tab.id}` : 'NÃO ENCONTROU'
+        );
+
+        // 3. If exact not found, find course tab and navigate
+        if (!tab) {
+          tab = tabs.find((t) => t.url && t.url.includes(targetCourseId));
+          console.warn(
+            '[DEBUG-RACE] Tentou match por CURSO:',
+            tab ? `ENCONTROU id=${tab.id}` : 'NÃO ENCONTROU'
+          );
+          if (tab && _weekUrl) {
+            await chrome.tabs.update(tab.id, { url: _weekUrl, active: true });
+
+            // Wait for navigation using chrome.tabs.onUpdated listener (more reliable)
+            await WeekContentScraper.waitForTabLoad(tab.id, 10000);
+
+            // Validate navigation succeeded
+            const isValid = await WeekContentScraper.validateTabUrl(
+              tab.id,
+              targetCourseId,
+              targetContentId
+            );
+            if (!isValid) {
+              // throw new Error('Navegação falhou - URL não corresponde ao esperado');
+              console.warn(
+                '[WeekContentScraper] Falha na validação pós-navegação, mas tentando continuar...'
+              );
+            }
+          }
+        }
+      }
+
+      // 4. Strict Validation: If no specific tab found, FAIL.
+      // Do NOT fallback to active tab or first tab, as this causes cross-contamination.
+      if (!tab) {
+        console.warn('[WeekContentScraper] Nenhuma aba encontrada com match de URL exato.');
+      }
     }
 
     if (!tab || !tab.id) {

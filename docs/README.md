@@ -16,6 +16,7 @@ A **Extensão UNIVESP** é uma ferramenta de produtividade e gestão acadêmica 
 | **[Padrões de Engenharia](docs/PADROES_DO_PROJETO.md)** | Style guides, Linting e Convenções de Código. |
 | **[Glossário](docs/GLOSSARIO.md)** | Definições de termos de domínio e técnicos. |
 | **[Visão do Projeto](docs/IDENTIDADE_DO_PROJETO.md)** | Princípios norteadores e filosofia do produto. |
+| **[Scripts de Automação](docs/SCRIPTS.md)** | Documentação detalhada de todos os comandos NPM. |
 
 ---
 

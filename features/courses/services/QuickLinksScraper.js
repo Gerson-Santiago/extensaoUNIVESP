@@ -55,28 +55,18 @@ export class QuickLinksScraper {
 
   /**
    * Scrape items do modal "Links Rápidos" em uma página do AVA
-   * @param {string} _weekUrl - URL da semana (usado para contexto, mas scraping é na aba AVA atual)
-   * @returns {Promise<Array>} - Items extraídos
+   * @param {string} _weekUrl - URL da semana (não usado diretamente no scrape, mas útil para logs)
+   * @param {number} tabId - ID da aba onde o script deve ser executado
+   * @returns {Promise<Array>} - Items extraídos com metadados
    */
-  static async scrapeFromQuickLinks(_weekUrl) {
-    // 1. Encontrar aba do AVA
-    // 1. Prioridade: Aba Ativa (onde o usuário está olhando)
-    let tabs = await chrome.tabs.query({ active: true, currentWindow: true });
-    let tab = tabs.find((t) => t.url && t.url.includes('ava.univesp.br'));
-
-    // 2. Fallback: Qualquer aba do AVA (se o usuário estiver na extensão fora do contexto)
-    if (!tab) {
-      tabs = await chrome.tabs.query({ url: '*://ava.univesp.br/*' });
-      tab = tabs[0];
-    }
-
-    if (!tab) {
-      throw new Error('Nenhuma aba do AVA encontrada para scraping de Links Rápidos.');
+  static async scrapeFromQuickLinks(_weekUrl, tabId) {
+    if (!tabId) {
+      throw new Error('TabId é obrigatório para scraping de Links Rápidos.');
     }
 
     // 2. Executar scraping inline (com abertura automática do modal)
     const results = await chrome.scripting.executeScript({
-      target: { tabId: tab.id },
+      target: { tabId: tabId },
       func: async () => {
         // 1. Verificar se modal já está populado
         let links = document.querySelectorAll('li.quick_links_header_h3 a');
@@ -124,6 +114,8 @@ export class QuickLinksScraper {
           let id = null;
 
           if (onclick) {
+            // Tenta capturar o segundo argumento de activateElement
+            // Exemplo: quickLinks.messageHelper.activateElement("2641727", "anonymous_element_9", ...)
             const match = onclick.match(
               /activateElement\s*\(\s*["'][^"']+["']\s*,\s*["']([^"']+)["']/
             );
@@ -132,13 +124,24 @@ export class QuickLinksScraper {
             }
           }
 
-          items.push({ name, id, type: 'document' });
+          items.push({
+            name,
+            id,
+            type: 'document',
+          });
         });
 
         // 5. Limpeza de casa: Fechar o modal para evitar bloqueios futuros
-        const closeBtn = document.querySelector('a.lbAction[href="#close"]');
-        if (closeBtn) {
-          /** @type {HTMLElement} */ (closeBtn).click();
+        // Não é estritamente necessário fechar se for navegar logo em seguida,
+        // mas é boa prática para não deixar o DOM sujo.
+        // Opcional: só fecha se foi aberto por nós. Por simplicidade, tentamos fechar.
+        try {
+          const closeBtn = document.querySelector('a.lbAction[href="#close"]');
+          if (closeBtn) {
+            /** @type {HTMLElement} */ (closeBtn).click();
+          }
+        } catch {
+          // Ignora erro ao fechar
         }
 
         return items;

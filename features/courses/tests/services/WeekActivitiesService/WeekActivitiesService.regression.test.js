@@ -79,7 +79,7 @@ describe('WeekActivitiesService - Regressão: Bug de Sincronização de Navegaç
       expect(Tabs.openOrSwitchTo).toHaveBeenCalled();
 
       // 2. Scraper deve ser chamado com URL da Semana 3
-      expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalledWith(semana3Url);
+      expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalledWith(semana3Url, 2);
 
       // 3. Resultado deve conter dados da Semana 3
       expect(result).toEqual(mockItemsSemana3);

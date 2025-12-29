@@ -3,6 +3,7 @@ import { QuickLinksScraper } from './QuickLinksScraper.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
 import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
 import { DomUtils } from '../../../shared/utils/DomUtils.js';
+import { ActivityRepository } from '../repositories/ActivityRepository.js';
 
 /**
  * Service to manage fetching week activities.
@@ -19,9 +20,34 @@ export class WeekActivitiesService {
    * @returns {Promise<Array>} List of activities.
    */
   static async getActivities(week, method = 'DOM') {
-    // Cache Hit: Return if already scraped with the SAME method
+    // 0. Garantir IDs para cache (extração de URL se necessário)
+    if (!week.contentId && week.url) {
+      const match = week.url.match(/content_id=(_[^&]+)/);
+      if (match && match[1]) {
+        week.contentId = match[1];
+      }
+    }
+
+    // 1. Memória Cache Hit: Return if already scraped with the SAME method
     if (week.items && week.items.length > 0 && week.method === method) {
       return week.items;
+    }
+
+    // 1. Storage Cache Hit: Check persistent storage
+    try {
+      const cached = await ActivityRepository.get(week.courseId, week.contentId);
+      if (cached && cached.items && cached.items.length > 0) {
+        console.warn(
+          '[WeekActivitiesService] Cache persistente encontrado:',
+          cached.items.length,
+          'items'
+        );
+        week.items = cached.items;
+        week.method = cached.method; // Restaurar método original
+        return week.items;
+      }
+    } catch (e) {
+      console.warn('[WeekActivitiesService] Erro ao ler cache persistente:', e);
     }
 
     // 🔒 LOCK: Previne scraping simultâneo da mesma semana
@@ -78,21 +104,61 @@ export class WeekActivitiesService {
         // Não bloqueia execução se falhar
       }
 
-      // 5. Executar scraping (agora com modal fechado e aba correta)
+      // 5. Executar scraping (agora com modal fechado e aba correta + ID ESTRITO)
       const scraper = method === 'QuickLinks' ? QuickLinksScraper : WeekContentScraper;
       const scrapeMethod = method === 'QuickLinks' ? 'scrapeFromQuickLinks' : 'scrapeWeekContent';
 
-      const items = await scraper[scrapeMethod](week.url);
+      // 🛑 STRICT TAB ENFORCEMENT: Passamos o tab.id explicitamente
+      let items = [];
+      try {
+        items = await scraper[scrapeMethod](week.url, tab.id);
+      } catch (error) {
+        console.error('[WeekActivitiesService] Scraping falhou:', error);
+        if (toaster) {
+          toaster.show('❌ Falha ao ler atividades da aba.', 'error', 4000);
+        }
+        throw error; // Propaga erro para impedir atualização de cache com dados vazios
+      }
       console.warn('[DEBUG-RACE] Scraping retornou:', items.length, 'itens');
 
-      // 🎨 Feedback de sucesso
-      if (toaster && items.length > 0) {
-        toaster.show(`✅ ${items.length} atividades carregadas de "${week.name}"`, 'success', 3000);
+      // 🎨 Feedback de sucesso ou FALLBACK
+      if (items.length > 0) {
+        if (toaster)
+          toaster.show(
+            `✅ ${items.length} atividades carregadas de "${week.name}"`,
+            'success',
+            3000
+          );
+      } else if (method === 'QuickLinks') {
+        // ⚠️ FALLBACK AUTOMÁTICO: QuickLinks falhou (0 itens), tentar DOM
+        console.warn('[DEBUG-RACE] QuickLinks retornou 0 itens. Tentando fallback para DOM...');
+        if (toaster) toaster.show('⚠️ Modo rápido vazio. Buscando modo completo...', 'info', 4000);
+
+        // Executar fallback (passando tab.id também!)
+        items = await WeekContentScraper.scrapeWeekContent(week.url, tab.id);
+        console.warn('[DEBUG-RACE] Fallback DOM retornou:', items.length, 'itens');
+
+        // Atualizar método para refletir a fonte real dos dados
+        method = 'DOM';
+
+        if (toaster && items.length > 0) {
+          toaster.show(
+            `✅ ${items.length} atividades recuperadas (Modo Completo)`,
+            'success',
+            3000
+          );
+        }
       }
 
-      // 6. Atualizar cache
+      // 6. Atualizar cache em MEMÓRIA
       week.items = items;
       week.method = method;
+
+      // 7. Salvar cache PERSISTENTE
+      if (items.length > 0) {
+        await ActivityRepository.save(week.courseId, week.contentId, items, method);
+        console.warn('[WeekActivitiesService] Atividades persistidas com sucesso.');
+      }
 
       return items;
     } finally {

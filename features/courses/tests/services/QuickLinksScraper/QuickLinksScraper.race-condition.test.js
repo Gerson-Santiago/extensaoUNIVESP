@@ -25,7 +25,7 @@ describe('QuickLinksScraper - Race Condition', () => {
         .mockResolvedValue([{ id: 123, url: 'https://ava.univesp.br/test', title: 'Test' }]);
 
       // Act
-      const items = await QuickLinksScraper.scrapeFromQuickLinks('https://test.com');
+      const items = await QuickLinksScraper.scrapeFromQuickLinks('https://test.com', 123);
 
       // Assert: Deve retornar items mesmo com site lento
       expect(items).toHaveLength(2);
@@ -42,7 +42,7 @@ describe('QuickLinksScraper - Race Condition', () => {
         .mockResolvedValue([{ id: 123, url: 'https://ava.univesp.br/test', title: 'Test' }]);
 
       // Act
-      const items = await QuickLinksScraper.scrapeFromQuickLinks('https://test.com');
+      const items = await QuickLinksScraper.scrapeFromQuickLinks('https://test.com', 123);
 
       // Assert: Deve retornar vazio e NÃO travar
       expect(items).toEqual([]);

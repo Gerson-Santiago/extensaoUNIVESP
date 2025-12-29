@@ -17,6 +17,7 @@ import { ChipsManager } from './ChipsManager.js';
 import { ActivityItemFactory } from './ActivityItemFactory.js';
 import { ViewTemplate } from './ViewTemplate.js';
 import { HeaderManager } from './HeaderManager.js';
+import { ActivityRepository } from '../../repositories/ActivityRepository.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -60,7 +61,7 @@ export class DetailsActivitiesWeekView {
   /**
    * Hook pós-renderização
    */
-  afterRender() {
+  async afterRender() {
     // 🎯 Header Manager: Configura botões (Voltar, Refresh, Clear)
     const headerManager = new HeaderManager({
       onBack: () => this.callbacks.onBack(),
@@ -72,13 +73,38 @@ export class DetailsActivitiesWeekView {
     // 🎯 Contextual Chips: Renderizar navegação recente
     this.renderChips();
 
-    // 🎯 UX Otimizada: Se tem cache, mostra imediatamente. Senão, mostra skeleton.
+    // 🎯 UX Otimizada: Primeiro mostra Skeleton
+    this.renderSkeleton();
+
+    // 🆕 Verificação de Persistência (Resgate de dados salvos)
+    if (
+      (!this.week.items || this.week.items.length === 0) &&
+      this.week.courseId &&
+      this.week.contentId
+    ) {
+      try {
+        const cached = await ActivityRepository.get(this.week.courseId, this.week.contentId);
+        if (cached && cached.items && cached.items.length > 0) {
+          console.warn(
+            '[DetailsActivitiesWeekView] Dados restaurados do armazenamento persistente.'
+          );
+          this.week.items = cached.items;
+          this.week.method = cached.method;
+        }
+      } catch (e) {
+        console.warn('[DetailsActivitiesWeekView] Falha ao recuperar cache:', e);
+      }
+    }
+
+    // 🎯 UX Otimizada: Se tem erro, mostra estado de erro
+    if (this.week?.error) {
+      this.renderErrorState();
+      return;
+    }
+
+    // 🎯 UX Otimizada: Se tem dados (memória ou restaurados), mostra imediatamente
     if (this.week?.items && this.week.items.length > 0) {
-      // Cache hit: Mostra dados imediatamente (rápido!)
       this.renderActivities();
-    } else {
-      // Cache miss: Mostra skeleton enquanto carrega
-      this.renderSkeleton();
     }
   }
 
@@ -143,6 +169,25 @@ export class DetailsActivitiesWeekView {
 
     // Delegar renderização ao ActivityRenderer
     this.activityRenderer.renderActivities(this.week?.items || []);
+  }
+
+  /**
+   * Renderiza estado de erro no container de atividades
+   */
+  renderErrorState() {
+    const container = document.getElementById('activitiesContainer');
+    if (!container) return;
+
+    container.innerHTML = `
+      <div class="state-error" style="text-align: center; padding: 40px 20px; color: #666;">
+        <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
+        <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #333;">Não foi possível carregar as atividades</h3>
+        <p style="margin: 0; font-size: 14px;">Verifique se a aba da matéria está aberta e carregada corretamente.</p>
+        <div style="margin-top: 20px; font-size: 12px; color: #999;">
+          Erro: ${this.week.error || 'Falha na comunicação'}
+        </div>
+      </div>
+    `;
   }
 
   /**
