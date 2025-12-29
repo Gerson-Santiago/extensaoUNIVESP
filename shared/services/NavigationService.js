@@ -46,7 +46,7 @@ export class NavigationService {
     try {
       await chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        func: (id) => {
+        func: (contentId) => {
           // Tenta fechar modal do AVA se existir (lightbox)
           const closeBtn = document.querySelector('a.lbAction[href="#close"]');
           if (closeBtn) {
@@ -59,20 +59,65 @@ export class NavigationService {
             }
           }
 
-          const element = document.getElementById(id);
-          if (element) {
-            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            // Highlight temporário
-            const originalBg = element.style.backgroundColor;
-            element.style.backgroundColor = '#fff3cd'; // Amarelo suave
-            element.style.transition = 'background-color 0.5s';
+          // CRITICAL: IDs do Blackboard têm formato 'contentListItem:_NNNN_N' ou 'contentListItem:_NNNN_N'
+          // O contentId recebido pode ser apenas '_NNNN_N' ou conter o prefixo.
+          // Estratégia Robusta: Tentar ambos ou detectar.
 
-            setTimeout(() => {
-              element.style.backgroundColor = originalBg || '';
-            }, 2000);
-          } else {
-            console.warn(`[NavigationService] Elemento ${id} não encontrado na página.`);
-          }
+          const normalizeId = (id) => {
+            if (id.includes('contentListItem:')) return id;
+            return `contentListItem:${id}`;
+          };
+
+          const fullId = normalizeId(contentId);
+          // Fallback ID (apenas ID numérico caso o prefixo varie)
+          const shortId = contentId.replace('contentListItem:', '');
+
+          // eslint-disable-next-line no-console
+          console.log('[Extension] Tentando scroll para ID:', fullId);
+
+          // Retry Logic: Tentar por até 5 segundos
+          let attempts = 0;
+          const maxAttempts = 10; // 5 segundos (10 * 500ms)
+
+          const tryScroll = () => {
+            attempts++;
+            // Tenta seletor exato OU seletor parcial (robustez)
+            const element =
+              document.getElementById(fullId) ||
+              document.getElementById(shortId) ||
+              document.querySelector(`li[id*="${shortId}"]`);
+
+            if (element) {
+              // eslint-disable-next-line no-console
+              console.log('[Extension] Elemento encontrado na tentativa', attempts);
+              element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+              const originalBg = element.style.backgroundColor;
+              element.style.backgroundColor = '#fff3cd'; // Amarelo suave
+              element.style.transition = 'background-color 0.5s';
+
+              setTimeout(() => {
+                element.style.backgroundColor = originalBg || '';
+              }, 2000);
+            } else if (attempts < maxAttempts) {
+              // eslint-disable-next-line no-console
+              console.log('[Extension] Elemento não encontrado, tentando novamente em 500ms...');
+              setTimeout(tryScroll, 500);
+            } else {
+              console.warn(
+                `[NavigationService] Elemento ${fullId} não encontrado após ${attempts} tentativas.`
+              );
+              // eslint-disable-next-line no-console
+              console.log(
+                '[Extension] IDs disponíveis na página (amostra final):',
+                Array.from(document.querySelectorAll('li[id^="contentListItem"]'))
+                  .slice(0, 3)
+                  .map((el) => el.id)
+              );
+            }
+          };
+
+          tryScroll();
         },
         args: [activityId],
       });

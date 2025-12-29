@@ -18,7 +18,11 @@ describe('CourseWeeksView - Comportamento de Preview Dinâmico', () => {
   it('deve alternar a exibição do preview ao clicar na mesma semana duas vezes (toggle)', async () => {
     // Preparar (Arrange)
     const mockItems = [{ name: 'V1', status: 'DONE', type: 'video', url: 'http://test.com/1' }];
-    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
+    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue({
+      success: true,
+      data: mockItems,
+      error: null,
+    });
 
     const semana = { name: 'Semana 1', url: 'http://ava.com/semana1' };
     const elementoReal = document.createElement('div');
@@ -46,7 +50,11 @@ describe('CourseWeeksView - Comportamento de Preview Dinâmico', () => {
   it('deve remover o preview anterior ao trocar de semana clicada', async () => {
     // Preparar (Arrange)
     const mockItems = [{ name: 'T1', status: 'DONE' }];
-    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
+    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue({
+      success: true,
+      data: mockItems,
+      error: null,
+    });
 
     const semana1 = { name: 'Semana 1', url: 'http://ava.com/semana1' };
     const semana2 = { name: 'Semana 2', url: 'http://ava.com/semana2' };
@@ -76,9 +84,11 @@ describe('CourseWeeksView - Comportamento de Preview Dinâmico', () => {
 
   it('deve limpar o estado ativo caso ocorra erro na coleta de atividades', async () => {
     // Preparar (Arrange)
-    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockRejectedValue(
-      new Error('Falha na coleta')
-    );
+    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue({
+      success: false,
+      error: new Error('Falha na coleta'),
+      data: null,
+    });
 
     const semana = { name: 'Semana Erro', url: 'http://ava.com/erro' };
     const el = document.createElement('div');

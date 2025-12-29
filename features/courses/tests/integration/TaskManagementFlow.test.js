@@ -24,6 +24,17 @@ describe('Integration: Task Management Flow', () => {
     Toaster.prototype.show = mockToasterShow;
 
     view = new CourseWeeksView(mockCallbacks);
+
+    // Mock storage para settings
+    global.chrome = {
+      ...global.chrome,
+      storage: /** @type {any} */ ({
+        local: {
+          get: jest.fn().mockResolvedValue({}),
+          set: jest.fn(),
+        },
+      }),
+    };
   });
 
   test('should display tasks preview when "Tarefas" button is clicked', async () => {
@@ -45,13 +56,20 @@ describe('Integration: Task Management Flow', () => {
       { name: 'Quiz', type: 'quiz', status: 'TODO', url: 'http://test/2' },
     ];
 
-    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue(mockItems);
+    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue({
+      success: true,
+      data: mockItems,
+      error: null,
+    });
 
     // 3. Render View
     view.setCourse(course);
     const viewEl = view.render();
     document.body.appendChild(viewEl);
     view.afterRender();
+
+    // Aguardar renderização assíncrona (WeeksManager.render agora é async por causa das configs)
+    await new Promise((resolve) => setTimeout(resolve, 10));
 
     const weeksList = document.getElementById('weeksList');
     expect(weeksList.children.length).toBe(1);
@@ -102,9 +120,11 @@ describe('Integration: Task Management Flow', () => {
     view.afterRender();
 
     // 2. Mock Error
-    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockRejectedValue(
-      new Error('Network Error')
-    );
+    /** @type {jest.Mock} */ (WeekActivitiesService.getActivities).mockResolvedValue({
+      success: false,
+      error: new Error('Network Error'),
+      data: null,
+    });
 
     // 3. Simulate Action
     const weekItem = document.getElementById('weeksList').firstElementChild;

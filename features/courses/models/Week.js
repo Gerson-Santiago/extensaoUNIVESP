@@ -4,6 +4,7 @@
  * @property {string} url - URL do item
  * @property {string} type - Tipo do item (video, quiz, document, etc)
  * @property {string} [id] - Identificador único do item (útil para persistência de status)
+ * @property {string} [contentId] - ID original do DOM (ex: "_12345_1") usado para scroll/navegação
  * @property {'TODO'|'DOING'|'DONE'} [status] - Status scraped do AVA (opcional, somente leitura)
  */
 

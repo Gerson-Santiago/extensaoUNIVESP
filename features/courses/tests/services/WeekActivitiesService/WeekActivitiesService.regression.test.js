@@ -82,7 +82,8 @@ describe('WeekActivitiesService - Regressão: Bug de Sincronização de Navegaç
       expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalledWith(semana3Url, 2);
 
       // 3. Resultado deve conter dados da Semana 3
-      expect(result).toEqual(mockItemsSemana3);
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(mockItemsSemana3);
       expect(semana3.items).toEqual(mockItemsSemana3);
       expect(semana3.method).toBe('DOM');
     });
@@ -126,10 +127,12 @@ describe('WeekActivitiesService - Regressão: Bug de Sincronização de Navegaç
       // Suprimir console.error no teste
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      // Act & Assert
-      await expect(WeekActivitiesService.getActivities(semana3, 'DOM')).rejects.toThrow(
-        'Falha ao abrir aba da semana'
-      );
+      // Act
+      const result = await WeekActivitiesService.getActivities(semana3, 'DOM');
+
+      // Assert
+      expect(result.success).toBe(false);
+      expect(result.error.message).toContain('Falha ao abrir aba da semana');
 
       // Não deve ter chamado scraper
       expect(WeekContentScraper.scrapeWeekContent).not.toHaveBeenCalled();
@@ -157,7 +160,8 @@ describe('WeekActivitiesService - Regressão: Bug de Sincronização de Navegaç
       // Assert
       expect(Tabs.openOrSwitchTo).toHaveBeenCalledWith(semana3Url);
       expect(chrome.scripting.executeScript).toHaveBeenCalled();
-      expect(result).toEqual(mockItemsSemana3);
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(mockItemsSemana3);
     });
   });
 
@@ -175,7 +179,8 @@ describe('WeekActivitiesService - Regressão: Bug de Sincronização de Navegaç
       // NÃO deve abrir aba nem fazer scraping
       expect(Tabs.openOrSwitchTo).not.toHaveBeenCalled();
       expect(WeekContentScraper.scrapeWeekContent).not.toHaveBeenCalled();
-      expect(result).toBe(semana3.items); // Mesma referência
+      expect(result.success).toBe(true);
+      expect(result.data).toBe(semana3.items); // Mesma referência
     });
   });
 });

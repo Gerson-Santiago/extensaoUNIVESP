@@ -13,9 +13,12 @@ import { ActivityRepository } from '../../../repositories/ActivityRepository.js'
 
 describe('WeekActivitiesService', () => {
   const mockWeek = {
-    url: 'https://ava.univesp.br/web/123/week/456',
     name: 'Semana 1',
-    items: [], // Inicialmente vazio
+    url: 'https://ava.univesp.br/web/123/week/456',
+    items: [{ id: '1', title: 'Atividade 1' }],
+    method: 'DOM',
+    courseId: '123',
+    contentId: '456',
   };
 
   const mockItems = [
@@ -51,7 +54,8 @@ describe('WeekActivitiesService', () => {
       // Verificar (Assert)
       expect(WeekContentScraper.scrapeWeekContent).toHaveBeenCalledWith(mockWeek.url, 1);
       expect(QuickLinksScraper.scrapeFromQuickLinks).not.toHaveBeenCalled();
-      expect(result).toEqual(mockItems);
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(mockItems);
       expect(mockWeek.items).toEqual(mockItems);
       expect(mockWeek.method).toBe('DOM');
     });
@@ -63,7 +67,8 @@ describe('WeekActivitiesService', () => {
       // Verificar (Assert)
       expect(QuickLinksScraper.scrapeFromQuickLinks).toHaveBeenCalledWith(mockWeek.url, 1);
       expect(WeekContentScraper.scrapeWeekContent).not.toHaveBeenCalled();
-      expect(result).toEqual(mockItems);
+      expect(result.success).toBe(true);
+      expect(result.data).toEqual(mockItems);
       expect(mockWeek.items).toEqual(mockItems);
       expect(mockWeek.method).toBe('QuickLinks');
     });
@@ -87,7 +92,8 @@ describe('WeekActivitiesService', () => {
 
       // Verificar (Assert)
       expect(WeekContentScraper.scrapeWeekContent).not.toHaveBeenCalled();
-      expect(result).toBe(mockWeek.items); // Mesma referência
+      expect(result.success).toBe(true);
+      expect(result.data).toBe(mockWeek.items); // Mesma referência
     });
 
     it('deve buscar NOVAMENTE se o método mudar de DOM para QuickLinks', async () => {
@@ -103,16 +109,25 @@ describe('WeekActivitiesService', () => {
       expect(mockWeek.method).toBe('QuickLinks');
     });
 
-    it('deve lançar erro quando o scraping falhar', async () => {
+    it('deve retornar erro estruturado quando o scraping falhar', async () => {
       // Preparar (Arrange)
       /** @type {jest.Mock} */ (WeekContentScraper.scrapeWeekContent).mockRejectedValue(
         new Error('Falha no Scraping')
       );
 
-      // Agir & Verificar (Act & Assert)
-      await expect(WeekActivitiesService.getActivities(mockWeek, 'DOM')).rejects.toThrow(
-        'Falha no Scraping'
-      );
+      // Suprimir console.error no teste
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
+
+      // Agir
+      const result = await WeekActivitiesService.getActivities(mockWeek, 'DOM');
+
+      // Verificar (Assert)
+      expect(result.success).toBe(false);
+      expect(result.data).toBeNull();
+      expect(result.error).toBeInstanceOf(Error);
+      expect(result.error.message).toBe('Falha no Scraping');
+
+      consoleSpy.mockRestore();
     });
   });
 });

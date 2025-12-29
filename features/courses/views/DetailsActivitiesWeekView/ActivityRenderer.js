@@ -25,7 +25,16 @@ export class ActivityRenderer {
    * @param {Array} items - Atividades da semana
    */
   renderActivities(items) {
-    if (!this.container || !items) return;
+    if (!this.container || !items) {
+      console.warn('[ActivityRenderer] Container ou items nulos', {
+        container: !!this.container,
+        items: !!items,
+      });
+      return;
+    }
+
+    // eslint-disable-next-line no-console
+    console.log('[ActivityRenderer] Renderizando', items.length, 'atividades:', items);
 
     try {
       const list = document.createElement('ul');

@@ -26,6 +26,7 @@
     "test:home": "jest features/home",
     "test:session": "jest features/session",
     "test:settings": "jest features/settings",
+    "test:details-complex": "jest features/courses/tests/views/DetailsActivitiesWeekView.test.js features/courses/tests/services/WeekActivitiesService features/courses/tests/WeekActivitiesCache.test.js",
     "test:shared": "jest shared/",
     "security:secrets": "secretlint '**/*'",
     "security:audit": "npm audit --audit-level=high",

@@ -27,19 +27,30 @@ export class WeeksManager {
   /**
    * Renderiza a lista de semanas no container.
    */
-  render() {
+  async render() {
     const weeksList = this.container.querySelector('#weeksList');
     if (!weeksList) return;
 
     weeksList.innerHTML = '';
+
+    // Carregar configurações de UI
+    const result = await chrome.storage.local.get('ui_settings');
+    const flags = /** @type {{ showAdvancedButtons: boolean, showTasksButton: boolean }} */ (
+      result.ui_settings || { showAdvancedButtons: true, showTasksButton: true }
+    );
+
     if (this.course.weeks && this.course.weeks.length > 0) {
       this.course.weeks.forEach((week) => {
-        const wDiv = createWeekElement(week, {
-          onClick: (url) => window.open(url, '_blank'),
-          onViewTasks: (w) => this.showPreview(w, wDiv),
-          onViewQuickLinks: (w) => this.handleViewActivities(w, 'QuickLinks'),
-          onViewActivities: (w) => this.handleViewActivities(w, 'DOM'),
-        });
+        const wDiv = createWeekElement(
+          week,
+          {
+            onClick: (url) => window.open(url, '_blank'),
+            onViewTasks: (w) => this.showPreview(w, wDiv),
+            onViewQuickLinks: (w) => this.handleViewActivities(w, 'QuickLinks'),
+            onViewActivities: (w) => this.handleViewActivities(w, 'DOM'),
+          },
+          flags
+        ); // Pass flags
         weeksList.appendChild(wDiv);
       });
     } else {
@@ -95,14 +106,18 @@ export class WeeksManager {
     try {
       // Cast explícito para o tipo esperado pelo serviço
       const scrapingMethod = method === 'QuickLinks' ? 'QuickLinks' : 'DOM';
-      await WeekActivitiesService.getActivities(week, scrapingMethod);
+      const { success, error } = await WeekActivitiesService.getActivities(week, scrapingMethod);
 
-      if (typeof this.callbacks.onViewActivities === 'function') {
-        this.callbacks.onViewActivities(week);
+      if (!success) {
+        throw error; // Re-throw to be caught by the catch block below (keeping catch logic consistent)
       }
 
+      // Se sucesso, os dados já estão em week.items (via Service) mas também em data
+      // O serviço já atualiza week.items e week.method.
+
       if (this.course && this.course.id) {
-        await CourseRepository.update(this.course.id, { weeks: this.course.weeks });
+        // Run update in background, do not block
+        CourseRepository.update(this.course.id, { weeks: this.course.weeks }).catch(console.error);
       }
     } catch (error) {
       console.error(`[CourseWeeksView] Erro ao carregar atividades [${method}]:`, error);
@@ -116,8 +131,8 @@ export class WeeksManager {
         : error.message || 'Erro ao carregar';
 
       week.error = friendlyError; // Flag de erro para a UI
-
-      // Forçar atualização da UI para remover estado de loading/exibir erro
+    } finally {
+      // ALWAYS update UI to remove loading skeletons
       if (typeof this.callbacks.onViewActivities === 'function') {
         this.callbacks.onViewActivities(week);
       }
@@ -143,8 +158,13 @@ export class WeeksManager {
     PreviewManager.hidePreview();
 
     try {
-      const items = await WeekActivitiesService.getActivities(week, 'DOM');
-      week.items = items;
+      const { success, data, error } = await WeekActivitiesService.getActivities(week, 'DOM');
+
+      if (!success) {
+        throw error;
+      }
+
+      week.items = data;
       PreviewManager.renderPreview(week, weekElement);
     } catch (error) {
       console.error('Erro ao carregar preview:', error);
@@ -152,6 +172,9 @@ export class WeeksManager {
       if (weekElement) weekElement.classList.remove('week-item-active');
       this.activeWeek = null;
       this.activeElement = null;
+    } finally {
+      // Garantir que o preview loading seja removido se houver
+      // A lógica do PreviewManager deve lidar com isso, mas garantir o estado limpo é bom
     }
   }
 }

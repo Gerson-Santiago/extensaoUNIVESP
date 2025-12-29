@@ -54,6 +54,7 @@ Scripts para testar apenas partes específicas da aplicação.
 | **`test:home`** | `jest features/home` | Testa apenas a feature **Home**. |
 | **`test:session`** | `jest features/session` | Testa apenas a feature de **Sessão**. |
 | **`test:settings`** | `jest features/settings` | Testa apenas a feature de **Configurações**. |
+| **`test:details-complex`** | `jest features/courses/tests/views/DetailsActivitiesWeekView.test.js ...` | **Testa o ecossistema completo da View de Detalhes.** Inclui a View, o Serviço (WeekActivitiesService) e o Cache, garantindo a integridade dos dados e da UI. |
 | **`test:shared`** | `jest shared/` | Testa apenas os módulos compartilhados (**Shared**). |
 
 ## 🔒 Segurança

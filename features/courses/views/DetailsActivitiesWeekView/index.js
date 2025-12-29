@@ -17,7 +17,6 @@ import { ChipsManager } from './ChipsManager.js';
 import { ActivityItemFactory } from './ActivityItemFactory.js';
 import { ViewTemplate } from './ViewTemplate.js';
 import { HeaderManager } from './HeaderManager.js';
-import { ActivityRepository } from '../../repositories/ActivityRepository.js';
 
 export class DetailsActivitiesWeekView {
   /**
@@ -77,24 +76,7 @@ export class DetailsActivitiesWeekView {
     this.renderSkeleton();
 
     // 🆕 Verificação de Persistência (Resgate de dados salvos)
-    if (
-      (!this.week.items || this.week.items.length === 0) &&
-      this.week.courseId &&
-      this.week.contentId
-    ) {
-      try {
-        const cached = await ActivityRepository.get(this.week.courseId, this.week.contentId);
-        if (cached && cached.items && cached.items.length > 0) {
-          console.warn(
-            '[DetailsActivitiesWeekView] Dados restaurados do armazenamento persistente.'
-          );
-          this.week.items = cached.items;
-          this.week.method = cached.method;
-        }
-      } catch (e) {
-        console.warn('[DetailsActivitiesWeekView] Falha ao recuperar cache:', e);
-      }
-    }
+    // 🎯 UX Otimizada: Primeiro mostra Skeleton
 
     // 🎯 UX Otimizada: Se tem erro, mostra estado de erro
     if (this.week?.error) {

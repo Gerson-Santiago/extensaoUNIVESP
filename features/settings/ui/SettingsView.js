@@ -27,22 +27,54 @@ export class SettingsView {
             <p class="config-desc">Configure a barra de navegação rápida entre semanas.</p>
             
             <div class="chips-settings">
-                <label class="setting-item" style="display: none;">
-                    <input type="checkbox" id="chipsEnabled" checked>
+                <label class="setting-item">
+                    <input type="checkbox" id="chipsEnabled">
                     <span>Exibir chips de navegação</span>
                 </label>
                 
                 <div id="chipsOptions" class="chips-options" style="display: block;">
                     <label class="setting-item">
-                        <span>Quantidade de chips (0 = desativado):</span>
+                        <span>Quantidade de chips:</span>
                         <div class="slider-container">
-                            <input type="range" id="chipsMaxItems" min="0" max="8" value="3" step="1">
+                            <input type="range" id="chipsMaxItems" min="1" max="8" value="3" step="1">
                             <span id="chipsMaxValue" class="slider-value">3</span>
                         </div>
                     </label>
                 </div>
             </div>
             
+            <hr class="divider">
+
+            <h3>Interface & Funcionalidades</h3>
+            <p class="config-desc">Personalize o que você vê na lista de semanas.</p>
+            
+            <div class="ui-settings">
+                <label class="setting-item">
+                    <input type="checkbox" id="showAdvancedButtons" checked>
+                    <span>Botões de Verificação Avançados (Rápido vs Completo)</span>
+                </label>
+                <p class="setting-hint">Se desativado, mostra apenas o botão padrão (Completo).</p>
+
+                <label class="setting-item">
+                    <input type="checkbox" id="showTasksButton" checked>
+                    <span>Funcionalidade de Tarefas (Preview)</span>
+                </label>
+                <p class="setting-hint">Habilita o botão 'Tarefas' para ver o resumo sem abrir.</p>
+            </div>
+            
+            <hr class="divider">
+
+            <h3>Privacidade e Dados</h3>
+            <p class="config-desc">Gerencie seus dados locais. A extensão segue a política Local-First.</p>
+            <div class="action-list">
+                <button id="btnExport" class="action-card small-action">
+                    <span class="icon">⬇️</span><span class="label">Baixar Meus Dados (Backup)</span>
+                </button>
+                <button id="btnImport" class="action-card small-action">
+                    <span class="icon">⬆️</span><span class="label">Restaurar Backup</span>
+                </button>
+            </div>
+
             <hr class="divider">
 
             <h3>Gerenciar Matérias</h3>
@@ -87,6 +119,9 @@ export class SettingsView {
     // Initialize Chips Settings
     this.initChipsSettings();
 
+    // Initialize UI Settings
+    this.initUISettings();
+
     // Attach Action Buttons listeners
     const btnManual = document.getElementById('btnManualAdd');
     const btnCurrent = document.getElementById('btnAddCurrent');
@@ -117,6 +152,13 @@ export class SettingsView {
     if (btnClear) {
       btnClear.onclick = () => this.handleClearAll();
     }
+
+    // Backup Listeners
+    const btnExport = document.getElementById('btnExport');
+    const btnImport = document.getElementById('btnImport');
+
+    if (btnExport) btnExport.onclick = () => this.handleExport();
+    if (btnImport) btnImport.onclick = () => this.handleImport();
   }
 
   async handleClearAll() {
@@ -140,33 +182,122 @@ export class SettingsView {
     );
   }
 
+  async handleExport() {
+    try {
+      const { BackupService } = await import('../services/BackupService.js');
+      await BackupService.exportData();
+      this.feedback.show('Backup iniciado! Verifique seus downloads.', 'success');
+    } catch {
+      this.feedback.show('Erro ao criar backup.', 'error');
+    }
+  }
+
+  async handleImport() {
+    try {
+      const { BackupService } = await import('../services/BackupService.js');
+
+      const file = await BackupService.triggerFileUpload();
+      const reader = new FileReader();
+
+      reader.onload = async (e) => {
+        try {
+          const json = /** @type {string} */ (e.target.result);
+          const result = await BackupService.importData(json);
+          this.feedback.show(`Dados restaurados! (${result.keyCount} registros)`, 'success');
+
+          // Recarregar app após 2s
+          setTimeout(() => window.location.reload(), 2000);
+        } catch (err) {
+          console.error(err);
+          this.feedback.show('Arquivo de backup inválido.', 'error');
+        }
+      };
+
+      reader.readAsText(file);
+    } catch {
+      // Cancelado pelo usuário
+    }
+  }
+
+  /**
+   * Initialize chips settings UI and listeners
+   */
+  /**
+   * Initialize chips settings UI and listeners
+   */
   /**
    * Initialize chips settings UI and listeners
    */
   async initChipsSettings() {
+    const checkbox = /** @type {HTMLInputElement|null} */ (document.getElementById('chipsEnabled'));
     const slider = /** @type {HTMLInputElement|null} */ (document.getElementById('chipsMaxItems'));
     const valueDisplay = document.getElementById('chipsMaxValue');
     const options = document.getElementById('chipsOptions');
 
-    if (!slider || !valueDisplay || !options) return;
+    if (!checkbox || !slider || !valueDisplay || !options) return;
 
-    // Load saved settings
+    // Load
     const settings = await this.loadChipsSettings();
+    checkbox.checked = settings.enabled;
     slider.value = String(settings.maxItems);
     valueDisplay.textContent = String(settings.maxItems);
 
-    // Slider listener
+    // Toggle visibility of slider based on checkbox
+    options.style.display = settings.enabled ? 'block' : 'none';
+
+    // Listeners
+    checkbox.addEventListener('change', async () => {
+      const enabled = checkbox.checked;
+      options.style.display = enabled ? 'block' : 'none';
+      await this.saveChipsSettings({ enabled, maxItems: parseInt(slider.value) });
+    });
+
     slider.addEventListener('input', () => {
       valueDisplay.textContent = slider.value;
     });
 
     slider.addEventListener('change', async () => {
-      const maxItems = parseInt(slider.value);
       await this.saveChipsSettings({
-        enabled: maxItems > 0, // 0 = disabled
-        maxItems: maxItems,
+        enabled: checkbox.checked,
+        maxItems: parseInt(slider.value),
       });
     });
+  }
+
+  /**
+   * Initialize UI feature flags settings
+   */
+  async initUISettings() {
+    const advBtn = /** @type {HTMLInputElement|null} */ (
+      document.getElementById('showAdvancedButtons')
+    );
+    const tasksBtn = /** @type {HTMLInputElement|null} */ (
+      document.getElementById('showTasksButton')
+    );
+
+    if (!advBtn || !tasksBtn) return;
+
+    // Default values
+    const defaults = { showAdvancedButtons: true, showTasksButton: true };
+    const saved = /** @type {{showAdvancedButtons: boolean, showTasksButton: boolean}} */ (
+      (await chrome.storage.local.get('ui_settings')).ui_settings || defaults
+    );
+
+    advBtn.checked = saved.showAdvancedButtons;
+    tasksBtn.checked = saved.showTasksButton;
+
+    // Listeners
+    const save = async () => {
+      await chrome.storage.local.set({
+        ui_settings: {
+          showAdvancedButtons: advBtn.checked,
+          showTasksButton: tasksBtn.checked,
+        },
+      });
+    };
+
+    advBtn.addEventListener('change', save);
+    tasksBtn.addEventListener('change', save);
   }
 
   /**

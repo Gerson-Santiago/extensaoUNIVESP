@@ -52,7 +52,8 @@ export class CourseStorage {
    */
   async saveAll(courses) {
     try {
-      console.warn(`[STORAGE] Iniciando salvamento de ${courses.length} cursos...`);
+      // eslint-disable-next-line no-console
+      console.debug(`[STORAGE] Iniciando salvamento de ${courses.length} cursos...`);
 
       // 0. Carrega metadados ATUAIS (antes de sobrescrever) para saber o que deletar depois
       const currentMetadata = await ChunkedStorage.loadChunked(this.METADATA_KEY);
@@ -74,7 +75,8 @@ export class CourseStorage {
       // 3. Remove cursos deletados (IDs que estavam no oldIds mas não no newCourseIds)
       await this.cleanupDeletedCourses(oldCourseIds, newCourseIds);
 
-      console.warn('[STORAGE] Salvamento concluído com sucesso.');
+      // eslint-disable-next-line no-console
+      console.debug('[STORAGE] Salvamento concluído com sucesso.');
     } catch (error) {
       console.error('[CourseStorage] Erro CRÍTICO ao salvar cursos:', error);
       throw error;

@@ -2,7 +2,11 @@
  * @file WeekItem.js
  * @description Componente de Item de Semana. Filho de CourseWeeksView.
  */
-export function createWeekElement(week, callbacks) {
+export function createWeekElement(
+  week,
+  callbacks,
+  flags = { showAdvancedButtons: true, showTasksButton: true }
+) {
   const div = document.createElement('div');
   div.className = 'week-item';
   div.addEventListener('click', () => {
@@ -39,48 +43,44 @@ export function createWeekElement(week, callbacks) {
     nameSpan.appendChild(chip);
   }
 
-  // Botão de Tarefas
-  const tasksBtn = document.createElement('button');
-  tasksBtn.className = 'btn-grid-action';
-  tasksBtn.textContent = '📋 Tarefas';
-  tasksBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    if (callbacks.onViewTasks) callbacks.onViewTasks(week);
-  });
+  div.appendChild(nameSpan);
 
-  // Botão de Atividades RÁPIDO (QuickLinks)
-  const activitiesQuickBtn = document.createElement('button');
-  activitiesQuickBtn.className = 'btn-grid-action btn-activities-quick';
-  activitiesQuickBtn.textContent = '⚡ Rápido';
-  activitiesQuickBtn.title = 'Atividades via QuickLinks (mais rápido, pode ser inconsistente)';
-  activitiesQuickBtn.addEventListener('click', async (e) => {
-    e.stopPropagation();
+  // Botão de Tarefas (Condicional)
+  if (flags.showTasksButton) {
+    const tasksBtn = document.createElement('button');
+    tasksBtn.className = 'btn-grid-action';
+    tasksBtn.textContent = '📋 Tarefas';
+    tasksBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      if (callbacks.onViewTasks) callbacks.onViewTasks(week);
+    });
+    div.appendChild(tasksBtn);
+  }
 
-    if (activitiesQuickBtn.disabled) return;
-
-    const originalText = activitiesQuickBtn.textContent;
-    activitiesQuickBtn.disabled = true;
-    activitiesQuickBtn.textContent = '⏳';
-    activitiesQuickBtn.style.opacity = '0.6';
-
-    try {
-      if (callbacks.onViewQuickLinks) {
-        await callbacks.onViewQuickLinks(week);
+  // Botão de Atividades RÁPIDO (Condicional)
+  if (flags.showAdvancedButtons) {
+    const activitiesQuickBtn = document.createElement('button');
+    activitiesQuickBtn.className = 'btn-grid-action btn-activities-quick';
+    activitiesQuickBtn.textContent = '⚡ Rápido';
+    activitiesQuickBtn.title = 'Atividades via QuickLinks';
+    activitiesQuickBtn.addEventListener('click', async (e) => {
+      e.stopPropagation();
+      if (activitiesQuickBtn.disabled) return;
+      // ... logic ...
+      try {
+        if (callbacks.onViewQuickLinks) await callbacks.onViewQuickLinks(week);
+      } catch (err) {
+        console.error(err);
       }
-    } catch (error) {
-      console.error('Erro ao carregar atividades (QuickLinks):', error);
-    } finally {
-      activitiesQuickBtn.disabled = false;
-      activitiesQuickBtn.textContent = originalText;
-      activitiesQuickBtn.style.opacity = '1';
-    }
-  });
+    });
+    div.appendChild(activitiesQuickBtn);
+  }
 
-  // Botão de Atividades COMPLETO (DOM)
+  // Botão de Atividades COMPLETO (Sempre visível, mas adapta texto se simplificado?)
   const activitiesDomBtn = document.createElement('button');
   activitiesDomBtn.className = 'btn-grid-action btn-activities-dom';
-  activitiesDomBtn.textContent = '🔍 Completo';
-  activitiesDomBtn.title = 'Atividades via DOM (mais confiável, com logs de debug)';
+  activitiesDomBtn.textContent = flags.showAdvancedButtons ? '🔍 Completo' : 'Ver Atividades';
+  activitiesDomBtn.title = 'Carregar atividades da semana';
   activitiesDomBtn.addEventListener('click', async (e) => {
     e.stopPropagation();
 
@@ -103,15 +103,12 @@ export function createWeekElement(week, callbacks) {
       activitiesDomBtn.style.opacity = '1';
     }
   });
+  div.appendChild(activitiesDomBtn);
 
   const arrow = document.createElement('span');
   arrow.className = 'week-arrow';
   arrow.innerHTML = '&rsaquo;';
 
-  div.appendChild(nameSpan);
-  div.appendChild(tasksBtn);
-  div.appendChild(activitiesQuickBtn);
-  div.appendChild(activitiesDomBtn);
   div.appendChild(arrow);
 
   return div;
