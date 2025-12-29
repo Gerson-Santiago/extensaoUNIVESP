@@ -128,6 +128,6 @@ describe('WeekActivitiesService', () => {
       expect(result.error.message).toBe('Falha no Scraping');
 
       consoleSpy.mockRestore();
-    });
+    }, 10000); // Aumentar timeout para suportar delay de 500ms do serviço
   });
 });

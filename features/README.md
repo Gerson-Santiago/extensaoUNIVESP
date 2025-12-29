@@ -107,25 +107,121 @@ O uso de validação de tipos é mandatório.
 
 ---
 
-## 4. Features Implementadas (v2.8.9)
+## 4. Features Implementadas (v2.9.0)
 
-### `courses` (Core)
-Gestão completa do ciclo de vida acadêmico.
-- **Sub-módulos**: `import` (Importação em Lote).
-- **Views**:
-  - `CoursesView/`: Lista principal de cursos.
-  - `CourseWeeksView/`: Detalhes de um curso (Lista de Semanas).
-  - `CourseWeekTasksView/`: Detalhes de uma semana (Lista de Tarefas).
-  - `DetailsActivitiesWeekView/`: View modular (Template, Header, Chips) para atividades.
+### `courses` (Core) 🏆
+Gestão completa do ciclo de vida acadêmico com 56 diretórios e 105 arquivos.
 
-### `home` (Utility)
+**Estrutura Completa:**
+```
+courses/
+├── components/          # UI Components
+│   ├── AddManualModal/
+│   ├── CourseItem.js
+│   └── WeekItem.js
+├── data/               # Persistência (Repository Pattern)
+│   ├── CourseRepository.js
+│   ├── CourseStorage.js
+│   └── DATA_ACCESS.md
+├── import/             # Sub-feature: Importação em Lote
+│   ├── components/
+│   ├── logic/
+│   ├── services/       # BatchScraper
+│   └── tests/
+├── logic/              # Domain Services (Regras de Negócio)
+│   ├── AutoScrollService.js
+│   ├── CourseGrouper.js
+│   ├── CourseService.js
+│   ├── TaskCategorizer.js
+│   └── TermParser.js
+├── models/             # Type Definitions (JSDoc)
+│   ├── ActivityProgress.js
+│   ├── Course.js
+│   └── Week.js
+├── repositories/       # Persistência de Atividades
+│   └── ActivityRepository.js (localStorage, 5MB quota)
+├── repository/         # Persistência de Progresso
+│   └── ActivityProgressRepository.js
+├── services/           # Integration Services
+│   ├── CourseRefresher.js
+│   ├── QuickLinksScraper.js
+│   ├── ScraperService.js
+│   ├── TaskProgressService.js
+│   ├── WeekActivitiesService.js (SafeResult pattern)
+│   ├── WeekContentScraper/ (Strategy Pattern)
+│   │   ├── strategies/ (7 strategies)
+│   │   └── StrategyRegistry.js
+│   └── WeekContentScraper.js
+├── tests/              # Unit & Integration Tests (437 totes)
+│   ├── components/
+│   ├── CourseRepository/ (4 suites)
+│   ├── integration/
+│   ├── logic/ (5 suites)
+│   ├── models/
+│   ├── repositories/
+│   ├── services/ (9 suites)
+│   └── views/ (8 suites включая regression)
+└── views/              # Page Controllers
+    ├── CoursesView/
+    ├── CourseWeeksView/ (modular com Managers)
+    ├── CourseWeekTasksView/
+    └── DetailsActivitiesWeekView/ (modular: 9 arquivos)
+        ├── ActivityItemFactory.js
+        ├── ActivityRenderer.js
+        ├── ChipsManager.js
+        ├── handlers/ (Clear, Refresh)
+        ├── HeaderManager.js
+        ├── SkeletonManager.js
+        └── ViewTemplate.js
+```
+
+**Destaques v2.9.0:**
+- **SafeResult Pattern**: `WeekActivitiesService.js` usa `trySafe()` para error handling robusto
+- **Container Freshness**: `DetailsActivitiesWeekView` sempre usa container fresco (fix DOM Zumbi)
+- **Testes de Regressão**: [`rendering-regression.test.js`](courses/tests/views/DetailsActivitiesWeekView/rendering-regression.test.js) com 5 cenários blindando bug crítico
+- **Dual Repository**: `ActivityRepository` (localStorage) + `ActivityProgressRepository` (sync storage)
+
+### `home` (Utility) 📦
 Dashboard central de acesso rápido.
+- **UI**: `HomeView.js`
+- **Testes**: `HomeView.test.js`
 
-### `settings` (Infra)
+### `settings` (Infra) 🔧
 Gerenciamento de configurações e preferências do usuário.
+- **Components**: `ConfigForm.js`
+- **Logic**: `domainManager.js`
+- **Services**: `BackupService.js`
+- **Testes**: 3 suites (Defaults, Domain, Integration)
 
-### `session` (Infra)
+### `session` (Infra) 🔧
 Gerenciamento de estado de autenticação (Blackboard/SEI).
+- **Components**: `LoginWaitModal.js`
+- **Logic**: `SessionManager.js` (Singleton)
+- **Models**: `Session.js`
+- **Testes**: `SessionManager.test.js`
 
-### `feedback` (Utility)
+### `feedback` (Utility) 📦
 Interface de reporte de erros e sugestões.
+- **UI**: `FeedbackView.js`
+- **Testes**: `FeedbackView.test.js`
+
+---
+
+## 5. Métricas (v2.9.0)
+
+| Métrica | Valor |
+| :--- | :--- |
+| **Total de Diretórios** | 56 |
+| **Total de Arquivos** | 105 |
+| **Testes** | 437 passando (59 suites) |
+| **Cobertura** | 77.81% |
+| **Linhas de Código** | ~14.383 (apenas .js) |
+
+---
+
+## 6. Referências
+
+- **Arquitetura**: [`docs/TECNOLOGIAS_E_ARQUITETURA.md`](../docs/TECNOLOGIAS_E_ARQUITETURA.md)
+- **Padrões de Código**: [`docs/PADROES.md`](../docs/PADROES.md)
+- **Engineering Guide**: [`docs/ENGINEERING_GUIDE.md`](../docs/ENGINEERING_GUIDE.md)
+

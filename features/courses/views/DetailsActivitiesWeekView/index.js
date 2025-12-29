@@ -48,12 +48,15 @@ export class DetailsActivitiesWeekView {
    */
   render() {
     if (!this.week) {
-      return document.createElement('div');
+      this.element = document.createElement('div');
+      return this.element;
     }
 
     const div = document.createElement('div');
     div.className = 'view-details-activities';
     div.innerHTML = ViewTemplate.render(this.week.courseName, this.week.name);
+
+    this.element = div;
     return div;
   }
 
@@ -94,7 +97,9 @@ export class DetailsActivitiesWeekView {
    * Renderiza chips de navegação contextual
    */
   async renderChips() {
-    const container = document.getElementById('chipsContainer');
+    const container = this.element
+      ? /** @type {HTMLElement} */ (this.element.querySelector('#chipsContainer'))
+      : null;
     if (!container || !this.week) return;
 
     // Inicializar ChipsManager se necessário
@@ -133,7 +138,9 @@ export class DetailsActivitiesWeekView {
    * Técnica de UX para melhorar velocidade percebida
    */
   renderSkeleton() {
-    const container = document.getElementById('activitiesContainer');
+    const container = this.element
+      ? /** @type {HTMLElement} */ (this.element.querySelector('#activitiesContainer'))
+      : null;
     SkeletonManager.renderSkeleton(container, 5);
   }
 
@@ -141,23 +148,24 @@ export class DetailsActivitiesWeekView {
    * Renderiza lista de atividades (ordem DOM original)
    */
   renderActivities() {
-    const container = document.getElementById('activitiesContainer');
+    const container = this.element
+      ? /** @type {HTMLElement} */ (this.element.querySelector('#activitiesContainer'))
+      : null;
     if (!container) return;
 
-    // Inicializar renderer se necessário
-    if (!this.activityRenderer) {
-      this.activityRenderer = new ActivityRenderer(container, this.itemFactory);
-    }
-
-    // Delegar renderização ao ActivityRenderer
-    this.activityRenderer.renderActivities(this.week?.items || []);
+    // 🔧 FIX: Sempre criar novo renderer com container fresco
+    // Isso evita renderizar em um container "zumbi" se a view for re-renderizada
+    const renderer = new ActivityRenderer(container, this.itemFactory);
+    renderer.renderActivities(this.week?.items || []);
   }
 
   /**
    * Renderiza estado de erro no container de atividades
    */
   renderErrorState() {
-    const container = document.getElementById('activitiesContainer');
+    const container = this.element
+      ? /** @type {HTMLElement} */ (this.element.querySelector('#activitiesContainer'))
+      : null;
     if (!container) return;
 
     container.innerHTML = `

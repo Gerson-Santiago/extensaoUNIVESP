@@ -24,7 +24,7 @@ features/courses/
 │       ├── ViewTemplate.js
 │       └── handlers/
 ├── services/                        # Orquestração
-│   ├── WeekActivitiesService.js     # Facade de Scraping
+│   ├── WeekActivitiesService.js     # Facade de Scraping (SafeResult pattern)
 │   ├── TaskProgressService.js       # Gestão de Status
 │   ├── QuickLinksScraper.js         # Estratégia Rápida
 │   └── WeekContentScraper.js        # Estratégia Completa (DOM)
@@ -36,7 +36,9 @@ features/courses/
 ├── data/                            # Dados (Cursos)
 │   ├── CourseRepository.js          # API Pública
 │   └── CourseStorage.js             # Driver Chrome Storage
-├── repository/                      # Dados (Progresso)
+├── repositories/                    # Dados (Atividades - localStorage)
+│   └── ActivityRepository.js         # Cache 5MB (activities_CID_WID)
+├── repository/                      # Dados (Progresso - sync storage)
 │   └── ActivityProgressRepository.js
 └── components/                      # Widgets Compartilhados
     ├── CourseItem.js
@@ -82,12 +84,19 @@ Checklist simples para controle manual de tarefas.
 
 ---
 
-## 🛠️ Status da Feature
+## 🛠️ Status da Feature (v2.9.0)
 
 - ✅ **Navegação**: 100% Funcional (Abas e Chips sincronizados).
 - ✅ **Persistência**: Auto-save implementado em todas as etapas.
 - ✅ **Modularização**: Views complexas refatoradas.
-- ✅ **Testes**: Cobertura de integração e unitária.
+- ✅ **Error Handling**: SafeResult pattern em WeekActivitiesService.
+- ✅ **Renderização**: Container Freshness fix (DOM Zumbi eliminado).
+- ✅ **Testes**: 437 testes, 77.81% cobertura + 5 regression tests.
+
+**Destaques v2.9.0:**
+- 🛡️ **Blindagem**: `rendering-regression.test.js` protege contra bug de renderização
+- 🏗️ **Dual Storage**: localStorage (atividades) + sync storage (progresso)
+- ⚡ **Robustez**: Tratamento de erro estruturado (`{success, data, error}`)
 
 ---
-*Última atualização: Dezembro/2025*
+*Última atualização: 29/Dezembro/2025*

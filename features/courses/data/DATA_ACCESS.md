@@ -9,7 +9,7 @@ Este diretório e `../repository/` contêm a lógica de persistência para o Cor
 *   **`CourseStorage.js`**: Driver interno para `chrome.storage`.
 
 ### Repository Layer (Activity Progress) ✨ NEW
-*   **`../repository/ActivityProgressRepository.js`**: CRUD para progresso de atividades (namespace separado).
+*   **`../repositories-progress/ActivityProgressRepository.js`**: CRUD para progresso de atividades (namespace separado).
 
 ---
 

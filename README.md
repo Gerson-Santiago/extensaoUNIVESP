@@ -1,15 +1,33 @@
 # AutoPreencher UNIVESP (Extensão Chrome)
 
-> **Versão Atual**: v2.8.14
+> **Versão Atual**: v2.9.0
 > **Descrição**: Ferramenta de produtividade Open Source para alunos da UNIVESP.
 
-![Version](https://img.shields.io/badge/version-2.8.14-blue)
+![Version](https://img.shields.io/badge/version-2.9.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 
 ## 🎯 Sobre o Projeto
 
 O **AutoPreencher UNIVESP** é uma extensão de navegador desenvolvida **de aluno para aluno** com o objetivo de otimizar a rotina acadêmica. A extensão centraliza ferramentas de produtividade, facilita a navegação no Ambiente Virtual de Aprendizagem (AVA) e automatiza tarefas repetitivas.
+
+### 🎓 Missão
+
+Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o atrito de navegação em sistemas legados e devolvendo tempo de estudo ao aluno.
+
+### 🧭 Princípios Norteadores
+
+1. **Soberania de Dados (Local-First):** Privacidade absoluta - dados sensíveis nunca deixam a máquina do usuário. O sistema funciona sem dependência de backends proprietários.
+
+2. **Ética na Automação:** A ferramenta automatiza o *acesso* e *organização*, jamais o *consumo* de conteúdo educacional (não assiste aulas pelo aluno).
+
+3. **Excelência Técnica:** Tratamos este projeto open-source com rigor de software enterprise (Testes, CI/CD, Arquitetura Limpa).
+
+### 💎 Proposta de Valor
+
+- **Centralização:** Dashboard único para Cursos, Prazos e Notas
+- **Contexto:** Navegação inteligente que entende a estrutura do AVA
+- **Performance:** Interface instantânea, sem refresh de página
 
 ---
 
@@ -70,11 +88,10 @@ Mantemos uma documentação rigorosa e detalhada para garantir a qualidade e a c
 
 | Documento | Descrição |
 | :--- | :--- |
-| **[🎓 Identidade](./docs/IDENTIDADE_DO_PROJETO.md)** | Visão geral, filosofia e objetivos do projeto. |
-| **[🏗️ Arquitetura](./docs/TECNOLOGIAS_E_ARQUITETURA.md)** | Stack tecnológica, diagramas e decisões de arquitetura. |
+| **[️ Arquitetura](./docs/TECNOLOGIAS_E_ARQUITETURA.md)** | Stack tecnológica, diagramas e decisões de arquitetura. |
 | **[⚙️ Workflow](./docs/FLUXOS_DE_TRABALHO.md)** | Guia de contribuição, padrões de Git e Code Review. |
 | **[📜 Regras](./docs/REGRAS_DE_NEGOCIO.md)** | Especificações funcionais e lógica de negócios detalhada. |
-| **[📏 Padrões](./docs/PADROES_DO_PROJETO.md)** | Style guides, linter, padrões de commit e qualidade de código. |
+| **[📏 Padrões](./docs/PADROES.md)** | Style guides, linter, padrões de commit e qualidade de código. |
 
 ---
 

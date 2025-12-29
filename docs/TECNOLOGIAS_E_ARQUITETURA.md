@@ -125,3 +125,77 @@ graph TD
         ContentScript -- "DOM Access" --> AVAPage
     end
 ```
+
+---
+
+## 6. Glossário Técnico (Ubiquitous Language)
+
+Definição estrita dos termos utilizados no domínio do projeto.
+
+### 6.1 Entidades de Domínio
+
+**AVA (Ambiente Virtual de Aprendizagem)**  
+Sistema Blackboard utilizado pela UNIVESP. Fonte primária de dados para scraping.
+
+**Feature**  
+Unidade funcional autônoma do sistema. Representa um Bounded Context na arquitetura.  
+Ex: `courses`, `session`, `settings`.
+
+**View**  
+Interface gráfica de alto nível que ocupa a área principal do painel lateral. Equivalente a uma "Página" em SPAs.  
+Ex: `CoursesView`, `HomeView`.
+
+**Component**  
+Elemento de interface reutilizável e de escopo menor que uma View.  
+Ex: `WeekItem`, `CourseItem`, `Modal`.
+
+### 6.2 Conceitos Arquiteturais
+
+**Vertical Slice Architecture**  
+Arquitetura onde o sistema é dividido verticalmente por funcionalidades. Cada fatia contém toda a lógica necessária (UI, Service, Model) para funcionar, evitando dependências entre camadas horizontais globais.
+
+**Modular Monolith (Monolito Modular)**  
+Estratégia de implantação onde o sistema é um único artefato distribuível (extensão Chrome), mas internamente é organizado em módulos altamente desacoplados.
+
+**Feature-Sliced Design (Adaptado)**  
+Metodologia que divide o sistema em fatias (Features) e segmentos técnicos (Segments: `logic`, `ui`, `data`). O projeto adapta este conceito ao usar `shared/` como kernel comum.
+
+**Screaming Architecture**  
+Padrão arquitetural onde a estrutura de diretórios comunica a intenção de negócio do sistema.
+
+### 6.3 Termos Técnicos
+
+**Chips de Navegação**  
+Componente de UI (`ContextualChips`) que permite navegação rápida entre semanas dentro da view de atividades, mantendo contexto e persistência.
+
+**Content Script**  
+Script que roda no contexto da página web (AVA).
+
+**Isolated World**  
+Contexto de execução dos Content Scripts no Chrome, onde compartilham o DOM da página hospedeira mas possuem um escopo JavaScript isolado.
+
+**Service Worker (Background)**  
+Script de event-handling que roda em background, independente da interface gráfica. Responsável pela persistência e lógica de longa duração.
+
+**Repository Pattern**  
+Padrão de acesso a dados que abstrai a fonte de persistência (`chrome.storage`), oferecendo uma interface de coleção para o domínio.
+
+**@typedef (JSDoc)**  
+Diretiva de documentação utilizada para criar definições de tipos reutilizáveis em JavaScript puro. Utilizado extensivamente em `features/*/models`.
+
+**ActivityProgress**  
+Modelo canônico (Entidade) que representa o estado de conclusão de uma tarefa. Unifica dados de scraping ('TODO'/'DONE') e interação do usuário (toggle manual).
+
+**QuickLinks Scraper**  
+Estratégia de extração de dados que utiliza o modal nativo "Links Rápidos" do Blackboard. Mais rápido que scraping via DOM, mas fornece apenas IDs e Títulos.
+
+**Scraper**  
+Serviço especializado em extrair dados estruturados a partir do DOM de páginas HTML (AVA/SEI).
+
+### 6.4 Diferenciações Importantes
+
+| Termo | Definição | Contraparte |
+| :--- | :--- | :--- |
+| **Logic** | Regras de negócio puras (Testável unitariamente). | **Service** (Integração externa/IO). |
+| **Feature** | Módulo de domínio específico. | **Shared** (Módulo genérico reutilizável). |
+| **Modal** | Overlay de interrupção temporária. | **View** (Navegação persistente). |

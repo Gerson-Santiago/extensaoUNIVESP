@@ -14,7 +14,7 @@ Esta camada contém os **Services** (Orquestradores e Facades) que coordenam ló
 | **[QuickLinksScraper.js](file:///home/sant/extensaoUNIVESP/features/courses/services/QuickLinksScraper.js)** | Extrai lista de cursos e semanas do painel "Quick Links" do AVA. | `chrome.scripting` |
 | **[ScraperService.js](file:///home/sant/extensaoUNIVESP/features/courses/services/ScraperService.js)** | **Facade Principal**. Orquestra scraping completo (cursos + semanas + atividades). | `QuickLinksScraper`, `WeekContentScraper`, `CourseRepository` |
 | **[TaskProgressService.js](file:///home/sant/extensaoUNIVESP/features/courses/services/TaskProgressService.js)** | Calcula métricas de progresso (tarefas concluídas/totais). | Models (`Course`, `Week`) |
-| **[WeekActivitiesService.js](file:///home/sant/extensaoUNIVESP/features/courses/services/WeekActivitiesService.js)** | Busca ou scrapa atividades de uma semana específica (com cache). | `WeekContentScraper`, `CourseRepository` |
+| **[WeekActivitiesService.js](file:///home/sant/extensaoUNIVESP/features/courses/services/WeekActivitiesService.js)** | Busca ou scrapa atividades de uma semana específica (com cache). **SafeResult pattern v2.9.0**. | `WeekContentScraper`, `ActivityRepository` (localStorage) |
 | **[WeekContentScraper/](file:///home/sant/extensaoUNIVESP/features/courses/services/WeekContentScraper/)** | **Subpasta**: `WeekContentScraper` com Strategy Pattern. | Ver [WeekContentScraper/README.md](file:///home/sant/extensaoUNIVESP/features/courses/services/WeekContentScraper/README.md) |
 
 ---

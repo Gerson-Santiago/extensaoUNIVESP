@@ -1,7 +1,7 @@
 # 📋 .github - Gestão de Projeto
 
-**Versão**: v2.8.9  
-**Última atualização**: 2025-12-27
+**Versão**: v2.9.0  
+**Última atualização**: 2025-12-29
 
 ---
 
@@ -56,6 +56,9 @@
 
 **Técnicas/Arquiteturais** (`docs/architecture/`):
 - [`ADR-003: BatchScraper No Modularization`](../docs/architecture/ADR_003_BATCHSCRAPER_NO_MODULARIZATION.md) - Injected code constraint
+- [`ADR-004: Navigation Breadcrumb Logic`](../docs/architecture/ADR_004_NAVIGATION_BREADCRUMB_LOGIC.md) - Navegação hierárquica
+- [`ADR-005: SafeResult Pattern`](../docs/architecture/ADR_005_SAFERESULT_PATTERN.md) - Error handling robusto
+- [`ADR-006: Container Freshness`](../docs/architecture/ADR_006_CONTAINER_FRESHNESS.md) - DOM Zumbi fix
 
 
 
@@ -109,7 +112,7 @@ graph LR
 
 - ✅ **Sempre** rode `npm run verify` antes de commitar
 - ✅ **Sempre** escreva testes (TDD quando possível)
-- ✅ **Sempre** siga convenções de commit (ver `docs/PADROES_COMMITS.md`)
+- ✅ **Sempre** siga convenções de commit (ver `docs/PADROES.md`)
 - ✅ **Sempre** atualize documentação relevante
 - ❌ **Nunca** commite código comentado ou console.log
 - ❌ **Nunca** faça refactor sem testes passando (Green-Green)
@@ -133,4 +136,4 @@ graph LR
 
 ---
 
-**Auditoria**: 2025-12-27 (Limpeza radical - docs obsoletas arquivadas)
+**Auditoria**: 2025-12-29 (v2.9.0 - Release com SafeResult Pattern e DOM Zumbi fix)

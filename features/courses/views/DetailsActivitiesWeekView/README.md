@@ -4,6 +4,7 @@
 
 > **Localização**: `features/courses/views/DetailsActivitiesWeekView/`
 > **Tipo**: View Complexa (Modularizada)
+> **Versão**: v2.9.0 - **Container Freshness Fix**
 
 Esta é a view mais crítica do sistema, responsável por transformar a abstração do AVA em uma **lista de tarefas acionáveis e navegáveis**. É aqui que o aluno passa a maior parte do tempo de estudo.
 
@@ -38,7 +39,7 @@ graph TD
     
     subgraph "Data & Services"
         Index -.-> WeekActivitiesService
-        Index -.-> CourseRepository
+        Index -.-> ActivityRepository
     end
 ```
 
@@ -64,9 +65,11 @@ graph TD
 - **Solução**: Chips no topo da view permitem troca rápida.
 - **Sincronia**: Ao clicar, o navegador abre a nova aba E a extensão atualiza a view (`onNavigateToWeek`).
 
-### 2. Auto-Save & Persistência
+### 2. Cache de Atividades (localStorage)
 - **Problema**: Dados de scraping eram perdidos ao fechar a extensão.
-- **Solução**: Dados são salvos em `chrome.storage.local` imediatamente após o scraping (`CourseRepository.update`).
+- **Solução**: Atividades são salvas em `ActivityRepository` (localStorage, 5MB quota) imediatamente após scraping.
+- **Chave**: `activities_{courseId}_{contentId}` para isolar por semana.
+- **Fonte da Verdade v2.9.0**: [`ActivityRepository.js`](../../repositories/ActivityRepository.js)
 
 ### 3. Scroll Automático (`scrollToActivity`)
 - Lógica complexa que:
@@ -87,3 +90,31 @@ new DetailsActivitiesWeekView({
   onNavigateToWeek: (week) => {} // Troca de semana via Chip
 })
 ```
+
+---
+
+## 🛡️ v2.9.0: Bug do DOM Zumbi Corrigido
+
+**Problema:** Após re-renderização da view, `ActivityRenderer` renderizava no container **antigo** (zumbi), deixando UI com Skeleton infinito.
+
+**Solução (Container Freshness):**
+- **`index.js`** agora SEMPRE cria novo `ActivityRenderer` com container fresco:
+  ```javascript
+  renderActivities() {
+    const container = this.element?.querySelector('#activitiesContainer');
+    const renderer = new ActivityRenderer(container); // ✅ SEMPRE NOVO
+    renderer.renderActivities(this.week?.items || []);
+  }
+  ```
+
+**Proteção (Testes de Regressão):**
+- **5 testes** em `rendering-regression.test.js` garantem que bug não retorne:
+  1. Múltiplas renderizações (Skeleton → Dados)
+  2. Container sempre é o elemento VISÍVEL
+  3. View com dados desde o início
+  4. Navegação entre semanas
+  5. Estado de erro
+
+**Impacto:** Se alguém tentar cachear `this.activityRenderer`, os testes falham imediatamente.
+
+**Referência:** [`ADR_006_CONTAINER_FRESHNESS.md`](../../../../docs/architecture/ADR_006_CONTAINER_FRESHNESS.md)

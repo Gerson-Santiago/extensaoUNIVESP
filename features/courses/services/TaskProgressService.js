@@ -1,5 +1,5 @@
 import { ActivityProgress } from '../models/ActivityProgress.js';
-import { ActivityProgressRepository } from '../repository/ActivityProgressRepository.js';
+import { ActivityProgressRepository } from '../repositories-progress/ActivityProgressRepository.js';
 
 /**
  * @typedef {import('../models/Week.js').Week} Week

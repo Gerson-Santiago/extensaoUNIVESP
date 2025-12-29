@@ -1,7 +1,7 @@
 # 🔐 Privacidade, Dados e Conformidade LGPD
 
-> **Última Atualização:** 22/12/2025
-> **Versão:** 2.8.7
+> **Última Atualização:** 29/12/2025
+> **Versão:** 2.9.0
 
 Este documento detalha como a extensão **AutoPreencher UNIVESP** coleta, processa e protege os dados dos usuários, servindo como referência para conformidade com a LGPD (Lei Geral de Proteção de Dados) e normas da UNIVESP.
 
@@ -28,6 +28,8 @@ A extensão visa apenas facilitar o acesso a serviços educacionais já contrata
 | :--- | :--- | :--- | :--- |
 | **Email do Aluno** | Auto-preenchimento no login do SEI | `chrome.storage.sync` | Google (Sync) |
 | **Estrutura de Cursos** | Organização no Painel Lateral (IDs, Nomes) | `chrome.storage.sync` | Google (Sync) |
+| **Cache de Atividades** (v2.9.0) | Performance (evita re-scraping) | `chrome.storage.local` (5MB quota) | **Nenhum** (local-only) |
+| **Progresso de Tarefas** (v2.9.0) | Checklist de conclusão | `chrome.storage.sync` | Google (Sync) |
 | **Links de Aulas** | Navegação rápida (Deep Linking) | `chrome.storage.sync` | Google (Sync) |
 | **Cookies de Sessão** | Autenticação no AVA/SEI | Memória/Browser | Servidores UNIVESP (Nativo) |
 
@@ -50,7 +52,10 @@ A extensão visa apenas facilitar o acesso a serviços educacionais já contrata
     *   Lê a lista de matérias no DOM da página inicial.
     *   Identifica Bimestre/Ano baseando-se nos códigos das disciplinas (IDs).
     *   *Deep Feature:* Acessa silenciosamente a página de cada matéria para extrair links das semanas (Scraping local).
-*   **Armazenamento Seguro:** Usa `chrome.storage`, que é isolado de scripts maliciosos que possam rodar na página web (mitigação de XSS).
+*   **Armazenamento Seguro:**
+    *   `chrome.storage.local`: Cache de atividades (5MB quota, não sincroniza entre dispositivos)
+    *   `chrome.storage.sync`: Configurações e progresso (sincroniza via Google, se habilitado)
+    *   **Isolamento:** APIs Chrome Extension são isoladas de scripts maliciosos (mitigação de XSS)
 
 ### 3.3 Links Rápidos
 O popup da extensão fornece atalhos estáticos para:

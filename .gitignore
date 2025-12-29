@@ -37,4 +37,8 @@ Thumbs.db
 docs/**/*.har
 docs/**/*.log
 **/*.har
-**/*.log
+**/*.logarquitetura_*.pdf
+*.dot
+*.dot
+arquitetura_*.pdf
+arquitetura_*.svg

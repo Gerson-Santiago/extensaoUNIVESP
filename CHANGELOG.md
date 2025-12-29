@@ -7,6 +7,83 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 
 ---
 
+## [2.9.0] - 2025-12-29
+
+### 🎉 Destaques da Release
+- **SafeResult Pattern**: Error handling robusto em toda a aplicação (substituindo try/catch)
+- **DOM Zumbi Fix**: Bug crítico de renderização de atividades corrigido com Container Freshness
+- **Blindagem com Testes**: +6 testes de regressão protegendo features
+
+críticas
+- **Documentação Consolidada**: Merge de PADROES_DO_PROJETO + PADROES_COMMITS → `PADROES.md`
+
+### ✨ Features
+- **Protocolo de Engenharia**: [`ENGINEERING_GUIDE.md`](docs/ENGINEERING_GUIDE.md) formalizado com SafeResult pattern, AAA testing
+- **Testes de Regressão**: [`rendering-regression.test.js`](features/courses/tests/views/DetailsActivitiesWeekView/rendering-regression.test.js) com 5 cenários blindando bug de DOM Zumbi
+
+### 🐛 Bug Fixes
+- **CRÍTICO - Listagem de Atividades**: Resolução do bug de "DOM Zumbi" onde atividades não apareciam apesar de dados serem carregados
+  - **Sintoma**: Logs mostravam sucesso (`Renderizando 19 atividades`), mas UI ficava travada no Skeleton
+  - **Causa**: `ActivityRenderer` renderizava em container órfão após re-render da view
+  - **Solução**: Always Fresh Container - `DetailsActivitiesWeekView` sempre cria renderer com container corrente
+  - **Proteção**: 5 testes de regressão falham se bug for reintroduzido
+- **Timeout em Teste**: Aumentado timeout de `service.test.js` "deve retornar erro estruturado" para 10s (acomoda delay de 500ms do serviço)
+
+### 🔧 Refatorações
+- **`WeekActivitiesService.js`**: Adoção do SafeResult pattern (`trySafe()`) para error handling
+- **`WeeksManager.js`**: Consumo seguro de SafeResult com early returns explícitos
+- **`DetailsActivitiesWeekView.js`**: 
+  - Container Freshness: `this.element.querySelector()` em vez de `document.getElementById()`
+  - Renderer sempre recriado com container fresco (elimina stale references)
+
+### 📚 Documentação
+- **ADRs Arquiteturais**:
+  - [`ADR_005_SAFERESULT_PATTERN.md`](docs/architecture/ADR_005_SAFERESULT_PATTERN.md): Decisão de adotar SafeResult vs. try/catch
+  - [`ADR_006_CONTAINER_FRESHNESS.md`](docs/architecture/ADR_006_CONTAINER_FRESHNESS.md): Estratégia de renderização para prevenir DOM Zombies
+- **Consolidações**:
+  - [`PADROES.md`](docs/PADROES.md): Merge de `PADROES_DO_PROJETO.md` + `PADROES_COMMITS.md` (elimina redundância de 311 linhas → 180 linhas)
+  - ~~`GLOSSARIO.md`~~: Integrado a `TECNOLOGIAS_E_ARQUITETURA.md` (planejado, não executado)
+  - ~~`IDENTIDADE_DO_PROJETO.md`~~: Integrado ao `README.md` (planejado, não executado)
+- **Guias Atualizados**:
+  - `ENGINEERING_GUIDE.md`: Seção sobre SafeResult pattern e AAA testing
+  - `FLUXOS_DE_TRABALHO.md`: Fluxo de "Blindagem com Testes de Regressão" (planejado)
+
+### 🧪 Testes
+- **Cobertura**: 77.81% (437 testes)
+- **Total**: 437 testes passando (59 suites)
+- **Novos**:
+  - `service.test.js`: Timeout fix (+1 teste corrigido)
+  - `rendering-regression.test.js`: 5 testes de blindagem
+    1. Múltiplas renderizações (Skeleton → Dados)
+    2. Container sempre é o elemento VISÍVEL
+    3. View com dados desde o início
+    4. Navegação entre semanas
+    5. Estado de erro
+- **Padrão AAA**: Enforce pattern Arrange-Act-Assert em todos os novos testes
+
+### 🛠️ Infraestrutura
+- **SafeResult Utility**: [`shared/utils/ErrorHandler.js`](shared/utils/ErrorHandler.js) - 46 linhas de código para error handling robusto
+- **localStorage Strategy**: `ActivityRepository` usa `chrome.storage.local` (5MB quota) para cache de atividades com chave `activities_{courseId}_{contentId}`
+- **Naming Consistency**: Renomeado `repository/` → `repositories-progress/` para consistência arquitetural
+
+### 🧹 Limpeza
+- **Docs Legados Removidos**: Deletados `PADROES_DO_PROJETO.md` e `PADROES_COMMITS.md` (consolidados em `PADROES.md`)
+
+### 🔄 Breaking Changes
+Nenhum.
+
+### ❓ Known Issues
+- **Botão "Ir" (Scroll)**: Pode falhar em semanas com muitos recursos ou IDs complexos (será corrigido em v2.10.0)
+
+### 📊 Métricas
+- **Linhas de Código**: 23.617 (233 arquivos)
+- **Cobertura de Testes**: 77.81%
+- **Testes**: 437 passando (0 falhando)
+- **Lint**: 0 warnings
+- **TypeScript**: 0 errors
+
+---
+
 ## [2.8.14] - 2025-12-28
 
 ### 🧪 Modernização de Testes & Qualidade
