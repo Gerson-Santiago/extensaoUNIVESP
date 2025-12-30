@@ -6,6 +6,7 @@ import { ScraperService } from '../../../../../features/courses/services/Scraper
  * TESTE DE REGRESSÃO: ISSUE-missing-revision-week
  * Objetivo: Garantir que a "Semana de Revisão" seja capturada e ordenada corretamente ao final.
  */
+// #STEP-0: Remova o .skip abaixo para começar a ver os testes falharem!
 describe.skip('ScraperService - Lógica de Semanas', () => {
   describe('Extração via DOM (extractWeeksFromDoc)', () => {
     it('deve capturar semanas numéricas e também a "Semana de Revisão"', () => {
