@@ -1,5 +1,6 @@
 # Dependências
 node_modules/
+.cache/
 npm-debug.log*
 
 # Testes (Jest)
@@ -37,8 +38,6 @@ Thumbs.db
 docs/**/*.har
 docs/**/*.log
 **/*.har
-**/*.logarquitetura_*.pdf
-*.dot
-*.dot
+**/*.log
 arquitetura_*.pdf
 arquitetura_*.svg

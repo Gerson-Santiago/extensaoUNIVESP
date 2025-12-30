@@ -4,6 +4,8 @@
     "target": "es2024",
     "checkJs": true,
     "skipLibCheck": true,
+    "incremental": true,
+    "tsBuildInfoFile": ".cache/tsc.tsbuildinfo",
     "lib": ["es2024", "dom", "dom.iterable"],
     "types": ["chrome", "jest", "node"],
     "baseUrl": ".",
@@ -16,5 +18,14 @@
     "moduleResolution": "node",
     "resolveJsonModule": true
   },
-  "exclude": ["node_modules", "dist", "coverage", ".git"]
+  "include": [
+    "features/**/*",
+    "shared/**/*",
+    "popup/**/*",
+    "sidepanel/**/*",
+    "scripts/**/*",
+    "tests/**/*",
+    "jsconfig.json",
+    "manifest.json"
+  ]
 }

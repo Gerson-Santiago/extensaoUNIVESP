@@ -1,6 +1,9 @@
+/**
+ * @file BatchScraper/index.js
+ * @description Serviço de raspagem em lote para importar múltiplas semanas/atividades.
+ * Gerencia a fila de execução e o estado da importação.
+ */
 import { Logger } from '../../../../../shared/utils/Logger.js';
-
-// -- FUNÇÃO INJETADA PARA LER BIMESTRES E CURSOS --
 
 // -- FUNÇÃO INJETADA PARA LER BIMESTRES E CURSOS --
 export async function DOM_scanTermsAndCourses_Injected() {
@@ -206,7 +209,7 @@ export async function DOM_scanTermsAndCourses_Injected() {
 export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
   const results = [];
 
-  // Função auxiliar de scraping de semanas (Duplicada aqui pois contexto injetado não tem imports)
+  // Função auxiliar de raspagem de semanas (Duplicada aqui pois contexto injetado não tem imports)
   function extractWeeksFromHTML(doc, baseUrl) {
     const weeks = [];
     const links = doc.querySelectorAll('a');
@@ -227,6 +230,8 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
 
       const cleanText = (text || '').trim();
       const cleanTitle = (title || '').trim();
+      // //ISSUE-missing-revision-week
+      // #STEP-5: O BatchScraper também precisa ser DRY! Siga o padrão do ScraperService.
       const weekRegex = /^Semana\s+(\d{1,2})$/i;
 
       let match = cleanText.match(weekRegex);
@@ -240,15 +245,16 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
       if (!match || !href) return;
 
       const weekNum = parseInt(match[1], 10);
-      if (weekNum < 1 || weekNum > 15) return;
-
-      if (!href.startsWith('javascript:')) {
-        weeks.push({ name: nameToUse, url: href });
-      } else if (a.onclick) {
-        const onClickText = a.getAttribute('onclick');
-        const urlMatch = onClickText && onClickText.match(/'(\/webapps\/.*?)'/);
-        if (urlMatch && urlMatch[1]) {
-          weeks.push({ name: nameToUse, url: baseUrl + urlMatch[1] });
+      // Filtra números de semana entre 1 e 15 (padrão UNIVESP)
+      if (weekNum >= 1 && weekNum <= 15) {
+        if (!href.startsWith('javascript:')) {
+          weeks.push({ name: nameToUse, url: href });
+        } else if (a.onclick) {
+          const onClickText = a.getAttribute('onclick');
+          const urlMatch = onClickText && onClickText.match(/'(\/webapps\/.*?)'/);
+          if (urlMatch && urlMatch[1]) {
+            weeks.push({ name: nameToUse, url: baseUrl + urlMatch[1] });
+          }
         }
       }
     });
@@ -264,6 +270,8 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
     }
 
     // Ordena
+    // //ISSUE-missing-revision-week
+    // #STEP-5: A mesma lógica de pesos de ordenação deve ser aplicada aqui.
     uniqueWeeks.sort((a, b) => {
       const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
       const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
@@ -328,18 +336,16 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
     } catch (e) {
       /**#LOG_SCRAPER*/
       console.error('Erro deep scraping', course.name, e);
-      results.push({
-        name: course.name,
-        url: course.url,
-        weeks: [],
-        error: true,
-      });
     }
   }
 
   return results;
 }
 
+/**
+ * Busca os termos (bimestres) disponíveis na página de cursos.
+ * @param {number} tabId - ID da aba.
+ */
 export async function scrapeAvailableTerms(tabId) {
   try {
     const results = await chrome.scripting.executeScript({

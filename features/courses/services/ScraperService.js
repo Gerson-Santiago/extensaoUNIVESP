@@ -1,6 +1,6 @@
 /**
- * Scraper Service via Mensageria / Injeção.
- * Comunica-se com a página para extrair semanas.
+ * Serviço de Scraping via Mensageria / Injeção.
+ * Comunica-se com a página do AVA para extrair semanas e conteúdos.
  */
 export class ScraperService {
   static extractWeeksFromDoc(doc, baseUrl) {
@@ -26,6 +26,8 @@ export class ScraperService {
       const cleanTitle = (title || '').trim();
 
       // 1. Tenta identificar se o texto é estritamente "Semana X"
+      // //ISSUE-missing-revision-week
+      // #STEP-3: Substitua esta regex local pela WEEK_IDENTIFIER_REGEX centralizada
       const weekRegex = /^Semana\s+(\d{1,2})$/i;
 
       // Verifica no texto visível
@@ -76,6 +78,11 @@ export class ScraperService {
     return { weeks: weeks, title: pageTitle };
   }
 
+  /**
+   * Realiza a raspagem de semanas de uma aba específica.
+   * @param {number} tabId - ID da aba do Chrome.
+   * @returns {Promise<{weeks: Array, title: string|null}>}
+   */
   static async scrapeWeeksFromTab(tabId) {
     try {
       let allWeeks = [];
@@ -119,6 +126,8 @@ export class ScraperService {
       }
 
       // Ordena por número da semana
+      // //ISSUE-missing-revision-week
+      // #STEP-3: Use CourseStructure.sortWeeks(uniqueWeeks) aqui para ser DRY e profissional
       uniqueWeeks.sort((a, b) => {
         const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
         const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
@@ -132,7 +141,10 @@ export class ScraperService {
   }
 }
 
-// Função auxiliar para injeção (Mantida fora da classe para ser serializável pelo Chrome)
+/**
+ * Função auxiliar para injeção no navegador.
+ * Mantida fora da classe para ser serializável pelo Chrome Scripting API.
+ */
 function DOM_extractWeeks_Injected() {
   const weeks = [];
   const links = document.querySelectorAll('a');
@@ -152,6 +164,9 @@ function DOM_extractWeeks_Injected() {
     const cleanText = (text || '').trim();
     const cleanTitle = (title || '').trim();
 
+    // //ISSUE-missing-revision-week
+    // #STEP-4: Lembre-se que esta função é injetada.
+    // Passe a regex como argumento no scripting.executeScript e use-a aqui.
     const weekRegex = /^Semana\s+(\d{1,2})$/i;
 
     let match = cleanText.match(weekRegex);
@@ -165,6 +180,7 @@ function DOM_extractWeeks_Injected() {
     if (match && href) {
       const weekNum = parseInt(match[1], 10);
 
+      // Filtra intervalo de 1 a 15 (padrão UNIVESP)
       if (weekNum >= 1 && weekNum <= 15) {
         if (!href.startsWith('javascript:')) {
           weeks.push({ name: nameToUse, url: href });
