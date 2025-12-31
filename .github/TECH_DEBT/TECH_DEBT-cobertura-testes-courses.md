@@ -1,14 +1,19 @@
 # TECH_DEBT: Plano de Cobertura de Testes - Feature Courses
 
-**Status**: ✅ Resolvido (v2.8.0)  
-**Prioridade**: Baixa (Concluído)  
-**Estimativa**: -  
+**Status:** 🚧 Ativo (Revisão v2.9.6)
+**Prioridade:** Média (Quality Assurance)
+**Estimativa:** Q1 2026
 
 ---
 
 ## 🎯 Objetivo
 
-Mapear **gaps de cobertura de testes** na feature `courses` e criar roadmap para melhorar qualidade e confiabilidade.
+Mapear e eliminar **gaps de cobertura críticos** na feature `courses`, garantindo confiabilidade em orquestração e UI.
+Este documento serve como **Pai** para as Issues de execução 013-018.
+
+## 📐 Padrões Arquiteturais Obrigatórios
+Todas as implementações decorrentes deste plano devem seguir:
+- **[ADR 000-C: Padrão AAA](../../docs/architecture/ADR_000_C_AAA_TESTING_PATTERN.md)**: Testes legíveis e padronizados.nfiabilidade.
 
 ---
 

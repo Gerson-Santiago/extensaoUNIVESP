@@ -1,7 +1,7 @@
 # 📋 .github - Gestão de Projeto
 
-**Versão**: v2.9.2
-**Última atualização**: 2025-12-30
+**Versão**: v2.9.6 (Planejamento)
+**Última atualização**: 2025-12-31
 
 ---
 
@@ -23,8 +23,9 @@
 
 As prioridades atuais de manutenção são:
 
-1. [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Impacta UX de navegação.
-2. [`TECH_DEBT-cobertura-testes-courses.md`](TECH_DEBT/TECH_DEBT-cobertura-testes-courses.md) - Meta de 85% de cobertura.
+1. [**ISSUE-013: Integração CourseRefresher**](ISSUES/ISSUE-013-OPEN_course-refresher-tests.md) - Cobertura crítica (0% funcs).
+2. [**ISSUE-018: Handlers de UI**](ISSUES/ISSUE-018-OPEN_handlers-coverage.md) - Falta de testes em fluxos do usuário.
+3. [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Impacta UX de navegação.
 
 ---
 
@@ -37,7 +38,7 @@ A fundação e evolução da arquitetura (2025):
 - [**ADR 000-B: JSDoc Typing**](../docs/architecture/ADR_000_B_JSDOC_TYPING.md) (Tipagem sem Build Step)
 - [**ADR 000-C: Padrão AAA**](../docs/architecture/ADR_000_C_AAA_TESTING_PATTERN.md) (Qualidade de Testes)
 
-### Ciclo de Estabilização (v2.8.9 → v2.9.1)
+### Ciclo de Estabilização (v2.8.9 → v2.9.6)
 - [**📊 Plano de Observabilidade**](../docs/architecture/OBSERVABILITY_PLAN.md) (Structured Logging)
 1. [**ADR 001: Higiene Documental**](../docs/architecture/ADR_001_DOCS_CLEANUP.md) (27/dez)
 2. [**ADR 002: BatchScraper Architecture**](../docs/architecture/ADR_002_BATCHSCRAPER_ARCHITECTURE.md) (27/dez)
@@ -46,6 +47,7 @@ A fundação e evolução da arquitetura (2025):
 5. [**ADR 005: Observabilidade**](../docs/architecture/ADR_005_OBSERVABILITY_LOGGER.md) (29/dez pm)
 6. [**ADR 006: Robust Scroll Navigation**](../docs/architecture/ADR_006_ROBUST_SCROLL_NAVIGATION.md) (29/dez pm)
 7. [**ADR 007: Navigation Hierarchy**](../docs/architecture/ADR_007_NAVIGATION_HIERARCHY.md) (v2.9.1)
+8. [**ADR 009: Test Strategy Refresher**](../docs/architecture/ADR_009_TEST_STRATEGY_REFRESHER.md) (v2.9.6)
 
 
 
