@@ -14,7 +14,7 @@ Este documento centraliza a estratégia de Release, Qualidade e Testes para a ve
 | **013** | [✅ 🧪 Integração CourseRefresher](./ISSUE-013_course-refresher-tests.md.resolved) | `CourseRefresher` | 100% | > 70% | 🚨 **Máxima** |
 | **017** | [📝 Release Eng & Docs](./ISSUE-017-OPEN_release-documentation.md) | `Release v2.9.6` | - | 100% | 🔒 **Blocker** |
 | **014** | [✅ 🧪 Parsers WeekContent](./ISSUE-014_week-scraper-coverage.md.resolved) | `WeekContentScraper` | 91.26% | > 80% | 🔼 **Alta** |
-| **015** | [🧪 Mock NavigationService](./ISSUE-015-OPEN_navigation-service-mock.md) | `NavigationService` | 29.62% | > 60% | ⏺️ **Média** |
+| **015** | [✅ 🧪 Mock NavigationService](./ISSUE-015_navigation-service-mock.md.resolved) | `NavigationService` | 61.66% | > 60% | ⏺️ **Média** |
 | **016** | [🧪 Testes VideoStrategy](./ISSUE-016-OPEN_video-strategy-tests.md) | `VideoStrategy` | 48.38% | > 90% | ⏺️ **Média** |
 
 ---

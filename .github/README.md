@@ -24,8 +24,9 @@
 As prioridades atuais de manutenção são:
 
 1. [**ISSUE-013: Integração CourseRefresher**](ISSUES/ISSUE-013_course-refresher-tests.md.resolved) - ✅ Resolvido (100% Cobertura).
-2. [**ISSUE-018: Handlers de UI**](ISSUES/ISSUE-018-OPEN_handlers-coverage.md) - Falta de testes em fluxos do usuário.
-3. [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Impacta UX de navegação.
+2. [**ISSUE-015: NavigationService Future-Proof**](ISSUES/ISSUE-015_navigation-service-mock.md.resolved) - ✅ Resolvido (9 testes, tipos JSDoc).
+3. [**ISSUE-018: Handlers de UI**](ISSUES/ISSUE-018-OPEN_handlers-coverage.md) - Falta de testes em fluxos do usuário.
+4. [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Impacta UX de navegação.
 
 ---
 
@@ -47,7 +48,9 @@ A fundação e evolução da arquitetura (2025):
 5. [**ADR 005: Observabilidade**](../docs/architecture/ADR_005_OBSERVABILITY_LOGGER.md) (29/dez pm)
 6. [**ADR 006: Robust Scroll Navigation**](../docs/architecture/ADR_006_ROBUST_SCROLL_NAVIGATION.md) (29/dez pm)
 7. [**ADR 007: Navigation Hierarchy**](../docs/architecture/ADR_007_NAVIGATION_HIERARCHY.md) (v2.9.1)
-8. [**ADR 009: Test Strategy Refresher**](../docs/architecture/ADR_009_TEST_STRATEGY_REFRESHER.md) (v2.9.6)
+8. [**ADR 008: Repository Unification**](../docs/architecture/ADR_008_REPOSITORY_UNIFICATION.md) (v2.9.5)
+9. [**ADR 009: Test Strategy Refresher**](../docs/architecture/ADR_009_TEST_STRATEGY_REFRESHER.md) (v2.9.6)
+10. [**ADR 010: Future-Proof Configuration**](../docs/architecture/ADR_010_FUTURE_PROOF_CONFIGURATION.md) (v2.9.6)
 
 
 

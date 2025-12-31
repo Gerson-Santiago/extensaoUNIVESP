@@ -72,7 +72,8 @@
         {
           "targets": {
             "node": "current"
-          }
+          },
+          "modules": "commonjs"
         }
       ]
     ]

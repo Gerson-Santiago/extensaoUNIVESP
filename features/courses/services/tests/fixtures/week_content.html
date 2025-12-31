@@ -2,42 +2,44 @@
   <!-- 1. Video (Matched by VideoStrategy) -->
   <li id="contentListItem:video_123">
     <div class="item" id="video_123">
-        <img class="item_icon" src="/images/video_icon.png" alt="Video icon">
-        <h3>
+      <img class="item_icon" src="/images/video_icon.png" alt="Video icon" />
+      <h3>
         <a href="https://ava.univesp.br/video/1">
-            <span style="color: black;">Aula 1: Introdução</span>
+          <span style="color: black">Aula 1: Introdução</span>
         </a>
-        </h3>
-        <a class="button-5" href="#">Marca Revista</a> <!-- TODO -->
+      </h3>
+      <a class="button-5" href="#">Marca Revista</a>
+      <!-- TODO -->
     </div>
   </li>
 
   <!-- 2. Quiz (Matched by QuizStrategy) -->
   <li id="contentListItem:quiz_456">
     <div class="item" id="quiz_456">
-        <img class="item_icon" src="/images/quiz_icon.png" alt="Questionário">
-        <h3>
+      <img class="item_icon" src="/images/quiz_icon.png" alt="Questionário" />
+      <h3>
         <a href="https://ava.univesp.br/mod/quiz/view.php?id=456">
-            <span>Avaliação Semana 1</span>
+          <span>Avaliação Semana 1</span>
         </a>
-        </h3>
-        <a class="button-5" href="#">Revisto</a> <!-- DONE -->
+      </h3>
+      <a class="button-5" href="#">Revisto</a>
+      <!-- DONE -->
     </div>
   </li>
 
   <!-- 3. Document/Default (Matched by DefaultStrategy) -->
   <li id="contentListItem:doc_789">
     <div class="item" id="doc_789">
-        <!-- No icon, triggers default -->
-        <h3>
+      <!-- No icon, triggers default -->
+      <h3>
         <a href="https://ava.univesp.br/resource/pdf">
-            <span>Leitura Obrigatória</span>
+          <span>Leitura Obrigatória</span>
         </a>
-        </h3>
-        <!-- No status button -->
+      </h3>
+      <!-- No status button -->
     </div>
   </li>
-  
+
   <!-- 4. Malformed/Empty (Should be skipped or return empty items) -->
   <li class="liItem">
     <!-- Empty -->

@@ -29,7 +29,9 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 - 🔄 **Resolução de Dívidas Técnicas** - Manter meta de 85% de cobertura global.
 
 **Entregáveis Esperados** (v2.9.6):
-- ✅ Cobertura de testes: 100% (foco no CourseRefresher)
+- ✅ ISSUE-013: Cobertura de testes CourseRefresher (100%)
+- ✅ ISSUE-015: NavigationService Future-Proof (Tipos JSDoc, Configurabilidade, 9 testes)
+- 🚧 ISSUE-018: Handlers de UI (ClearHandler, RefreshHandler)
 - Test Strategies definidas (VideoStrategy, Navigation)
 - Documentação de Release Profissional (Issue-017)
 
