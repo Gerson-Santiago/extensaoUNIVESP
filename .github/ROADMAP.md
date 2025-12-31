@@ -24,12 +24,12 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 **Objetivo**: Alcançar base sólida para expansão futura
 
 **Marcos**:
-- ✅ **Estabilização e Robustez** (v2.9.1) - Logging estruturado e Navegação resiliente (ADR-007)
-- 🔄 **Resolução de Dívidas Técnicas** - Cobertura de testes (alcançar 85%+)
+- ✅ **Estabilização e Robustez** (v2.9.2) - Suporte a Semanas de Revisão e 100% de cobertura core.
+- 🔄 **Resolução de Dívidas Técnicas** - Manter meta de 85% de cobertura global.
 
 **Entregáveis Esperados** (v2.9.1):
-- Cobertura de testes: 80% (atual) -> Alvo 85% (Q1 2026)
-- Zero bugs de navegação (Scroll Navigation robusta)
+- Cobertura de testes: 85% (alcançado em módulos core)
+- Zero bugs de navegação (Incluindo Semanas de Revisão)
 - Sistema de Log centralizado (Logger.js) com tags semânticas
 
 ---
@@ -38,10 +38,10 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 
 ### Tema: **Evolução de UX e Ciclo de Vida** (v2.10.0)
 
-**Objetivo**: Resolver o "Bug do Chip" e consolidar o estado global de navegação.
+**Objetivo**: Consolidar o estado global de navegação e histórico contextual.
 
 **Marcos**:
-- 🔄 **v2.10.0 (Chip Musculoso)**: Implementar navegação bidirecional e gestão de abas ativas como chips.
+- 🔄 **v2.10.0 (Contextual Chips)**: Implementar navegação bidirecional e gestão de abas ativas.
 - 🔧 **Refatoração Tática**: Migrar Breadcrumb para estado global (Opção 2 do Tech Debt).
 
 ---
@@ -98,9 +98,10 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 
 ## 📜 Release Log (Histórico)
 
-### v2.9.1 (Atual - 2025-12-29)
+### v2.9.2 (Atual - 2025-12-30)
+- **Feature**: Suporte completo a "Semanas de Revisão" em todos os scrapers.
+- **Qualidade**: 100% de cobertura em lógicas de ordenação e 0 warnings de lint.
 - **Robustez**: Fix de Scroll (ADR-007) e Centralização de Logs (#LOG_*).
-- **Segurança**: Fix de Regex ReDoS e Zero Warnings de Lint.
 
 > 📦 Para histórico detalhado das versões v2.0.0 a v2.9.0, consulte o [CHANGELOG.md](../CHANGELOG.md).
 
@@ -114,4 +115,4 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 
 ---
 
-**Última Atualização**: 2025-12-29 (Consolidação v2.9.1)
+**Última Atualização**: 2025-12-30 (Consolidação v2.9.2)

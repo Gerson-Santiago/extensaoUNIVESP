@@ -1,32 +1,38 @@
 /**
  * @file CourseStructure.js
  * @description Centraliza a lógica de identificação e ordenação de semanas e revisões.
- * //ISSUE-missing-revision-week
- * #STEP-1: Implemente a regex e a função de peso aqui.
  */
 
 /**
- * Regex musculosa para identificar Semanas e Revisões.
- * Deve capturar: "Semana 1", "Semana 10", "Revisão", "Semana de Revisão".
+ * Regex para identificar semanas e revisões.
+ * Captura: "Semana 1", "Semana 10", "Revisão", "Semana de Revisão".
  */
-export const WEEK_IDENTIFIER_REGEX = /REPLACE_ME/;
+export const WEEK_IDENTIFIER_REGEX = /^(Semana\s+(\d{1,2})|Semana\s+de\s+Revisão|Revisão)$/i;
 
 /**
- * Atribui um peso numérico para ordenação.
- * @param {string} _name - Nome da semana ou revisão.
- * @returns {number} Peso para o Sort.
+ * Extrai número da semana ou retorna 999 para "Revisão".
+ * @param {string} weekName - Nome da semana ou revisão.
+ * @returns {number} Peso numérico para ordenação.
  */
-export const getWeekWeight = (_name) => {
-  // DICA: Se for revisão, retorne um peso alto (ex: 99)
-  // Se for numérica, extraia o número.
-  return 0; // TODO: Implementar lógica de pesos
-};
+function getWeekNumber(weekName) {
+  if (/revisão/i.test(weekName)) {
+    return 999; // Revisão sempre por último
+  }
+
+  const match = weekName.match(/\d+/);
+  return match ? parseInt(match[0], 10) : 0;
+}
 
 /**
- * Ordena um array de semanas usando a lógica de pesos.
+ * Ordena array de semanas usando a lógica de pesos.
  * @param {Array} weeks - Array de objetos {name, url}.
  * @returns {Array} Array ordenado.
  */
-export const sortWeeks = (weeks) => {
-  return [...weeks].sort((a, b) => getWeekWeight(a.name) - getWeekWeight(b.name));
-};
+
+export function sortWeeks(weeks) {
+  return weeks.sort((a, b) => {
+    const numA = getWeekNumber(a.name);
+    const numB = getWeekNumber(b.name);
+    return numA - numB;
+  });
+}

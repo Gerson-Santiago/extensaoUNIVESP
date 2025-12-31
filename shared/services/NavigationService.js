@@ -5,7 +5,6 @@
  */
 
 import { Tabs } from '../utils/Tabs.js';
-/* eslint-disable no-console */
 import { Logger } from '../utils/Logger.js';
 
 export class NavigationService {
@@ -62,6 +61,7 @@ export class NavigationService {
           const log = (msg, data = null) => {
             if (isDebugEnabled) {
               /**#LOG_INJECTED*/
+              // eslint-disable-next-line no-console -- Console usado em função injetada no DOM para debug
               console.log(`[Extension:Scroll] ${msg}`, data || '');
             }
           };

@@ -107,7 +107,7 @@ O uso de validação de tipos é mandatório.
 
 ---
 
-## 4. Features Implementadas (v2.9.1)
+## 4. Features Implementadas (v2.9.2)
 
 ### `courses` (Core) 🏆
 Gestão completa do ciclo de vida acadêmico com 56 diretórios e 105 arquivos.
@@ -175,7 +175,7 @@ courses/
         └── ViewTemplate.js
 ```
 
-**Destaques v2.9.1:**
+**Destaques v2.9.2:**
 - **Logging Estruturado**: Centralização com `Logger.js` e tags semânticas (#LOG_UI, #LOG_SYSTEM).
 - **Navegação Robusta (Scroll)**: Nova lógica Resilience-First no `NavigationService` (ADR-007).
 - **Zero Warnings**: Linting estrito (`max-warnings=0`) e remoção de débitos técnicos de console.
@@ -207,7 +207,7 @@ Interface de reporte de erros e sugestões.
 
 ---
 
-## 5. Métricas (v2.9.1)
+## 5. Métricas (v2.9.2)
 
 | **Métrica | Valor |
 | :--- | :--- |

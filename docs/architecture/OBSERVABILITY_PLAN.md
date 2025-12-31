@@ -6,7 +6,7 @@ O sistema de logs da `extensaoUNIVESP` não é apenas para debug, é **Engenhari
 - **Observabilidade**: Capacidade de entender o estado interno do sistema apenas pelos sinais externos (Logs).
 - **Semântica Explícita**: Uso de tags `/**#LOG_FEATURE*/` para auditoria e métricas.
 
-### 2. Definição Técnica (v2.9.1)
+### 2. Definição Técnica (v2.9.2)
 - **Centralizador**: `shared/utils/Logger.js` é a única interface permitida.
 - **Saída Estruturada**: 
   ```javascript

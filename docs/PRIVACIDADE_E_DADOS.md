@@ -28,8 +28,8 @@ A extensão visa apenas facilitar o acesso a serviços educacionais já contrata
 | :--- | :--- | :--- | :--- |
 | **Email do Aluno** | Auto-preenchimento no login do SEI | `chrome.storage.sync` | Google (Sync) |
 | **Estrutura de Cursos** | Organização no Painel Lateral (IDs, Nomes) | `chrome.storage.sync` | Google (Sync) |
-| **Cache de Atividades** (v2.9.1) | Performance (evita re-scraping) | `chrome.storage.local` (5MB quota) | **Nenhum** (local-only) |
-| **Progresso de Tarefas** (v2.9.1) | Checklist de conclusão | `chrome.storage.sync` | Google (Sync) |
+| **Cache de Atividades** (v2.9.2) | Performance (evita re-scraping) | `chrome.storage.local` (5MB quota) | **Nenhum** (local-only) |
+| **Progresso de Tarefas** (v2.9.2) | Checklist de conclusão | `chrome.storage.sync` | Google (Sync) |
 | **Links de Aulas** | Navegação rápida (Deep Linking) | `chrome.storage.sync` | Google (Sync) |
 | **Cookies de Sessão** | Autenticação no AVA/SEI | Memória/Browser | Servidores UNIVESP (Nativo) |
 

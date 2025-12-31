@@ -72,6 +72,7 @@ describe('Integração: Fluxo de Coleta de Curso', () => {
     expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
       target: { tabId: 123, allFrames: true },
       func: expect.any(Function),
+      args: [expect.any(String)],
     });
 
     // 2. Storage foi atualizado
@@ -111,5 +112,43 @@ describe('Integração: Fluxo de Coleta de Curso', () => {
     // Deve salvar mesmo assim, usando título da aba e sem semanas (fallback)
     expect(chrome.storage.local.set).toHaveBeenCalled();
     // Note: CourseStorage agora usa chrome.storage.local via ChunkedStorage
+  });
+
+  test('deve coletar curso com "Revisão" e ordenar corretamente', async () => {
+    // Preparar (Arrange) - Teste de regressão com Revisão
+    const mockScrapedData = {
+      weeks: [
+        { name: 'Semana 2', url: 'https://ava.univesp.br/s2' },
+        { name: 'Revisão', url: 'https://ava.univesp.br/revisao' },
+        { name: 'Semana 1', url: 'https://ava.univesp.br/s1' },
+      ],
+      title: 'Matéria com Revisão',
+    };
+
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
+      { result: mockScrapedData },
+    ]);
+
+    settingsView = new SettingsView({ onNavigate: mockNavigate });
+    container.appendChild(settingsView.render());
+    settingsView.afterRender();
+
+    const courseService = new CourseService();
+    window.addEventListener('request:scrape-current-tab', () => {
+      courseService.addFromCurrentTab(
+        () => {},
+        (_msg) => {}
+      );
+    });
+
+    // Agir (Act)
+    const btnAddCurrent = document.getElementById('btnAddCurrent');
+    btnAddCurrent.click();
+
+    await new Promise((resolve) => setTimeout(resolve, 100));
+
+    // Verificar (Assert)
+    expect(chrome.scripting.executeScript).toHaveBeenCalled();
+    expect(chrome.storage.local.set).toHaveBeenCalled();
   });
 });

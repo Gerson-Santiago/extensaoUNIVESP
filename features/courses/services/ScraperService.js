@@ -1,3 +1,5 @@
+import { WEEK_IDENTIFIER_REGEX, sortWeeks } from '../../../shared/logic/CourseStructure.js';
+
 /**
  * Serviço de Scraping via Mensageria / Injeção.
  * Comunica-se com a página do AVA para extrair semanas e conteúdos.
@@ -8,7 +10,7 @@ export class ScraperService {
     const links = doc.querySelectorAll('a');
 
     links.forEach((a) => {
-      const text = (a.innerText || '').trim();
+      const text = (a.innerText || a.textContent || '').trim();
       const title = (a.title || '').trim();
 
       let href = a.href;
@@ -25,10 +27,7 @@ export class ScraperService {
       const cleanText = (text || '').trim();
       const cleanTitle = (title || '').trim();
 
-      // 1. Tenta identificar se o texto é estritamente "Semana X"
-      // //ISSUE-missing-revision-week
-      // #STEP-3: Substitua esta regex local pela WEEK_IDENTIFIER_REGEX centralizada
-      const weekRegex = /^Semana\s+(\d{1,2})$/i;
+      const weekRegex = WEEK_IDENTIFIER_REGEX;
 
       // Verifica no texto visível
       let match = cleanText.match(weekRegex);
@@ -41,10 +40,13 @@ export class ScraperService {
       }
 
       if (match && href) {
-        const weekNum = parseInt(match[1], 10);
+        // Se for semana numerada, valida intervalo 1-15
+        // Se for "Revisão", não tem número mas também é válido
+        const weekNum = match[2] ? parseInt(match[2], 10) : null; // match[2] é o número capturado
 
-        // Filtra intervalo de 1 a 15 conforme solicitado
-        if (weekNum >= 1 && weekNum <= 15) {
+        const isValidWeek = weekNum === null || (weekNum >= 1 && weekNum <= 15);
+
+        if (isValidWeek) {
           // Filtra links javascript puros sem handler conhecido
           if (!href.startsWith('javascript:')) {
             weeks.push({ name: nameToUse, url: href });
@@ -96,7 +98,8 @@ export class ScraperService {
 
       const results = await chrome.scripting.executeScript({
         target: { tabId: tabId, allFrames: true },
-        func: DOM_extractWeeks_Injected, // Referência local
+        func: DOM_extractWeeks_Injected,
+        args: [WEEK_IDENTIFIER_REGEX.source], // .source = string da regex
       });
 
       if (results && results.length > 0) {
@@ -125,14 +128,7 @@ export class ScraperService {
         }
       }
 
-      // Ordena por número da semana
-      // //ISSUE-missing-revision-week
-      // #STEP-3: Use CourseStructure.sortWeeks(uniqueWeeks) aqui para ser DRY e profissional
-      uniqueWeeks.sort((a, b) => {
-        const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
-        const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
-        return numA - numB;
-      });
+      sortWeeks(uniqueWeeks);
 
       return { weeks: uniqueWeeks, title: detectedTitle };
     } catch {
@@ -144,9 +140,16 @@ export class ScraperService {
 /**
  * Função auxiliar para injeção no navegador.
  * Mantida fora da classe para ser serializável pelo Chrome Scripting API.
+ *
+ * Nota: RegExp é reconstruído a partir da string porque objetos RegExp não podem
+ * ser serializados para injeção via chrome.scripting.executeScript.
+ *
+ * @param {string} weekRegexSource - Pattern regex validado (WEEK_IDENTIFIER_REGEX.source)
  */
-function DOM_extractWeeks_Injected() {
-  const weeks = [];
+function DOM_extractWeeks_Injected(weekRegexSource) {
+  // eslint-disable-next-line security/detect-non-literal-regexp -- Necessário: weekRegexSource é constante validada passada via executeScript (limitação da API Chrome)
+  const weekRegex = new RegExp(weekRegexSource, 'i');
+  const weeks = []; // Array para armazenar semanas encontradas
   const links = document.querySelectorAll('a');
 
   links.forEach((a) => {
@@ -164,11 +167,6 @@ function DOM_extractWeeks_Injected() {
     const cleanText = (text || '').trim();
     const cleanTitle = (title || '').trim();
 
-    // //ISSUE-missing-revision-week
-    // #STEP-4: Lembre-se que esta função é injetada.
-    // Passe a regex como argumento no scripting.executeScript e use-a aqui.
-    const weekRegex = /^Semana\s+(\d{1,2})$/i;
-
     let match = cleanText.match(weekRegex);
     let nameToUse = cleanText;
 
@@ -178,10 +176,13 @@ function DOM_extractWeeks_Injected() {
     }
 
     if (match && href) {
-      const weekNum = parseInt(match[1], 10);
+      // match[1] = toda a captura, match[2] = grupo do número (se existir)
+      const weekNum = match[2] ? parseInt(match[2], 10) : null;
 
-      // Filtra intervalo de 1 a 15 (padrão UNIVESP)
-      if (weekNum >= 1 && weekNum <= 15) {
+      // Válido se: for Revisão (sem número) OU semana numerada entre 1-15
+      const isValidWeek = weekNum === null || (weekNum >= 1 && weekNum <= 15);
+
+      if (isValidWeek) {
         if (!href.startsWith('javascript:')) {
           weeks.push({ name: nameToUse, url: href });
         } else if (a.onclick) {

@@ -1,7 +1,7 @@
 # 📋 .github - Gestão de Projeto
 
-**Versão**: v2.9.1  
-**Última atualização**: 2025-12-29
+**Versão**: v2.9.2
+**Última atualização**: 2025-12-30
 
 ---
 
@@ -97,7 +97,7 @@ graph LR
 ### Regras de Ouro
 
 - ✅ **Sempre** rode `npm run verify` antes de commitar
-- ✅ **Sempre** escreva testes (TDD quando possível)
+- ✅ **Sempre** garanta **100% de cobertura** em lógicas de negócio críticas
 - ✅ **Sempre** siga convenções de commit (ver `docs/PADROES.md`)
 - ✅ **Sempre** atualize documentação relevante
 - ❌ **Nunca** commite código comentado ou console.log
@@ -122,4 +122,4 @@ graph LR
 
 ---
 
-**Auditoria**: 2025-12-29 (v2.9.1 - Release de Robustez com Logging Estruturado e Fix de Scroll)
+**Auditoria**: 2025-12-30 (v2.9.2 - Estabilização de Semanas de Revisão e Auditoria de Segurança)

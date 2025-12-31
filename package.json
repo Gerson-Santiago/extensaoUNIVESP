@@ -1,6 +1,6 @@
 {
   "name": "univesp-extension",
-  "version": "2.9.1",
+  "version": "2.9.2",
   "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos e Navegação Inteligente no AVA.",
   "main": "popup/popup.js",
   "scripts": {

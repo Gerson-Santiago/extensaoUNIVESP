@@ -4,6 +4,7 @@
  * Gerencia a fila de execução e o estado da importação.
  */
 import { Logger } from '../../../../../shared/utils/Logger.js';
+import { WEEK_IDENTIFIER_REGEX } from '../../../../../shared/logic/CourseStructure.js';
 
 // -- FUNÇÃO INJETADA PARA LER BIMESTRES E CURSOS --
 export async function DOM_scanTermsAndCourses_Injected() {
@@ -24,8 +25,7 @@ export async function DOM_scanTermsAndCourses_Injected() {
     }
   }
 
-  // 2. Auto-Scroll para carregar "Infinite Scroll"
-  // 2. Auto-Scroll para carregar "Infinite Scroll" (Lógica Simplificada)
+  // Auto-Scroll para carregar "Infinite Scroll"
   try {
     const getScrollElement = () => {
       const main = document.getElementById('main-content-inner');
@@ -230,9 +230,7 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
 
       const cleanText = (text || '').trim();
       const cleanTitle = (title || '').trim();
-      // //ISSUE-missing-revision-week
-      // #STEP-5: O BatchScraper também precisa ser DRY! Siga o padrão do ScraperService.
-      const weekRegex = /^Semana\s+(\d{1,2})$/i;
+      const weekRegex = WEEK_IDENTIFIER_REGEX;
 
       let match = cleanText.match(weekRegex);
       let nameToUse = cleanText;
@@ -244,9 +242,13 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
 
       if (!match || !href) return;
 
-      const weekNum = parseInt(match[1], 10);
-      // Filtra números de semana entre 1 e 15 (padrão UNIVESP)
-      if (weekNum >= 1 && weekNum <= 15) {
+      // match[2] = grupo do número (undefined para "Revisão")
+      const weekNum = match[2] ? parseInt(match[2], 10) : null;
+
+      // Válido se: for Revisão (null) OU semana 1-15
+      const isValidWeek = weekNum === null || (weekNum >= 1 && weekNum <= 15);
+
+      if (isValidWeek) {
         if (!href.startsWith('javascript:')) {
           weeks.push({ name: nameToUse, url: href });
         } else if (a.onclick) {
@@ -269,12 +271,18 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
       }
     }
 
-    // Ordena
-    // //ISSUE-missing-revision-week
-    // #STEP-5: A mesma lógica de pesos de ordenação deve ser aplicada aqui.
+    // Função auxiliar: Extrai número da semana ou retorna 999 para "Revisão"
+    function getWeekNumber(weekName) {
+      if (/revisão/i.test(weekName)) {
+        return 999; // Revisão sempre por último
+      }
+      const match = weekName.match(/\d+/);
+      return match ? parseInt(match[0], 10) : 0;
+    }
+
     uniqueWeeks.sort((a, b) => {
-      const numA = parseInt(a.name.replace(/\D/g, '')) || 0;
-      const numB = parseInt(b.name.replace(/\D/g, '')) || 0;
+      const numA = getWeekNumber(a.name);
+      const numB = getWeekNumber(b.name);
       return numA - numB;
     });
 

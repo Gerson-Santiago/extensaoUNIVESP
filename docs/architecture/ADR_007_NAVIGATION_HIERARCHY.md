@@ -1,5 +1,5 @@
 # ADR 007: Navigation Hierarchy
-**Status:** Aceito (v2.9.1) | **Data:** 2025-12-29
+**Status:** Aceito (v2.9.2) | **Data:** 2025-12-29
 
 ### Contexto
 Risco de navegação "órfã" (abrir atividade sem o contexto da semana pai).

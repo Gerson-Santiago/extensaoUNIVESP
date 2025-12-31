@@ -5,6 +5,25 @@ Todas as mudanças notáveis neste projeto serão documentadas aqui.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [2.9.2] - 2025-12-30
+
+### 🚀 Features & Estabilização (Semanas de Revisão)
+- **Centralização de Lógica de Semanas**: Implementação de `CourseStructure.js` como fonte única de verdade (SSOT).
+- **Dual Search Strategy**: O scraper agora inspeciona tanto `innerText` quanto `title` dos elementos âncora, garantindo captura mesmo quando o texto visível é truncado ou estilizado.
+- **Captura Abrangente**: Regex `/^(Semana\s+(\d{1,2})|Semana\s+de\s+Revisão|Revisão)$/i` suporta variações de nomenclatura identificadas no AVA.
+- **Support em Lote**: `BatchScraper` alinhado à lógica central, prevenindo inconsistências entre raspagem individual e em massa.
+- **Ordenação Ponderada**: Algoritmo de pesos (`getWeekNumber`) atribui peso 999 para "Revisão", forçando-a sempre para o final da lista, independente da ordem de captura.
+
+### 🧪 Qualidade & Profissionalização
+- **100% Cobertura em Lógica Crítica**: Adição de testes de regressão (unitários e integração) cobrindo todos os cenários de captura e ordenação de revisões.
+- **Zero Warnings de Lint**: Resolução de 21 warnings pendentes (Security e ESLint).
+- **Código Enterprise-Ready**: Remoção de todos os comentários didáticos/internos (`STEP`, `ISSUE`, notas de estudo) para um código mais limpo e profissional.
+- **Auditoria de Lint**: Refinamento de supressões `eslint-disable` para escopo de linha específica com justificativa técnica.
+
+### 📝 Documentação
+- **Atualização Estratégica**: Sincronização de `README.md` e `ROADMAP.md` globais com a nova versão e terminologia profissional.
+- **Cura Documental**: Atualização massiva de referências de versão e regras de negócio nos documentos técnicos.
+
 ---
 
 ## [2.9.1] - 2025-12-29

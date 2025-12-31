@@ -24,6 +24,7 @@ describe('Serviço de Scraping - Lógica', () => {
     expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
       target: { tabId: 123, allFrames: true },
       func: expect.any(Function),
+      args: [expect.any(String)],
     });
 
     expect(result).toEqual({
@@ -215,5 +216,32 @@ describe('Serviço de Scraping - Lógica', () => {
 
     // Assert
     expect(result.title).toBe('Primeiro Título Válido');
+  });
+
+  test('scrapeWeeksFromTab deve capturar e ordenar "Revisão" ao final', async () => {
+    // Arrange - Teste de regressão para bug de semana de revisão
+    /** @type {jest.Mock} */ (chrome.scripting.executeScript).mockResolvedValue([
+      {
+        result: {
+          weeks: [
+            { name: 'Semana 3', url: 'http://test.com/s3' },
+            { name: 'Revisão', url: 'http://test.com/revisao' },
+            { name: 'Semana 1', url: 'http://test.com/s1' },
+            { name: 'Semana 2', url: 'http://test.com/s2' },
+          ],
+          title: 'Curso com Revisão',
+        },
+      },
+    ]);
+
+    // Act
+    const result = await ScraperService.scrapeWeeksFromTab(123);
+
+    // Assert
+    expect(result.weeks).toHaveLength(4);
+    expect(result.weeks[0].name).toBe('Semana 1');
+    expect(result.weeks[1].name).toBe('Semana 2');
+    expect(result.weeks[2].name).toBe('Semana 3');
+    expect(result.weeks[3].name).toBe('Revisão'); // Revisão deve ser última
   });
 });

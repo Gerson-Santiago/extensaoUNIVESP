@@ -18,7 +18,7 @@
 3. **Relativo é Lei**: Imports em produção DEVEM ser relativos.
 4. **Refat = Teste**: Mudança estrutural exige teste de integração verde.
 5. **Separar Preocupações**: Lugar de mudar estrutura não é lugar de mudar lógica.
-6. **Zero Console Log**: Logs são dados, não frases. Use `Logger.js`. (74 removidos na v2.9.1).
+6. **Zero Console Log**: Logs são dados, não frases. Use `Logger.js`. (74 removidos na v2.9.2).
 
 ### 🔍 Exemplo Real: `DetailsActivitiesWeekView`
 Esta pasta é o "coração quente" do projeto. Sua estrutura grita sua função:

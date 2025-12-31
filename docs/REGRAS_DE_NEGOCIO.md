@@ -1,6 +1,6 @@
 # Regras de Negócio (Business Domain Rules)
 
-> **Princípio:** Código é a fonte da verdade. Este documento reflete o comportamento **REAL** implementado na v2.9.1.
+> **Princípio:** Código é a fonte da verdade. Este documento reflete o comportamento **REAL** implementado na v2.9.2.
 
 ---
 
@@ -111,7 +111,7 @@ Progresso de atividade pode vir de **duas fontes independentes**:
 
 ## 3. Persistência e Cache
 
-### 3.1 Dual Storage Strategy (v2.9.1)
+### 3.1 Dual Storage Strategy (v2.9.2)
 
 **Implementação:**
 - [`ActivityRepository.js`](file:///home/sant/extensaoUNIVESP/features/courses/repositories/ActivityRepository.js) - localStorage
@@ -154,7 +154,7 @@ Atividades extraídas do AVA são **persistidas imediatamente** após scraping b
 
 ## 4. Error Handling (Business Rules)
 
-### 4.1 SafeResult Pattern (v2.9.1)
+### 4.1 SafeResult Pattern (v2.9.2)
 
 **Implementação:** [`ErrorHandler.js`](file:///home/sant/extensaoUNIVESP/shared/utils/ErrorHandler.js), usado em [`WeekActivitiesService.js`](file:///home/sant/extensaoUNIVESP/features/courses/services/WeekActivitiesService.js)
 
@@ -202,7 +202,7 @@ Sistema previne abertura de **abas duplicadas** para o mesmo recurso (Curso, Sem
 
 ---
 
-### 5.2 Container Freshness (Anti DOM Zombie) (v2.9.1)
+### 5.2 Container Freshness (Anti DOM Zombie) (v2.9.2)
 
 **Implementação:** [`DetailsActivitiesWeekView/index.js`](file:///home/sant/extensaoUNIVESP/features/courses/views/DetailsActivitiesWeekView/index.js)
 
@@ -219,7 +219,7 @@ Renderer de atividades **sempre recebe container DOM fresco** (atual), nunca cac
 
 **Proteção:** 5 testes de regressão em [`rendering-regression.test.js`](file:///home/sant/extensaoUNIVESP/features/courses/tests/views/DetailsActivitiesWeekView/rendering-regression.test.js)
 
-### 5.3 Navegação de Scroll Robusta (v2.9.1)
+### 5.3 Navegação de Scroll Robusta (v2.9.2)
 
 **Implementação:** [`NavigationService.js`](file:///home/sant/extensaoUNIVESP/shared/services/NavigationService.js)
 
@@ -247,5 +247,5 @@ Sistema garante que o scroll para uma atividade ocorra mesmo em condições de c
 
 ---
 
-**Última Auditoria:** 2025-12-29 (v2.9.1)  
+**Última Auditoria:** 2025-12-29 (v2.9.2)  
 **Próxima Revisão:** Sempre que houver mudança em lógica de domínio
