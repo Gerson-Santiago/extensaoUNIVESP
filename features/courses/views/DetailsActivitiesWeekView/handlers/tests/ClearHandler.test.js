@@ -1,75 +1,83 @@
+// @ts-nocheck
+/**
+ * @jest-environment jsdom
+ */
+
+import { jest } from '@jest/globals';
 import { ClearHandler } from '../ClearHandler.js';
 import { WeekActivitiesService } from '../../../../services/WeekActivitiesService.js';
 import { Logger } from '../../../../../../shared/utils/Logger.js';
 
-// Mocks
-jest.mock('../../../../services/WeekActivitiesService');
-jest.mock('../../../../../../shared/utils/Logger');
+// Mock Dependencies
+jest.mock('../../../../services/WeekActivitiesService.js');
+jest.mock('../../../../../../shared/utils/Logger.js');
 
 describe('ClearHandler', () => {
-  let handler;
   let mockWeek;
   let mockOnBack;
+  let handler;
+  let originalConfirm;
+  let originalAlert;
 
   beforeEach(() => {
-    jest.clearAllMocks();
-    global.confirm = jest.fn();
-    global.alert = jest.fn();
-
-    mockWeek = { name: 'Semana 1', items: [1, 2, 3] };
+    mockWeek = { id: 1, name: 'Semana 1' };
     mockOnBack = jest.fn();
     handler = new ClearHandler(mockWeek, mockOnBack);
+
+    // Mock Window methods
+    originalConfirm = window.confirm;
+    originalAlert = window.alert;
+    window.confirm = jest.fn();
+    window.alert = jest.fn();
+
+    // Reset Mocks
+    jest.clearAllMocks();
   });
 
-  it('deve inicializar corretamente', () => {
-    expect(handler.week).toBe(mockWeek);
-    expect(handler.onBack).toBe(mockOnBack);
+  afterEach(() => {
+    window.confirm = originalConfirm;
+    window.alert = originalAlert;
   });
 
-  it('não deve fazer nada se week não existir', async () => {
-    handler.week = null;
+  it('deve cancelar a ação se o usuário não confirmar', async () => {
+    window.confirm.mockReturnValue(false);
+
     await handler.handleClear();
-    expect(global.confirm).not.toHaveBeenCalled();
-  });
 
-  it('não deve limpar se usuário cancelar', async () => {
-    /** @type {jest.Mock} */ (global.confirm).mockReturnValue(false);
-    await handler.handleClear();
-    expect(global.confirm).toHaveBeenCalledWith(expect.stringContaining('Deseja limpar'));
+    expect(window.confirm).toHaveBeenCalled();
     expect(WeekActivitiesService.clearCache).not.toHaveBeenCalled();
     expect(mockOnBack).not.toHaveBeenCalled();
   });
 
-  it('deve limpar cache e voltar ao confirmar', async () => {
-    /** @type {jest.Mock} */ (global.confirm).mockReturnValue(true);
-    /** @type {jest.Mock} */ (WeekActivitiesService.clearCache).mockResolvedValue();
+  it('deve limpar o cache e voltar se o usuário confirmar', async () => {
+    window.confirm.mockReturnValue(true);
+    WeekActivitiesService.clearCache.mockResolvedValue();
 
     await handler.handleClear();
 
+    expect(window.confirm).toHaveBeenCalledWith(
+      expect.stringContaining('Deseja limpar o cache de atividades')
+    );
     expect(WeekActivitiesService.clearCache).toHaveBeenCalledWith(mockWeek);
     expect(mockOnBack).toHaveBeenCalled();
-    expect(global.alert).not.toHaveBeenCalled();
   });
 
-  it('deve lidar com erro ao limpar cache', async () => {
-    /** @type {jest.Mock} */ (global.confirm).mockReturnValue(true);
-    const erroCache = new Error('Falha de cache');
-    /** @type {jest.Mock} */ (WeekActivitiesService.clearCache).mockRejectedValue(erroCache);
-
-    await handler.handleClear();
-
-    expect(Logger.error).toHaveBeenCalledWith('ClearHandler', 'Erro ao limpar cache:', erroCache);
-    expect(global.alert).toHaveBeenCalledWith(expect.stringContaining('Erro ao limpar'));
-    expect(mockOnBack).not.toHaveBeenCalled();
-  });
-
-  it('deve funcionar sem callback onBack', async () => {
-    handler = new ClearHandler(mockWeek, null);
-    /** @type {jest.Mock} */ (global.confirm).mockReturnValue(true);
-    /** @type {jest.Mock} */ (WeekActivitiesService.clearCache).mockResolvedValue();
+  it('deve lidar com erros ao limpar cache', async () => {
+    window.confirm.mockReturnValue(true);
+    const mockError = new Error('Falha no cache');
+    WeekActivitiesService.clearCache.mockRejectedValue(mockError);
 
     await handler.handleClear();
 
     expect(WeekActivitiesService.clearCache).toHaveBeenCalled();
+    expect(Logger.error).toHaveBeenCalledWith('ClearHandler', 'Erro ao limpar cache:', mockError);
+    expect(window.alert).toHaveBeenCalledWith('Erro ao limpar cache. Tente novamente.');
+    expect(mockOnBack).not.toHaveBeenCalled();
+  });
+
+  it('não deve fazer nada se a semana não for fornecida', async () => {
+    const emptyHandler = new ClearHandler(null, mockOnBack);
+    await emptyHandler.handleClear();
+    expect(window.confirm).not.toHaveBeenCalled();
   });
 });

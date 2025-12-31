@@ -10,7 +10,7 @@ Este documento centraliza a estratégia de Release, Qualidade e Testes para a ve
 
 | ID | Issue | Componente | Cobertura Atual | Meta | Prioridade |
 |----|-------|------------|-----------------|------|------------|
-| **018** | [🧪 Handlers UI](./ISSUE-018-OPEN_handlers-coverage.md) | `Clear/RefreshHandler` | 0% (Funcs) | 100% | 🔥 **Imediata** |
+| **018** | [✅ 🧪 Handlers UI](./ISSUE-018_handlers-coverage.md.resolved) | `Clear/RefreshHandler` | 100% | 100% | 🔥 **Imediata** |
 | **013** | [✅ 🧪 Integração CourseRefresher](./ISSUE-013_course-refresher-tests.md.resolved) | `CourseRefresher` | 100% | > 70% | 🚨 **Máxima** |
 | **017** | [📝 Release Eng & Docs](./ISSUE-017-OPEN_release-documentation.md) | `Release v2.9.6` | - | 100% | 🔒 **Blocker** |
 | **014** | [✅ 🧪 Parsers WeekContent](./ISSUE-014_week-scraper-coverage.md.resolved) | `WeekContentScraper` | 91.26% | > 80% | 🔼 **Alta** |

@@ -1,9 +1,10 @@
 # 🧪 TEST-COV: Cobertura de Handlers de UI (Clear/Refresh)
 
-**Status:** 📋 Planejado (v2.9.6)
+**Status:** ✅ Concluído (v2.9.6)
 **Prioridade:** Imediata (Critical/User Flow)
 **Componentes:** `ClearHandler.js`, `RefreshHandler.js`
 **Tipo:** Testes / UI Logic
+**Resolvido em:** 31/12/2025
 
 ---
 
