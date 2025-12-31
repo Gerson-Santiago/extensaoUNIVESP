@@ -1,9 +1,10 @@
 # 🧪 TEST-COV: Integração do CourseRefresher
 
-**Status:** 📋 Planejado (v2.9.6)
+**Status:** ✅ Concluído (v2.9.6)
 **Prioridade:** Alta (Critical/Coverage)
 **Componentes:** `CourseRefresher`, `StorageService`, `NotificationService`
 **Tipo:** Testes / Confiabilidade
+**Resolvido em:** 31/12/2025
 
 ---
 
