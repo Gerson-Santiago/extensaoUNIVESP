@@ -1,10 +1,16 @@
-import { WEEK_IDENTIFIER_REGEX, sortWeeks } from '../../../shared/logic/CourseStructure.js';
+import { WEEK_IDENTIFIER_REGEX, sortWeeks } from '../logic/CourseStructure.js';
 
 /**
  * Serviço de Scraping via Mensageria / Injeção.
  * Comunica-se com a página do AVA para extrair semanas e conteúdos.
  */
 export class ScraperService {
+  /**
+   * Extrai semanas de um documento HTML (DOM Parser).
+   * @param {Document} doc - Documento HTML parseado.
+   * @param {string} baseUrl - URL base para resolver links relativos.
+   * @returns {{weeks: Array<{name: string, url: string}>, title: string|null}}
+   */
   static extractWeeksFromDoc(doc, baseUrl) {
     const weeks = [];
     const links = doc.querySelectorAll('a');
@@ -68,12 +74,12 @@ export class ScraperService {
     // Prioridade: p.discipline-title
     const pDisc = doc.querySelector('p.discipline-title');
     if (pDisc) {
-      pageTitle = pDisc.innerText.trim();
+      pageTitle = /** @type {HTMLElement} */ (pDisc).innerText.trim();
     } else {
       // Fallback: h1.panel-title
       const h1 = doc.querySelector('h1.panel-title');
       if (h1) {
-        pageTitle = h1.innerText.trim();
+        pageTitle = /** @type {HTMLElement} */ (h1).innerText.trim();
       }
     }
 

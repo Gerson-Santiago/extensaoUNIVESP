@@ -21,7 +21,7 @@ import { DetailsActivitiesWeekView } from '../../../views/DetailsActivitiesWeekV
 
 // Mocks
 jest.mock('../../../../../shared/services/NavigationService.js');
-jest.mock('../../../../../shared/services/HistoryService.js');
+jest.mock('@features/courses/services/HistoryService.js');
 
 describe('DetailsActivitiesWeekView - Regressão: Bug de DOM Zumbi', () => {
   let view;

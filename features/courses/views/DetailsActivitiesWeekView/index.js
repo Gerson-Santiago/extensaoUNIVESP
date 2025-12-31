@@ -10,7 +10,7 @@
 import { Logger } from '../../../../shared/utils/Logger.js';
 import { ActivityFocusService } from '../../logic/ActivityFocusService.js';
 import { NavigationService } from '../../../../shared/services/NavigationService.js';
-import { HistoryService } from '../../../../shared/services/HistoryService.js';
+import { HistoryService } from '../../services/HistoryService.js';
 import { SkeletonManager } from './SkeletonManager.js';
 import { RefreshHandler } from './handlers/RefreshHandler.js';
 import { ClearHandler } from './handlers/ClearHandler.js';

@@ -74,7 +74,7 @@ describe('Lógica - Batch Scraper', () => {
       expect(chrome.scripting.executeScript).toHaveBeenCalledWith({
         target: { tabId: 101 },
         func: expect.any(Function),
-        args: [mockInputCourses],
+        args: [mockInputCourses, expect.any(String)],
       });
 
       expect(result).toHaveLength(1);

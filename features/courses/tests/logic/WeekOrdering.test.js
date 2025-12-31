@@ -1,5 +1,5 @@
-import { ScraperService } from '../../../../../features/courses/services/ScraperService.js';
-import { sortWeeks } from '../../../../../shared/logic/CourseStructure.js';
+import { ScraperService } from '@features/courses/services/ScraperService.js';
+import { sortWeeks } from '@features/courses/logic/CourseStructure.js';
 
 /**
  * Teste de regressão: Validação de captura e ordenação de semanas incluindo "Semana de Revisão".

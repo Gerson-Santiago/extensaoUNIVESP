@@ -1,5 +1,5 @@
-import { SettingsView } from '../../features/settings/ui/SettingsView.js';
-import { CourseService } from '../../features/courses/logic/CourseService.js'; // Added import
+import { SettingsView } from '@features/settings/ui/SettingsView.js';
+import { CourseService } from '@features/courses/logic/CourseService.js'; // Added import
 
 describe('Integração: Fluxo de Coleta de Curso', () => {
   let settingsView;

@@ -2,7 +2,7 @@
  * @jest-environment jsdom
  */
 
-import { SettingsView } from '../../features/settings/ui/SettingsView.js';
+import { SettingsView } from '@features/settings/ui/SettingsView.js';
 
 describe('Integração: Desacoplamento de Eventos de Settings', () => {
   let settingsView;

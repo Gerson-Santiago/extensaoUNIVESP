@@ -1,4 +1,4 @@
-import { HistoryService } from '../../shared/services/HistoryService.js';
+import { HistoryService } from '../../services/HistoryService.js';
 
 describe('HistoryService', () => {
   let historyService;

@@ -1,8 +1,8 @@
-import { MainLayout } from '../../shared/ui/layout/MainLayout.js';
-import { HomeView } from '../../features/home/ui/HomeView.js';
+import { MainLayout } from '@shared/ui/layout/MainLayout.js';
+import { HomeView } from '@features/home/ui/HomeView.js';
 // Mocks para Views são aceitáveis, mas classes reais em testes de integração são melhores
-import { CoursesView } from '../../features/courses/views/CoursesView/index.js';
-import { SettingsView } from '../../features/settings/ui/SettingsView.js';
+import { CoursesView } from '@features/courses/views/CoursesView/index.js';
+import { SettingsView } from '@features/settings/ui/SettingsView.js';
 
 describe('Integração: Fluxo de Navegação', () => {
   let container;

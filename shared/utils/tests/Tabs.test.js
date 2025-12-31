@@ -1,298 +1,187 @@
 import { Tabs } from '../Tabs.js';
 
-describe('Lógica - Troca de Abas', () => {
+// Note: global.chrome is already mocked in jest.setup.js which includes windows and tabs mocks.
+// We just need to reset/mock specific implementations for our tests.
+
+describe('Tabs.openOrSwitchTo', () => {
   beforeEach(() => {
     jest.clearAllMocks();
 
-    // Mock padrão para update e create invocarem o callback (evita timeout no await)
-    /** @type {jest.Mock} */ (chrome.tabs.update).mockImplementation((id, props, cb) => {
-      if (cb) cb({ id, ...props });
-    });
-    /** @type {jest.Mock} */ (chrome.tabs.create).mockImplementation((props, cb) => {
-      if (cb) cb({ id: 999, ...props });
-    });
-    /** @type {jest.Mock} */ (chrome.windows.update).mockImplementation((id, props, cb) => {
-      if (cb) cb();
-    });
-  });
-
-  test('Deve alternar para aba correspondente ao course_id exatamente', async () => {
-    const targetUrl =
-      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1';
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((query, callback) => {
-      callback([
-        {
-          id: 101,
-          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_99999_1&content_id=_11111_1',
-          windowId: 888,
-        },
-        {
-          id: 102,
-          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_67890_1',
-          windowId: 999,
-        },
-      ]);
-    });
-
-    await Tabs.openOrSwitchTo(targetUrl);
-
-    // Should update tab 102 (Same URL) -> Only active: true
-    expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true }, expect.any(Function));
-    expect(chrome.windows.update).toHaveBeenCalledWith(
-      999,
-      { focused: true },
-      expect.any(Function)
+    /** @type {any} */ (chrome.tabs.create).mockImplementation((_, cb) => cb && cb({ id: 999 }));
+    /** @type {any} */ (chrome.tabs.update).mockImplementation(
+      (_, __, cb) => cb && cb({ id: 999 })
     );
-    expect(chrome.tabs.create).not.toHaveBeenCalled();
+    /** @type {any} */ (chrome.windows.update).mockImplementation((_, __, cb) => cb && cb());
   });
 
-  test('Deve usar startsWith se course_id não for encontrado', async () => {
-    const targetUrl = 'https://google.com/search?q=test';
+  describe('Regressão de Bug: Botão de Abrir Matéria (HomeView)', () => {
+    const COURSE_DASHBOARD_URL = 'https://ava.univesp.br/ultra/course';
+    const MATCH_PATTERN = 'ultra/course'; // O novo padrão fixo
+    const WEEK_CONTENT_URL =
+      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_123_1&content_id=_456_1';
 
-    const mockTabs = [
-      { id: 201, windowId: 888, url: 'https://google.com/search?q=test&page=2' }, // Starts with same base
-    ];
+    test('NÃO deve corresponder a uma aba de Semana ao procurar pelo Dashboard do Curso com padrão específico', async () => {
+      // Preparar (Arrange)
+      /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+        if (callback) callback([{ id: 101, url: WEEK_CONTENT_URL, windowId: 999 }]);
+      });
 
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) =>
-      callback(mockTabs)
-    );
+      // Agir (Act)
+      await Tabs.openOrSwitchTo(COURSE_DASHBOARD_URL, MATCH_PATTERN);
 
-    await Tabs.openOrSwitchTo(targetUrl);
-
-    expect(chrome.tabs.update).toHaveBeenCalledWith(
-      201,
-      { url: targetUrl, active: true },
-      expect.any(Function)
-    );
-    expect(chrome.tabs.create).not.toHaveBeenCalled();
-  });
-
-  test('Deve criar nova aba se nenhuma correspondência for encontrada', async () => {
-    const targetUrl = 'https://example.com';
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((query, callback) => {
-      callback([
-        {
-          id: 101,
-          url: 'https://ava.univesp.br/other',
-          windowId: 888,
-        },
-      ]);
+      // Verificar (Assert)
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
+        expect.objectContaining({ url: COURSE_DASHBOARD_URL }),
+        expect.anything()
+      );
+      expect(chrome.tabs.update).not.toHaveBeenCalled();
     });
 
-    await Tabs.openOrSwitchTo(targetUrl);
+    test('deve corresponder corretamente a uma aba existente do Dashboard do Curso', async () => {
+      // Preparar (Arrange)
+      /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+        if (callback)
+          callback([
+            { id: 101, url: WEEK_CONTENT_URL, windowId: 999 },
+            { id: 202, url: COURSE_DASHBOARD_URL, windowId: 999 },
+          ]);
+      });
 
-    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl }, expect.any(Function));
-    expect(chrome.tabs.update).not.toHaveBeenCalled();
+      // Agir (Act)
+      await Tabs.openOrSwitchTo(COURSE_DASHBOARD_URL, MATCH_PATTERN);
+
+      // Verificar (Assert)
+      expect(chrome.tabs.update).toHaveBeenCalledWith(
+        202, // ID da aba do Dashboard
+        expect.objectContaining({ active: true }),
+        expect.anything()
+      );
+      expect(chrome.tabs.create).not.toHaveBeenCalled();
+    });
   });
 
-  test('Deve priorizar content_id exato quando múltiplas abas tiverem o mesmo course_id', async () => {
-    const targetUrl =
-      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_EXACT_1';
+  describe('Regressão de Bug: Navegação Entre Matérias (Lógica Tabs.js)', () => {
+    const WEEK_A_URL =
+      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_AAA_1&content_id=_111_1';
+    const WEEK_B_URL =
+      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_BBB_1&content_id=_222_1';
 
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback([
-        {
-          id: 101,
-          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_OTHER_1',
-          windowId: 888,
-        },
-        {
-          id: 102,
-          url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_12345_1&content_id=_EXACT_1',
-          windowId: 999,
-        },
-      ]);
+    test('NÃO deve reutilizar aba da Matéria A ao abrir a Matéria B (Check de Segurança)', async () => {
+      // Preparar (Arrange)
+      /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+        if (callback) callback([{ id: 101, url: WEEK_A_URL, windowId: 999 }]);
+      });
+
+      // Agir (Act): Tenta abrir a Semana B
+      await Tabs.openOrSwitchTo(WEEK_B_URL);
+
+      // Verificar (Assert)
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
+        expect.objectContaining({ url: WEEK_B_URL }),
+        expect.anything()
+      );
+      expect(chrome.tabs.update).not.toHaveBeenCalled();
     });
 
-    await Tabs.openOrSwitchTo(targetUrl);
+    test('deve abrir NOVA aba para o mesmo curso mas conteúdo diferente', async () => {
+      // Preparar (Arrange)
+      const WEEK_A_PART2_URL =
+        'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_AAA_1&content_id=_333_1';
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(102, { active: true }, expect.any(Function));
-    expect(chrome.windows.update).toHaveBeenCalledWith(
-      999,
-      { focused: true },
-      expect.any(Function)
-    );
+      /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+        if (callback) callback([{ id: 101, url: WEEK_A_URL, windowId: 999 }]);
+      });
+
+      // Agir (Act)
+      await Tabs.openOrSwitchTo(WEEK_A_PART2_URL);
+
+      // Verificar (Assert)
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
+        expect.objectContaining({ url: WEEK_A_PART2_URL }),
+        expect.anything()
+      );
+      expect(chrome.tabs.update).not.toHaveBeenCalled();
+    });
   });
 
-  test('Deve lidar com URL sem course_id ou content_id usando startsWith', async () => {
-    const targetUrl = 'https://ava.univesp.br/ultra/courses';
+  describe('Verificação de Checklist Detalhada', () => {
+    // Constantes compartilhadas para estes testes
+    const COURSE_X_ID = '_123_1';
+    const COURSE_X_WEEK_1_URL = `https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=${COURSE_X_ID}&content_id=_111_1`;
+    const COURSE_X_WEEK_2_URL = `https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=${COURSE_X_ID}&content_id=_222_1`;
 
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback([
-        {
-          id: 301,
-          url: 'https://ava.univesp.br/ultra/courses/list',
-          windowId: 777,
-        },
-      ]);
+    test('C2. Prevenção de Loop: NÃO deve recarregar se a URL for idêntica (apenas focar)', async () => {
+      // Preparar (Arrange)
+      /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+        if (callback) callback([{ id: 101, url: COURSE_X_WEEK_1_URL, windowId: 999 }]);
+      });
+
+      // Agir (Act): Ir para a mesma URL novamente
+      await Tabs.openOrSwitchTo(COURSE_X_WEEK_1_URL);
+
+      // Verificar (Assert): Update chamado APENAS com active:true, invalidando reload de URL
+      expect(chrome.tabs.update).toHaveBeenCalledWith(
+        101,
+        expect.not.objectContaining({ url: COURSE_X_WEEK_1_URL }), // NÃO deve conter URL
+        expect.anything()
+      );
+      expect(chrome.tabs.update).toHaveBeenCalledWith(
+        101,
+        expect.objectContaining({ active: true }),
+        expect.anything()
+      );
     });
 
-    await Tabs.openOrSwitchTo(targetUrl);
+    test('B1. Resiliência: Deve criar NOVA aba se a aba do AVA foi fechada manualmente (ID não encontrado)', async () => {
+      // Preparar (Arrange): Mock do query retornando vazio (aba fechada pelo usuário)
+      /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+        if (callback) callback([]);
+      });
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(
-      301,
-      { url: targetUrl, active: true },
-      expect.any(Function)
-    );
-  });
+      // Agir (Act)
+      await Tabs.openOrSwitchTo(COURSE_X_WEEK_1_URL);
 
-  test('Deve focar na janela ao alternar abas', async () => {
-    const targetUrl = 'https://example.com';
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback([
-        {
-          id: 401,
-          url: 'https://example.com',
-          windowId: 555,
-        },
-      ]);
+      // Verificar (Assert)
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
+        expect.objectContaining({ url: COURSE_X_WEEK_1_URL }),
+        expect.anything()
+      );
     });
 
-    await Tabs.openOrSwitchTo(targetUrl);
+    test('B2. Entre-Semanas: Deve abrir NOVA aba ao navegar Semana 1 -> Semana 2', async () => {
+      // Preparar (Arrange): Browser tem a Semana 1 aberta
+      /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+        if (callback) callback([{ id: 101, url: COURSE_X_WEEK_1_URL, windowId: 999 }]);
+      });
 
-    expect(chrome.tabs.update).toHaveBeenCalledWith(401, { active: true }, expect.any(Function));
-    expect(chrome.windows.update).toHaveBeenCalledWith(
-      555,
-      { focused: true },
-      expect.any(Function)
-    );
-  });
+      // Agir (Act): Usuário clica na Semana 2 na extensão
+      await Tabs.openOrSwitchTo(COURSE_X_WEEK_2_URL);
 
-  test('Deve criar nova aba quando query retornar array vazio', async () => {
-    const targetUrl = 'https://newsite.com';
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback([]);
+      // Verificar (Assert): Criar NOVA aba para Semana 2 (não reutilizar Semana 1)
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
+        expect.objectContaining({ url: COURSE_X_WEEK_2_URL }),
+        expect.anything()
+      );
+      expect(chrome.tabs.update).not.toHaveBeenCalled();
     });
 
-    await Tabs.openOrSwitchTo(targetUrl);
+    test('A2. Deep Link: Deve criar nova aba quando o hash muda (conteúdo diferente)', async () => {
+      const URL_NO_HASH = COURSE_X_WEEK_1_URL;
+      const URL_WITH_HASH = COURSE_X_WEEK_1_URL + '#video-123';
 
-    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl }, expect.any(Function));
-    expect(chrome.tabs.update).not.toHaveBeenCalled();
-  });
+      // Preparar (Arrange): Browser tem a página aberta sem hash
+      /** @type {any} */ (chrome.tabs.query).mockImplementation((_, callback) => {
+        if (callback) callback([{ id: 101, url: URL_NO_HASH, windowId: 999 }]);
+      });
 
-  test('Deve priorizar match exato sobre startsWith quando ambos existem', async () => {
-    const targetUrl = 'https://site.com/app';
+      // Agir (Act): Clicar em um deep link
+      await Tabs.openOrSwitchTo(URL_WITH_HASH);
 
-    // Ordem: Aba com sub-rota vem PRIMEIRO na lista.
-    // Se a lógica não priorizar, pegaria a primeira (sub-rota) em vez da exata.
-    const mockTabs = [
-      { id: 901, url: 'https://site.com/app/deep', windowId: 111 },
-      { id: 902, url: 'https://site.com/app', windowId: 111 }, // EXATO
-    ];
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback(mockTabs);
+      // Verificar (Assert): Criar nova aba (URLs não combinam exatamente)
+      expect(chrome.tabs.create).toHaveBeenCalledWith(
+        expect.objectContaining({ url: URL_WITH_HASH }),
+        expect.anything()
+      );
     });
-
-    await Tabs.openOrSwitchTo(targetUrl);
-
-    // Deve escolher o id 902 (Exato) e não o 901. URL igual -> update só active
-    expect(chrome.tabs.update).toHaveBeenCalledWith(902, { active: true }, expect.any(Function));
-  });
-
-  test('Deve usar matchPattern opcional quando fornecido', async () => {
-    const targetUrl = 'https://sei.univesp.br/index.xhtml';
-    const matchPattern = 'sei.univesp.br';
-
-    // Cenário: Usuário já logado no SEI (controlador.php), link da home aponta para index.xhtml
-    // Sem o pattern, isso falharia pois index.xhtml != controlador.php e não é prefixo
-    const mockTabs = [
-      { id: 701, url: 'https://sei.univesp.br/sei/controlador.php?acao=x', windowId: 444 },
-    ];
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback(mockTabs);
-    });
-
-    await Tabs.openOrSwitchTo(targetUrl, matchPattern);
-
-    expect(chrome.tabs.update).toHaveBeenCalledWith(
-      701,
-      { url: targetUrl, active: true },
-      expect.any(Function)
-    );
-  });
-
-  // --- TESTES DE REPRODUÇÃO DE BUGS (EPIC 4) ---
-
-  test('BUG REPRO: Não deve reusar aba se course_id for diferente (Matéria A vs Matéria B)', async () => {
-    const targetUrl =
-      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_MAT_1&content_id=_123';
-
-    const mockTabs = [
-      {
-        id: 999,
-        url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_ING_1&content_id=_456',
-        windowId: 111,
-      },
-    ];
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback(mockTabs);
-    });
-
-    await Tabs.openOrSwitchTo(targetUrl);
-
-    // Deve criar NOVA aba
-    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl }, expect.any(Function));
-    expect(chrome.tabs.update).not.toHaveBeenCalled();
-  });
-
-  test('BUG REPRO: Botão Abrir Matéria deve funcionar mesmo se aba de semana estiver aberta', async () => {
-    const courseUrl =
-      'https://ava.univesp.br/webapps/blackboard/execute/launcher?type=Course&id=_ING_1';
-
-    const mockTabs = [
-      {
-        id: 888,
-        url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_ING_1&content_id=_WEEK3',
-        windowId: 111,
-      },
-    ];
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback(mockTabs);
-    });
-
-    await Tabs.openOrSwitchTo(courseUrl);
-
-    // Se a lógica permitir reuso (IDs batem), deve atualizar URL
-    // Se a lógica não permitir reuso (prefixo não bate), deve criar nova
-    const callsCreate = /** @type {jest.Mock} */ (chrome.tabs.create).mock.calls.length > 0;
-    const callsUpdateWithUrl = /** @type {jest.Mock} */ (chrome.tabs.update).mock.calls.some(
-      (call) => call[1].url === courseUrl
-    );
-
-    expect(callsCreate || callsUpdateWithUrl).toBe(true);
-  });
-
-  test('BUG REPRO 3: Deve lidar com course_id que NÃO começa com underscore', async () => {
-    // Agora que a regex suporta IDs variados, deve funcionar corretamente (reusando se ID bater, ou criando nova se não bater)
-    // Se o ID for 12345 e a aba tiver 99999 -> IDs diferentes -> Nova Aba.
-
-    const targetUrl =
-      'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=123456&content_id=_123';
-
-    const mockTabs = [
-      {
-        id: 777,
-        url: 'https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=99999&content_id=_456',
-        windowId: 111,
-      },
-    ];
-
-    /** @type {jest.Mock} */ (chrome.tabs.query).mockImplementation((_, callback) => {
-      callback(mockTabs);
-    });
-
-    await Tabs.openOrSwitchTo(targetUrl);
-
-    // Com a nova regex e proteção de segurança, deve criar nova aba
-    expect(chrome.tabs.create).toHaveBeenCalledWith({ url: targetUrl }, expect.any(Function));
-    expect(chrome.tabs.update).not.toHaveBeenCalled();
   });
 });

@@ -1,5 +1,5 @@
-import { SettingsView } from '../../features/settings/ui/SettingsView.js';
-import { RaManager } from '../../features/session/logic/SessionManager.js';
+import { SettingsView } from '@features/settings/ui/SettingsView.js';
+import { RaManager } from '@features/session/logic/SessionManager.js';
 
 describe('Integração: Feedback do Formulário de Configuração', () => {
   let settingsView;

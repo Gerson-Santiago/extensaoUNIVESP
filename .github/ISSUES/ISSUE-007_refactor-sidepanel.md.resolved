@@ -12,7 +12,7 @@ assignees: ''
 Target: `/sidepanel`
 
 ## Objectives
-- [ ] Review `sidepanel` structure as the main entry point
-- [ ] Ensure strict separation from Feature logic
-- [ ] Verify css/js organization
-- [ ] Document the View Router mechanism if present
+- [x] Review `sidepanel` structure as the main entry point
+- [x] Ensure strict separation from Feature logic
+- [x] Verify css/js organization
+- [x] Document the View Router mechanism if present

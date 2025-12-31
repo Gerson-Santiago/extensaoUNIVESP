@@ -6,7 +6,7 @@
 import { Logger } from '../utils/Logger.js';
 
 /**
- * @typedef {import('../services/HistoryService.js').HistoryItem} HistoryItem
+ * @typedef {import('../../features/courses/services/HistoryService.js').HistoryItem} HistoryItem
  */
 
 export class ContextualChips {

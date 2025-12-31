@@ -4,7 +4,7 @@
  * Gerencia a fila de execução e o estado da importação.
  */
 import { Logger } from '../../../../../shared/utils/Logger.js';
-import { WEEK_IDENTIFIER_REGEX } from '../../../../../shared/logic/CourseStructure.js';
+import { WEEK_IDENTIFIER_REGEX } from '../../../logic/CourseStructure.js';
 
 // -- FUNÇÃO INJETADA PARA LER BIMESTRES E CURSOS --
 export async function DOM_scanTermsAndCourses_Injected() {
@@ -206,7 +206,7 @@ export async function DOM_scanTermsAndCourses_Injected() {
 }
 
 // -- FUNÇÃO INJETADA PARA PROCESSAR LISTA --
-export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
+export async function DOM_deepScrapeSelected_Injected(coursesToScrape, weekRegexSource) {
   const results = [];
 
   // Função auxiliar de raspagem de semanas (Duplicada aqui pois contexto injetado não tem imports)
@@ -230,7 +230,8 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape) {
 
       const cleanText = (text || '').trim();
       const cleanTitle = (title || '').trim();
-      const weekRegex = WEEK_IDENTIFIER_REGEX;
+      // eslint-disable-next-line security/detect-non-literal-regexp
+      const weekRegex = new RegExp(weekRegexSource, 'i');
 
       let match = cleanText.match(weekRegex);
       let nameToUse = cleanText;
@@ -377,7 +378,7 @@ export async function processSelectedCourses(tabId, courses) {
     const results = await chrome.scripting.executeScript({
       target: { tabId: tabId },
       func: DOM_deepScrapeSelected_Injected,
-      args: [courses],
+      args: [courses, WEEK_IDENTIFIER_REGEX.source],
     });
 
     if (results && results[0] && results[0].result) {

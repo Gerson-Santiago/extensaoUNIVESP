@@ -1,7 +1,7 @@
 /**
  * @jest-environment jsdom
  */
-import { ContextualChips } from '../../shared/ui/ContextualChips.js';
+import { ContextualChips } from '../ContextualChips.js';
 
 describe('ContextualChips', () => {
   let container;

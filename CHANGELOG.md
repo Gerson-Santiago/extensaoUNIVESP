@@ -5,6 +5,20 @@ Todas as mudanças notáveis neste projeto serão documentadas aqui.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [2.9.3] - 2025-12-31
+
+### 🏗️ Screaming Architecture & Quality
+- **Test Colocation**: Testes unitários movidos para dentro das features (`features/*/tests`), respeitando a arquitetura modular. Apenas testes de integração e arquiteturais permanecem na raiz `tests/`.
+- **Strict Typing (JSDoc)**: Adoção rigorosa de JSDoc com `@type` casting explícito para eliminar `any/unknown`, garantindo zero erros de TypeScript (`npm run type-check`).
+- **Zero Lint Warnings**: Correção de alertas residuais, incluindo verificação de segurança em regex (`security/detect-non-literal-regexp`) e propriedades de DOM (`HTMLElement` vs `Element`).
+
+### 📦 Refatorações
+- **Content Scripts**: Scripts de injeção (`SeiLoginContentScript.js`) movidos para `features/session`, centralizando a lógica de sessão.
+- **Service Layer**: Ajustes finos em `ScraperService` e `ChipsManager` para conformidade com a nova arquitetura de tipos.
+- **Clean Code**: Remoção de redundâncias e arquivos órfãos pós-migração.
+
+---
+
 ## [2.9.2] - 2025-12-30
 
 ### 🚀 Features & Estabilização (Semanas de Revisão)

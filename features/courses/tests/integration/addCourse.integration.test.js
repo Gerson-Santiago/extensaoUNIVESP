@@ -1,6 +1,6 @@
-import { SettingsView } from '../../features/settings/ui/SettingsView.js';
-import { CoursesView } from '../../features/courses/views/CoursesView/index.js';
-import { AddManualModal } from '../../features/courses/components/AddManualModal/index.js';
+import { SettingsView } from '@features/settings/ui/SettingsView.js';
+import { CoursesView } from '@features/courses/views/CoursesView/index.js';
+import { AddManualModal } from '@features/courses/components/AddManualModal/index.js';
 
 describe('Integração: Fluxo Manual de Adição de Curso', () => {
   let settingsView;

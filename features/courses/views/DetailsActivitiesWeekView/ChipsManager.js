@@ -5,7 +5,7 @@
  */
 
 import { ContextualChips } from '../../../../shared/ui/ContextualChips.js';
-import { HistoryService } from '../../../../shared/services/HistoryService.js';
+import { HistoryService } from '../../services/HistoryService.js';
 import { Logger } from '../../../../shared/utils/Logger.js';
 
 /**
