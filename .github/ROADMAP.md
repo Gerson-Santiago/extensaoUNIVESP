@@ -25,12 +25,13 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 
 **Marcos**:
 - ✅ **Estabilização e Robustez** (v2.9.2) - Suporte a Semanas de Revisão e 100% de cobertura core.
+- 🚧 **Ciclo de Qualidade** (v2.9.6) - Testes de Integração (ADR-009) e Cobertura de Handlers.
 - 🔄 **Resolução de Dívidas Técnicas** - Manter meta de 85% de cobertura global.
 
-**Entregáveis Esperados** (v2.9.1):
-- Cobertura de testes: 85% (alcançado em módulos core)
-- Zero bugs de navegação (Incluindo Semanas de Revisão)
-- Sistema de Log centralizado (Logger.js) com tags semânticas
+**Entregáveis Esperados** (v2.9.6):
+- Cobertura de testes: > 80% (foco no CourseRefresher)
+- Test Strategies definidas (VideoStrategy, Navigation)
+- Documentação de Release Profissional (Issue-017)
 
 ---
 

@@ -1,0 +1,46 @@
+# 📋 Plano de Qualidade v2.9.6 (Master Index)
+
+Este documento centraliza a estratégia de Release, Qualidade e Testes para a versão v2.9.6.
+
+**Meta:** Elevar a confiabilidade do sistema atacando as áreas críticas de dívida técnica e garantindo um processo de release profissional.
+
+---
+
+## 📂 Visão Geral das Issues
+
+| ID | Issue | Componente | Cobertura Atual | Meta | Prioridade |
+|----|-------|------------|-----------------|------|------------|
+| **018** | [🧪 Handlers UI](./ISSUE-018-OPEN_handlers-coverage.md) | `Clear/RefreshHandler` | 0% (Funcs) | 100% | 🔥 **Imediata** |
+| **013** | [🧪 Integração CourseRefresher](./ISSUE-013-OPEN_course-refresher-tests.md) | `CourseRefresher` | 25.71% | > 70% | 🚨 **Máxima** |
+| **017** | [📝 Release Eng & Docs](./ISSUE-017-OPEN_release-documentation.md) | `Release v2.9.6` | - | 100% | 🔒 **Blocker** |
+| **014** | [🧪 Parsers WeekContent](./ISSUE-014-OPEN_week-scraper-coverage.md) | `WeekContentScraper` | 31.34% | > 80% | 🔼 **Alta** |
+| **015** | [🧪 Mock NavigationService](./ISSUE-015-OPEN_navigation-service-mock.md) | `NavigationService` | 29.62% | > 60% | ⏺️ **Média** |
+| **016** | [🧪 Testes VideoStrategy](./ISSUE-016-OPEN_video-strategy-tests.md) | `VideoStrategy` | 48.38% | > 90% | ⏺️ **Média** |
+
+---
+
+
+### **[ADR-000-C: Padrão AAA](../../docs/architecture/ADR_000_C_AAA_TESTING_PATTERN.md)** (Global)
+Todas as implementações de teste **DEVEM** seguir rigorosamente a estrutura Arrange-Act-Assert e usar nomenclatura em português ("Deve...").
+
+### **[ADR-009: Hybrid Integration Strategy](../../docs/architecture/ADR_009_TEST_STRATEGY_REFRESHER.md)**
+Define a "Inversão da Pirâmide" para testar o `CourseRefresher`. Em vez de mocks unitários frágeis, usaremos testes de integração com fixtures de estado, garantindo que o orquestrador funcione de ponta a ponta.
+
+---
+
+## 🛠️ Detalhes Táticos
+
+### 1. UX & Confiabilidade (Issues 018 & 015)
+Foco em garantir que as interações do usuário (botões de refresh, scroll automático) funcionem. Atualmente, os handlers têm 0% de testes funcionais.
+*   *Ação:* Implementar testes unitários com JSDOM para validar estados de loading e feedback visual.
+
+### 2. Core Business Logic (Issues 013 & 014)
+Foco no coração da extensão: encontrar e atualizar cursos.
+*   *Ação:* Testar parsers contra HTMLs reais (fixtures) e validar o fluxo de atualização do `CourseRefresher`.
+
+### 3. Engenharia de Release (Issue 017)
+Foco na profissionalização da entrega.
+*   *Ação:* Sincronizar manifestos, gerar Changelog semântico e limpar a documentação.
+
+---
+**Gerado em:** 31/12/2025 | **Status:** 🚦 Pronto apra Execução
