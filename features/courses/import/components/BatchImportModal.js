@@ -1,6 +1,6 @@
 import { Modal } from '../../../../shared/ui/Modal.js';
 import { scrapeAvailableTerms, processSelectedCourses } from '../services/BatchScraper/index.js';
-import { CourseRepository } from '../../data/CourseRepository.js';
+import { CourseRepository } from '../../repositories/CourseRepository.js';
 import { parseTerm } from '../../logic/TermParser.js';
 import { Tabs } from '../../../../shared/utils/Tabs.js';
 import { Logger } from '../../../../shared/utils/Logger.js';

@@ -1,4 +1,4 @@
-import { CourseRepository } from '@features/courses/data/CourseRepository.js';
+import { CourseRepository } from '@features/courses/repositories/CourseRepository.js';
 
 describe('CourseRepository - Operações de Carregamento', () => {
   beforeEach(() => {

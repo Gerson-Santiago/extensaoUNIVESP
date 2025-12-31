@@ -1,8 +1,8 @@
 import { TaskProgressService } from '../../services/TaskProgressService.js';
-import { ActivityProgressRepository } from '../../repositories-progress/ActivityProgressRepository.js';
+import { ActivityProgressRepository } from '../../repositories/ActivityProgressRepository.js';
 
 // Mock Repository
-jest.mock('../../repositories-progress/ActivityProgressRepository.js');
+jest.mock('../../repositories/ActivityProgressRepository.js');
 
 describe('TaskProgressService (Serviço de Progresso de Tarefas)', () => {
   beforeEach(() => {

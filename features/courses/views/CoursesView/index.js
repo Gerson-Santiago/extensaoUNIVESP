@@ -10,7 +10,7 @@
  * @date 2025-12-20
  */
 
-import { CourseRepository } from '../../data/CourseRepository.js';
+import { CourseRepository } from '../../repositories/CourseRepository.js';
 import { createCourseElement } from '../../components/CourseItem.js';
 import { groupCoursesByTerm } from '../../logic/CourseGrouper.js';
 import { ActionMenu } from '../../../../shared/ui/ActionMenu.js';

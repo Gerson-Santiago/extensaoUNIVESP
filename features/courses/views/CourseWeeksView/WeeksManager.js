@@ -5,7 +5,7 @@
 
 import { createWeekElement } from '../../components/WeekItem.js';
 import { WeekActivitiesService } from '../../services/WeekActivitiesService.js';
-import { CourseRepository } from '../../data/CourseRepository.js';
+import { CourseRepository } from '../../repositories/CourseRepository.js';
 import { Toaster } from '../../../../shared/ui/feedback/Toaster.js';
 import { PreviewManager } from './PreviewManager.js';
 import { Logger } from '../../../../shared/utils/Logger.js';

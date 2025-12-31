@@ -1,15 +1,13 @@
 # Data & Repository Layers: Cursos
 
-Este diretório e `../repository/` contêm a lógica de persistência para o Core de Cursos.
+Este diretório contém a lógica de persistência para o Core de Cursos.
 
 ## 📄 Arquivos
 
-### Data Layer (Courses)
 *   **`CourseRepository.js`**: Acesso público (API) para manipulação de dados de cursos.
 *   **`CourseStorage.js`**: Driver interno para `chrome.storage`.
-
-### Repository Layer (Activity Progress) ✨ NEW
-*   **`../repositories-progress/ActivityProgressRepository.js`**: CRUD para progresso de atividades (namespace separado).
+*   **`ActivityProgressRepository.js`**: CRUD para progresso de atividades.
+*   **`ActivityRepository.js`**: (Legado) Operações auxiliares de atividade.
 
 ---
 
@@ -25,7 +23,7 @@ Retorna todos os cursos persistidos.
 *   **Uso**:
     ```javascript
     const courses = await CourseRepository.loadItems();
-    console.log(courses.length);
+    Logger.debug('Example', `Carregados ${courses.length} cursos`);
     ```
 
 ### Escrita
@@ -86,7 +84,7 @@ Busca múltiplos progressos de uma vez (batch - eficiente).
       'c1_week1_task1',
       'c1_week1_task2'
     ]);
-    console.log(progressMap['c1_week1_task1']?.status);
+    Logger.debug('Example', `Status: ${progressMap['c1_week1_task1']?.status}`);
     ```
 
 #### `save(progress)`
@@ -106,7 +104,7 @@ Alterna status TODO ↔ DONE (cria se não existir).
 *   **Uso**:
     ```javascript
     const updated = await ActivityProgressRepository.toggle('c1_week1_task1');
-    console.log(updated.status); // 'DONE' ou 'TODO'
+    Logger.debug('Example', `Novo status: ${updated.status}`); // 'DONE' ou 'TODO'
     ```
 
 #### `delete(activityId)`
@@ -137,10 +135,10 @@ await ActivityProgressRepository.toggle('c1_week1_task1');
 
 1.  **Serialização Total**: O Chrome Storage limita a taxa de escritas. Evite chamar `saveItems` em loops rápidos. Prefira montar o array em memória e salvar uma vez.
 2.  **Single Source of Truth**: Não mantenha cópias de cursos em variáveis globais. Sempre que precisar de dados frescos, chame `loadItems()` ou confie no dado passado pela View.
-3.  **Tratamento de Erros**: O repositório captura erros de I/O (`try/catch`) e loga no console (`console.error`). Em caso de falha de leitura, retorna array vazio `[]` para não quebrar a UI.
+3.  **Tratamento de Erros**: O repositório captura erros de I/O (`try/catch`) e loga via `Logger.error`. Em caso de falha de leitura, retorna array vazio `[]` para não quebrar a UI.
 4.  **Separation of Concerns**: ✨ **Progresso agora está separado de Course data**. Use `ActivityProgressRepository` para tracking de progresso, `CourseRepository` apenas para dados estruturais (nome, URL, weeks).
 5.  **Namespace Isolado**: Progress usa `activityProgress` key, Courses usa `courses` key. Não há colisão.
 
 ---
 
-**Última atualização**: 2025-12-24
+**Última atualização**: 2025-12-31

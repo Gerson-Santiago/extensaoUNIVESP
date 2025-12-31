@@ -4,7 +4,7 @@
  * Localizada em: features/courses/components/AddManualModal/index.js
  */
 import { Modal } from '../../../../shared/ui/Modal.js';
-import { CourseRepository } from '../../data/CourseRepository.js';
+import { CourseRepository } from '../../repositories/CourseRepository.js';
 
 export class AddManualModal extends Modal {
   constructor(onSuccess) {

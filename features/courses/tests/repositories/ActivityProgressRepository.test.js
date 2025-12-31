@@ -1,4 +1,4 @@
-import { ActivityProgressRepository } from '../../repositories-progress/ActivityProgressRepository.js';
+import { ActivityProgressRepository } from '../../repositories/ActivityProgressRepository.js';
 import { ActivityProgress } from '../../models/ActivityProgress.js';
 
 describe('ActivityProgressRepository', () => {

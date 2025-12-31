@@ -1,4 +1,4 @@
-import { CourseRepository } from '../data/CourseRepository.js';
+import { CourseRepository } from '../repositories/CourseRepository.js';
 import { ScraperService } from '../services/ScraperService.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
 import { Logger } from '../../../shared/utils/Logger.js';
@@ -46,5 +46,8 @@ export class CourseService {
       Logger.error('CourseService', 'Erro ao adicionar curso da aba atual:', error);
       if (onError) onError('Erro interno ao processar aba.');
     }
+  }
+  async clearAll() {
+    await CourseRepository.clear();
   }
 }

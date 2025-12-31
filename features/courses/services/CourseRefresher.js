@@ -1,5 +1,5 @@
 import { ScraperService } from './ScraperService.js';
-import { CourseRepository } from '../data/CourseRepository.js';
+import { CourseRepository } from '../repositories/CourseRepository.js';
 import { Tabs } from '../../../shared/utils/Tabs.js';
 import { Logger } from '../../../shared/utils/Logger.js';
 

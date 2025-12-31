@@ -33,7 +33,7 @@ import { LoginWaitModal } from '../features/session/components/LoginWaitModal.js
 // Serviços
 import { CourseService } from '../features/courses/logic/CourseService.js';
 import { BatchImportFlow } from '../features/courses/import/logic/BatchImportFlow.js';
-import { CourseRepository } from '../features/courses/data/CourseRepository.js'; // Added for Clear All listener
+// import { CourseRepository } removed. Using Service.
 import { Logger } from '../shared/utils/Logger.js';
 
 // ========== INICIALIZAÇÃO ==========
@@ -206,7 +206,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // 3. Clear All Courses (Settings -> Repository)
   window.addEventListener('request:clear-all-courses', async () => {
     try {
-      await CourseRepository.clear();
+      await courseService.clearAll();
       // Atualizar views afetadas
       coursesView.loadCourses();
       // Feedback simples (pode ser melhorado com Toaster Global)

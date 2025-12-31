@@ -6,7 +6,7 @@ jest.mock('@features/courses/import/services/BatchScraper/index.js', () => ({
   processSelectedCourses: jest.fn(),
 }));
 
-jest.mock('@features/courses/data/CourseRepository.js', () => ({
+jest.mock('@features/courses/repositories/CourseRepository.js', () => ({
   CourseRepository: {
     addBatch: jest.fn(),
   },

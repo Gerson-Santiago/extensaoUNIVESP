@@ -5,6 +5,22 @@ Todas as mudanças notáveis neste projeto serão documentadas aqui.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [2.9.5] - 2025-12-31
+
+### Refatoração (Green-Green)
+- **Arquitetura**: Unificação dos repositórios em `features/courses`.
+  - `repositories-progress` fundido em `repositories`.
+  - `data` fundido em `repositories`.
+- **Limpeza**: Remoção de pastas redundantes e arquivos de metadados legados.
+- **Sidepanel**: Correção de acesso direto a repositório, agora via `CourseService` (Melhor encapsulamento).
+- **Testes**: Reorganização dos testes de repositório para espelhar a nova estrutura.
+
+### Governança & Qualidade
+- **ADR Compliance**: Auditoria completa de aderência aos ADRs (000-008) concluída com 100% de conformidade.
+- **Auditoria Interna**: Validada estrutura da sub-feature `import` (UI/Logic/Services).
+- **Observabilidade**: Refatoração de `console.log` residuais para o sistema de `Logger`.
+- **Documentação Técnica**: Atualização do guia de acesso a dados (`repositories/README.md`).
+
 ## [2.9.4] - 2025-12-31
 
 ### Refactor
