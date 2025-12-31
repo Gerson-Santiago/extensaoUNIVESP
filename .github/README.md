@@ -23,7 +23,7 @@
 
 As prioridades atuais de manutenção são:
 
-1. [**ISSUE-013: Integração CourseRefresher**](ISSUES/ISSUE-013-OPEN_course-refresher-tests.md) - Cobertura crítica (0% funcs).
+1. [**ISSUE-013: Integração CourseRefresher**](ISSUES/ISSUE-013_course-refresher-tests.md.resolved) - ✅ Resolvido (100% Cobertura).
 2. [**ISSUE-018: Handlers de UI**](ISSUES/ISSUE-018-OPEN_handlers-coverage.md) - Falta de testes em fluxos do usuário.
 3. [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Impacta UX de navegação.
 

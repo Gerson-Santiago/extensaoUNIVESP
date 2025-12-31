@@ -29,7 +29,7 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 - 🔄 **Resolução de Dívidas Técnicas** - Manter meta de 85% de cobertura global.
 
 **Entregáveis Esperados** (v2.9.6):
-- Cobertura de testes: > 80% (foco no CourseRefresher)
+- ✅ Cobertura de testes: 100% (foco no CourseRefresher)
 - Test Strategies definidas (VideoStrategy, Navigation)
 - Documentação de Release Profissional (Issue-017)
 
