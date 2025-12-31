@@ -2,10 +2,48 @@
 
 > **Diretrizes Mandatórias:**
 > 1.  🚫 **Veto de Dependências**: A instalação de novos pacotes (`npm install`) requer aprovação técnica prévia.
-> 2.  🛡️ **Branch Protection**: Commits diretos na `main` ou `dev` são estritamente proibidos.
-> 3.  🧪 **Gate de Qualidade**: Pull Requests sem cobertura de testes serão rejeitados automaticamente.
+> 2.  🛡️ **Branch Protection**: Commits diretos na `main` ou `dev` são **ESTRITAMENTE PROIBIDOS**.
+> 3.  ⛔ **Git Flow Obrigatório**: TODO trabalho DEVE ser feito em feature branches (`feat/`, `fix/`, `refactor/`).
+> 4.  ✅ **Checklist Pré-Commit**: Antes de CADA commit, execute `git branch --show-current` e confirme que NÃO está em `dev` ou `main`.
+> 5.  🧪 **Gate de Qualidade**: Pull Requests sem cobertura de testes serão rejeitados automaticamente.
 
 Este documento estabelece os protocolos operacionais da equipe de engenharia. O compliance com estas regras é mandatório para todos os colaboradores.
+
+---
+
+## 1.0 🚨 PROTEÇÃO CRÍTICA: Git Flow Obrigatório
+
+### ⛔ REGRA ABSOLUTA - NUNCA VIOLE
+
+**COMMITS DIRETOS EM `dev` OU `main` SÃO PROIBIDOS.**
+
+#### Checklist Pré-Commit (Obrigatório)
+Antes de **CADA** commit, execute:
+```bash
+git branch --show-current
+```
+
+- ✅ **Se mostrar** `feat/*`, `fix/*`, `refactor/*` → Pode prosseguir
+- ❌ **Se mostrar** `dev` ou `main` → **PARE IMEDIATAMENTE**
+
+#### Se Você Está em dev/main
+
+1. **NÃO COMMITE!**
+2. Crie branch correta:
+   ```bash
+   git switch -c feat/issue-XXX-descricao
+   ```
+3. Agora pode commitar com segurança
+
+#### Workflow Completo
+
+Veja `.agent/workflows/git-flow.md` para instruções detalhadas e exemplos.
+
+**Violação desta regra:**
+- Dificulta rollback
+- Quebra rastreabilidade  
+- Pode causar perda de trabalho
+- Viola padrões de engenharia
 
 ---
 

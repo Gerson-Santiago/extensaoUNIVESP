@@ -1,58 +1,48 @@
 ---
-description: Executa a verificação completa do projeto (Lint + Testes) conforme a política de qualidade.
+description: Executa a verificação completa do projeto (Quality Gate) conforme a política de qualidade.
 ---
 
-# Passo Único: Verificação Completa
-@docs/PADROES_DO_PROJETO.md
+# ✅ Quality Gate: Verificação Completa
+
+Este workflow é o **Portal de Qualidade (Quality Gate)** do projeto. Nenhuma branch deve ser mergeada em `dev` ou `main` sem que este fluxo complete com status **GREEN**.
+
+## 🛡️ Protocolo de Verificação (Zero Tolerância)
+
+1. **Gate de Segurança**: `npm run security`
+   - ✅ Sem secrets detectados (SecretLint)
+   - ✅ Sem vulnerabilidades High/Critical (npm audit)
+2. **Qualidade de Código**: `npm run lint` && `npm run type-check`
+   - ✅ Zero warnings de ESLint
+   - ✅ Zero erros de JSDoc Typing (TSC)
+3. **Integridade Funcional**: `npm test`
+   - ✅ Todos os testes passando (Green)
+   - ✅ Cobertura de lógica crítica mantida ou aumentada
+
+## 🔄 Fluxo de Execução
+
 // turbo
-Execute a pipeline de qualidade (Segurança + Testes + Lint + Types):
-1. `npm run verify`
-
-# Relatório
-Se falhar, não prossiga.
-- **Segurança**: Sem secrets detectados
-- **Lint errors**: Devem ser zerados
-- **Testes**: Devem estar todos passando (Green)
+```bash
+# Execução do gate completo antes de qualquer commit ou push
+npm run verify
+```
 
 ---
 
-## 💡 Opções de Verificação
+## 💡 Comandos para Desenvolvimento Otimizado
 
-### Gate de Segurança (Pre-commit)
-```bash
-# Executado automaticamente em todo commit:
-security:secrets → lint-staged (eslint + prettier + testes relacionados)
-```
+Se você estiver em um ciclo de desenvolvimento ativo, use estes comandos para feedback rápido:
 
-### Validação Manual Completa
-```bash
-npm run security  # Secrets + Audit + Security Lint
-npm run verify    # Tests + Lint + Type-check
-```
+### ⚡ Rapidez e Foco
+- `npm run test:quick` - Executa apenas testes que falharam na última rodada
+- `npm run test:watch` - Modo watch interativo (ideal para TDD)
+- `npm run test:debug` - Para no primeiro erro encontrado
 
-### Durante Desenvolvimento (Rápido)
-```bash
-npm run test:quick        # Apenas testes que falharam
-npm run security:secrets  # Apenas detecção de secrets
-npm run lint              # Apenas lint
-```
+### 🧪 Cobertura e Auditoria
+- `npm run test:coverage` - Gera relatório de cobertura de testes
+- `npm run security:secrets` - Verifica apenas vazamento de segredos
 
-### Opcional: Coverage
-```bash
-npm run test:coverage  # Gera relatório de cobertura
-```
+## ⛔ Bloqueadores
+Se qualquer um dos passos acima falhar: **NÃO FAÇA PUSH**.
+Corrija os problemas e execute `npm run verify` novamente.
 
-## 📊 Comandos Disponíveis
-
-**Segurança:**
-- `npm run security` - Gate completo (secrets + audit + lint)
-- `npm run security:secrets` - Detecta API keys, tokens, passwords
-- `npm run security:audit` - npm audit --audit-level=high
-- `npm run security:lint` - ESLint com regras de segurança
-
-**Testes:**
-- `npm run test:quick` - Apenas testes que falharam
-- `npm run test:watch` - Modo watch interativo
-- `npm run test:debug` - Para no primeiro erro
-- `npm test` - Suite completa
-- `npm run test:ci` - Para CI/CD com coverage
+> **Regra de Ouro:** O repositório deve permanecer "Green-Green" em todos os momentos.

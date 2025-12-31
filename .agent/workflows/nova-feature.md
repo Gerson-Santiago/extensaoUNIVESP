@@ -2,51 +2,37 @@
 description: Planeja e implementa nova feature (TDD).
 ---
 
-> **Regras:** 1. Não instale nada sem pedir. 2. TDD (teste primeiro).
+# ✨ Workflow: Nova Funcionalidade (Nova Feature)
 
-# 1. Planejamento
-@docs/TECNOLOGIAS_E_ARQUITETURA.md @docs/DATA_HANDLING.md
-- [ ] Defina responsabilidade (View vs Logic).
-- [ ] Verifique privacidade (Local-First).
-- [ ] Verifique se precisa de novas permissões no `manifest.json`.
+Protocolo profissional para criação de novos domínios ou funcionalidades, priorizando TDD e Arquitetura Screaming.
 
-# 2. TDD (Red Phase)
-- [ ] Crie teste em `tests/` que falhe.
-- [ ] Use `npm run test:debug` para validar que falha
+## 1. Protocolo de Início (Git Flow)
+Nenhuma funcionalidade deve ser escrita diretamente na `dev`.
+- Branch: `feat/issue-XXX-nome-da-feature`
+- Protocolo: `/git-flow`
 
-# 3. Implementação
-@docs/PADROES_DO_PROJETO.md
-- [ ] Defina **Models** JSDoc explícitos em `models/` antes da lógica.
-- [ ] Codifique usando ES Modules e Tipagem defensiva.
-- [ ] Use `addEventListener` com `PointerEvent` para interações.
-- [ ] Use `npm run test:watch` (modo watch) para desenvolvimento iterativo
+## 2. Planejamento Arquitetural
+- [ ] Defina o domínio dentro de `features/`.
+- [ ] Identifique as camadas necessárias (Models, Service, UI, Repository).
+- [ ] Verifique se o ADR de JSDoc Typing (`ADR-000-B`) será aplicado em modelos novos.
 
-# 4. Validação
+## 3. TDD (Ciclo Red-Green-Refactor)
+1. **Red**: Escreva o teste de especificação da feature.
+2. **Green**: Implemente o código mínimo para o teste passar.
+3. **Refactor**: Melhore a estrutura mantendo o teste verde.
+
+## 4. Quality Gate Final
 // turbo
-Execute validação rápida durante desenvolvimento:
+O código só é considerado "pronto" após passar no Quality Gate (Referência: `/verificar`):
 ```bash
-npm run test:quick  # Apenas testes que falharam
+npm run verify
 ```
 
-Validação completa antes de commit:
-```bash
-npm run verify  # Testes + lint + type-check
-```
+## 5. Documentação
+- [ ] Se a feature introduz novos padrões, crie ou atualize um ADR.
+- [ ] Atualize o `README.md` se necessário.
+- [ ] Se houver mudança de comportamento visível, atualize o `CHANGELOG.md` via `/versionamento`.
 
-# 5. Entrega
-@CHANGELOG.md
-- [ ] Atualize `docs/TECNOLOGIAS_E_ARQUITETURA.md` se mudou estrutura.
-- [ ] **Check de Arquivos**: Rode `git status` e verifique se há arquivos novos (docs, tests) não rastreados.
-- [ ] Adicione ao `CHANGELOG.md` (Não Publicado).
-- [ ] Proponha commit seguindo a **Regra de Ouro**:
-    - `feat: adiciona login` (✅ Português Inválido? Não! É Válido!)
-    - `feat: add login` (❌ Inglês Proibido!)
-
----
-
-## 💡 Comandos Jest Úteis
-
-- `npm run test:watch` - Modo watch (desenvolvimento)
-- `npm run test:debug` - Para no primeiro erro
-- `npm run test:quick` - Apenas testes que falharam
-- `npm test` - Suite completa
+## 6. Entrega (Conventional Commits)
+- [ ] Commit Mensagem: `feat(escopo): adiciona funcionalidade Z`
+- [ ] Siga o protocolo de commit em `docs/FLUXOS_DE_TRABALHO.md`.

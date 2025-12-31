@@ -2,39 +2,36 @@
 description: Fluxo para correção de bugs com testes e lint.
 ---
 
-> **Regra:** Bug sem teste é gambiarra.
+# 🐛 Workflow: Correção de Bug (Bug-Fix)
 
-# 1. Reprodução
-@docs/PADROES_DO_PROJETO.md
-- [ ] Crie um teste em `tests/` que reproduza o erro (deve falhar).
-- [ ] Use `npm run test:debug` para rodar teste rapidamente (para no 1º erro)
+Protocolo profissional para identificação, isolamento e resolução de bugs.
 
-# 2. Correção
-- [ ] Corrija o código respeitando a modularização e privacidade.
-- [ ] Use `npm run test:watch` (modo watch) para feedback contínuo
+## 1. Protocolo de Início (Git Flow)
+Antes de começar, você **DEVE** criar uma branch de correção:
+- Branch: `fix/issue-XXX-descricao-curta`
+- Protocolo: `/git-flow`
 
-# 3. Validação
+## 2. Inspecionar e Ancorar
+- [ ] Leia o log/issue com atenção.
+- [ ] Identifique o arquivo e a linha provável do erro.
+
+## 3. TDD: Reprodução (Red)
+- [ ] Crie um teste que **reproduza** o bug (o teste deve falhar).
+- [ ] O teste deve seguir o padrão AAA (`ADR-000-C`).
+
+## 4. Correção e Estabilização (Green)
+- [ ] Implemente a correção técnica.
+- [ ] Garante que o teste de regressão criado no passo anterior agora passa.
+- [ ] Verifique se outros testes relacionados permanecem verdes.
+
+## 5. Quality Gate Final
 // turbo
-Execute validação completa:
+Antes de finalizar, execute a verificação completa (Referência: `/verificar`):
 ```bash
-npm run security  # Secrets + Audit + Security Lint
-npm run verify    # Tests + Lint + Type-check
+npm run verify
 ```
 
-# 4. Entrega
-@docs/PADROES_DO_PROJETO.md
-- [ ] Testes passando? Lint ok? Segurança ok?
-- [ ] Proponha commit em PT-BR (ex: `fix: corrige X`).
-
----
-
-## 💡 Comandos Úteis
-
-**Testes:**
-- `npm run test:debug` - Para no primeiro erro
-- `npm run test:watch` - Modo watch interativo
-
-**Segurança:**
-- `npm run security:secrets` - Detecta API keys, tokens
-- `npm run security:audit` - Vulnerabilidades em dependências
-- `npm run security` - Gate completo
+## 6. Entrega (Conventional Commits)
+- [ ] Commit Mensagem: `fix(escopo): corrige bug X na feature Y`
+- [ ] Siga o protocolo de commit em `docs/FLUXOS_DE_TRABALHO.md`.
+- [ ] Exclua a branch após o merge bem-sucedido na `dev`.

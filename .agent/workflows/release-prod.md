@@ -2,28 +2,55 @@
 description: Realiza o merge da dev para main (Release) com verificação de segurança.
 ---
 
-Este workflow realiza o processo de release da `dev` para a `main` de forma segura.
+# 🚀 Workflow: Release para Produção
 
-1. Garante que estamos na dev atualizada
-   - `git switch dev`
-   - `git pull origin dev`
+Este protocolo orquestra a promoção de código da branch de integração (`dev`) para a branch de produção (`main`), garantindo estabilidade e versionamento correto.
 
-2. Executa verificações de segurança (Turbo Check)
-   - `npm run verify`
+## 1. Pré-requisitos de Segurança
+O release deve ser iniciado a partir de uma `dev` estável.
+- [ ] `git switch dev` && `git pull origin dev`
+- [ ] Executar o Quality Gate: `/verificar` (`npm run verify`)
 
-3. Realiza o Merge para Produção
-   - `git switch main`
-   - `git pull origin main` (Garante base atualizada)
-   - `git merge dev` (Traz as novidades)
+## 2. Preparação da Versão (Protocolo Sincronizado)
+Antes do merge, a versão deve ser incrementada de forma consistente em todos os arquivos de manifesto e no histórico.
+- Protocolo: `/versionamento`
 
-4. Publica a versão
-   - `git push origin main`
+**Arquivos que devem estar sincronizados:**
+- `package.json`
+- `manifest.json`
+- `CHANGELOG.md`
 
-5. Retorna para dev
-   - `git switch dev`
+## 3. Promoção de Código (Merge)
+// turbo
+```bash
+# 1. Preparar main
+git switch main
+git pull origin main
 
-6. Cria Tag de Versão
-   - `git tag -a vX.Y.Z -m "Release vX.Y.Z: ..."`
-   - `git push origin vX.Y.Z`
+# 2. Integrar dev (Merge --no-ff para preservar histórico de branch)
+git merge dev --no-ff
 
-> **Nota:** Se houver conflitos no passo 3, o comando falhará e você deverá resolver manualmente.
+# 3. Publicar
+git push origin main
+```
+
+## 4. Marcação de Versão (Git Tag)
+// turbo
+```bash
+# Criar tag anotada com a nova versão
+git tag -a vX.Y.Z -m "Release vX.Y.Z: [Resumo das mudanças]"
+git push origin vX.Y.Z
+```
+
+## 5. Retorno à Base
+// turbo
+```bash
+git switch dev
+```
+
+---
+
+## ⛔ Bloqueadores de Release
+- Se `npm run verify` falhar em qualquer etapa.
+- Se houver divergência entre as versões do `package.json` e `manifest.json`.
+- Se o `CHANGELOG.md` não contiver os detalhes da nova versão.

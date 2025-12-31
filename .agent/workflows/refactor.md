@@ -2,39 +2,33 @@
 description: Refatora código mantendo comportamento (Green-Green).
 ---
 
-> **Regra:** Só refatore se houver testes cobrindo.
+# 🔧 Workflow: Refatoração Técnica
 
-# 1. Auditoria
-@tests/
-- [ ] Existem testes para essa área?
-    - **NÃO**: Pare. Crie testes antes.
-    - **SIM**: Rode-os para garantir que passam.
-- [ ] Use `npm run test:quick` para validação rápida
+Protocolo profissional para melhorar a estrutura do código sem alterar suas funcionalidades externas (Blackbox).
 
-# 2. Refatoração
-@docs/PADROES_DO_PROJETO.md
-- [ ] Extraia funções/classes ou melhore tipos (JSDoc Strict).
-- [ ] Crie/Atualize **Models** se necessário.
-- [ ] Mantenha comportamento inalterado.
-- [ ] Use `npm run test:dev` (modo watch) para feedback contínuo durante refatoração
+## 1. Protocolo de Início (Git Flow)
+Refatorações devem ser isoladas em branches específicas.
+- Branch: `refactor/issue-XXX-objetivo`
+- Protocolo: `/git-flow`
 
-# 3. Validação
-// turbo
-Execute o workflow de verificação:
+## 2. Ponto de Partida (Green)
+Antes de alterar qualquer linha, garanta que os testes atuais estão passando.
 ```bash
-npm run test:quick  # Rápido durante desenvolvimento
-npm run verify      # Completo antes de commit
+npm test <arquivo-alvo>
 ```
 
-# 4. Entrega
-- [ ] Atualize diagramas em `docs/TECNOLOGIAS_E_ARQUITETURA.md` se necessário.
-- [ ] Proponha commit (ex: `refactor: extrai service`).
+## 3. Refatoração Evolutiva (Green-Green)
+- [ ] Altere pequenos blocos de código.
+- [ ] Execute os testes repetidamente (use `npm run test:watch`).
+- [ ] Se os testes falharem, você alterou o comportamento. Volte e corrija.
 
----
+## 4. Quality Gate Final
+// turbo
+Uma refatoração só é válida se não introduzir regressões (Referência: `/verificar`):
+```bash
+npm run verify
+```
 
-## 💡 Comandos Jest Úteis
-
-- `npm run test:dev` - Modo watch (ideal para refatoração)
-- `npm run test:debug` - Para no primeiro erro  
-- `npm run test:quick` - Apenas testes que falharam
-- `npm test` - Suite completa
+## 5. Entrega (Conventional Commits)
+- [ ] Commit Mensagem: `refactor(escopo): simplifica lógica X` ou `refactor: move utils para shared`
+- [ ] O commit de refactor NÃO deve conter novas funcionalidades.
