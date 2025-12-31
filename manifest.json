@@ -1,11 +1,11 @@
 {
   "manifest_version": 3,
   "name": "AutoPreencher UNIVESP",
-  "version": "2.9.3",
+  "version": "2.9.4",
   "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos, Navegação Inteligente no AVA e Autopreenchimento SEI.",
   "permissions": ["storage", "sidePanel", "scripting", "tabs", "activeTab", "downloads"],
   "background": {
-    "service_worker": "scripts/background.js"
+    "service_worker": "background/index.js"
   },
   "host_permissions": ["https://sei.univesp.br/*", "https://ava.univesp.br/*"],
   "side_panel": {

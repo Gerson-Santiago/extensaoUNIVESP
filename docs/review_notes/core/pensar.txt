@@ -1,0 +1,19 @@
+Excelente pergunta. Usando o Sequential Thinking, mapeamos o que falta para ter 100% de confiança na arquitetura.
+
+Já resolvemos a infraestrutura (shared, background, scripts). Agora precisamos olhar para o Domínio (Business Logic) e a Interface.
+
+Aqui está a proposta de Auditoria Fase 2:
+
+1. 🫀 O Coração: features/ (Principalmente courses)
+A pasta features/courses tem 97 itens. É o maior risco do projeto.
+
+O que auditar:
+Separation of Concerns: Ela está dividida corretamente em ui, logic, services, models?
+Acoplamento: Ela importa coisas de outras features diretamente (proibido) ou usa eventos?
+Testes: Os testes estão colocalizados corretamente?
+2. 🚪 Entrypoints: sidepanel/ e popup/
+sidepanel.js (7KB): Para um "Router", pode estar grande. Ele deveria apenas inicializar features. Se tiver lógica de negócio ali, precisamos mover.
+popup/: Confirmar se é apenas legado/fallback e se não duplicou lógica do sidepanel.
+3. 🧪 Testes de Integração (tests/ raiz)
+Garantir que a pasta raiz tests/ contenha apenas testes E2E ou de integração. Todo teste unitário deve ter ido para dentro das features.
+Quer começar pela Auditoria de Features (courses) ou Entrypoints? (Recomendo features primeiro, pois é onde o valor do usuário está).

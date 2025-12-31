@@ -23,6 +23,7 @@
     "shared/**/*",
     "popup/**/*",
     "sidepanel/**/*",
+    "background/**/*",
     "scripts/**/*",
     "tests/**/*",
     "jsconfig.json",

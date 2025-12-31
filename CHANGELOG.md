@@ -5,6 +5,13 @@ Todas as mudanças notáveis neste projeto serão documentadas aqui.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [2.9.4] - 2025-12-31
+
+### Refactor
+- **Architecture**: Separação completa entre `background` (Service Worker) e `scripts` (DevTools).
+- **Cleaner**: Remoção de comentários didáticos legados do Service Worker.
+- **Shared**: Consolidação da estrutura de kernel compartilhado (`ui`, `logic`, `utils`, `services`, `models`).
+
 ## [2.9.3] - 2025-12-31
 
 ### 🏗️ Screaming Architecture & Quality

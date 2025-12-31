@@ -13,6 +13,8 @@ A pasta `shared/` contém código **genérico** e **reutilizável** que não é 
 | **`ui/`** | Componentes visuais "burros" (sem lógica de negócio) | `Modal.js`, `ActionMenu.js`, `Toaster.js` |
 | **`logic/`** | Lógica pura agnóstica de domínio | `AutoScroll.js` |
 | **`utils/`** | Wrappers técnicos e helpers de baixo nível | `BrowserUtils.js`, `Tabs.js` |
+| **`services/`** | Infraestrutura técnica (Loggers, EventBus, Wrappers) | `NavigationService.js` |
+| **`models/`** | Definições de Tipos (JSDoc/Types) de UI/Utils | `ActionMenu.js` |
 
 ---
 

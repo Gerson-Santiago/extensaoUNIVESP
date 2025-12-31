@@ -44,7 +44,7 @@ describe('Background Script - Panel Behavior', () => {
   const loadScript = () => {
     jest.isolateModules(() => {
       // @ts-ignore
-      require('../background.js');
+      require('../index.js');
     });
   };
 
