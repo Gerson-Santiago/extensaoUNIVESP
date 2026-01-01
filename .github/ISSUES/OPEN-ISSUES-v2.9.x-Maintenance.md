@@ -13,6 +13,7 @@ Este documento centraliza a estratégia de Estabilização, Cobertura e Manuten�
 | **025** | [📋 Coverage: Import & Utils](./OPEN-ISSUE-025_coverage-batch-import-utils.md) | `Import/Utils` | < 60% | > 85% | 🔴 **Alta** |
 | **001** | [📋 Selector Resilience](./OPEN-ISSUE-001_improve-scraper-selector.md) | `ScraperService` | ~ 48% | > 80% | ⏺️ **Média** |
 | **003** | [📋 Chips Lifecycle](./OPEN-ISSUE-003_navigation-chips-lifecycle.md) | `UI/Navigation` | - | - | 🟢 **Baixa** |
+| **027** | [📋 Coverage: UI Critical](./OPEN-ISSUE-027_ui-components-coverage.md) | `UI/Main` | ~ 52% | > 85% | ⏺️ **Média** |
 
 ---
 

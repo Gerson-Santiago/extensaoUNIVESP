@@ -20,6 +20,7 @@ O relatório de cobertura de 01/01/2026 revelou lacunas perigosas em áreas que 
 2.  **CompressionUtils (46.59%):** Usado para otimizar o storage local.
 3.  **DomUtils (42.85%):** Base de manipulação do AVA.
 4.  **QuickLinksScraper (48.05%):** Descoberta de recursos essenciais.
+5.  **ChunkedStorage.js (53.75%):** Camada de persistência que segmenta dados grandes.
 
 Baixa cobertura nessas áreas significa que mudanças na estrutura da UNIVESP podem quebrar a extensão de forma silenciosa.
 
@@ -38,6 +39,10 @@ Baixa cobertura nessas áreas significa que mudanças na estrutura da UNIVESP po
 ### 3. JSDoc Strict
 - Documentar todos os retornos de `BatchScraper` usando o `SafeResult` pattern (ADR-003).
 
+### 4. Storage Resilience
+- Implementar testes para `ChunkedStorage` simulando falhas de quota do `chrome.storage`.
+- Validar recomposição de chunks corrompidos.
+
 ---
 
 ## ✅ Critérios de Aceite
@@ -46,6 +51,7 @@ Baixa cobertura nessas áreas significa que mudanças na estrutura da UNIVESP po
 - [ ] `shared/utils/CompressionUtils` com coverage > 90%
 - [ ] `shared/utils/DomUtils` com coverage > 90%
 - [ ] `features/courses/services/QuickLinksScraper` com coverage > 80%
+- [ ] `shared/utils/ChunkedStorage` com coverage > 90%
 - [ ] Nenhum erro de tipo detectado pelo `npm run type-check`.
 
 ---
