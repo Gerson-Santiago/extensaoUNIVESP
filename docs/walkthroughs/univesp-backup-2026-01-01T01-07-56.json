@@ -1,0 +1,1392 @@
+{
+  "meta": {
+    "version": "1.0.0",
+    "date": "2026-01-01T01:07:56.391Z",
+    "extensionVersion": "2.9.5"
+  },
+  "data": {
+    "activities_1767027811628.3164__1767444_1": {
+      "items": [
+        {
+          "contentId": "_1767494_1",
+          "name": "Semana 1 Semana 1 – Formato",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767494-dt-content-rid-22219818_1/xid-22219818_1"
+        },
+        {
+          "contentId": "_1767495_1",
+          "name": "Videoaula 1 - Perspectiva histórica da construção dos números e da teoria dos con",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767495-dt-content-rid-22219828_1/xid-22219828_1"
+        },
+        {
+          "contentId": "_1767496_1",
+          "name": "Semana 1 - Quiz da videoaula 1 - Perspectiva histórica da construção dos nú",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15323_1&content_id=_1767496_1&mode=view"
+        },
+        {
+          "contentId": "_1767497_1",
+          "name": "Texto-base - Manual compacto de matemática: ensino fundamental (Leia as pág",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/execute/blti/launchLink?course_id=_15323_1&content_id=_1767497_1"
+        },
+        {
+          "contentId": "_1767498_1",
+          "name": "Texto-base - Teoria dos números para professores do ensino fundamental (Lei",
+          "type": "document",
+          "url": "https://acesso.univesp.br/login_mb?bookUrl=9788580553536&pageid=24"
+        },
+        {
+          "contentId": "_1767499_1",
+          "name": "Texto-base - Fundamentos de matemática (Leia as páginas 111-119) | Luciana",
+          "type": "document",
+          "url": "https://acesso.univesp.br/login_mb?bookUrl=9788595027701&pageid=110"
+        },
+        {
+          "contentId": "_1767500_1",
+          "name": "Vídeo-base - Somando números com sinais | Novo telecurso Vídeo-",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767500-dt-content-rid-22219824_1/xid-22219824_1"
+        },
+        {
+          "contentId": "_1767501_1",
+          "name": "Vídeo-base - Propriedades das operações | Estudando Matemática",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767501-dt-content-rid-22219826_1/xid-22219826_1"
+        },
+        {
+          "contentId": "_1767502_1",
+          "name": "Videoaula 2 - Noções iniciais de conjuntos (Parte 1) Videoaula",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767502-dt-content-rid-22219829_1/xid-22219829_1"
+        },
+        {
+          "contentId": "_1767503_1",
+          "name": "Semana 1 - Quiz da videoaula 2 - Noções iniciais de conjuntos (Parte 1)",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15323_1&content_id=_1767503_1&mode=view"
+        },
+        {
+          "contentId": "_1767504_1",
+          "name": "Videoaula 3 - Noções iniciais de conjuntos (Parte 2) Videoaula",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767504-dt-content-rid-22219832_1/xid-22219832_1"
+        },
+        {
+          "contentId": "_1767505_1",
+          "name": "Semana 1 - Quiz da videoaula 3 - Noções iniciais de conjuntos (Parte 2)",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15323_1&content_id=_1767505_1&mode=view"
+        },
+        {
+          "contentId": "_1767506_1",
+          "name": "Material-base - Trabalhando com conjuntos | Greice Lacerda (GeoGebra)",
+          "type": "document",
+          "url": "https://www.geogebra.org/m/uyt97krj"
+        },
+        {
+          "contentId": "_1767507_1",
+          "name": "Semana 1 - Quiz de objeto educacional Semana 1",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15323_1&content_id=_1767507_1&mode=view"
+        },
+        {
+          "contentId": "_1767508_1",
+          "name": "Semana 1 - Fórum Temático: O número de cadeiras do auditório",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15323_1&content_id=_1767508_1&mode=view"
+        },
+        {
+          "contentId": "_1767509_1",
+          "name": "Semana 1 - Atividade Avaliativa",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15323_1&content_id=_1767509_1&mode=view"
+        },
+        {
+          "contentId": "_1767510_1",
+          "name": "Semana 1 - Aprofundando o tema Semana 1 - Aprofundando o tema",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767510-dt-content-rid-22219834_1/xid-22219834_1"
+        },
+        {
+          "contentId": "_1767511_1",
+          "name": "Fórum de dúvidas das semanas 1-7",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15323_1&content_id=_1767511_1&mode=view"
+        },
+        {
+          "contentId": "_1767512_1",
+          "name": "Semana 1 - Em síntese Semana 1 - Em síntese",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767512-dt-content-rid-22219836_1/xid-22219836_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:07:23.399Z"
+    },
+    "activities_1767027811628.3164__1767455_1": {
+      "items": [
+        {
+          "contentId": "_1767513_1",
+          "name": "Semana 2 (function(){ var f =",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767513-dt-content-rid-22219840_1/xid-22219840_1"
+        },
+        {
+          "contentId": "_1767514_1",
+          "name": "Videoaula 4 - Conjuntos numéricos (Parte 1) Clique para ex",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767514-dt-content-rid-22219852_1/xid-22219852_1"
+        },
+        {
+          "contentId": "_1767515_1",
+          "name": "Semana 2 - Quiz da Videoaula 4 - Conjuntos numéricos (Parte 1)",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15323_1&content_id=_1767515_1&mode=view"
+        },
+        {
+          "contentId": "_1767516_1",
+          "name": "Videoaula 5 - Conjuntos numéricos (Parte 2) Clique para ex",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767516-dt-content-rid-22219854_1/xid-22219854_1"
+        },
+        {
+          "contentId": "_1767517_1",
+          "name": "Semana 2 - Quiz da Videoaula 5 - Conjuntos numéricos (Parte 2)",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15323_1&content_id=_1767517_1&mode=view"
+        },
+        {
+          "contentId": "_1767518_1",
+          "name": "Vídeo-base - Conjuntos Numéricos | Univesp Clique para exi",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767518-dt-content-rid-22219848_1/xid-22219848_1"
+        },
+        {
+          "contentId": "_1767519_1",
+          "name": "Texto-base - Fundamentos de matemática (Leia as páginas 21-24) | Luciana Ma",
+          "type": "document",
+          "url": "https://acesso.univesp.br/login_mb?bookUrl=9788595027701&pageid=20"
+        },
+        {
+          "contentId": "_1767520_1",
+          "name": "Texto-base - Conjuntos numéricos | José Carlos Kahl",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/xid-17687400_1"
+        },
+        {
+          "contentId": "_1767521_1",
+          "name": "Texto-base - Matemática básica: para administração, economia, contabilidade",
+          "type": "document",
+          "url": "https://acesso.univesp.br/login_mb?bookUrl=9788597027501/epubcfi/6/18[%3Bvnd.vst.idref%3Dchapter01]!/4"
+        },
+        {
+          "contentId": "_1767522_1",
+          "name": "Texto-base - Números decimais | Khan Academy Neste",
+          "type": "document",
+          "url": "https://pt-pt.khanacademy.org/math/arithmetic-home/arith-review-decimals"
+        },
+        {
+          "contentId": "_1767523_1",
+          "name": "Texto-base - Números decimais na reta numérica | Khan Academy",
+          "type": "document",
+          "url": "https://pt-pt.khanacademy.org/math/arithmetic-home/arith-review-decimals/decimals-number-line/v/decimals-on-a-number-line"
+        },
+        {
+          "contentId": "_1767524_1",
+          "name": "Texto-base - Manual compacto de matemática: ensino fundamental (Leia as pág",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/execute/blti/launchLink?course_id=_15323_1&content_id=_1767524_1"
+        },
+        {
+          "contentId": "_1767525_1",
+          "name": "Texto-base - Frações na reta numérica | Khan Academy",
+          "type": "document",
+          "url": "https://pt.khanacademy.org/math/arithmetic/fraction-arithmetic/x18ca194a:fractions-on-the-number-line/e/fractions_on_the_number_line_1"
+        },
+        {
+          "contentId": "_1767526_1",
+          "name": "Videoaula 6 - Potenciação e radiciação Clique para exibir",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767526-dt-content-rid-22219856_1/xid-22219856_1"
+        },
+        {
+          "contentId": "_1767527_1",
+          "name": "Semana 2 - Quiz da Videoaula 6 - Potenciação e radiciação",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15323_1&content_id=_1767527_1&mode=view"
+        },
+        {
+          "contentId": "_1767528_1",
+          "name": "Vídeo-base - Radiciação e potenciação | Univesp Clique par",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767528-dt-content-rid-22219850_1/xid-22219850_1"
+        },
+        {
+          "contentId": "_1767529_1",
+          "name": "Texto-base - Manual compacto de matemática: ensino fundamental (Leia as pág",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/execute/blti/launchLink?course_id=_15323_1&content_id=_1767529_1"
+        },
+        {
+          "contentId": "_1767530_1",
+          "name": "Semana 2 - Quiz de objeto educacional Para exer",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15323_1&content_id=_1767530_1&mode=view"
+        },
+        {
+          "contentId": "_1767531_1",
+          "name": "Semana 2 - Fórum Temático: Hotel de Hilbert",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15323_1&content_id=_1767531_1&mode=view"
+        },
+        {
+          "contentId": "_1767533_1",
+          "name": "Semana 2 - Atividade avaliativa",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15323_1&content_id=_1767533_1&mode=view"
+        },
+        {
+          "contentId": "_1767536_1",
+          "name": "Aprofundando o Tema (function(){",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767536-dt-content-rid-22219858_1/xid-22219858_1"
+        },
+        {
+          "contentId": "_1767539_1",
+          "name": "Fórum de dúvidas das semanas 1-7",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15323_1&content_id=_1767539_1&mode=view"
+        },
+        {
+          "contentId": "_1767541_1",
+          "name": "Em Síntese (function(){ var f",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1767541-dt-content-rid-22219860_1/xid-22219860_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:33:57.135Z"
+    },
+    "activities_1767027811628.379__1762415_1": {
+      "items": [
+        {
+          "contentId": "_1762487_1",
+          "name": "Semana 6 Semana 6 – Formato",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762487-dt-content-rid-22188258_1/xid-22188258_1"
+        },
+        {
+          "contentId": "_1762488_1",
+          "name": "Videoaula 7 - Desenvolvimento do projeto de pesquisa Videoaula",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762488-dt-content-rid-22188257_1/xid-22188257_1"
+        },
+        {
+          "contentId": "_1762489_1",
+          "name": "Semana 6 - Quiz Videoaula 7 - Desenvolvimento do projeto de pesquisa",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762489_1&mode=view"
+        },
+        {
+          "contentId": "_1762490_1",
+          "name": "Texto-base - Metodologia científica (Leia o capítulo 6, p. 73-89) | Amado L",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://plataforma.bvirtual.com.br/Leitor/Publicacao/341/pdf/84"
+        },
+        {
+          "contentId": "_1762491_1",
+          "name": "Semana 6 - Quiz Objeto Educacional Semana 6 -",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762491_1&mode=view"
+        },
+        {
+          "contentId": "_1762492_1",
+          "name": "Aprofundando o tema Aprofundando o tema",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762492-dt-content-rid-22188255_1/xid-22188255_1"
+        },
+        {
+          "contentId": "_1771086_1",
+          "name": "Semana 6 - Fórum Temático: Integrando as partes do projeto de pesquisa",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1771086_1&mode=view"
+        },
+        {
+          "contentId": "_1762493_1",
+          "name": "Semana 6 - Atividade Avaliativa Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762493_1&mode=view"
+        },
+        {
+          "contentId": "_1762494_1",
+          "name": "Semana 6 - 2025.4 - Pesquisa | Disciplina - INT100",
+          "type": "document",
+          "url": "https://forms.office.com/r/CpSfJRcqS6"
+        },
+        {
+          "contentId": "_1762495_1",
+          "name": "Fórum de dúvidas das semanas 1-7 Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762495_1&mode=view"
+        },
+        {
+          "contentId": "_1762496_1",
+          "name": "Em síntese Em síntese – For",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762496-dt-content-rid-22188256_1/xid-22188256_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:36:55.881Z"
+    },
+    "activities_1767027811628.379__1762420_1": {
+      "items": [
+        {
+          "contentId": "_1762427_1",
+          "name": "Semana 1 Semana 1 – Formato",
+          "status": "DONE",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762427-dt-content-rid-22188232_1/xid-22188232_1"
+        },
+        {
+          "contentId": "_1762428_1",
+          "name": "Videoaula 1 - Senso comum e ciência Videoaula 1 - Senso comum e",
+          "status": "DONE",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762428-dt-content-rid-22188231_1/xid-22188231_1"
+        },
+        {
+          "contentId": "_1762429_1",
+          "name": "Semana 1 - Quiz da Videoaula 1 - Senso comum e ciência",
+          "status": "DONE",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762429_1&mode=view"
+        },
+        {
+          "contentId": "_1762430_1",
+          "name": "Texto-base - Metodologia científica (Leia a seção 1.1 até 1.1.4, p. 4-9) |",
+          "status": "DONE",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/execute/blti/launchLink?course_id=_15349_1&content_id=_1762430_1"
+        },
+        {
+          "contentId": "_1762431_1",
+          "name": "Semana 1 - Quiz Objeto Educacional Semana 1 -",
+          "status": "DONE",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762431_1&mode=view"
+        },
+        {
+          "contentId": "_1762432_1",
+          "name": "Aprofundando o Tema Aprofundando o Tema",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762432-dt-content-rid-22188228_1/xid-22188228_1"
+        },
+        {
+          "contentId": "_1762433_1",
+          "name": "Exercício de Apoio - Iniciando no mundo da ciência: a leitura como base",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762433-dt-content-rid-22188230_1/xid-22188230_1"
+        },
+        {
+          "contentId": "_1762434_1",
+          "name": "Semana 1 - Fórum Temático: O senso comum e a ciência?",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762434_1&mode=view"
+        },
+        {
+          "contentId": "_1762435_1",
+          "name": "Semana 1 - Atividade Avaliativa Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762435_1&mode=view"
+        },
+        {
+          "contentId": "_1762436_1",
+          "name": "Fórum de dúvidas das semanas 1-7 Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762436_1&mode=view"
+        },
+        {
+          "contentId": "_1762437_1",
+          "name": "Em Síntese Em Síntese – For",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762437-dt-content-rid-22188229_1/xid-22188229_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:04:02.638Z"
+    },
+    "activities_1767027811628.379__1762421_1": {
+      "items": [
+        {
+          "contentId": "_1762438_1",
+          "name": "Semana 2 Semana 2 – Formato",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762438-dt-content-rid-22188238_1/xid-22188238_1"
+        },
+        {
+          "contentId": "_1762439_1",
+          "name": "Videoaula 2 - Fundamentos da metodologia científica e técnicas de pesquisa - Part",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762439-dt-content-rid-22188236_1/xid-22188236_1"
+        },
+        {
+          "contentId": "_1762440_1",
+          "name": "Semana 2 - Quiz da Videoaula 2 - Fundamentos da metodologia científica e té",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762440_1&mode=view"
+        },
+        {
+          "contentId": "_1762441_1",
+          "name": "Videoaula 3 - Fundamentos da metodologia científica e técnicas de pesquisa - Part",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762441-dt-content-rid-22188237_1/xid-22188237_1"
+        },
+        {
+          "contentId": "_1762442_1",
+          "name": "Semana 2 - Quiz da Videoaula 3 - Fundamentos da metodologia científica e té",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762442_1&mode=view"
+        },
+        {
+          "contentId": "_1762443_1",
+          "name": "Texto-base - Metodologia científica (Leia a seção 1.3, p. 13-15) | Amado L.",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/execute/blti/launchLink?course_id=_15349_1&content_id=_1762443_1"
+        },
+        {
+          "contentId": "_1762444_1",
+          "name": "Texto-base - Metodologia científica (Leia as seções 3.1 e 3.2, p. 27-35) |",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/execute/blti/launchLink?course_id=_15349_1&content_id=_1762444_1"
+        },
+        {
+          "contentId": "_1762445_1",
+          "name": "Material-base - Estratégias de leitura acadêmica | REA Univesp",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://apps.univesp.br/estrategias-de-leitura-academica/"
+        },
+        {
+          "contentId": "_1762446_1",
+          "name": "Semana 2 - Quiz Objeto Educacional Semana 2 -",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762446_1&mode=view"
+        },
+        {
+          "contentId": "_1762447_1",
+          "name": "Aprofundando o Tema Aprofundando o Tema",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762447-dt-content-rid-22188233_1/xid-22188233_1"
+        },
+        {
+          "contentId": "_1762448_1",
+          "name": "Exercício de Apoio - Como ler um texto Exercício de Apoio - Com",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762448-dt-content-rid-22188235_1/xid-22188235_1"
+        },
+        {
+          "contentId": "_1762449_1",
+          "name": "Semana 2 - Fórum Temático - Espírito crítico e observador: base do pensa",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762449_1&mode=view"
+        },
+        {
+          "contentId": "_1762450_1",
+          "name": "Semana 2 - Atividade Avaliativa Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762450_1&mode=view"
+        },
+        {
+          "contentId": "_1762451_1",
+          "name": "Fórum de dúvidas das semanas 1-7 Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762451_1&mode=view"
+        },
+        {
+          "contentId": "_1762452_1",
+          "name": "Em Síntese Em Síntese –",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762452-dt-content-rid-22188234_1/xid-22188234_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:06:27.124Z"
+    },
+    "activities_1767027811628.379__1762422_1": {
+      "items": [
+        {
+          "contentId": "_1762453_1",
+          "name": "Semana 3 Semana 3 – Formato",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762453-dt-content-rid-22188243_1/xid-22188243_1"
+        },
+        {
+          "contentId": "_1762454_1",
+          "name": "Videoaula 4 - A comunicação científica: rigor e ética em pesquisa",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762454-dt-content-rid-22188242_1/xid-22188242_1"
+        },
+        {
+          "contentId": "_1762455_1",
+          "name": "Semana 3 - Quiz da Videoaula 4 - A comunicação científica: rigor e ética em",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762455_1&mode=view"
+        },
+        {
+          "contentId": "_1762456_1",
+          "name": "Texto-base - Introdução à metodologia da pesquisa: um guia para iniciantes",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://acesso.univesp.br/login_mb?bookUrl=9788565848138&pageid=206"
+        },
+        {
+          "contentId": "_1762457_1",
+          "name": "Material de apoio - Estratégias de leitura acadêmica | REA Univesp",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://apps.univesp.br/estrategias-de-leitura-academica/"
+        },
+        {
+          "contentId": "_1762458_1",
+          "name": "Semana 3 - Quiz Objeto Educacional Semana 3 -",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15349_1&content_id=_1762458_1&mode=view"
+        },
+        {
+          "contentId": "_1762459_1",
+          "name": "Aprofundando o Tema Aprofundando o Tema",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762459-dt-content-rid-22188239_1/xid-22188239_1"
+        },
+        {
+          "contentId": "_1762460_1",
+          "name": "Exercício de Apoio Exercício de Apoio",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762460-dt-content-rid-22188241_1/xid-22188241_1"
+        },
+        {
+          "contentId": "_1762461_1",
+          "name": "Semana 3 - Fórum Temático - A cópia, sem indicar a fonte, é um erro!",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762461_1&mode=view"
+        },
+        {
+          "contentId": "_1762462_1",
+          "name": "Semana 3 - Atividade Avaliativa Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762462_1&mode=view"
+        },
+        {
+          "contentId": "_1762463_1",
+          "name": "Fórum de dúvidas das semanas 1-7 Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762463_1&mode=view"
+        },
+        {
+          "contentId": "_1762464_1",
+          "name": "Em Síntese Em Síntese – For",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762464-dt-content-rid-22188240_1/xid-22188240_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:35:29.475Z"
+    },
+    "activities_1767027811628.933__1763491_1": {
+      "items": [
+        {
+          "contentId": "_1763515_1",
+          "name": "Semana 1 Semana 1 – Formato",
+          "status": "DONE",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763515-dt-content-rid-22191500_1/xid-22191500_1"
+        },
+        {
+          "contentId": "_1763516_1",
+          "name": "Videoaula 1 - Inglês sem mistério: resources for dealing with English (Parte 1)",
+          "status": "DONE",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763516-dt-content-rid-22191512_1/xid-22191512_1"
+        },
+        {
+          "contentId": "_1763517_1",
+          "name": "Semana 1 - Quiz da Videoaula 1 - Inglês sem mistério: resources for dealing",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763517_1&mode=view"
+        },
+        {
+          "contentId": "_1763518_1",
+          "name": "Texto-base - How technology has revolutionized language learning | Christop",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://interestingengineering.com/how-technology-has-revolutionized-language-learning"
+        },
+        {
+          "contentId": "_1763519_1",
+          "name": "Videoaula 2 - Inglês sem mistério: resources for dealing with English (Parte 2)",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763519-dt-content-rid-22191513_1/xid-22191513_1"
+        },
+        {
+          "contentId": "_1763520_1",
+          "name": "Semana 1 - Quiz da Videoaula 2 - Inglês sem mistério: resources for dealing",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763520_1&mode=view"
+        },
+        {
+          "contentId": "_1763521_1",
+          "name": "Texto-base - What's the difference between a conference, a seminar, a works",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://conferencemonkey.org/insight/whats-the-difference-between-a-conference-a-seminar-a-workshop-and-a-symposium-1075915"
+        },
+        {
+          "contentId": "_1763522_1",
+          "name": "Videoaula 3 - Inglês sem mistério: resources for dealing with English (Parte 3)",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763522-dt-content-rid-22191514_1/xid-22191514_1"
+        },
+        {
+          "contentId": "_1763523_1",
+          "name": "Semana 1 - Quiz da Videoaula 3 - Inglês sem mistério: resources for dealing",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763523_1&mode=view"
+        },
+        {
+          "contentId": "_1763524_1",
+          "name": "Texto-base - Google Tradutor: como funciona, dicas e tudo o que você precis",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://olhardigital.com.br/2018/12/21/internet-e-redes-sociais/google-tradutor-como-funciona-dicas-e-tudo-o-que-voce-precisa-saber/"
+        },
+        {
+          "contentId": "_1763525_1",
+          "name": "Semana 1 - Quiz Objeto Educacional Semana 1 -",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763525_1&mode=view"
+        },
+        {
+          "contentId": "_1763526_1",
+          "name": "Semana 1 - Fórum temático - Congressos internacionais: você também pode",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763526_1&mode=view"
+        },
+        {
+          "contentId": "_1763527_1",
+          "name": "Semana 1 - Atividade Avaliativa",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763527_1&mode=view"
+        },
+        {
+          "contentId": "_1763528_1",
+          "name": "Going Deeper Going Deeper –",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763528-dt-content-rid-22191480_1/xid-22191480_1"
+        },
+        {
+          "contentId": "_1763529_1",
+          "name": "Fórum de dúvidas das semanas 1-7 Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763529_1&mode=view"
+        },
+        {
+          "contentId": "_1763530_1",
+          "name": "What's coming next What's coming next",
+          "status": "DONE",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763530-dt-content-rid-22191489_1/xid-22191489_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T20:29:53.977Z"
+    },
+    "activities_1767027811628.933__1763492_1": {
+      "items": [
+        {
+          "contentId": "_1763531_1",
+          "name": "Semana 2 Semana 2 – Formato",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763531-dt-content-rid-22191502_1/xid-22191502_1"
+        },
+        {
+          "contentId": "_1763532_1",
+          "name": "Videoaula 4 - Learning to read: estratégias para leitura de textos em inglês (Par",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763532-dt-content-rid-22191515_1/xid-22191515_1"
+        },
+        {
+          "contentId": "_1763533_1",
+          "name": "Semana 2 - Quiz da Videoaula 4 - Learning to read: estratégias para leitura",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763533_1&mode=view"
+        },
+        {
+          "contentId": "_1763534_1",
+          "name": "Texto-base - 25 reading strategies that work in every content area | Teach",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://www.teachthought.com/literacy/reading-strategies/"
+        },
+        {
+          "contentId": "_1763535_1",
+          "name": "Videoaula 5 - Learning to read: estratégias para leitura de textos em inglês (Par",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763535-dt-content-rid-22191516_1/xid-22191516_1"
+        },
+        {
+          "contentId": "_1763536_1",
+          "name": "Semana 2 - Quiz da Videoaula 5 - Learning to read: estratégias para leitura",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763536_1&mode=view"
+        },
+        {
+          "contentId": "_1763537_1",
+          "name": "Material-base - Most common verb tenses in academic writing | Walden Univer",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/xid-22288088_1"
+        },
+        {
+          "contentId": "_1763538_1",
+          "name": "Videoaula 6 - Learning to read: estratégias para leitura de textos em inglês (Par",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763538-dt-content-rid-22191517_1/xid-22191517_1"
+        },
+        {
+          "contentId": "_1763539_1",
+          "name": "Semana 2 - Quiz da Videoaula 6 - Learning to read: estratégias para leitura",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763539_1&mode=view"
+        },
+        {
+          "contentId": "_1763540_1",
+          "name": "Texto-base - A simple guide to using Antconc | Warren Tang",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/xid-21451507_1"
+        },
+        {
+          "contentId": "_1763541_1",
+          "name": "Semana 2 - Quiz Objeto Educacional Semana 2 -",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763541_1&mode=view"
+        },
+        {
+          "contentId": "_1763542_1",
+          "name": "Semana 2 - Fórum temático: Ler para participar de congressos internacion",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763542_1&mode=view"
+        },
+        {
+          "contentId": "_1763543_1",
+          "name": "Semana 2 - Atividade Avaliativa",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763543_1&mode=view"
+        },
+        {
+          "contentId": "_1763544_1",
+          "name": "Going Deeper Going Deeper –",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763544-dt-content-rid-22191481_1/xid-22191481_1"
+        },
+        {
+          "contentId": "_1763545_1",
+          "name": "Fórum de dúvidas das semanas 1-7",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763545_1&mode=view"
+        },
+        {
+          "contentId": "_1763546_1",
+          "name": "What's coming next What's coming next",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763546-dt-content-rid-22191490_1/xid-22191490_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:09:26.638Z"
+    },
+    "activities_1767027811628.933__1763498_1": {
+      "items": [
+        {
+          "contentId": "_1763599_1",
+          "name": "Semana 7 Semana 7",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763599-dt-content-rid-22191507_1/xid-22191507_1"
+        },
+        {
+          "contentId": "_1763600_1",
+          "name": "Videoaula 14 - Learning to write Videoaula 14 - Learning to wri",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763600-dt-content-rid-22191525_1/xid-22191525_1"
+        },
+        {
+          "contentId": "_1763601_1",
+          "name": "Semana 7 - Quiz Videoaula 14 - Inglês - Learning to write",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763601_1&mode=view"
+        },
+        {
+          "contentId": "_1763602_1",
+          "name": "Texto-base - Using tenses in scientific writing | The University of Melbour",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/xid-21462189_1"
+        },
+        {
+          "contentId": "_1763603_1",
+          "name": "Material-base - How to write an abstract | Megan Morgan | wikiHow",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://www.wikihow.com/Write-an-Abstract"
+        },
+        {
+          "contentId": "_1763604_1",
+          "name": "Videoaula 15 - What have you done? Videoaula 15 - What have you",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763604-dt-content-rid-22191526_1/xid-22191526_1"
+        },
+        {
+          "contentId": "_1763605_1",
+          "name": "Semana 7 - Quiz da Videoaula 15 - What have you done?",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763605_1&mode=view"
+        },
+        {
+          "contentId": "_1763606_1",
+          "name": "Material-base - Present perfect exercises | Perfect English Grammar",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://www.perfect-english-grammar.com/present-perfect-exercises.html"
+        },
+        {
+          "contentId": "_1763607_1",
+          "name": "Semana 7 - Quiz Objeto Educacional Semana 7 -",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763607_1&mode=view"
+        },
+        {
+          "contentId": "_1763608_1",
+          "name": "Semana 7 - Fórum Temático: Tecendo textos Marca Re",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763608_1&mode=view"
+        },
+        {
+          "contentId": "_1763609_1",
+          "name": "Semana 7 - Atividade Avaliativa",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763609_1&mode=view"
+        },
+        {
+          "contentId": "_1763610_1",
+          "name": "Semana 7 - Avaliação Institucional Semana 7 - Avaliação Institu",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763610-dt-content-rid-22191488_1/xid-22191488_1"
+        },
+        {
+          "contentId": "_1763611_1",
+          "name": "Going Deeper Going Deeper",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1763611-dt-content-rid-22191486_1/xid-22191486_1"
+        },
+        {
+          "contentId": "_1763612_1",
+          "name": "Fórum de dúvidas das semanas 1-7",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763612_1&mode=view"
+        },
+        {
+          "contentId": "_1763613_1",
+          "name": "What’s coming next What’s coming next",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763613-dt-content-rid-22191495_1/xid-22191495_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:10:09.747Z"
+    },
+    "activities_1767027811628.933__1763499_1": {
+      "items": [
+        {
+          "contentId": "_1763587_1",
+          "name": "Semana 6 Semana 6 – Formato",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763587-dt-content-rid-22191506_1/xid-22191506_1"
+        },
+        {
+          "contentId": "_1763588_1",
+          "name": "Texto-base - How to talk about your hometown in English | David Buckley",
+          "status": "TODO",
+          "type": "document",
+          "url": "http://manwrites.com/how-to-talk-about-your-hometown-in-english/"
+        },
+        {
+          "contentId": "_1763589_1",
+          "name": "Videoaula 13 - Talking about the future Videoaula 13 - Talking",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763589-dt-content-rid-22191524_1/xid-22191524_1"
+        },
+        {
+          "contentId": "_1763590_1",
+          "name": "Semana 6 - Quiz da Videoaula 13 - Talking about the future",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763590_1&mode=view"
+        },
+        {
+          "contentId": "_1763591_1",
+          "name": "Texto-base - Which jobs will be in demand in the next 10 years?",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://www.getsmarter.com/blog/career-advice/job-demand-10-years/"
+        },
+        {
+          "contentId": "_1763592_1",
+          "name": "Semana 6 - Quiz Objeto Educacional Semana 6 -",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763592_1&mode=view"
+        },
+        {
+          "contentId": "_1763593_1",
+          "name": "Semana 6 - Fórum Temático - Preparação: tenha a faca e o queijo na mão",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763593_1&mode=view"
+        },
+        {
+          "contentId": "_1763594_1",
+          "name": "Semana 6 - Atividade Avaliativa",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763594_1&mode=view"
+        },
+        {
+          "contentId": "_1763595_1",
+          "name": "Semana 6 - 2025.4 - Pesquisa | Disciplina - LET100",
+          "type": "document",
+          "url": "https://forms.office.com/r/CePV3sL0Mb"
+        },
+        {
+          "contentId": "_1763596_1",
+          "name": "Going Deeper Going Deeper –",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1763596-dt-content-rid-22191485_1/xid-22191485_1"
+        },
+        {
+          "contentId": "_1763597_1",
+          "name": "Fórum de dúvidas das semanas 1-7",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763597_1&mode=view"
+        },
+        {
+          "contentId": "_1763598_1",
+          "name": "What’s coming next What’s coming next",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763598-dt-content-rid-22191494_1/xid-22191494_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-29T17:33:20.797Z"
+    },
+    "activities_1767112398258.209__1763491_1": {
+      "items": [
+        {
+          "contentId": "_1763515_1",
+          "name": "Semana 1 Semana 1 – Formato",
+          "status": "DONE",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763515-dt-content-rid-22191500_1/xid-22191500_1"
+        },
+        {
+          "contentId": "_1763516_1",
+          "name": "Videoaula 1 - Inglês sem mistério: resources for dealing with English (Parte 1)",
+          "status": "DONE",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763516-dt-content-rid-22191512_1/xid-22191512_1"
+        },
+        {
+          "contentId": "_1763517_1",
+          "name": "Semana 1 - Quiz da Videoaula 1 - Inglês sem mistério: resources for dealing",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763517_1&mode=view"
+        },
+        {
+          "contentId": "_1763518_1",
+          "name": "Texto-base - How technology has revolutionized language learning | Christop",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://interestingengineering.com/how-technology-has-revolutionized-language-learning"
+        },
+        {
+          "contentId": "_1763519_1",
+          "name": "Videoaula 2 - Inglês sem mistério: resources for dealing with English (Parte 2)",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763519-dt-content-rid-22191513_1/xid-22191513_1"
+        },
+        {
+          "contentId": "_1763520_1",
+          "name": "Semana 1 - Quiz da Videoaula 2 - Inglês sem mistério: resources for dealing",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763520_1&mode=view"
+        },
+        {
+          "contentId": "_1763521_1",
+          "name": "Texto-base - What's the difference between a conference, a seminar, a works",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://conferencemonkey.org/insight/whats-the-difference-between-a-conference-a-seminar-a-workshop-and-a-symposium-1075915"
+        },
+        {
+          "contentId": "_1763522_1",
+          "name": "Videoaula 3 - Inglês sem mistério: resources for dealing with English (Parte 3)",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763522-dt-content-rid-22191514_1/xid-22191514_1"
+        },
+        {
+          "contentId": "_1763523_1",
+          "name": "Semana 1 - Quiz da Videoaula 3 - Inglês sem mistério: resources for dealing",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763523_1&mode=view"
+        },
+        {
+          "contentId": "_1763524_1",
+          "name": "Texto-base - Google Tradutor: como funciona, dicas e tudo o que você precis",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://olhardigital.com.br/2018/12/21/internet-e-redes-sociais/google-tradutor-como-funciona-dicas-e-tudo-o-que-voce-precisa-saber/"
+        },
+        {
+          "contentId": "_1763525_1",
+          "name": "Semana 1 - Quiz Objeto Educacional Semana 1 -",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchAssessment.jsp?course_id=_15307_1&content_id=_1763525_1&mode=view"
+        },
+        {
+          "contentId": "_1763526_1",
+          "name": "Semana 1 - Fórum temático - Congressos internacionais: você também pode",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763526_1&mode=view"
+        },
+        {
+          "contentId": "_1763527_1",
+          "name": "Semana 1 - Atividade Avaliativa",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763527_1&mode=view"
+        },
+        {
+          "contentId": "_1763528_1",
+          "name": "Going Deeper Going Deeper –",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763528-dt-content-rid-22191480_1/xid-22191480_1"
+        },
+        {
+          "contentId": "_1763529_1",
+          "name": "Fórum de dúvidas das semanas 1-7 Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763529_1&mode=view"
+        },
+        {
+          "contentId": "_1763530_1",
+          "name": "What's coming next What's coming next",
+          "status": "DONE",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763530-dt-content-rid-22191489_1/xid-22191489_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-30T16:34:00.939Z"
+    },
+    "activities_1767112398258.209__1763497_1": {
+      "items": [
+        {
+          "contentId": "_1763614_1",
+          "name": "Revisão Revisão – Formatos",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763614-dt-content-rid-22191509_1/xid-22191509_1"
+        },
+        {
+          "contentId": "_1763615_1",
+          "name": "Videoaula 16 - Let’s review! (Part 1) Videoaula 16 - Let’s revi",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763615-dt-content-rid-22191527_1/xid-22191527_1"
+        },
+        {
+          "contentId": "_1763616_1",
+          "name": "Videoaula 17 - Let's review! (Part 2) Videoaula 17 - Let's revi",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763616-dt-content-rid-22191528_1/xid-22191528_1"
+        },
+        {
+          "contentId": "_1763617_1",
+          "name": "Material de Revisão | Cristina Mayer Acunzo Material de Revisão",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763617-dt-content-rid-22191510_1/xid-22191510_1"
+        },
+        {
+          "contentId": "_1763618_1",
+          "name": "Vídeo de apoio - Revisão | Valteir Benedito Vaz Vídeo de apoio",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1763618-dt-content-rid-22191508_1/xid-22191508_1"
+        },
+        {
+          "contentId": "_1763619_1",
+          "name": "Aprofundando o Tema Aprofundando o Tema",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/bbcswebdav/pid-1763619-dt-content-rid-22191487_1/xid-22191487_1"
+        },
+        {
+          "contentId": "_1763620_1",
+          "name": "What's coming next What's coming next",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1763620-dt-content-rid-22191496_1/xid-22191496_1"
+        },
+        {
+          "contentId": "_1763621_1",
+          "name": "Revisão - Fórum de dúvidas Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15307_1&content_id=_1763621_1&mode=view"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-31T01:57:54.222Z"
+    },
+    "activities_1767112398258.481__1762417_1": {
+      "items": [
+        {
+          "contentId": "_1762509_1",
+          "name": "Semana 8 Semana 8 – Formato",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762509-dt-content-rid-22188267_1/xid-22188267_1"
+        },
+        {
+          "contentId": "_1762510_1",
+          "name": "Texto de apoio - Revisão | Graziella Ribeiro Soares Moura",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/xid-17555802_1"
+        },
+        {
+          "contentId": "_1762511_1",
+          "name": "Revisão - Fórum de dúvidas Marca Revista",
+          "status": "TODO",
+          "type": "document",
+          "url": "chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762511_1&mode=view"
+        },
+        {
+          "contentId": "_1762512_1",
+          "name": "Em síntese Em síntese – For",
+          "status": "TODO",
+          "type": "document",
+          "url": "https://ava.univesp.br/bbcswebdav/pid-1762512-dt-content-rid-22188266_1/xid-22188266_1"
+        }
+      ],
+      "method": "DOM",
+      "updatedAt": "2025-12-31T01:59:11.786Z"
+    },
+    "course_1767112398258.1482": {
+      "chunked": false,
+      "compressed": false,
+      "data": "{\"id\":1767112398258.1482,\"name\":\"Pensamento Computacional - COM100 - Turma 006\",\"url\":\"https://ava.univesp.br/webapps/blackboard/execute/launcher?type=Course&id=_14689_1&url=\",\"weeks\":[],\"termName\":\"2025/2 - 3º Bimestre\"}"
+    },
+    "course_1767112398258.209": {
+      "chunked": false,
+      "compressed": true,
+      "data": "H4sIAAAAAAAAA9VYy27bRhT9lVsukgbQmA89KSAoHMdpA8RxH0a6KAJjyLkiJyJnlJmhZDsJkH/IqsuiqwToqrssqz/Jl7SUaFuURZtWYyVeGCDHQ/Gcc+/h3HtfWZxZfbfb6bqu1/R7Xru35Tl+wxI0RatvPRZRMv2ggcCT3QPXcYDAQaZSCo7TsRpWphKrb8XGjHTftumYbmWCj1GPtgJlTzCgo5G2g4SGw0BSxexQCoPC2AnXZmd+vfVCj74LZaY0HnJ2/9BtN53uoXun2Dpf63aabad16N5JJcP7CjUaq2FNEIfa6v/26hTtL5hSQcHdLLKW7y4jmz/1tJaG872PV4cBlZLK6ossSfKdsxfnW63zN1sNixtM50Jc2NJ227MtSwrB2cWnt+/gkVQpNdJqWNpQk2mrbz3cf7prNSxzPMofYzLMUhTmKmGDINQTDBgd2yPOSAGAMEMKYERxRjzP9d224xy69lHp1nrTWEmhs0jhGWcoaZbk4AmciqsxhfS/2E3fKy77oFDLTIWoYSAVMKQJFxFMuIlhV0QJ1zF8+yNVBsG9d0O0O6tpu16Jdn5bRbu7MnIEfsr4CTAK6yuxSPlg/+H+JZTDWMkUCR4ZFJpL0bfteBDHMhqGNBgEjGEYRoMgCoZxMBgiZYMXl/qLZiKMt7VGrdPr2D9XY26yMcdJlWS9RckO8MhIElCNQOAHOQGDYSxkIqNjiKkGhWOZZIZLwU+QQUJFlNEIIUGqRJ4vr2EnVlwbObqGYKc5woVBhdpwEaGIuEBUXERboUztWE7IORYSU03KWMgpFnKKpYqwv9oa3uewhndvDdp1rOFXWKNZtkaz0hqeU9sa11XiFlojV+NKa3hupTV+jam5q8HECIwPBqhQhAgBmgmiAAqhFMViA2guIhdU5ZcTqYZ6jRw5/8FUiiEeb0kV2VxoHsXGnsTUaGJiJOdgSAGGUHL+LKGkwEIomUGJ5YhQwfJ/HKcjqXmWEtfptn23XaWKt9o/zc/hn+YN+cfzKvzTKvunVe2fZm3/XFeJ2+ifZh3/tCr9872UUYJwoCjLjFR9CGUqYZCJkEtBG8B4SDUgmIxJkPAyQxjLcPoBRgpDvo6BZBJTxXjEDU3yEyXPFM9xe7br2Z47P3oEGoJEIUNNtAw55dqOZkiJKZCSHCg5BUpmOAmSHCeR5GWGZCxDJHOYlGgaoLKr9FldZxYptR+8QCNhl2Uhnb0sOa9AyW1MmXadlOlUSPJo+rfKUjCYTv8wPJRAYEeKSKHWUsM8enOZuO4XuWJoGkzfpzCSDL+0YE+4GNaXqlNHqqpad9vwMWeUIWyPacKp4WP6ddOtU6d6pTr1e5mfIA8RR6igdPPp7bsbOkJ6K4+QVq/UlM1uqyiUKs8ioxkCm37MA6Yh/9OzQGpwSRf2qAop/Ixjrg29XRns1whps1SSFiVVKNM8mgKPDFxcupnGs+lUhNYvhzaP35vnDStFE0s2g7A341Y2obfpYYpXHqZcRNTcMKJe7ypErU2PwtyrELU3jci5CtGGx4Ut378KUXfTiKrzaPZVnP4pN42o+8UGl92lweWSEHB2sTCf1Gt8Djtuq2L86JfHj/Pj7OL39wL2jjvvBMrn10IwF8ZynVw7NJ/e/j6bNnGcfDNvDsG9B5fsW4toxZw1L0gWiBaVVi2i7dpEu3MCd5dpeiWa5V1rkayYquYF1SLJXn2SnctJ7lGDitMkr23OkvI17ORzQS4o7NFjVLAdZuJEwqrNa9HsVnT45Zm569Sn2b0iltO/GMocNx1JnnckC2Sf0cQgV/AABTJuJDyjJ7D0xP+q11ZqsLpEbTvlUDvXCHWvqGYLztsjJQeZYFTM+vIDTCmsWPv8zFbPP1u9brlCu4ZT/TKzuuXntRPTqygu/U4Jut+pDb0Y5VYm5lkanrXNi03GclPxlbQMHc8ttQw1pXBXSXGhRH/esAyqtDikPcdr2/mQu/XPR3jAU9RGofXmX2nUJjHZHQAA"
+    },
+    "course_1767112398258.481": {
+      "chunked": false,
+      "compressed": false,
+      "data": "{\"id\":1767112398258.481,\"name\":\"Projetos e métodos para a produção do conhecimento - INT100 - Turma 006\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762425_1&mode=reset\",\"weeks\":[{\"name\":\"Semana 1\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762420_1&mode=reset\"},{\"name\":\"Semana 2\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762421_1&mode=reset\"},{\"name\":\"Semana 3\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762422_1&mode=reset\"},{\"name\":\"Semana 4\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762413_1&mode=reset\"},{\"name\":\"Semana 5\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762414_1&mode=reset\"},{\"name\":\"Semana 6\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762415_1&mode=reset\"},{\"name\":\"Semana 7\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762416_1&mode=reset\"},{\"name\":\"Revisão\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762417_1&mode=reset\",\"courseName\":\"Projetos e métodos para a produção do conhecimento - INT100 - Turma 006\",\"courseId\":1767112398258.481,\"error\":null,\"contentId\":\"_1762417_1\",\"items\":[{\"name\":\"Semana 8 Semana 8 – Formato\",\"url\":\"https://ava.univesp.br/bbcswebdav/pid-1762509-dt-content-rid-22188267_1/xid-22188267_1\",\"type\":\"document\",\"contentId\":\"_1762509_1\",\"status\":\"TODO\"},{\"name\":\"Texto de apoio - Revisão | Graziella Ribeiro Soares Moura\",\"url\":\"https://ava.univesp.br/bbcswebdav/xid-17555802_1\",\"type\":\"document\",\"contentId\":\"_1762510_1\",\"status\":\"TODO\"},{\"name\":\"Revisão - Fórum de dúvidas Marca Revista\",\"url\":\"chrome-extension://hfhhogkcabfbddeccgfbgbkhbfkeadfj/webapps/blackboard/content/launchLink.jsp?course_id=_15349_1&content_id=_1762511_1&mode=view\",\"type\":\"document\",\"contentId\":\"_1762511_1\",\"status\":\"TODO\"},{\"name\":\"Em síntese Em síntese – For\",\"url\":\"https://ava.univesp.br/bbcswebdav/pid-1762512-dt-content-rid-22188266_1/xid-22188266_1\",\"type\":\"document\",\"contentId\":\"_1762512_1\",\"status\":\"TODO\"}],\"method\":\"DOM\"}],\"termName\":\"2025/2 - 4º Bimestre\"}"
+    },
+    "course_1767112398258.489": {
+      "chunked": false,
+      "compressed": false,
+      "data": "{\"id\":1767112398258.489,\"name\":\"Leitura e Produção de textos - LET110 - Turma 006\",\"url\":\"https://ava.univesp.br/webapps/blackboard/execute/launcher?type=Course&id=_14614_1&url=\",\"weeks\":[],\"termName\":\"2025/2 - 3º Bimestre\"}"
+    },
+    "course_1767112398258.5012": {
+      "chunked": false,
+      "compressed": false,
+      "data": "{\"id\":1767112398258.5012,\"name\":\"Matemática Básica - MMB002 - Turma 006\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767457_1&mode=reset\",\"weeks\":[{\"name\":\"Semana 1\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767444_1&mode=reset\"},{\"name\":\"Semana 2\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767455_1&mode=reset\"},{\"name\":\"Semana 3\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767449_1&mode=reset\"},{\"name\":\"Semana 4\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767450_1&mode=reset\"},{\"name\":\"Semana 5\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767456_1&mode=reset\"},{\"name\":\"Semana 6\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767454_1&mode=reset\"},{\"name\":\"Semana 7\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767443_1&mode=reset\"},{\"name\":\"Revisão\",\"url\":\"https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767452_1&mode=reset\"}],\"termName\":\"2025/2 - 4º Bimestre\"}"
+    },
+    "course_1767112398258.5793": {
+      "chunked": false,
+      "compressed": false,
+      "data": "{\"id\":1767112398258.5793,\"name\":\"Marco Zero\",\"url\":\"https://ava.univesp.br/webapps/blackboard/execute/launcher?type=Course&id=_13738_1&url=\",\"weeks\":[],\"termName\":\"Outros Cursos\"}"
+    },
+    "course_1767112398258.836": {
+      "chunked": false,
+      "compressed": false,
+      "data": "{\"id\":1767112398258.836,\"name\":\"Ética, cidadania e Sociedade - SOC100 - Turma 005\",\"url\":\"https://ava.univesp.br/webapps/blackboard/execute/launcher?type=Course&id=_14592_1&url=\",\"weeks\":[],\"termName\":\"2025/2 - 3º Bimestre\"}"
+    },
+    "courses_metadata": {
+      "chunked": false,
+      "compressed": false,
+      "data": "{\"courseIds\":[1767112398258.209,1767112398258.5012,1767112398258.481,1767112398258.836,1767112398258.489,1767112398258.1482,1767112398258.5793]}"
+    },
+    "recent_access_1767027811628.3164": [
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767455_1&mode=reset",
+        "label": "Semana 2",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767455_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767455_1&mode=reset"
+      },
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767444_1&mode=reset",
+        "label": "Semana 1",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767444_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15323_1&content_id=_1767444_1&mode=reset"
+      }
+    ],
+    "recent_access_1767027811628.379": [
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762415_1&mode=reset",
+        "label": "Semana 6",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762415_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762415_1&mode=reset"
+      },
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762420_1&mode=reset",
+        "label": "Semana 1",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762420_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762420_1&mode=reset"
+      },
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762422_1&mode=reset",
+        "label": "Semana 3",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762422_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762422_1&mode=reset"
+      }
+    ],
+    "recent_access_1767027811628.933": [
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763491_1&mode=reset",
+        "label": "Semana 1",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763491_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763491_1&mode=reset"
+      },
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763499_1&mode=reset",
+        "label": "Semana 6",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763499_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763499_1&mode=reset"
+      },
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763498_1&mode=reset",
+        "label": "Semana 7",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763498_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763498_1&mode=reset"
+      }
+    ],
+    "recent_access_1767112398258.209": [
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763491_1&mode=reset",
+        "label": "Semana 1",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763491_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763491_1&mode=reset"
+      },
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763497_1&mode=reset",
+        "label": "Revisão",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763497_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15307_1&content_id=_1763497_1&mode=reset"
+      }
+    ],
+    "recent_access_1767112398258.481": [
+      {
+        "id": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762417_1&mode=reset",
+        "label": "Revisão",
+        "targetId": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762417_1&mode=reset",
+        "url": "https://ava.univesp.br/webapps/blackboard/content/listContent.jsp?course_id=_15349_1&content_id=_1762417_1&mode=reset"
+      }
+    ]
+  }
+}
