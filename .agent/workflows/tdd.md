@@ -1,38 +1,30 @@
----
-description: TDD Red-Green-Refactor para todas as situações
----
+description: TDD Red-Green-Refactor
 
-# TDD Workflows
+TDD WORKFLOWS
 
 Três padrões de desenvolvimento guiado por testes.
 
-## Bug-Fix (Red-Green)
-
-### Fluxo
+BUG-FIX (Red-Green)
 1. Branch → /git-flow (fix/issue-XXX-nome)
-2. Red: Teste que FALHA (reproduz bug)
-3. Green: Correção (teste PASSA)
+2. Red: Teste FALHA (reproduz bug)
+3. Green: Correção PASSA
 4. Gate → /git-flow#quality-gate
 5. Commit: fix(escopo): corrige X
 
-## Nova Feature (Red-Green-Refactor)
-
-### Fluxo
+NOVA FEATURE (Red-Green-Refactor)
 1. Branch → /git-flow (feat/nome)
 2. Planejar: ADR se necessário, check privacidade
-3. Red: Testes FALHAM (definem comportamento)
+3. Red: Testes FALHAM
 4. Green: Implementação PASSA
 5. Refactor: Melhorar sem quebrar
 6. Gate → /git-flow#quality-gate
 7. Commit: feat(escopo): adiciona X
 
-## Refactor (Green-Green)
-
-### Fluxo
+REFACTOR (Green-Green)
 1. Branch → /git-flow (refactor/modulo)
 2. Verde Inicial: TODOS testes OK
-3. Refatorar: Melhorar estrutura/legibilidade
-4. Verde Final: TODOS testes AINDA OK
+3. Refatorar
+4. Verde Final: TODOS testes OK
 5. Gate → /git-flow#quality-gate
 6. Commit: refactor(escopo): melhora X
 
