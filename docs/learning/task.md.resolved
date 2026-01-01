@@ -1,0 +1,6 @@
+# Backlog de Coverage
+
+- [x] Analisar relatório de coverage atual
+- [x] Verificar documentação existente sobre dívida técnica e testes
+- [x] Identificar arquivos prioritários para cobertura (Mapeados: ISSUE-025 e ISSUE-027)
+- [x] Criar Implementation Plan (Realizado diretamente nas Issues 025, 026 e 027)

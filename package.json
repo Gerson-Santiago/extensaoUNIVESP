@@ -18,6 +18,7 @@
     "test:debug": "jest --runInBand --verbose --detectOpenHandles",
     "test:stable": "jest --runInBand --no-cache",
     "test:coverage": "jest --coverage",
+    "test:save": "node scripts/save-coverage.js",
     "test:watch": "jest --watch",
     "test:list": "jest --listTests",
     "test:ci": "jest --ci --coverage --runInBand",
