@@ -1,24 +1,18 @@
-# 🗂️ Index de Workflows & Protocolos do Agente
+# Index de Workflows
 
-Este diretório contém os scripts operacionais e protocolos mandatórios do projeto. Utilize este documento como porta de entrada para localizar processos e decisões arquiteturais.
+Este diretório contém os scripts operacionais e protocolos mandatórios do projeto.
 
----
+## Workflows
 
-## 🚀 Comandos de Fluxo (Workflows)
-
-| Comando | Descrição | Status |
+| Comando | Descrição | Linhas |
 | :--- | :--- | :--- |
-| [`/bug-fix`](./bug-fix.md) | Fluxo para correção de bugs com testes e lint. | ✅ Ativo |
-| [`/git-flow`](./git-flow.md) | Protocolo de proteção de branches (Protege `dev`/`main`). | 🚨 Crítico |
-| [`/nova-feature`](./nova-feature.md) | Guia para implementação de funcionalidades (TDD). | ✅ Ativo |
-| [`/refactor`](./refactor.md) | Protocolo de refatoração segura (Green-Green). | ✅ Ativo |
-| [`/release-prod`](./release-prod.md) | Orquestração de merge da `dev` para `main`. | ✅ Ativo |
-| [`/verificar`](./verificar.md) | Quality Gate Central (Segurança + Testes + Lint). | ✅ Ativo |
-| [`/versionamento`](./versionamento.md) | Protocolo de sincronização de versão (Manifest/Pkg). | ✅ Ativo |
+| [/git-flow](./git-flow.md) | Git Flow + Quality Gate | ~190 |
+| [/tdd](./tdd.md) | Bug-Fix, Features, Refactor (Red-Green-Refactor) | ~50 |
+| [/release](./release.md) | Versionamento + Release dev→main | ~65 |
 
----
+Total: 3 workflows consolidados (~305 linhas)
 
-## 🏛️ Base de Conhecimento (ADRs)
+## Base de Conhecimento (ADRs)
 
 Decisões que moldam a estrutura do projeto:
 
@@ -34,25 +28,19 @@ Decisões que moldam a estrutura do projeto:
 | [ADR-009](../../docs/architecture/ADR_009_TEST_STRATEGY_REFRESHER.md) | Test Strategy | Mocks em I/O Borders |
 | [ADR-010](../../docs/architecture/ADR_010_FUTURE_PROOF_CONFIGURATION.md) | Future-Proof Config | Configuração Injetável |
 
----
-
-## ⚖️ Governança & Qualidade
+## Governança & Qualidade
 
 Documentos que definem "Como" trabalhamos:
 
-- 📖 [**Fluxos de Trabalho**](../../docs/FLUXOS_DE_TRABALHO.md): Diretrizes mandatórias e regras de branch.
-- 🧪 [**Relatório de Compliance**](../../docs/architecture/ADR_COMPLIANCE_REPORT.md): Status de aderência aos ADRs.
-- 📡 [**Plano de Observabilidade**](../../docs/architecture/OBSERVABILITY_PLAN.md): Padrões de logging e monitoramento.
-- 📜 [**Changelog**](../../CHANGELOG.md): Histórico oficial de mudanças e versões.
+- [Fluxos de Trabalho](../../docs/FLUXOS_DE_TRABALHO.md): Diretrizes mandatórias e regras de branch.
+- [Relatório de Compliance](../../docs/architecture/ADR_COMPLIANCE_REPORT.md): Status de aderência aos ADRs.
+- [Plano de Observabilidade](../../docs/architecture/OBSERVABILITY_PLAN.md): Padrões de logging e monitoramento.
+- [Changelog](../../CHANGELOG.md): Histórico oficial de mudanças e versões.
 
----
+## Gestão & Roadmap
 
-## 📅 Gestão & Roadmap
+- [README do Projeto](../../README.md): Visão geral técnica.
+- [Gestão de Issues](../../.github/README.md): Backlog de bugs e débitos técnicos.
+- [Roadmap Estratégico](../../.github/ROADMAP.md): Visão trimestral e metas v3.0.0.
 
-- 🎯 [**README do Projeto**](../../README.md): Visão geral técnica.
-- 📂 [**Gestão de Issues**](../../.github/README.md): Backlog de bugs e débitos técnicos.
-- 🗺️ [**Roadmap Estratégico**](../../.github/ROADMAP.md): Visão trimestral e metas v3.0.0.
-
----
-
-> **Dica para o Agente**: Sempre verifique o `/git-flow` antes de iniciar qualquer comando de escrita para garantir que você não está na branch errada.
+Dica para o Agente: Sempre verifique o /git-flow antes de iniciar qualquer comando de escrita para garantir que você não está na branch errada.

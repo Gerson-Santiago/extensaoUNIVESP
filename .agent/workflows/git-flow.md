@@ -2,18 +2,17 @@
 description: Workflow para Git Flow correto (NUNCA trabalhar direto na dev/main)
 ---
 
-# 🚨 GIT FLOW OBRIGATÓRIO - Proteção de Branches
+# GIT FLOW OBRIGATÓRIO - Proteção de Branches
 
-## ⛔ REGRA ABSOLUTA
+## REGRA ABSOLUTA
 
 **NUNCA, EM HIPÓTESE ALGUMA, TRABALHE DIRETAMENTE NAS BRANCHES:**
 - `main` (produção)
 - `dev` (integração)
 
-## ✅ Workflow Correto
+## Workflow Correto
 
 ### 1. Antes de Qualquer Trabalho
-
 ```bash
 # SEMPRE verificar em qual branch você está
 git branch --show-current
@@ -87,16 +86,16 @@ git branch -d feat/issue-XXX-descricao
 git push origin --delete feat/issue-XXX-descricao
 ```
 
-## 🚫 ANTI-PADRÕES (Erros Comuns)
+## ANTI-PADRÕES (Erros Comuns)
 
-### ❌ ERRADO - Trabalhar direto na dev
+### ERRADO - Trabalhar direto na dev
 ```bash
 git switch dev
 # ... fazer mudanças ...
 git commit -m "feat: alguma coisa"  # ❌ NUNCA FAÇA ISSO!
 ```
 
-### ✅ CORRETO - Criar branch
+### CORRETO - Criar branch
 ```bash
 git switch dev
 git switch -c feat/minha-feature
@@ -104,14 +103,14 @@ git switch -c feat/minha-feature
 git commit -m "feat: alguma coisa"  # ✅ Correto!
 ```
 
-## 🔍 Checklist Antes de Cada Commit
+## Checklist Antes de Cada Commit
 
 - [ ] Executou `git branch --show-current`?
 - [ ] A branch atual NÃO é `dev` nem `main`?
 - [ ] A branch segue o padrão `feat/`, `fix/`, `refactor/`?
 - [ ] Se sim, pode prosseguir com segurança!
 
-## 🛡️ Proteção Automatizada
+## Proteção Automatizada
 
 Se você acidentalmente fizer commit na `dev` ou `main`:
 
@@ -126,7 +125,7 @@ Se você acidentalmente fizer commit na `dev` ou `main`:
    git commit -m "mensagem original"
    ```
 
-## 📋 Exemplo Completo
+## Exemplo Completo
 
 ```bash
 # 1. Verificar issue que vai trabalhar (ex: ISSUE-015)
@@ -154,7 +153,7 @@ git branch -d feat/issue-015-navigation-mock
 git push origin --delete feat/issue-015-navigation-mock
 ```
 
-## ⚠️ Penalidade por Violação
+## Penalidade por Violação
 
 Commits diretos em `dev` ou `main`:
 - Dificultam rollback
@@ -163,3 +162,35 @@ Commits diretos em `dev` ou `main`:
 - Podem causar perda de trabalho
 
 **Sempre use feature branches!**
+
+---
+
+## Quality Gate
+
+Validação de código antes de commit/push.
+
+### Durante Desenvolvimento
+```bash
+npm run check  # Lint + types (< 1s)
+```
+
+### Antes de Commit
+```bash
+npm run test:quick  # Testes falhos + imports (~10s)
+```
+
+### Antes de Push dev/main (SOLICITAR usuário)
+```bash
+npm run verify  # TODOS testes + lint + types (~4min)
+```
+
+**⚠️ IMPORTANTE**: IA **NUNCA** executa `verify` sem permissão explícita do usuário (limite de RAM).
+
+### Segurança (Opcional)
+```bash
+npm run security:secrets  # Detecta vazamento de credenciais
+```
+
+---
+
+**Refs**: `docs/ANTI_PADROES.md`, `docs/RESTRICOES_INFRAESTRUTURA.md`
