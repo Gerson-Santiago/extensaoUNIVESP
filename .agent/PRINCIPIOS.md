@@ -2,8 +2,6 @@
 
 v2.9.7 | 2026-01-01
 
-Docs para IA = máquina processar (não humano ler)
-
 PROIBIDO:
 1. Emojis
 2. Decoração (---, ***, ===, #, ##, ###)
