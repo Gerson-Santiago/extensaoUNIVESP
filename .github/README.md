@@ -10,6 +10,7 @@
 ```
 .github/
 ├── TECH_DEBT/     ← Débitos técnicos ATIVOS
+├── BACKLOG.md      ← Repositório de ideias e tarefas (Novo!)
 ├── README.md      ← Este guia
 └── ROADMAP.md     ← Visão estratégica (Q1 2026)
 ```
@@ -52,6 +53,7 @@ A fundação e evolução da arquitetura (2025):
 8. [**ADR 008: Repository Unification**](../docs/architecture/ADR_008_REPOSITORY_UNIFICATION.md) (v2.9.5)
 9. [**ADR 009: Test Strategy Refresher**](../docs/architecture/ADR_009_TEST_STRATEGY_REFRESHER.md) (v2.9.6)
 10. [**ADR 010: Future-Proof Configuration**](../docs/architecture/ADR_010_FUTURE_PROOF_CONFIGURATION.md) (v2.9.6)
+11. [**ADR 011: Settings Product Vision**](../docs/architecture/ADR_011_SETTINGS_PRODUCT_VISION.md) (v2.10.x)
 
 
 
