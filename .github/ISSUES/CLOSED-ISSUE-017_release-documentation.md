@@ -41,4 +41,4 @@
 ---
 
 **Tags:** `//ISSUE-release-prep-v2.9.6` | **Tipo:** Documentation | **Versão:** 2.9.6
-**Resolvido:** 2025-12-31 | **Autor:** Prof. Antigravity
+**Resolvido:** 2025-12-31 | **Autor:** IA do Projeto

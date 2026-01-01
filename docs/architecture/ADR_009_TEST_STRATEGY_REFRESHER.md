@@ -2,7 +2,7 @@
 
 **Status:** 🌿 Proposed
 **Data:** 2025-12-31
-**Autor:** Prof. Antigravity
+**Autor:** IA do Projeto
 **Decisores:** Time de Desenvolvimento
 **Consultado:** Relatórios de Cobertura, Screaming Architecture
 

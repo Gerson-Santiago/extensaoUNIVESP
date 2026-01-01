@@ -270,4 +270,4 @@ Ganho: 83% menos processamento ⚡
 ---
 
 **Tags:** `//ISSUE-improve-scraper-selector` | **Tipo:** Enhancement | **Versão:** 1.0  
-**Criado:** 2025-12-30 | **Autor:** Prof. Antigravity
+**Criado:** 2025-12-30 | **Autor:** IA do Projeto

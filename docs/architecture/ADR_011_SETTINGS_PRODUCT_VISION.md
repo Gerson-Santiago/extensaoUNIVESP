@@ -1,7 +1,7 @@
 # ADR 011: Visão de Produto e Design System para Configurações
 
 **Status:** Aceito (v2.10.x) | **Data:** 2025-12-31
-**Autor:** Prof. Antigravity & USER
+**Autor:** IA do Projeto & USER
 
 ---
 
@@ -23,14 +23,15 @@ Todo e qualquer ajuste deve ser classificado em um destes blocos:
 
 ### 2. Padrão Estético e Design System (Settings UI)
 
-A interface deve seguir uma semântica visual estrita para reduzir a carga cognitiva:
+A interface deve seguir uma semântica visual estrita para reduzir a carga cognitiva, com foco total no **Isolamento de Erros**.
 
 *   **Botões de Ação (Primary)**: Azul Univesp (#004b8d). Usados para "Salvar", "Exportar", "Atualizar".
 *   **Botões de Suporte (Secondary)**: Cinza (#6c757d). Usados para "Feedback", "Github", "Sobre".
-*   **Ações Destrutivas (Danger Zone)**: 
-    *   Ficarão em um container com borda tracejada vermelha no final da view.
-    *   **Botão Danger**: Vermelho (#d9534f). Exige confirmação dupla (`confirm()`).
-    *   Acompanhado de ícone de alerta ⚠️.
+*   **Danger Zone (Isolamento de Segurança Padrão GitHub)**: 
+    *   **Isolamento Físico**: Deve ser a última seção da página, separada por um espaçamento generoso e possivelmente uma linha divisória.
+    *   **Identidade Visual**: Um container com borda sólida ou tracejada vermelha (`#d9534f`), destacando o perigo.
+    *   **Botão Destrutivo**: Vermelho sólido. 
+    *   **Barreira de Confirmação**: Ações nesta zona não podem ser feitas em um único clique. Exigência de um modal de confirmação ou um checkbox de "Entendi as consequências" para evitar ativações acidentais.
 
 ### 3. Arquitetura "State-First"
 

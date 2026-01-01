@@ -5,6 +5,14 @@ Todas as mudanças notáveis neste projeto serão documentadas aqui.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [2.9.7] - Unreleased
+
+### 🧪 Quality & Tests (v2.9.x Maintenance)
+- **ISSUE-025**: Planejamento de expansão de cobertura para `BatchScraper` e `Utils`.
+- **ISSUE-026**: Institucionalização do framework de Auditoria de Controle Técnica.
+
+---
+
 ## [2.9.6] - 2025-12-31
 
 ### 🛡️ Engenharia de Release & Governança (Enterprise)

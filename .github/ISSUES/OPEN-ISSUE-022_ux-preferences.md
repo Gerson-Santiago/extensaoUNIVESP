@@ -49,4 +49,4 @@ Seguindo a visão de produto maduro, estas não são regras de negócio, mas aju
 
 ---
 **Tags:** `//ISSUE-settings-ux` | **Tipo:** UX / Feature
-**Relatada por:** Prof. Antigravity | **Data:** 31/12/2025
+**Relatada por:** IA do Projeto | **Data:** 31/12/2025

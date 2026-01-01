@@ -23,4 +23,4 @@ Garantir a integridade documental e o versionamento correto para a entrega da v2
 ---
 
 **Tags:** `//ISSUE-release-v2.10.0` | **Tipo:** Documentation | **Sprint:** v2.10.0-Evolution
-**Relatada por:** Prof. Antigravity | **Data:** 31/12/2025
+**Relatada por:** IA do Projeto | **Data:** 31/12/2025

@@ -78,4 +78,4 @@ test('deve extrair URL de vídeo corretamente de um iframe', () => {
 ---
 
 **Tags:** `//ISSUE-week-content-parser-coverage` | **Tipo:** Testing | **Versão:** 2.9.6
-**Criado:** 2025-12-31 | **Autor:** Prof. Antigravity
+**Criado:** 2025-12-31 | **Autor:** IA do Projeto

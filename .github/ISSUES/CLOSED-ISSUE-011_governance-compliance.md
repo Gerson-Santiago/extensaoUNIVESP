@@ -2,7 +2,7 @@
 
 **Status**: Concluído (v2.9.5)
 **Data**: 31/12/2025
-**Responsável**: Antigravity
+**Responsável**: IA
 
 ## 1. O Problema
 Com a evolução rápida do projeto, havia o risco de os ADRs (Architectural Decision Records) estarem "mentindo" (desatualizados em relação ao código) ou de novas decisões não estarem documentadas formalmente.

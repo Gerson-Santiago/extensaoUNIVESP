@@ -10,7 +10,7 @@
 
 ## 🔗 Relacionado
 
-**ISSUE Pai:** [ISSUES_v2.9.6](./ISSUES-[013-016]-OPEN-v2.9.6.md)
+**ISSUE Pai:** [ISSUES_v2.9.x](./ISSUES-OPEN-v2.9.x-Maintenance.md)
 
 Identificado na auditoria de 31/12 que os handlers de interação da UI possuem **0% de cobertura de funções**. Eles controlam a limpeza de cache e atualização manual, fluxos críticos para o usuário.
 
@@ -85,4 +85,4 @@ test('clique deve disparar refresh e atualizar UI', async () => {
 ---
 
 **Tags:** `//ISSUE-ui-handlers-coverage` | **Tipo:** Testing | **Versão:** 2.9.6
-**Criado:** 2025-12-31 | **Autor:** Prof. Antigravity
+**Criado:** 2025-12-31 | **Autor:** IA do Projeto

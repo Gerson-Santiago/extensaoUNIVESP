@@ -26,14 +26,15 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 **Marcos**:
 - ✅ **Estabilização e Robustez** (v2.9.2) - Suporte a Semanas de Revisão e 100% de cobertura core.
 - ✅ **Ciclo de Qualidade** (v2.9.6) - Testes de Integração (ADR-009) e Cobertura de Handlers/Strategies.
+- 🔄 **Reforço de Cobertura** (v2.9.7) - Eliminar pontos cegos em Scrapers e Utils (ISSUE-025).
 - 🔄 **Resolução de Dívidas Técnicas** - Manter meta de 85% de cobertura global.
 
 **Entregáveis Esperados** (v2.9.6):
-- ✅ ISSUE-013: Cobertura de testes CourseRefresher (100%)
-- ✅ ISSUE-015: NavigationService Future-Proof (JSDoc, Configurabilidade, 9 testes)
-- ✅ ISSUE-016: VideoStrategy Coverage (100% Cobertura)
-- ✅ ISSUE-018: Handlers de UI (ClearHandler, RefreshHandler - 100%)
-- ✅ ISSUE-017: Documentação de Release Profissional
+- ✅ CLOSED-ISSUE-013: Cobertura de testes CourseRefresher (100%)
+- ✅ CLOSED-ISSUE-015: NavigationService Future-Proof (JSDoc, Configurabilidade, 9 testes)
+- ✅ CLOSED-ISSUE-016: VideoStrategy Coverage (100% Cobertura)
+- ✅ CLOSED-ISSUE-018: Handlers de UI (ClearHandler, RefreshHandler - 100%)
+- ✅ CLOSED-ISSUE-017: Documentação de Release Profissional
 
 ---
 
@@ -101,7 +102,7 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 
 ## 📜 Release Log (Histórico)
 
-### v2.9.2 (Atual - 2025-12-30)
+### v2.9.7 (Atual - 2026-01-01)
 - **Feature**: Suporte completo a "Semanas de Revisão" em todos os scrapers.
 - **Qualidade**: 100% de cobertura em lógicas de ordenação e 0 warnings de lint.
 - **Robustez**: Fix de Scroll (ADR-007) e Centralização de Logs (#LOG_*).
@@ -118,4 +119,4 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 
 ---
 
-**Última Atualização**: 2025-12-31 (Consolidação v2.9.6 - Baseline de Qualidade)
+**Última Atualização**: 2026-01-01 (Consolidação v2.9.6 - Baseline de Qualidade)

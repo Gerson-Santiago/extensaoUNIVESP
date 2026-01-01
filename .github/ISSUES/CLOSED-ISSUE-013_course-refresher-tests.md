@@ -103,4 +103,4 @@ describe('CourseRefresher Integration', () => {
 ---
 
 **Tags:** `//ISSUE-course-refresher-coverage` | **Tipo:** Testing | **Versão:** 2.9.6
-**Criado:** 2025-12-31 | **Autor:** Prof. Antigravity
+**Criado:** 2025-12-31 | **Autor:** IA do Projeto

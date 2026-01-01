@@ -36,8 +36,8 @@ O usuário precisa de uma forma soberana de limpar seu rastro e preferências na
 
 ## ✅ Critérios de Aceite
 
-- [ ] O botão "Reset de Fábrica" está visível na seção de Privacidade/Dados.
-- [ ] Um alerta de confirmação impede cliques acidentais.
+- [ ] O botão "Reset de Fábrica" está isolado dentro de um container "Danger Zone" com borda vermelha e aviso explícito.
+- [ ] Implementação de **Barreira de Segurança**: A ação de Reset deve exigir que o usuário marque um checkbox de confirmação ou confirme em um modal específico, impedindo cliques acidentais.
 - [ ] Após a confirmação, o `chrome.storage.local` é esvaziado completamente.
 - [ ] A extensão recarrega e volta ao estado inicial de instalação.
 
@@ -53,4 +53,4 @@ O usuário precisa de uma forma soberana de limpar seu rastro e preferências na
 ---
 
 **Tags:** `//ISSUE-settings-reset` | **Tipo:** Feature | **Sprint:** v2.10.0-Evolution
-**Relatada por:** Prof. Antigravity | **Data:** 31/12/2025
+**Relatada por:** IA do Projeto | **Data:** 31/12/2025

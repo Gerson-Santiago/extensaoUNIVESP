@@ -150,7 +150,7 @@ A estrutura reflete os domínios de negócio:
 
 ### 4.3 Padrões de Frontend
 - **Eventos:** Uso exclusivo de `PointerEvent` (não `onclick`)
-- **Motivo:** Interop 2025, suporte a touch/pen
+- **Motivo:** Interop 2025+, suporte a touch/pen em navegadores modernos
 
 ---
 
@@ -287,7 +287,32 @@ echo "feat: minha mensagem" | npx commitlint
 
 ---
 
-## 9. Referências
+## 9. Código Intencional (Auditoria de Decisão)
+
+Para garantir que o Vanilla JS não se torne um emaranhado de lógicas implícitas, seguimos o **Framework de Auditoria de Controle Técnica**. Toda estrutura de decisão deve ser questionada:
+
+### 10.1 Checklist de Decisão (Review & Refactor)
+
+**Intenção:**
+- [ ] A decisão é de negócio, validação ou proteção técnica?
+- [ ] O sistema perde comportamento essencial se este bloco for removido?
+
+**Fluxo (if/else/switch):**
+- [ ] A condição é binária ou existem estados inválidos não tratados?
+- [ ] Podemos usar **Early Return** para reduzir aninhamento?
+- [ ] A condição é legível em voz alta (sem decodificar símbolos)?
+
+**Exceções (try/catch):**
+- [ ] O erro está sendo silenciado ou tratado com contexto para debug?
+- [ ] O sistema permanece em estado consistente após a falha?
+
+**Arquitetura:**
+- [ ] Esta lógica pertence ao **Núcleo** (regra) ou à **Borda** (detalhe técnico)?
+- [ ] Estamos acoplando regras de negócio dentro de controles de infraestrutura?
+
+---
+
+## 10. Referências
 
 - [Conventional Commits](https://www.conventionalcommits.org/)
 - [Keep a Changelog](https://keepachangelog.com/pt-BR/)

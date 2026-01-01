@@ -62,4 +62,4 @@ Itens removidos das issues ativas por serem considerados "invenções de moda" o
 - **[ ] Créditos Detalhados**: Manter apenas versão e links por enquanto.
 
 ---
-**Última Revisão**: 31/12/2025 | **Status**: Baseline v2.10.0 Pronta
+**Última Revisão**: 01/01/2026 | **Status**: Baseline v2.10.0 Pronta

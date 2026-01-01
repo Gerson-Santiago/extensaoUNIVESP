@@ -1,7 +1,7 @@
 # Relatório de Conformidade: ADR 000-008
 
-**Data**: 31/12/2025
-**Auditor**: Antigravity
+**Data**: 01/01/2026
+**Auditor**: IA
 **Status Global**: ✅ APROVADO
 
 ## Detalhes da Auditoria

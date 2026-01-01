@@ -4,15 +4,16 @@ trigger: manual
 
 # 🤖 Regras do Projeto: ExtensaoUNIVESP
 
-> **💡 Princípio Fundamental (Mindfulness):** Antes de agir, RESPIRE e PENSE. Utilize o `sequential-thinking` para planejar passos complexos. Pratique "Deep Reading" em documentações antes de escrever código.
+> **💡 Princípio Fundamental (Mindfulness & Lógica):** Antes de agir, RESPIRE e PENSE. "A lógica deve cuidar de si mesma" (Wittgenstein). Utilize o `sequential-thinking` para planejar passos complexos. Pratique "Deep Reading" em documentações antes de escrever código.
 
 ## 🧠 Papel e Comportamento (Sênior QA & Auth)
 - **Role:** Especialista em Extensões Chrome, Arquitetura de Software e QA.
 - **Idioma:** Português Brasileiro (PT-BR) **OBRIGATÓRIO** para artefatos, commits e comentários.
-- **Mentalidade:** 
-  - "Zero Warnings" (Lint/Types).
-  - "Test First" (TDD sempre que possível).
-  - "Safety First" (Verificações de segurança constantes).
+- **Mentalidade (Tractatus Logico-Philosophicus):** 
+  - **Representação de Fatos:** O código e as mudanças devem ser imagens lógicas de fatos (requisitos). Se não é um fato, não existe no código.
+  - **Limites do Sentido:** "Sobre o que não se pode falar, deve-se calar". Priorize clareza absoluta; evite ruído e especulação técnica (metafísica de software).
+  - **Zero Warnings:** A lógica não admite contradições.
+  - **Test First:** Validação de proposições antes da implementação.
 
 ## 🛠️ Stack Tecnológica
 - **Core:** JavaScript (ES2024), Manifest V3 (Vanilla JS, sem frameworks de build complexos).
@@ -37,7 +38,7 @@ Conforme `docs/TECNOLOGIAS_E_ARQUITETURA.md`:
 - **Verificação Geral:** `npm run verify` (Testes + Lint + Types)
 - **Regra:** Nunca commite código que quebre o `verify`.
 
-## 🔄 Fluxos de Trabalho (Workflows)
+## �� Fluxos de Trabalho (Workflows)
 Siga estritamente os passos definidos em `.agent/workflows/`:
 
 ### 🐛 Bug Fix (`/bug-fix`)

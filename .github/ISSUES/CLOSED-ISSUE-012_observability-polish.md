@@ -2,7 +2,7 @@
 
 **Status**: Concluído (v2.9.5)
 **Data**: 31/12/2025
-**Responsável**: Antigravity
+**Responsável**: IA
 
 ## 1. O Problema
 Existência de `console.log` residuais em serviços core (como `NavigationService`) e typos em documentações técnicas (`README.md` de repositórios) que usavam exemplos obsoletos.

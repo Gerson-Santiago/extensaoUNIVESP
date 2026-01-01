@@ -1,6 +1,6 @@
-# 📋 Plano de Qualidade v2.9.6 (Master Index)
+# 📋 Plano de Estabilização v2.9.x (Maintenance)
 
-Este documento centraliza a estratégia de Release, Qualidade e Testes para a versão v2.9.6.
+Este documento centraliza a estratégia de Estabilização, Cobertura e Manutenção para a linha v2.9.x, visando entregar uma base sólida antes da v2.10.0.
 
 **Meta:** Elevar a confiabilidade do sistema atacando as áreas críticas de dívida técnica e garantindo um processo de release profissional.
 
@@ -10,13 +10,7 @@ Este documento centraliza a estratégia de Release, Qualidade e Testes para a ve
 
 | ID | Issue | Componente | Cobertura Atual | Meta | Prioridade |
 |----|-------|------------|-----------------|------|------------|
-| **019** | [📋 Settings & Backup System](./ISSUE-019_settings-backup-system.md) | `Settings` | - | 100% | 🔼 **Alta** |
-| **018** | [✅ 🧪 Handlers UI](./ISSUE-018_handlers-coverage.md.resolved) | `Clear/RefreshHandler` | 100% | 100% | ✅ **Done** |
-| **013** | [✅ 🧪 Integração CourseRefresher](./ISSUE-013_course-refresher-tests.md.resolved) | `CourseRefresher` | 100% | > 70% | ✅ **Done** |
-| **017** | [✅ 📝 Release Eng & Docs](./ISSUE-017_release-documentation.md.resolved) | `Release v2.9.6` | 100% | 100% | ✅ **Done** |
-| **014** | [✅ 🧪 Parsers WeekContent](./ISSUE-014_week-scraper-coverage.md.resolved) | `WeekContentScraper` | 91.26% | > 80% | ✅ **Done** |
-| **015** | [✅ 🧪 Mock NavigationService](./ISSUE-015_navigation-service-mock.md.resolved) | `NavigationService` | 61.66% | > 60% | ✅ **Done** |
-| **016** | [✅ 🧪 Testes VideoStrategy](./ISSUE-016_video-strategy-tests.md.resolved) | `VideoStrategy` | 100% | > 90% | ✅ **Done** |
+| **025** | [📋 Coverage: Import & Utils](./OPEN-ISSUE-025_coverage-batch-import-utils.md) | `Import/Utils` | < 60% | > 85% | 🔴 **Alta** |
 
 ---
 
@@ -44,4 +38,4 @@ Foco na profissionalização da entrega.
 *   *Ação:* Sincronizar manifestos, gerar Changelog semântico e limpar a documentação.
 
 ---
-**Gerado em:** 31/12/2025 | **Status:** 🚦 Pronto apra Execução
+**Gerado em:** 01/01/2026 | **Status:** 🚦 Ciclo v2.9.7 / v2.9.8 em andamento

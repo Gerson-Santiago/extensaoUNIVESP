@@ -1,6 +1,6 @@
 # Regras de Negócio (Business Domain Rules)
 
-> **Princípio:** Código é a fonte da verdade. Este documento reflete o comportamento **REAL** implementado na v2.9.2.
+> **Princípio:** Código é a fonte da verdade. Este documento reflete o comportamento **REAL** implementado na v2.9.6.
 
 ---
 
@@ -247,5 +247,5 @@ Sistema garante que o scroll para uma atividade ocorra mesmo em condições de c
 
 ---
 
-**Última Auditoria:** 2025-12-29 (v2.9.2)  
+**Última Auditoria:** 2026-01-01 (v2.9.6)  
 **Próxima Revisão:** Sempre que houver mudança em lógica de domínio

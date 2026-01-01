@@ -10,7 +10,7 @@
 
 ## 🔗 Relacionado
 
-**ISSUE Pai:** [ISSUES_v2.9.6](./ISSUES-OPEN-v2.9.6.md)
+**ISSUE Pai:** [ISSUES_v2.9.x](./ISSUES-OPEN-v2.9.x-Maintenance.md)
 
 O `NavigationService` tinha apenas 29.62% de cobertura porque sua lógica principal executa dentro do contexto da página (`executeScript`), ambiente difícil de testar com Jest padrão.
 
@@ -192,4 +192,4 @@ NavigationService.js  |   61.66 |    94.28 |      45 |   61.66 |
 ---
 
 **Tags:** `//ISSUE-navigation-mock-coverage` `//future-proof` `//adr-compliance` | **Tipo:** Testing + Refactoring | **Versão:** 2.9.6  
-**Criado:** 2025-12-31 | **Resolvido:** 2025-12-31 | **Autor:** Prof. Antigravity
+**Criado:** 2025-12-31 | **Resolvido:** 2025-12-31 | **Autor:** IA do Projeto

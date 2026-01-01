@@ -2,7 +2,7 @@
 
 **Status**: Concluído (v2.9.5)
 **Data**: 31/12/2025
-**Responsável**: Antigravity
+**Responsável**: IA
 
 ## 1. O Problema
 O `sidepanel.js` estava importando e chamando o `CourseRepository` diretamente para a função de "Limpar Cursos", violando a arquitetura de camadas (View -> Repository). Além disso, o Sidepanel concentrava muita responsabilidade de orquestração.

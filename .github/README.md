@@ -1,7 +1,7 @@
 # 📋 .github - Gestão de Projeto
 
 **Versão**: v2.9.6 (Estável)
-**Última atualização**: 2025-12-31
+**Última atualização**: 2026-01-01
 
 ---
 
@@ -24,10 +24,10 @@
 
 As prioridades atuais de manutenção são:
 
-1. [**ISSUE-013: Integração CourseRefresher**](ISSUES/ISSUE-013_course-refresher-tests.md.resolved) - ✅ Resolvido (100% Cobertura).
-2. [**ISSUE-015: NavigationService Future-Proof**](ISSUES/ISSUE-015_navigation-service-mock.md.resolved) - ✅ Resolvido (9 testes, tipos JSDoc).
-3. [**ISSUE-016: VideoStrategy Coverage**](ISSUES/ISSUE-016-OPEN_video-strategy-tests.md.resolved) - ✅ Resolvido (100% Cobertura).
-4. [**ISSUE-018: Handlers de UI**](ISSUES/ISSUE-018_handlers-coverage.md.resolved) - ✅ Resolvido (100% Cobertura).
+1. [**CLOSED-ISSUE-013: Integração CourseRefresher**](ISSUES/CLOSED-ISSUE-013_course-refresher-tests.md) - ✅ Resolvido (100% Cobertura).
+2. [**CLOSED-ISSUE-015: NavigationService Future-Proof**](ISSUES/CLOSED-ISSUE-015_navigation-service-mock.md) - ✅ Resolvido (9 testes, tipos JSDoc).
+3. [**CLOSED-ISSUE-016: VideoStrategy Coverage**](ISSUES/CLOSED-ISSUE-016_video-strategy-tests.md) - ✅ Resolvido (100% Cobertura).
+4. [**CLOSED-ISSUE-018: Handlers de UI**](ISSUES/CLOSED-ISSUE-018_handlers-coverage.md) - ✅ Resolvido (100% Cobertura).
 4. [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Impacta UX de navegação.
 
 ---
@@ -48,9 +48,9 @@ A fundação e evolução da arquitetura (2025):
 3. [**ADR 003: SafeResult Pattern**](../docs/architecture/ADR_003_SAFERESULT_PATTERN.md) (29/dez am)
 4. [**ADR 004: Container Freshness**](../docs/architecture/ADR_004_CONTAINER_FRESHNESS.md) (29/dez am)
 5. [**ADR 005: Observabilidade**](../docs/architecture/ADR_005_OBSERVABILITY_LOGGER.md) (29/dez pm)
-6. [**ADR 006: Robust Scroll Navigation**](../docs/architecture/ADR_006_ROBUST_SCROLL_NAVIGATION.md) (29/dez pm)
-7. [**ADR 007: Navigation Hierarchy**](../docs/architecture/ADR_007_NAVIGATION_HIERARCHY.md) (v2.9.1)
-8. [**ADR 008: Repository Unification**](../docs/architecture/ADR_008_REPOSITORY_UNIFICATION.md) (v2.9.5)
+6. [**ADR 006: Robust Scroll Navigation**](../docs/architecture/ADR_006_ROBUST_SCROLL_NAVIGATION.md) (v2.9.6)
+7. [**ADR 007: Navigation Hierarchy**](../docs/architecture/ADR_007_NAVIGATION_HIERARCHY.md) (v2.9.6)
+8. [**ADR 008: Repository Unification**](../docs/architecture/ADR_008_REPOSITORY_UNIFICATION.md) (v2.9.6)
 9. [**ADR 009: Test Strategy Refresher**](../docs/architecture/ADR_009_TEST_STRATEGY_REFRESHER.md) (v2.9.6)
 10. [**ADR 010: Future-Proof Configuration**](../docs/architecture/ADR_010_FUTURE_PROOF_CONFIGURATION.md) (v2.9.6)
 11. [**ADR 011: Settings Product Vision**](../docs/architecture/ADR_011_SETTINGS_PRODUCT_VISION.md) (v2.10.x)
@@ -76,7 +76,7 @@ A fundação e evolução da arquitetura (2025):
    - **Médio**: Débitos técnicos (`TECH_DEBT/`)
    - **Avançado**: Refatorações (`REFACTOR/`)
 
-### Priorização Recomendada (2025-12-27)
+### Priorização Recomendada (2026-01-01)
 
 #### 🔴 Alta Prioridade
 1. **TECH_DEBT-breadcrumb-estado-global** - Impacta UX
@@ -130,4 +130,4 @@ graph LR
 
 ---
 
-**Auditoria**: 2025-12-31 (v2.9.6 - Governança Enterprise & Quality QA)
+**Auditoria**: 2026-01-01 (v2.9.6 - Governança Enterprise & Quality QA)

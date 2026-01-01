@@ -2,7 +2,7 @@
 
 **Status**: Concluído (v2.9.5)
 **Data**: 31/12/2025
-**Responsável**: Antigravity
+**Responsável**: IA
 
 ## 1. O Problema (What had to be done)
 A arquitetura do projeto apresentava redundâncias e violações de princípios de *Screaming Architecture*, acumuladas durante o desenvolvimento rápido.

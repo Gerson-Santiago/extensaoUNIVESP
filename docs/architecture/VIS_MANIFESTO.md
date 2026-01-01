@@ -1,5 +1,5 @@
 # 🗣️ Manifesto de Visão: Screaming Architecture
-**Status:** Ativo | **Última Atualização:** 2025-12-31 (v2.9.5)
+**Status:** Ativo | **Última Atualização:** 2026-01-01 (v2.9.6)
 
 ### 🏗️ Pilares da Arquitetura
 1. **Intenção sobre Ferramenta**: O negócio (UNIVESP) manda; a UI é detalhe.
