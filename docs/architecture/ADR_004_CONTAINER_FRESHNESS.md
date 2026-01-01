@@ -1,14 +1,6 @@
 # ADR 004: Container Freshness
-**Status:** Aceito | **Data:** 2025-12-29
+Status: Aceito | Data: 2025-12-30
 
-### Contexto
-Bug "DOM Zumbi": renderização ocorria em elementos removidos do DOM por race condition.
-
-### Decisão
-**Always Fresh Container**: Nunca cachear referências DOM.
-- **Scoped Query**: Usar `this.element.querySelector()` a cada render.
-- **Fresh Renderer**: Criar `ActivityRenderer` com o container atual no `afterRender`.
-
-### Consequências
-- ✅ Eliminação de skeletons infinitos e fantasmas de UI.
-- ✅ Blindagem com 5 testes de regressão (v2.9.0).
+Contexto: Cache de elementos DOM gerava "Zombie DOM" após navegação.
+Decisão: Sempre recriar renderers com containers novos. Proibido cachear referências a elementos em instâncias de view.
+Consequências: Elimina bugs de renderização órfã.
