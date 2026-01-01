@@ -5,6 +5,11 @@
 
 ---
 
+
+![Version](https://img.shields.io/badge/version-2.9.6-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Status](https://img.shields.io/badge/status-stable-success)
+
 ## Sobre o Projeto
 
 O **AutoPreencher UNIVESP** é uma extensão de navegador desenvolvida de aluno para aluno, com o objetivo de otimizar a rotina acadêmica na UNIVESP.
