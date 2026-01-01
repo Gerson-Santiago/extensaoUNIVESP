@@ -25,15 +25,15 @@ Este documento descreve a **visão de longo prazo** e os **marcos estratégicos*
 
 **Marcos**:
 - ✅ **Estabilização e Robustez** (v2.9.2) - Suporte a Semanas de Revisão e 100% de cobertura core.
-- 🚧 **Ciclo de Qualidade** (v2.9.6) - Testes de Integração (ADR-009) e Cobertura de Handlers.
+- ✅ **Ciclo de Qualidade** (v2.9.6) - Testes de Integração (ADR-009) e Cobertura de Handlers/Strategies.
 - 🔄 **Resolução de Dívidas Técnicas** - Manter meta de 85% de cobertura global.
 
 **Entregáveis Esperados** (v2.9.6):
 - ✅ ISSUE-013: Cobertura de testes CourseRefresher (100%)
-- ✅ ISSUE-015: NavigationService Future-Proof (Tipos JSDoc, Configurabilidade, 9 testes)
-- 🚧 ISSUE-018: Handlers de UI (ClearHandler, RefreshHandler)
-- Test Strategies definidas (VideoStrategy, Navigation)
-- Documentação de Release Profissional (Issue-017)
+- ✅ ISSUE-015: NavigationService Future-Proof (JSDoc, Configurabilidade, 9 testes)
+- ✅ ISSUE-016: VideoStrategy Coverage (100% Cobertura)
+- ✅ ISSUE-018: Handlers de UI (ClearHandler, RefreshHandler - 100%)
+- ✅ ISSUE-017: Documentação de Release Profissional
 
 ---
 
@@ -118,4 +118,4 @@ Ideia → Análise Técnica (1 sprint) → ADR → Go/No-Go → Roadmap
 
 ---
 
-**Última Atualização**: 2025-12-30 (Consolidação v2.9.2)
+**Última Atualização**: 2025-12-31 (Consolidação v2.9.6 - Baseline de Qualidade)

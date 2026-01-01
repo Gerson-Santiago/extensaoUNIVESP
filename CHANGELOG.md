@@ -5,7 +5,28 @@ Todas as mudanças notáveis neste projeto serão documentadas aqui.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
+## [2.9.6] - 2025-12-31
+
+### 🛡️ Engenharia de Release & Governança (Enterprise)
+- **Workflows Operacionais**: Implementação de roteiros interconectados em `.agent/workflows/` (`/git-flow`, `/verificar`, `/versionamento`, `/release-prod`).
+- **Proteção de Branches**: Formalização do Git Flow obrigatório em `FLUXOS_DE_TRABALHO.md`, restringindo commits diretos em `dev/main`.
+- **Index de Navegação**: Novo index central em `.agent/workflows/README.md` para rápida localização de ADRs e Protocolos por agentes AI.
+- **Protocolo de Versão**: Garantia de sincronia absoluta entre `package.json`, `manifest.json` e `CHANGELOG.md`.
+
+### 🧪 Quality Assurance & Test Coverage
+- **NavigationService**: Refatoração Future-Proof com tipos JSDoc, configuração injetável e 100% de cobertura lógica (Issue-015).
+- **VideoStrategy**: Expansão de detecção (YouTube/Vimeo/HTML5) com suíte unitária de 100% de cobertura de statements (Issue-016).
+- **CourseRefresher**: Novas suítes de teste de integração (Issue-013).
+- **WeekContentScraper**: Ampliação da cobertura de parsers para 80%+ (Issue-014).
+- **UI Handlers**: Cobertura total de funções para `ClearHandler` e `RefreshHandler` (Issue-018).
+
+### 🏗️ Arquitetura
+- **ADR-010**: Formalização do padrão *Future-Proof Configuration* para serviços injetáveis.
+
+---
+
 ## [2.9.5] - 2025-12-31
+
 
 ### Refatoração (Green-Green)
 - **Arquitetura**: Unificação dos repositórios em `features/courses`.

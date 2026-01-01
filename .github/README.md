@@ -1,6 +1,6 @@
 # 📋 .github - Gestão de Projeto
 
-**Versão**: v2.9.6 (Planejamento)
+**Versão**: v2.9.6 (Estável)
 **Última atualização**: 2025-12-31
 
 ---
@@ -25,7 +25,8 @@ As prioridades atuais de manutenção são:
 
 1. [**ISSUE-013: Integração CourseRefresher**](ISSUES/ISSUE-013_course-refresher-tests.md.resolved) - ✅ Resolvido (100% Cobertura).
 2. [**ISSUE-015: NavigationService Future-Proof**](ISSUES/ISSUE-015_navigation-service-mock.md.resolved) - ✅ Resolvido (9 testes, tipos JSDoc).
-3. [**ISSUE-018: Handlers de UI**](ISSUES/ISSUE-018-OPEN_handlers-coverage.md) - Falta de testes em fluxos do usuário.
+3. [**ISSUE-016: VideoStrategy Coverage**](ISSUES/ISSUE-016-OPEN_video-strategy-tests.md.resolved) - ✅ Resolvido (100% Cobertura).
+4. [**ISSUE-018: Handlers de UI**](ISSUES/ISSUE-018_handlers-coverage.md.resolved) - ✅ Resolvido (100% Cobertura).
 4. [`TECH_DEBT-breadcrumb-estado-global.md`](TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md) - Impacta UX de navegação.
 
 ---
@@ -127,4 +128,4 @@ graph LR
 
 ---
 
-**Auditoria**: 2025-12-30 (v2.9.2 - Estabilização de Semanas de Revisão e Auditoria de Segurança)
+**Auditoria**: 2025-12-31 (v2.9.6 - Governança Enterprise & Quality QA)
