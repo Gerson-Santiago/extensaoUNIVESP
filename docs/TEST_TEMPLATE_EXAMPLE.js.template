@@ -1,0 +1,194 @@
+/**
+ * 📋 TEMPLATE DE TESTE OFICIAL (ADR-000-C Compliant)
+ * 
+ * Use este arquivo como base para TODOS os novos testes.
+ * Copie e adapte conforme necessário.
+ */
+
+import { MyModule } from '../MyModule.js';
+
+describe('NomeDoMódulo', () => {
+    // Setup comum para todos os testes deste módulo
+    beforeEach(() => {
+        // Limpar estado, resetar mocks, etc.
+    });
+
+    describe('nomeDaFunção', () => {
+        it('deve [comportamento esperado] quando [condição específica]', () => {
+            // ========================================
+            // ARRANGE (Preparação)
+            // ========================================
+            const input = { id: 1, name: 'Test' };
+            const expectedOutput = { id: 1, name: 'Test', processed: true };
+
+            // ========================================
+            // ACT (Ação)
+            // ========================================
+            const result = MyModule.nomeDaFunção(input);
+
+            // ========================================
+            // ASSERT (Verificação)
+            // ========================================
+            expect(result).toEqual(expectedOutput);
+            expect(result.processed).toBe(true);
+        });
+
+        it('deve lançar erro quando [condição de erro]', () => {
+            // Arrange
+            const invalidInput = null;
+
+            // Act & Assert (para exceções)
+            expect(() => {
+                MyModule.nomeDaFunção(invalidInput);
+            }).toThrow('Input cannot be null');
+        });
+
+        it('deve retornar valor padrão quando [edge case]', () => {
+            // Arrange
+            const emptyInput = {};
+
+            // Act
+            const result = MyModule.nomeDaFunção(emptyInput);
+
+            // Assert
+            expect(result).toBeDefined();
+            expect(result.processed).toBe(false); // Comportamento padrão
+        });
+    });
+
+    describe('funcaoAssincrona', () => {
+        it('deve processar dados com sucesso (async/await)', async () => {
+            // Arrange
+            const mockData = { value: 42 };
+
+            // Act
+            const result = await MyModule.funcaoAssincrona(mockData);
+
+            // Assert
+            expect(result.success).toBe(true);
+            expect(result.value).toBe(42);
+        });
+
+        it('deve lidar com falha de rede', async () => {
+            // Arrange
+            const failingInput = { shouldFail: true };
+
+            // Act
+            const result = await MyModule.funcaoAssincrona(failingInput);
+
+            // Assert
+            expect(result.success).toBe(false);
+            expect(result.error).toContain('Network');
+        });
+    });
+});
+
+// ============================================
+// EXEMPLO 2: TESTES COM MOCKS DOM
+// ============================================
+describe('ComponenteDOM', () => {
+    beforeEach(() => {
+        document.body.innerHTML = ''; // Limpar DOM
+    });
+
+    it('deve renderizar elemento corretamente', () => {
+        // Arrange
+        document.body.innerHTML = '<div id="container"></div>';
+        const config = { title: 'Teste', color: 'blue' };
+
+        // Act
+        MyModule.render('container', config);
+
+        // Assert
+        const element = document.getElementById('container');
+        expect(element.textContent).toBe('Teste');
+        expect(element.style.color).toBe('blue');
+    });
+
+    it('deve chamar callback ao clicar', () => {
+        // Arrange
+        const mockCallback = jest.fn();
+        document.body.innerHTML = '<button id="btn">Click</button>';
+        const button = document.getElementById('btn');
+
+        // Mock do método click diretamente
+        const clickMock = jest.fn();
+        // @ts-ignore - Mock para teste
+        button.click = clickMock;
+
+        MyModule.attachClick('btn', mockCallback);
+
+        // Act
+        button.click();
+
+        // Assert
+        expect(clickMock).toHaveBeenCalled();
+        expect(mockCallback).toHaveBeenCalledWith(expect.any(Object));
+    });
+});
+
+// ============================================
+// EXEMPLO 3: TESTES COM POLYFILLS (JSDOM)
+// ============================================
+// Polyfill para APIs ausentes no JSDOM
+if (typeof global.TextEncoder === 'undefined') {
+    const { TextEncoder, TextDecoder } = require('util');
+    global.TextEncoder = TextEncoder;
+    global.TextDecoder = TextDecoder;
+}
+
+describe('FunçãoComAPIsWeb', () => {
+    it('deve comprimir dados usando TextEncoder', () => {
+        // Arrange
+        const input = 'Hello, World!';
+        const encoder = new TextEncoder();
+
+        // Act
+        const encoded = encoder.encode(input);
+
+        // Assert
+        expect(encoded).toBeInstanceOf(Uint8Array);
+        expect(encoded.length).toBeGreaterThan(0);
+    });
+
+    it('deve usar fallback quando API não existir', async () => {
+        // Arrange
+        const originalAPI = global.SomeAPI;
+        global.SomeAPI = undefined; // Simular ausência
+
+        // Act
+        const result = await MyModule.compress('data');
+
+        // Assert
+        expect(result).toBe('data'); // Fallback retorna input
+
+        // Cleanup
+        global.SomeAPI = originalAPI;
+    });
+});
+
+// ============================================
+// EXEMPLO 4: TESTES DE INTEGRAÇÃO
+// ============================================
+describe('FluxoCompleto (Integration)', () => {
+    it('deve processar workflow end-to-end', async () => {
+        // Arrange - Setup mais complexo
+        const mockStorage = {
+            data: {},
+            set: jest.fn((key, value) => { mockStorage.data[key] = value; }),
+            get: jest.fn((key) => mockStorage.data[key]),
+        };
+        const service = new MyService(mockStorage);
+
+        // Act - Múltiplas operações
+        await service.initialize();
+        await service.processItem({ id: 1, data: 'test' });
+        const result = await service.finalize();
+
+        // Assert - Validar estado final
+        expect(mockStorage.set).toHaveBeenCalledTimes(2);
+        expect(result.success).toBe(true);
+        expect(result.itemsProcessed).toBe(1);
+        expect(mockStorage.data['status']).toBe('completed');
+    });
+});

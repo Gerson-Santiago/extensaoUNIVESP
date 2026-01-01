@@ -4,6 +4,7 @@
   "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos e Navegação Inteligente no AVA.",
   "main": "popup/popup.js",
   "scripts": {
+    "check": "npm run lint && npm run type-check",
     "verify": "npm test && npm run lint && npm run type-check",
     "lint": "eslint . --cache --cache-location .cache/eslintcache --max-warnings=0",
     "lint:fix": "eslint . --cache --cache-location .cache/eslintcache --fix",

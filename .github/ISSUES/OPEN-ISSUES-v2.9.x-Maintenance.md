@@ -9,8 +9,10 @@ Este documento centraliza a estratégia de Estabilização, Cobertura e Manuten�
 ## 📂 Visão Geral das Issues
 
 | ID | Issue | Componente | Cobertura Atual | Meta | Prioridade |
-|----|-------|------------|-----------------|------|------------|
+|----|-------|------------|-----------------|----|------------|
 | **025** | [📋 Coverage: Import & Utils](./OPEN-ISSUE-025_coverage-batch-import-utils.md) | `Import/Utils` | < 60% | > 85% | 🔴 **Alta** |
+| **001** | [📋 Selector Resilience](./OPEN-ISSUE-001_improve-scraper-selector.md) | `ScraperService` | ~ 48% | > 80% | ⏺️ **Média** |
+| **003** | [📋 Chips Lifecycle](./OPEN-ISSUE-003_navigation-chips-lifecycle.md) | `UI/Navigation` | - | - | 🟢 **Baixa** |
 
 ---
 
@@ -20,6 +22,22 @@ Todas as implementações de teste **DEVEM** seguir rigorosamente a estrutura Ar
 
 ### **[ADR-009: Hybrid Integration Strategy](../../docs/architecture/ADR_009_TEST_STRATEGY_REFRESHER.md)**
 Define a "Inversão da Pirâmide" para testar o `CourseRefresher`. Em vez de mocks unitários frágeis, usaremos testes de integração com fixtures de estado, garantindo que o orquestrador funcione de ponta a ponta.
+
+---
+
+---
+
+## 🗺️ Roadmap de Estabilização (v2.9.x)
+
+### 🎯 v2.9.7: Núcleo e Resiliência
+- **Foco:** Utils Fundamentais + Seletores Resilientes.
+- **Entregáveis:** ISSUE-025 (parcial), ISSUE-001.
+- **Meta:** Garantir que o motor de raspagem não quebre com mudanças menores no AVA.
+
+### 🎯 v2.9.8: Alta Performance e Cobertura
+- **Foco:** Otimização de Scrapers em Lote.
+- **Entregáveis:** ISSUE-025 (conclusão), ISSUE-003.
+- **Meta:** 85% de cobertura global e UI síncrona com estado do storage.
 
 ---
 

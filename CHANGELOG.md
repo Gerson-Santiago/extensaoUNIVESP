@@ -8,8 +8,15 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 ## [2.9.7] - Unreleased
 
 ### 🧪 Quality & Tests (v2.9.x Maintenance)
-- **ISSUE-025**: Planejamento de expansão de cobertura para `BatchScraper` e `Utils`.
-- **ISSUE-026**: Institucionalização do framework de Auditoria de Controle Técnica.
+- **ISSUE-025**: Expansão de cobertura para `CompressionUtils` (100%), `DomUtils` (100%) e `BatchScraper` (refatorado com funções puras testáveis).
+- **ISSUE-026**: Institucionalização do framework de Auditoria de Controle Técnica em `docs/PADROES.md`.
+
+### 🛡️ Maturidade de Engenharia
+- **Anti-Padrões**: Documentação de padrões proibidos em `docs/ANTI_PADROES.md` (window.location, mocks globais, spies DOM).
+- **Templates de Testes**: Identificação de testes exemplares em `docs/TEST_TEMPLATES.md` para padronização.
+- **Workflow**: Adicionado script `npm run check` para validação rápida (lint + type-check) antes de commits.
+- **Editor**: Configuração `.vscode/settings.json` para feedback imediato de erros e auto-fix.
+- **Restrições de Infraestrutura**: Documentação em `docs/RESTRICOES_INFRAESTRUTURA.md` para controle de execução de testes pesados.
 
 ---
 
