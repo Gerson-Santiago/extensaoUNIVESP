@@ -9,7 +9,10 @@
 
 ## 🎯 Objetivo
 
-Institucionalizar um conjunto de perguntas objetivas e técnicas para análise de estruturas de controle (`if`, `try/catch`, `switch`) no Vanilla JS. O foco não é apenas "fazer funcionar", mas garantir que cada decisão de controle seja **intencional**, legível e arquiteturalmente sólida.
+Institucionalizar um conjunto de perguntas objetivas e técnicas para análise de estruturas de controle (`if`, `try/catch`, `switch`) no Vanilla JS. 
+
+**Prioridade 1 - Qualidade de Código (Intencionalidade):** Garantir que cada estrutura de controle exista por uma razão de negócio clara, legível e arquiteturalmente sólida.
+**Prioridade 2 - Branch Coverage (Métrica):** Usar a métrica de ramificações como um *indicador* de onde a intencionalidade pode estar falhando (ex: um `else` esquecido ou não testado). A métrica serve à qualidade, não o contrário.
 
 ---
 
@@ -22,6 +25,28 @@ Este framework será usado em:
 2.  **Refatorações**: Para simplificar módulos legados.
 3.  **Desenvolvimento de Novas Features**: Para evitar dívida técnica precoce.
 
+## 📊 Raio-X Atual (01/01/2026)
+
+Contagem aproximada de estruturas de controle no codebase (excluindo libs externas):
+
+| Estrutura | Produção (`.js`) | Testes (`.test.js`) | Observação |
+|-----------|:----------------:|:-------------------:|------------|
+| `if`      | **472**          | 73                  | Alta densidade. Foco principal de auditoria. |
+| `else`    | **48**           | 4                   | Baixo número (Bom sinal: indica uso de *Early Return*). |
+| `switch`  | **0**            | 0                   | Inexistente. |
+| `? :`     | **70**           | 10                  | Ternários. Atenção para legibilidade. |
+
+> *Dados coletados via análise estática (grep) ignorando `node_modules`, `coverage` e `.git`.*
+
+### 📉 Baseline de Cobertura Global (01/01/2026)
+
+| Métrica | % Atual | Meta Mínima | Status |
+|---------|:-------:|:-----------:|--------|
+| **Statements** | 84.99% | 85% | ⚠️ No Limite |
+| **Branches** | **80.53%** | 85% | 🔴 Atenção (Intencionalidade) |
+| **Functions** | 82.07% | 90% | 🟡 Melhorar |
+| **Lines** | 84.99% | 85% | ⚠️ No Limite |
+
 ---
 
 ## 🛠️ O Framework: 10 Blocos de Auditoria
@@ -30,7 +55,8 @@ Este framework será usado em:
 - Qual decisão de negócio este bloco representa? (Regra, Validação ou Proteção?)
 - O que acontece se essa condição não existir?
 
-### 2. Fluxo Binário e Alternativo (if/else)
+### 2. Fluxo Binário e Alternativo (if/else) - *Branch Coverage*
+- **Teste do Caminho Negativo:** Você testou explicitamente o `else`? (Muitos bugs moram aqui).
 - A condição é realmente binária? Existe estado inválido não tratado?
 - O `else` é necessário ou podemos usar *Early Return*?
 - A condição é legível em voz alta?
@@ -71,6 +97,7 @@ Este framework será usado em:
 
 - [ ] Incorporar este framework como um checklist oficial no documento `docs/PADROES.md`.
 - [ ] Criar um roteiro de 30 minutos para mentorias/revisões técnicas baseado nessas perguntas.
+- [ ] **Métrica:** Identificar e corrigir 3 arquivos com Branch Coverage < 70% usando este framework.
 - [ ] Realizar uma auditoria de exemplo em um arquivo complexo (ex: `CourseService.js` ou `BatchScraper.js`).
 
 ---

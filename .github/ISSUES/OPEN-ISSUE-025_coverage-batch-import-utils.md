@@ -16,13 +16,16 @@ Eliminar "pontos cegos" críticos na base de código garantindo que as utilidade
 ## 📖 Contexto
 
 O relatório de cobertura de 01/01/2026 revelou lacunas perigosas em áreas que sustentam a operação da extensão:
-1.  **BatchScraper (55.72%):** Motor principal de onboarding de dados.
-2.  **CompressionUtils (46.59%):** Usado para otimizar o storage local.
-3.  **DomUtils (42.85%):** Base de manipulação do AVA.
-4.  **QuickLinksScraper (48.05%):** Descoberta de recursos essenciais.
-5.  **ChunkedStorage.js (53.75%):** Camada de persistência que segmenta dados grandes.
+### 📉 Baseline Atual (01/01/2026)
 
-Baixa cobertura nessas áreas significa que mudanças na estrutura da UNIVESP podem quebrar a extensão de forma silenciosa.
+| Componente | % Stmts | % Branch | Gap Principal |
+|------------|:-------:|:--------:|---------------|
+| `BatchScraper.js` | 67.41% | 67.50% | Linhas 320-419 (Core Logic) |
+| `ChunkedStorage.js` | 53.75% | 69.23% | Tratamento de Erros/Quota |
+| `QuickLinksScraper.js` | 48.05% | 80.00% | Descoberta de Recursos |
+| `BatchImportModal.js` | 51.03% | 100%* | UI Interaction (*Falso Positivo) |
+
+Baixa cobertura nessas áreas significa que mudanças na estrutura da UNIVESP ou no navegador podem quebrar a extensão de forma silenciosa.
 
 ---
 

@@ -27,6 +27,15 @@ O relatório de coverage de 01/01/2026 apontou fragilidade em componentes visuai
     - Responsável por renderizar status de progresso e expandir detalhes.
     - As linhas de renderização condicional (88-108) e manipulação de eventos (24-46) estão descobertas.
 
+### 📊 Baseline Atual (01/01/2026)
+
+| Componente | % Stmts (Volume) | % Branch (Lógica) | Uncovered Lines |
+|------------|:----------------:|:-----------------:|-----------------|
+| `BatchImportModal.js` | **51.03%** | 100%* | 50-91, 153-216 |
+| `WeekItem.js` | **54.62%** | 66.66% | 24-46, 88-108 |
+
+*> O 100% em Branch do BatchImportModal é enganoso pois o código não executado (linhas 50-91) contém lógica de UI não avaliada.*
+
 ---
 
 ## 🛠️ Requisitos Técnicos
