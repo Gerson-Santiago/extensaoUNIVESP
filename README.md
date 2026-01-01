@@ -7,15 +7,15 @@
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 
-## 🎯 Sobre o Projeto
+## Sobre o Projeto
 
 O **AutoPreencher UNIVESP** é uma extensão de navegador desenvolvida **de aluno para aluno** com o objetivo de otimizar a rotina acadêmica. A extensão centraliza ferramentas de produtividade, facilita a navegação no Ambiente Virtual de Aprendizagem (AVA) e automatiza tarefas repetitivas.
 
-### 🎓 Missão
+### Missão
 
 Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o atrito de navegação em sistemas legados e devolvendo tempo de estudo ao aluno.
 
-### 🧭 Princípios Norteadores
+### Princípios Norteadores
 
 1. **Soberania de Dados (Local-First):** Privacidade absoluta - dados sensíveis nunca deixam a máquina do usuário. O sistema funciona sem dependência de backends proprietários.
 
@@ -23,7 +23,7 @@ Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o
 
 3. **Excelência Técnica:** Tratamos este projeto open-source com rigor de software enterprise (Testes, CI/CD, Arquitetura Limpa).
 
-### 💎 Proposta de Valor
+### Proposta de Valor
 
 - **Centralização:** Dashboard único para Cursos, Prazos e Notas
 - **Contexto:** Navegação inteligente que entende a estrutura do AVA
@@ -31,13 +31,13 @@ Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o
 
 ---
 
-## ✨ Funcionalidades Principais
+## Funcionalidades Principais
 
-### 🔐 Autopreenchimento & Acesso
+### Autopreenchimento & Acesso
 *   **Login Facilitado**: Configuração de RA e domínio para preenchimento automático no SEI e outros sistemas.
 *   **Acesso Rápido**: Links diretos para Portal SEI, AVA, Área do Aluno e Sistema de Provas via Popup.
 
-### 📚 Gestão de Cursos (Painel Lateral)
+### Gestão de Cursos (Painel Lateral)
 *   **Side Panel Dedicado**: Navegue pelos seus cursos sem sair da página atual.
 *   **Organização Personalizada**: Adicione, remova e organize sua lista de matérias.
 *   **Importação Inteligente**:
@@ -45,22 +45,22 @@ Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o
     *   **Manual**: Adicione cursos específicos manualmente.
     *   **Aba Atual**: Salve o curso que você está navegando com um clique.
 
-### ⚡ Produtividade
+### Produtividade
 *   **Navegação Otimizada**: Interface limpa e focada no conteúdo.
 *   **Foco no Aluno**: Ferramentas pensadas para reduzir o atrito no uso das plataformas da universidade.
 
-### 🛡️ Segurança e Qualidade
+### Segurança e Qualidade
 *   **Tipagem Estática (JSDoc)**: Segurança de tipos sem TypeScript - utilizamos JSDoc Strict com validação em tempo de desenvolvimento.
 *   **3 Camadas de Proteção:**
-    *   🔒 Secretlint - Detecta API keys, tokens, passwords
-    *   🔒 npm audit - Bloqueia CVE high/critical
-    *   🔒 ESLint Security - Anti-injection, anti-XSS, anti-eval
+    *  Secretlint - Detecta API keys, tokens, passwords
+    *  npm audit - Bloqueia CVE high/critical
+    *  ESLint Security - Anti-injection, anti-XSS, anti-eval
 *   **Logging Estruturado**: Sistema centralizado de logs com tags semânticas para auditoria e debug eficiente.
 *   **Zero Erros**: Política de 0 erros de lint, 0 warnings e 0 erros de tipagem em código de produção.
 
 ---
 
-## 🛠️ Stack Tecnológica
+## Stack Tecnológica
 
 - **Core:** JavaScript (ES2024), Manifest V3 (Vanilla JS, sem frameworks de build complexos).
 - **Runtime:** Node.js v24.12.x (Current).
@@ -70,7 +70,7 @@ Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o
 
 ---
 
-## 🚀 Como Instalar (Modo Desenvolvedor)
+## Como Instalar (Modo Desenvolvedor)
 
 1.  **Clone este repositório** ou baixe o código fonte:
     ```bash
@@ -83,20 +83,20 @@ Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o
 
 ---
 
-## 📖 Documentação do Projeto
+## Documentação do Projeto
 
 Mantemos uma documentação rigorosa e detalhada para garantir a qualidade e a continuidade do projeto.
 
 | Documento | Descrição |
 | :--- | :--- |
 | **[️ Arquitetura](./docs/TECNOLOGIAS_E_ARQUITETURA.md)** | Stack tecnológica, diagramas e decisões de arquitetura. |
-| **[⚙️ Workflow](./docs/FLUXOS_DE_TRABALHO.md)** | Guia de contribuição, padrões de Git e Code Review. |
-| **[📜 Regras](./docs/REGRAS_DE_NEGOCIO.md)** | Especificações funcionais e lógica de negócios detalhada. |
-| **[📏 Padrões](./docs/PADROES.md)** | Style guides, linter, padrões de commit e qualidade de código. |
+| **[Workflow](./docs/FLUXOS_DE_TRABALHO.md)** | Guia de contribuição, padrões de Git e Code Review. |
+| **[Regras](./docs/REGRAS_DE_NEGOCIO.md)** | Especificações funcionais e lógica de negócios detalhada. |
+| **[Padrões](./docs/PADROES.md)** | Style guides, linter, padrões de commit e qualidade de código. |
 
 ---
 
-## 🛠️ Comandos para Desenvolvimento
+## Comandos para Desenvolvimento
 
 Este projeto utiliza **Node.js** e **npm** para scripts de qualidade e automação.
 
@@ -126,14 +126,14 @@ npm run lint:fix     # Corrige erros automaticamente
 npm run format       # Formata código (Prettier)
 ```
 
-**⚡ Performance:** Pre-commit otimizado (~16s - apenas testes relacionados aos arquivos alterados)
+**Performance:** Pre-commit otimizado (~16s - apenas testes relacionados aos arquivos alterados)
 
 > **Nota:** Seguimos a metodologia **"Screaming Architecture"** e **"Zero Warnings"** no Linter.
 
 ---
 
-## 📄 Licença & Aviso Legal
+## Licença & Aviso Legal
 
 Este projeto é distribuído sob a licença **MIT**.
 
-> ⚠️ **Aviso:** Este é um projeto independente desenvolvido por alunos e **NÃO possui vínculo oficial** com a Universidade Virtual do Estado de São Paulo (UNIVESP).
+> **Aviso:** Este é um projeto independente desenvolvido por alunos e **NÃO possui vínculo oficial** com a Universidade Virtual do Estado de São Paulo (UNIVESP).
