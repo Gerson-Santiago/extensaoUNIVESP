@@ -30,6 +30,10 @@ Seguindo a visão de produto maduro, estas não são regras de negócio, mas aju
   - Ao carregar um curso, verificar no `storage` qual foi o último `weekNumber` expandido.
   - Se ativado, acionar o evento de expansão automaticamente.
 
+### 3. Type Safety (ADR-000-B, Issue-031)
+- Definir `@typedef UserPreferences` com todas as chaves de configuração.
+- Validar valores de storage antes de aplicar (ex: `density` deve ser `'compact' | 'comfortable'`).
+
 ---
 
 ## ✅ Critérios de Aceite

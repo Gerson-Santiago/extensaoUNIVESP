@@ -20,6 +20,9 @@ Dar ao usuário o controle de *quando* a extensão deve atuar. Atualmente os scr
     - Se "off", o `CourseRefresher` e os `InitialScrapers` devem abortar a execução automática.
     - O feedback visual (seletor de semanas) ainda deve aparecer, mas os dados só serão atualizados se o botão `Refresh` for clicado manualmente.
 
+### 🛡️ Segurança (ADR-000-B, Issue-031)
+- **Type Safety:** Validar que a flag de automação é `boolean` antes de usar (evitar truthy coercion acidental).
+
 ---
 
 ## ✅ Critérios de Aceite

@@ -19,5 +19,8 @@ Os Navigation Chips na `DetailsActivitiesWeekView` não mantêm a persistência 
 - **Abas Ativas como Fonte**: Em vez de um histórico manual, os chips representam as **Abas do AVA abertas agora**.
 - **Persistent Store Manager**: Retirar a lógica do `HistoryService` de dentro da View e movê-la para um `BackgroundService`.
 
+### 🛡️ Segurança (Issue-028)
+- Ao persistir histórico de navegação, usar **versionamento** para evitar race conditions entre múltiplas janelas/dispositivos.
+
 ---
 *Relacionado ao Débito Técnico: [Breadcrumb como Estado Global](../TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md)*

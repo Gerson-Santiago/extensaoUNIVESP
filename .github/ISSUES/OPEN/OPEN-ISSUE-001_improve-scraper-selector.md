@@ -95,6 +95,10 @@ paletteData = [
 
 **Conclusão:** A estrutura `paletteItem` é **confiável** e **rica em dados**.
 
+### 🛡️ Segurança (ADR-012)
+- **XSS Prevention:** Ao extrair `title` e `href`, usar `textContent` (não `innerHTML`) para evitar injeção de scripts.
+- **URL Validation:** Validar que `href` começa com `/` ou domínio confiável (`ava.univesp.br`) antes de armazenar.
+
 ---
 
 ## 🛠️ Implementação Proposta

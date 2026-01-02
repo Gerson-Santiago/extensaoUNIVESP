@@ -38,6 +38,11 @@ Atualmente o `BackupService` realiza um dump bruto do `chrome.storage.local`. Em
 - Definir tipos JSDoc para `BackupPayload`, `SettingsConfig` e `CourseData`.
 - Remover qualquer uso de `any` ou `unknown` na camada de lógica.
 
+### 4. 🛡️ Segurança (ADR-012)
+- **Validação de Injection:** Ao restaurar backup, validar que o JSON não contenha scripts ou payloads maliciosos (ex: valores com `<script>`).
+- **Sanitização:** Usar `JSON.parse` com schema validation (ex: verificar se todas as chaves esperadas existem e possuem tipos corretos).
+- **Fail-Safe:** Em caso de falha na importação, o storage original NÃO deve ser corrompido (usar transação simulada: ler, validar, escrever OU reverter).
+
 ---
 
 ## ✅ Critérios de Aceite (Critérios de Sucesso)

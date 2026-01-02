@@ -88,6 +88,10 @@ Contagem aproximada de estruturas de controle no codebase (excluindo libs extern
 - Estamos acoplando regras de negócio com controle técnico?
 - O controle pertence à borda ou ao núcleo?
 
+### 9.5. 🛡️ Segurança (ADR-012)
+- Este `if` valida entrada não confiável (ex: dados do AVA, user input)?
+- A condição pode ser manipulada por um atacante (ex: truthy coercion com `""` ou `0`)?
+
 ### 10. Teste de Essencialidade
 - Se removermos o bloco, qual comportamento essencial o sistema perde?
 

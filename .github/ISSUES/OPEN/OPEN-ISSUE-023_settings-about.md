@@ -22,6 +22,10 @@ Implementar o bloco "Sobre" das configurações para dar transparência à vers�
 3.  **Diagnóstico (Logs)**:
     - Adicionar um toggle "Habilitar modo de diagnóstico" que altere uma flag no storage local. Se ativado, o `Logger.js` deve exibir mensagens mesmo em ambiente de produção (ajuda o usuário a nos enviar prints do erro).
 
+### 🛡️ Segurança (ADR-012, Issue-030)
+- **Rendering:** Se exibir versão ou URLs dinamicamente, usar `textContent` (não `innerHTML`).
+- **Logs:** Garantir que logs de diagnóstico não exponham tokens ou dados sensíveis do usuário.
+
 ---
 
 ## ✅ Critérios de Aceite
