@@ -1,4 +1,5 @@
 import { HomeView } from '../ui/HomeView.js';
+import { AppLinks } from '../../../shared/constants/AppLinks.js';
 
 describe('HomeView - Renderização', () => {
   let homeView;
@@ -77,7 +78,7 @@ describe('HomeView - Renderização', () => {
 
     // Assert (Verificar)
     const provaLink = Array.from(element.querySelectorAll('a')).find(
-      (a) => a.href === 'https://prova.univesp.br/'
+      (a) => a.href === AppLinks.PROVAS_HOME
     );
     expect(provaLink).toBeTruthy();
   });

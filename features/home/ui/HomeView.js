@@ -1,5 +1,7 @@
 import { Tabs } from '../../../shared/utils/Tabs.js';
 
+import { AppLinks } from '../../../shared/constants/AppLinks.js';
+
 export class HomeView {
   constructor(callbacks) {
     this.addCurrentPageCallback = callbacks.onAddCurrentInfo;
@@ -13,21 +15,23 @@ export class HomeView {
             <div class="quick-access-section">
                 <h3>Acesso Rápido</h3>
                 <div class="quick-links-grid">
-                    <a href="https://sei.univesp.br/index.xhtml" 
+                    <a href="${AppLinks.SEI_HOME}" 
                        data-match-pattern="sei.univesp.br"
                        class="link-card js-smart-link">
+                        <img src="../assets/icon_sei.png" alt="SEI" class="bb-icon">
                         Portal SEI
                     </a>
-                    <a href="https://ava.univesp.br/ultra/course" 
+                    <a href="${AppLinks.AVA_HOME}" 
                        data-match-pattern="ultra/course"
                        class="link-card blackboard-card js-smart-link">
                         <img src="../assets/icon_blackboard.png" alt="Blackboard" class="bb-icon">
                         AVA (Cursos)
                     </a>
-                    <a href="https://univesp.br/acesso_aluno.html" class="link-card js-smart-link">
+                    <a href="${AppLinks.ALUNO_HOME}" class="link-card js-smart-link">
+                        <img src="../assets/logo_univesp.png" alt="UNIVESP" class="bb-icon univesp-logo">
                         Área do Aluno
                     </a>
-                    <a href="https://prova.univesp.br/" class="link-card js-smart-link">
+                    <a href="${AppLinks.PROVAS_HOME}" class="link-card js-smart-link">
                         Sistema de Provas
                     </a>
                 </div>
