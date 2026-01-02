@@ -1,26 +1,53 @@
-# ISSUE: Ciclo de Vida dos Navigation Chips (v2.9.1 Bug)
+# 🐛 ISSUE-003: Navigation Chips - Ciclo de Vida e Histórico
 
-**Status:** Aberto | **Gravidade:** Média | **Contexto:** UX / Navegação
-
-### 🎯 O Bug
-Os Navigation Chips na `DetailsActivitiesWeekView` não mantêm a persistência e o comportamento esperado de "histórico recente". 
-
-**Causa Raiz:**
-1. **Identificação Frágil:** O `courseId` usado como chave no storage flutua entre `id` real e `courseName`, gerando históricos fragmentados.
-2. **Contexto Volátil:** O `ChipsManager` vive dentro da View. Ao alternar entre semanas, o estado muitas vezes não sobrevive à destruição/recriação do componente.
-3. **Redundância de Navegação:** O sistema muitas vezes tenta re-abrir abas que já estão abertas via `Tabs.js`, sem sincronizar o estado visual do chip com a aba ativa.
-
-### 💡 O que ganharemos corrigindo?
-- **Navegação "Instantânea"**: O aluno pode saltar entre Semana 1, 2 e 5 sem ter que voltar para a Home.
-- **Memória de Longo Prazo**: Se o aluno fechar a extensão e abrir de novo, os chips dos últimos acessos daquela matéria estarão lá.
-
-### 🚀 Sugestão de "Outra Forma" (v3.0.0 - O Chip Musculoso)
-- **Navegação Sincronizada (Bidirecional)**: O Chip não apenas abre a aba; ele "move" a extensão para a view correta. Ao clicar num chip de "Inglês - Semana 2", a extensão troca seu estado interno para exibir as atividades daquela semana, enquanto o Chrome foca na aba correspondente.
-- **Abas Ativas como Fonte**: Em vez de um histórico manual, os chips representam as **Abas do AVA abertas agora**.
-- **Persistent Store Manager**: Retirar a lógica do `HistoryService` de dentro da View e movê-la para um `BackgroundService`.
-
-### 🛡️ Segurança (Issue-028)
-- Ao persistir histórico de navegação, usar **versionamento** para evitar race conditions entre múltiplas janelas/dispositivos.
+**Status:** 📋 Aberta  
+**Prioridade:** 🟡 Média  
+**Componente:** `ContextualChips`, `NavigationService`  
+**Versão:** v2.10.0
 
 ---
-*Relacionado ao Débito Técnico: [Breadcrumb como Estado Global](../TECH_DEBT/TECH_DEBT-breadcrumb-estado-global.md)*
+
+## 🎯 Objetivo
+Corrigir bugs de persistência e sincronização dos chips de navegação contextual, garantindo que o histórico de cursos visitados seja mantido corretamente e limpo ao trocar de abas.
+
+## 📖 Contexto
+Os chips mostram as últimas semanas visitadas pelo usuário. Atualmente há problemas:
+1. Chips desaparecem após reload da página
+2. Estado não sincroniza entre abas diferentes
+3. Identificação de curso/semana flutua (não usa `courseId` consistente)
+
+### 🛡️ MV3 Compliance (Relatório - Seção 4.3)
+- **Context Separation:** O painel lateral deve gerenciar estado por aba usando `chrome.tabs.onActivated`.
+- **Risk:** Mostrar chips da "Semana 1" quando usuário está em outra aba = vaz amento de contexto.
+- **Relacionado:** Issue-038 (sidePanel UX Compliance)
+
+---
+
+## 🔧 Plano de Ação
+
+### 1. Persistência via Storage (Issue-028)
+- Usar `chrome.storage.local` com versionamento otimista
+- Salvar array de `{courseId, weekId, timestamp}` a cada navegação
+
+### 2. Sincronização entre Abas
+- Listener `chrome.tabs.onActivated` para detectar troca de aba
+- Limpar ou atualizar chips se aba atual não é AVA UNIVESP
+
+### 3. Identificação Consistente
+- Garantir que `courseId` é extraído do URL (não do título da página)
+- Usar regex consistente com `WEEK_IDENTIFIER_REGEX`
+
+---
+
+## ✅ Critérios de Aceite (v2.10.0)
+
+- [ ] **Persistência:** Chips sobrevivem a `chrome.runtime.reload()`.
+- [ ] **Context Management:** Ao trocar de aba (AVA → Gmail), chips desaparecem ou mostram "Nenhum curso ativo".
+- [ ] **Identificação:** Mesmo curso sempre gera mesmo `courseId` (não flutua).
+- [ ] **Storage Compliance:** Usa versionamento (Issue-028 pattern).
+- [ ] **Testes:** Cenário de "trocar aba + reabrir sidePanel" funciona corretamente.
+
+---
+
+**Tags:** `//ISSUE-chips-lifecycle` | **Sprint:** v2.10.0  
+**Relacionado:** Issue-028 (Storage), Issue-038 (sidePanel MV3)
