@@ -1,6 +1,6 @@
 {
   "manifest_version": 3,
-  "name": "AutoPreencher UNIVESP",
+  "name": "Central Univesp",
   "version": "2.9.7",
   "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos, Navegação Inteligente no AVA e Autopreenchimento SEI.",
   "permissions": ["storage", "sidePanel", "scripting", "tabs", "activeTab", "downloads"],

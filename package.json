@@ -1,5 +1,5 @@
 {
-  "name": "univesp-extension",
+  "name": "central-univesp",
   "version": "2.9.7",
   "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos e Navegação Inteligente no AVA.",
   "main": "popup/popup.js",
@@ -38,7 +38,7 @@
     "precommit": "npm run security:secrets && lint-staged"
   },
   "author": "Gerson Santiago",
-  "license": "ISC",
+  "license": "MIT",
   "engines": {
     "node": "24.12.0",
     "npm": "11.6.4"
