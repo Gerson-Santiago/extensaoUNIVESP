@@ -1,53 +1,56 @@
-# AutoPreencher UNIVESP (Extensão Chrome)
+# Central Univesp
+> **Sua central de comando para a faculdade.** 
+> Uma nova forma de navegar na UNIVESP.
 
-> **Versão Atual**: v2.9.6
-> **Descrição**: Ferramenta de produtividade Open Source para alunos da UNIVESP.
-
-![Version](https://img.shields.io/badge/version-2.9.6-blue)
+![Version](https://img.shields.io/badge/version-2.9.7-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 
-## Sobre o Projeto
+## De Aluno para Aluno
+> **Aviso:** Projeto independente, **sem vínculo oficial** com a UNIVESP.
 
-O **AutoPreencher UNIVESP** é uma extensão de navegador desenvolvida **de aluno para aluno** com o objetivo de otimizar a rotina acadêmica. A extensão centraliza ferramentas de produtividade, facilita a navegação no Ambiente Virtual de Aprendizagem (AVA) e automatiza tarefas repetitivas.
+A **Central Univesp** é uma extensão open-source desenvolvida **de aluno para aluno** com um único objetivo: eliminar o atrito entre você e seu diploma.
 
-### Missão
+Não somos um produto. Somos uma solução comunitária para resolver as dores reais da experiência de estudante na UNIVESP.
 
-Prover uma interface unificada e eficiente para gestão acadêmica, eliminando o atrito de navegação em sistemas legados e devolvendo tempo de estudo ao aluno.
+A ferramenta atua como um **Andaime Cognitivo** (*Cognitive Scaffolding*), organizando o ambiente virtual para que você gaste energia estudando, não clicando.
 
-### Princípios Norteadores
+## O Problema (As Dores do Aluno)
 
-1. **Soberania de Dados (Local-First):** Privacidade absoluta - dados sensíveis nunca deixam a máquina do usuário. O sistema funciona sem dependência de backends proprietários.
+Se você estuda na UNIVESP, provavelmente enfrenta estes 3 pesadelos diários:
 
-2. **Ética na Automação:** A ferramenta automatiza o *acesso* e *organização*, jamais o *consumo* de conteúdo educacional (não assiste aulas pelo aluno).
-
-3. **Excelência Técnica:** Tratamos este projeto open-source com rigor de software enterprise (Testes, CI/CD, Arquitetura Limpa).
-
-### Proposta de Valor
-
-- **Centralização:** Dashboard único para Cursos, Prazos e Notas
-- **Contexto:** Navegação inteligente que entende a estrutura do AVA
-- **Performance:** Interface instantânea, sem refresh de página
+1.  **Navegação Labiríntica**: Para chegar na atividade da "Semana 4" de uma matéria, você precisa de ~5 cliques, abrir 3 abas e esperar carregamentos lentos. Multiplique isso por 5 matérias.
+2.  **Poluição Visual**: O AVA (Blackboard) tem menus redundantes, cabeçalhos gigantes e informações que distraem, dificultando a leitura do texto que importa.
+3.  **Login Repetitivo**: Digitar RA e selecionar domínio toda vez que entra no sistema quebra o ritmo.
 
 ---
 
-## Funcionalidades Principais
+## A Solução (Como a Extensão Resolve)
 
-### Autopreenchimento & Acesso
-*   **Login Facilitado**: Configuração de RA e domínio para preenchimento automático no SEI e outros sistemas.
-*   **Acesso Rápido**: Links diretos para Portal SEI, AVA, Área do Aluno e Sistema de Provas via Popup.
+A **Central Univesp** resolve essas dores tratando o sistema como ele deveria ser:
 
-### Gestão de Cursos (Painel Lateral)
-*   **Side Panel Dedicado**: Navegue pelos seus cursos sem sair da página atual.
-*   **Organização Personalizada**: Adicione, remova e organize sua lista de matérias.
-*   **Importação Inteligente**:
-    *   **Em Lote**: Importe múltiplos cursos de uma vez.
-    *   **Manual**: Adicione cursos específicos manualmente.
-    *   **Aba Atual**: Salve o curso que você está navegando com um clique.
+### 1. Fim do "Labirinto" (Painel Lateral & Índice)
+Trazemos a estrutura do curso **para fora** do site.
+*   **Antes**: Entrar na matéria > Procurar pasta > Abrir pasta > Rolar página.
+*   **Com a Extensão**: Um Painel Lateral fixo mostra suas matérias e semanas. Clique na "Semana 3" e vá direto para ela.
+*   **Ganho**: Troca de contexto instantânea entre matérias.
 
-### Produtividade
-*   **Navegação Otimizada**: Interface limpa e focada no conteúdo.
-*   **Foco no Aluno**: Ferramentas pensadas para reduzir o atrito no uso das plataformas da universidade.
+### 2. Leitura Limpa (Visual Clean)
+A extensão injeta CSS que:
+*   Remove menus laterais inúteis do Blackboard.
+*   Foca o conteúdo real (texto/vídeo) no centro da tela.
+*   Aumenta a legibilidade para você não cansar a vista.
+
+### 3. Login Vapt-Vupt (Autopreenchimento)
+*   **Configuração Única**: Você salva seu RA na extensão.
+*   **A mágica**: A extensão monta seu e-mail institucional (ex: `12345@aluno.univesp.br`) e preenche o campo de login automaticamente.
+*   **Segurança**: Você só precisa digitar sua senha. Nunca salvamos sua senha.
+
+### Outras Dores Resolvidas
+*   **"Eu já fiz isso?"**: Checkboxes visuais no Painel Lateral para você marcar as semanas concluídas (o AVA não mostra isso claramente).
+*   **Abas Infinitas**: O sistema "Abas Únicas" (Singleton) impede que você abra a mesma matéria 10 vezes sem querer. Se já está aberta, a extensão te leva para lá.
+
+---
 
 ### Segurança e Qualidade
 *   **Tipagem Estática (JSDoc)**: Segurança de tipos sem TypeScript - utilizamos JSDoc Strict com validação em tempo de desenvolvimento.
