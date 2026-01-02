@@ -1,6 +1,6 @@
 # ADR 012: Security-First Development (Addendum)
 
-**Status:** Proposto  
+**Status:** Aceito  
 **Data:** 02/01/2026  
 **Contexto:** Audit de segurança revelou que os ADRs atuais não mencionam explicitamente práticas anti-XSS, validação de entrada ou CSP.
 
