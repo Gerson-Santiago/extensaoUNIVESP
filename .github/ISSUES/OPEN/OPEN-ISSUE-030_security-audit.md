@@ -88,6 +88,12 @@ O ataque segue o fluxo: **AVA DOM (Hostil) → BatchScraper → Storage → View
 2. Banir `innerHTML` para dados variáveis.
 3. Usar `textContent` ou `DOMSafe.escapeHTML()`.
 
+## 🏗️ Status de Implementação
+
+**Commit Base:** `7ebd3b0` feat(security): implementa DOMSafe sanitization e mitigação XSS em Activity/Modal
+
+O trabalho inicial de sanitização do DOM já foi realizado, cobrindo os componentes críticos listados acima. A issue permanece ABERTA para cobrir a auditoria final e testes de regressão.
+
 ---
 
 ## 🛠️ Plano de Ação: "DOM Seguro"
