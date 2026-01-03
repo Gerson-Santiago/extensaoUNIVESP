@@ -156,9 +156,9 @@ npm test tests/unit/features/courses/logic/WeekOrdering.test.js
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A  
-- **Link:** Issue local concluída
-- **Data:** -
+- **Status:** 🔒 Published (Closed)
+- **Link:** [Issue #18](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/18)
+- **Data:** 2026-01-03
 
 ---
 

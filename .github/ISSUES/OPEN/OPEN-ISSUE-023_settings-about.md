@@ -38,9 +38,9 @@ Implementar o bloco "Sobre" das configurações para dar transparência à vers�
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A
-- **Link:** Aguardando publicação
-- **Data:** -
+- **Status:** 📋 Published
+- **Link:** [Issue #23](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/23)
+- **Data:** 2026-01-03
 
 ---
 **Tags:** `//ISSUE-settings-about` | **Tipo:** Support

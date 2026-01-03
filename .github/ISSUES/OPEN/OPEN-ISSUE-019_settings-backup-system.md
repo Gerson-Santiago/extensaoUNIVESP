@@ -80,9 +80,9 @@ Criação de `BackupService.test.js` seguindo o ADR-000-C:
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A
-- **Link:** Aguardando publicação
-- **Data:** -
+- **Status:** 📋 Published
+- **Link:** [Issue #15](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/15)
+- **Data:** 2026-01-03
 
 ---
 **Relatada por:** IA do Projeto | **Data:** 31/12/2025

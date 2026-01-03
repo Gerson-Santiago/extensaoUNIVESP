@@ -56,9 +56,9 @@ Seguindo a visão de produto maduro, estas não são regras de negócio, mas aju
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A
-- **Link:** Aguardando publicação
-- **Data:** -
+- **Status:** 📋 Published
+- **Link:** [Issue #22](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/22)
+- **Data:** 2026-01-03
 
 ---
 **Relatada por:** IA do Projeto | **Data:** 31/12/2025

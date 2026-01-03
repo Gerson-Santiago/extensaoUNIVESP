@@ -64,9 +64,9 @@ Permite baixar PDFs de material didático (restrito a .pdf, .docx).
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A
-- **Link:** Aguardando publicação
-- **Data:** -
+- **Status:** 📋 Published
+- **Link:** [Issue #24](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/24)
+- **Data:** 2026-01-03
 
 ---
 **Tags:** `//ISSUE-mv3-permissions` | **Tipo:** Compliance/Security

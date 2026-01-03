@@ -43,9 +43,9 @@ A CWS rejeita extensões que parecem "canivetes suíços". Nossa extensão possu
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A
-- **Link:** Aguardando publicação
-- **Data:** -
+- **Status:** 📋 Published
+- **Link:** [Issue #17](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/17)
+- **Data:** 2026-01-03
 
 ---
 **Tags:** `//ISSUE-mv3-compliance` | **Tipo:** Governance/Compliance

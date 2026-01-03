@@ -76,9 +76,9 @@ Atualizar seção de instalação se houver mudanças.
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A
-- **Link:** Aguardando publicação
-- **Data:** -
+- **Status:** 📋 Published
+- **Link:** [Issue #16](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/16)
+- **Data:** 2026-01-03
 
 ---
 **Tags:** `//ISSUE-release-docs` | **Tipo:** Documentation  

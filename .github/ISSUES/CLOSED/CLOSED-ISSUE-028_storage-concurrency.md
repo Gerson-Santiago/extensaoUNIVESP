@@ -149,9 +149,9 @@ Como simular concorrência localmente?
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A  
-- **Link:** Issue local concluída
-- **Data:** -
+- **Status:** 🔒 Published (Closed)
+- **Link:** [Issue #20](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/20)
+- **Data:** 2026-01-03
 
 ---
 **Relatada por:** Auditoria Estratégica | **Data:** 01/01/2026

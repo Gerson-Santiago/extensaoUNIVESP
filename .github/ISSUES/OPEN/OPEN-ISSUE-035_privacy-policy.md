@@ -71,9 +71,9 @@ Estrutura obrigatória:
 
 ## 🔗 GitHub Issue
 
-- **Status:** N/A
-- **Link:** Aguardando publicação
-- **Data:** -
+- **Status:** 📋 Published
+- **Link:** [Issue #25](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/25)
+- **Data:** 2026-01-03
 
 ---
 **Tags:** `//ISSUE-mv3-privacy` | **Tipo:** Legal/Compliance
