@@ -25,6 +25,23 @@ STATUS-ISSUE-XXX_slug-descritivo.md
 - `OPEN-ISSUE-025_coverage-batch-import.md`
 - `CLOSED-ISSUE-002_missing-revision-week.md`
 
+## ⚠️ Numeração Local vs GitHub
+
+**Importante:** A numeração local é **independente** da numeração do GitHub:
+
+- **Issues Locais (ISSUE-XXX)**: Números 001-040+ (roadmap interno)
+- **GitHub Issues (#N)**: Números automáticos do GitHub (já existem #1-#10 de infraestrutura)
+
+**Exemplo de Mapeamento:**
+```
+ISSUE-019 (local) → #11 (GitHub)
+ISSUE-021 (local) → #12 (GitHub)
+```
+
+> [!NOTE]
+> Use o campo **🔗 GitHub Issue** em cada arquivo `.md` para vincular os dois sistemas.
+> Nos commits, mencione ambos quando aplicável: `refs ISSUE-019 #11`
+
 ## 🔄 Fluxo de Trabalho (Workflow)
 
 1.  **Criar**: Crie o arquivo na pasta `OPEN/` com o prefixo `OPEN-`.
@@ -68,10 +85,16 @@ Quando uma issue for publicada no GitHub, adicione ao `.md`:
 ```markdown
 ## 🔗 GitHub Issue
 
+- **Número Local:** ISSUE-019
+- **Número GitHub:** #11 (numeração automática do GitHub)
 - **Status:** Criada | Concluída | Cancelada
-- **Link:** [#42](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/42)
+- **Link:** [extensaoUNIVESP#11](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/11)
 - **Data:** YYYY-MM-DD
 ```
+
+> [!TIP]
+> O número do GitHub será diferente do número local porque já existem #1-#10 criadas anteriormente.
+> Sempre anote AMBOS os números para facilitar rastreamento.
 
 ### Quando Criar no GitHub?
 
