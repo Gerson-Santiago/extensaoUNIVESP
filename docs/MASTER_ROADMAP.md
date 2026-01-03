@@ -13,9 +13,9 @@
 - **Dia 1-2**: **SPEC-001** (DOM Safe Refactoring)
   - Refatorar 11 arquivos críticos (Modal, Views, Factory).
   - Implementar `DOMSafe.js`.
-- **Dia 3-4**: **SPEC-004** (Storage Concurrency)
-  - Implementar `StorageGuard.js` e atualizar Repositories.
-  - Testes de concorrência.
+- ~~**Dia 3-4**: **SPEC-004** (Storage Concurrency)~~ ✅ **CONCLUÍDO (03/01/2026)**
+  - ~~Implementar `StorageGuard.js` e atualizar Repositories.~~ ✅
+  - ~~Testes de concorrência.~~ ✅
 - **Dia 5**: Testes de Segurança + **SPEC-002** (Single Purpose) + **SPEC-003** (Content Scripts).
 
 ### Semana 2: Compliance Final (3-6 dias)
@@ -34,7 +34,7 @@
 - Features "Nice to have" de UI.
 
 ## ✅ Milestones
-- [ ] **M1 (Dia 5)**: Codebase Seguro (Zero XSS, Zero Race Conditions).
+- [/] **M1 (Dia 5)**: Codebase Seguro (Zero XSS 🏃, ~~Zero Race Conditions~~ ✅).
 - [ ] **M2 (Dia 8)**: Compliance Administrativa (Docs prontos).
 - [ ] **M3 (Dia 11)**: Pacote Final (Zipado e testado).
 - [ ] **M4 (Dia 12)**: Publicado.
