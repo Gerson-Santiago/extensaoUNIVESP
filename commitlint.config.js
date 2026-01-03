@@ -54,7 +54,7 @@ module.exports = {
               if (!found) {
                 errors.push(`ISSUE-${paddedNum} não encontrada em .github/ISSUES/`);
               }
-            } catch (err) {
+            } catch {
               // Se houver erro na leitura, aceitar (não bloquear commit)
               return [true];
             }
