@@ -1,5 +1,5 @@
 # Relatórios de Conformidade ADR
-Audit: 2026-01-02 (v2.9.7+) | Status: APROVADO
+Audit: 2026-01-02 (v2.10.0-prep) | Status: APROVADO
 
 ## Fundamentos (Série 000)
 - **000-A Screaming Architecture**: ✅ OK (features/ organizados)
@@ -19,3 +19,7 @@ Audit: 2026-01-02 (v2.9.7+) | Status: APROVADO
 - **010 Future Proof Config**: ✅ OK (Sync/Local strategy)
 - **011 Settings Product Vision**: ✅ OK (Estrutura de 4 blocos - v2.10.x)
 - **012 Security-First**: ✅ OK (Validação de entrada, SafeResult, tipo-segurança)
+- **013 Manifest V3 Strategy**: 🟡 EM IMPLEMENTAÇÃO (Service Worker, sidePanel API)
+- **014 Relative Imports**: ✅ OK (Imports relativos em uso)
+- **015 Protected Branches**: 🟡 PARCIAL (Git Flow via workflow, falta proteção técnica)
+- **016 Definition of Done**: 🟡 EM ADOÇÃO (Critérios definidos, falta enforcement)
