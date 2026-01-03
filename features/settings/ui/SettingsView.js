@@ -1,16 +1,20 @@
-// Courses imports removed - Event-Driven Decoupling
-// Events emitted: 'request:add-manual-course', 'request:scrape-current-tab'
 import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
 import { ConfigForm } from '../components/ConfigForm.js';
 import { Logger } from '../../../shared/utils/Logger.js';
+import { SettingsController } from '../logic/SettingsController.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {
     this.onNavigate = callbacks.onNavigate;
-    this.onImportBatch = callbacks.onImportBatch; // Callback for Batch Import
+    this.onImportBatch = callbacks.onImportBatch;
     this.feedback = new Toaster('settingsFeedback');
     this.configForm = new ConfigForm(new Toaster('configFeedback'));
-    // Removed: CourseService, AddManualModal - delegated via events
+
+    // Initialize Controller with dependencies
+    this.controller = new SettingsController({
+      toaster: this.feedback,
+      logger: Logger,
+    });
   }
 
   render() {
@@ -132,7 +136,6 @@ export class SettingsView {
 
     if (btnManual) {
       btnManual.onclick = () => {
-        // Emit event instead of opening modal directly
         window.dispatchEvent(
           new CustomEvent('request:add-manual-course', {
             detail: { source: 'settings' },
@@ -158,24 +161,42 @@ export class SettingsView {
     const btnExport = document.getElementById('btnExport');
     const btnImport = document.getElementById('btnImport');
 
-    if (btnExport) btnExport.onclick = () => this.handleExport();
-    if (btnImport) btnImport.onclick = () => this.handleImport();
+    if (btnExport) btnExport.onclick = () => this.controller.handleExport();
+    if (btnImport) btnImport.onclick = () => this.triggerImport();
   }
 
   async handleClearAll() {
-    if (
-      confirm(
-        'Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.'
-      )
-    ) {
-      window.dispatchEvent(new CustomEvent('request:clear-all-courses'));
-      // Feedback will be handled by the orchestrator (sidepanel)
-      // or we can expect a global reload.
-    }
+    window.dispatchEvent(
+      new CustomEvent('request:clear-all-courses', {
+        detail: { source: 'settings' },
+      })
+    );
+  }
+
+  /**
+   * Triggers the file selection dialog for Import.
+   */
+  triggerImport() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.style.display = 'none';
+
+    input.onchange = (e) => {
+      const file = /** @type {HTMLInputElement} */ (e.target).files?.[0];
+      if (file) {
+        this.controller.handleImport(file);
+      }
+    };
+
+    document.body.appendChild(input);
+    input.click();
+
+    // Clean up
+    setTimeout(() => document.body.removeChild(input), 1000);
   }
 
   handleAddCurrent() {
-    // Emit event instead of calling CourseService directly
     window.dispatchEvent(
       new CustomEvent('request:scrape-current-tab', {
         detail: { source: 'settings' },
@@ -183,53 +204,6 @@ export class SettingsView {
     );
   }
 
-  async handleExport() {
-    try {
-      const { BackupService } = await import('../services/BackupService.js');
-      await BackupService.exportData();
-      this.feedback.show('Backup iniciado! Verifique seus downloads.', 'success');
-    } catch {
-      this.feedback.show('Erro ao criar backup.', 'error');
-    }
-  }
-
-  async handleImport() {
-    try {
-      const { BackupService } = await import('../services/BackupService.js');
-
-      const file = await BackupService.triggerFileUpload();
-      const reader = new FileReader();
-
-      reader.onload = async (e) => {
-        try {
-          const json = /** @type {string} */ (e.target.result);
-          const result = await BackupService.importData(json);
-          this.feedback.show(`Dados restaurados! (${result.keyCount} registros)`, 'success');
-
-          // Recarregar app após 2s
-          setTimeout(() => window.location.reload(), 2000);
-        } catch (err) {
-          /**#LOG_UI*/
-          Logger.error('SettingsView', 'Erro na leitura do backup:', err);
-          this.feedback.show('Arquivo de backup inválido.', 'error');
-        }
-      };
-
-      reader.readAsText(file);
-    } catch {
-      // Cancelado pelo usuário
-    }
-  }
-
-  /**
-   * Initialize chips settings UI and listeners
-   */
-  /**
-   * Initialize chips settings UI and listeners
-   */
-  /**
-   * Initialize chips settings UI and listeners
-   */
   async initChipsSettings() {
     const checkbox = /** @type {HTMLInputElement|null} */ (document.getElementById('chipsEnabled'));
     const slider = /** @type {HTMLInputElement|null} */ (document.getElementById('chipsMaxItems'));
@@ -266,9 +240,6 @@ export class SettingsView {
     });
   }
 
-  /**
-   * Initialize UI feature flags settings
-   */
   async initUISettings() {
     const advBtn = /** @type {HTMLInputElement|null} */ (
       document.getElementById('showAdvancedButtons')
@@ -302,10 +273,6 @@ export class SettingsView {
     tasksBtn.addEventListener('change', save);
   }
 
-  /**
-   * Load chips settings from storage
-   * @returns {Promise<{enabled: boolean, maxItems: number}>}
-   */
   async loadChipsSettings() {
     const result = await chrome.storage.local.get('chips_settings');
     return /** @type {{enabled: boolean, maxItems: number}} */ (
@@ -313,9 +280,6 @@ export class SettingsView {
     );
   }
 
-  /**
-   * Save chips settings to storage
-   */
   async saveChipsSettings(settings) {
     await chrome.storage.local.set({ chips_settings: settings });
     /**#LOG_UI*/

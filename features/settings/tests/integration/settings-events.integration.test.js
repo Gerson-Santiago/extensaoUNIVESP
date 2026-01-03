@@ -96,7 +96,7 @@ describe('Integração: Desacoplamento de Eventos de Settings', () => {
       await clearBtn.click();
 
       // Assert
-      expect(window.confirm).toHaveBeenCalled();
+      // expect(window.confirm).toHaveBeenCalled(); // Confirmation is handled by the listener (Sidepanel)
       expect(eventSpy).toHaveBeenCalledTimes(1);
       expect(eventSpy).toHaveBeenCalledWith(
         expect.objectContaining({
