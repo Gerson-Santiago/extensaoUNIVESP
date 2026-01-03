@@ -1,3 +1,5 @@
+import { Logger } from '../../../../shared/utils/Logger.js';
+import { DOMSafe } from '../../../../shared/utils/DOMSafe.js';
 /**
  * @file ActivityItemFactory.js
  * @description Factory para criação de items de atividade
@@ -28,9 +30,9 @@ export class ActivityItemFactory {
     const icon = ActivityItemFactory.getTypeIcon(task.type);
 
     li.innerHTML = `
-      <span class="activity-position">#${position}</span>
+      <span class="activity-position">#${DOMSafe.escapeHTML(String(position))}</span>
       <span class="activity-icon">${icon}</span>
-      <span class="activity-name">${task.original.name}</span>
+      <span class="activity-name">${DOMSafe.escapeHTML(task.original.name)}</span>
       <button class="btn-scroll" data-id="${task.id}">Ir →</button>
     `;
 
