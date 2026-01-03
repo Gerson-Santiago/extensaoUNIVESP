@@ -17,3 +17,12 @@ Target: `/scripts`
 - [ ] Document strict responsibilities of Background vs Content scripts
 - [ ] Ensure `background.js` is merely an orchestrator (thin layer)
 - [ ] **Security:** Verify "World Isolation" (Main World vs Isolated World) to prevent page interference (Anti-pattern: Global Scope Pollution).
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
+

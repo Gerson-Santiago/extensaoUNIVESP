@@ -53,4 +53,12 @@ O usuário precisa de uma forma soberana de limpar seu rastro e preferências na
 ---
 
 **Tags:** `//ISSUE-settings-reset` | **Tipo:** Feature | **Sprint:** v2.10.0-Evolution
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Relatada por:** IA do Projeto | **Data:** 31/12/2025

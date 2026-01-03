@@ -16,3 +16,12 @@ Existência de `console.log` residuais em serviços core (como `NavigationServic
 ## 3. Resultados
 - Zero `console.log` em features core.
 - Documentação técnica 100% alinhada com as melhores práticas de observabilidade do projeto.
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+

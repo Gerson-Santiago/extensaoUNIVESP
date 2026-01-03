@@ -35,4 +35,12 @@ Implementar o bloco "Sobre" das configurações para dar transparência à vers�
 - [ ] A flag de logs é persistida corretamente.
 
 ---
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-settings-about` | **Tipo:** Support

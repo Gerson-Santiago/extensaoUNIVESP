@@ -76,4 +76,12 @@ Se o painel mostra "Última semana acessada" e não limpa ao trocar de aba, um u
 ---
 
 **Relacionado:** [sidePanel API Docs](https://developer.chrome.com/docs/extensions/reference/sidePanel/)  
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-mv3-sidepanel` | **Tipo:** UX/Compliance

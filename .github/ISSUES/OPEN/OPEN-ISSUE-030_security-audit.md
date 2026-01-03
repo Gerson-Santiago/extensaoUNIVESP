@@ -138,4 +138,12 @@ Atualizar todas as Views que consomem templates para usar `appendChild`, `replac
 
 ---
 
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-security-dom` | **Sprint:** v2.10.0-Security

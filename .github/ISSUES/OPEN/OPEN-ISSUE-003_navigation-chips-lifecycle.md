@@ -49,5 +49,13 @@ Os chips mostram as últimas semanas visitadas pelo usuário. Atualmente há pro
 
 ---
 
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-chips-lifecycle` | **Sprint:** v2.10.0  
 **Relacionado:** Issue-028 (Storage), Issue-038 (sidePanel MV3)

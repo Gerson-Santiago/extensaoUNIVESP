@@ -73,5 +73,13 @@ Atualizar seção de instalação se houver mudanças.
 
 ---
 
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-release-docs` | **Tipo:** Documentation  
 **Relacionado:** EPIC-001, EPIC-003, SPEC-035, SPEC-036

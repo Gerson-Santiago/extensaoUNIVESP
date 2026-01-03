@@ -89,4 +89,12 @@ Se os ícones atuais falharem:
 ---
 
 **Relacionado:** Issue-036 (CWS Metadata)  
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-asset-quality` | **Tipo:** Quality/Pre-Launch

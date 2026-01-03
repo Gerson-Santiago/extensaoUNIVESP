@@ -146,4 +146,12 @@ Como simular concorrência localmente?
 ---
 
 **Tags:** `//ISSUE-storage-concurrency` | **Tipo:** Bug/Architecture | **Sprint:** v2.9.7-Stabilization
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
 **Relatada por:** Auditoria Estratégica | **Data:** 01/01/2026

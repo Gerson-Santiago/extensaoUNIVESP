@@ -52,5 +52,13 @@
 
 ---
 
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-video-strategy-coverage` | **Tipo:** Testing | **Versão:** 2.9.6
 **Finalizado:** 2025-12-31 | **Autor:** IA do Projeto

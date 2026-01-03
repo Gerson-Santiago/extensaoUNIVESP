@@ -102,5 +102,13 @@ describe('CourseRefresher Integration', () => {
 
 ---
 
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-course-refresher-coverage` | **Tipo:** Testing | **Versão:** 2.9.6
 **Criado:** 2025-12-31 | **Autor:** IA do Projeto

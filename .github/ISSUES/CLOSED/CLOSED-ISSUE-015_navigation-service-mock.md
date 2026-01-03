@@ -191,5 +191,13 @@ NavigationService.js  |   61.66 |    94.28 |      45 |   61.66 |
 
 ---
 
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-navigation-mock-coverage` `//future-proof` `//adr-compliance` | **Tipo:** Testing + Refactoring | **Versão:** 2.9.6  
 **Criado:** 2025-12-31 | **Resolvido:** 2025-12-31 | **Autor:** IA do Projeto

@@ -50,3 +50,12 @@ Executamos uma refatoração "Green-Green" (mantendo os testes passando) focada 
 ## 4. Próximos Passos (ISSUE-10?)
 - Continuar auditoria na sub-feature `import`.
 - Verificar colocation de testes unitários (mover para `__tests__` local?).
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+

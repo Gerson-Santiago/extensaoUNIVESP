@@ -61,4 +61,12 @@ Permite baixar PDFs de material didático (restrito a .pdf, .docx).
 ---
 
 **Relacionado:** CWS - [Permission Warnings](https://developer.chrome.com/docs/extensions/mv3/permission_warnings/)  
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-mv3-permissions` | **Tipo:** Compliance/Security

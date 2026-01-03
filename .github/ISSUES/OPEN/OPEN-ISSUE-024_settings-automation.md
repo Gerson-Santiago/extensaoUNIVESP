@@ -31,4 +31,12 @@ Dar ao usuário o controle de *quando* a extensão deve atuar. Atualmente os scr
 - [ ] O usuário consegue forçar a atualização via botão manual mesmo com a automação global desativada.
 
 ---
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-settings-automation` | **Tipo:** Feature / Behavior

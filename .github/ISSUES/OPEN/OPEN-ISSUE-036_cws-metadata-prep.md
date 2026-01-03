@@ -69,4 +69,12 @@ Extensões tecnicamente perfeitas são rejeitadas por:
 ---
 
 **Relacionado:** [CWS Listing Guidelines](https://developer.chrome.com/docs/webstore/images/)  
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-cws-metadata` | **Tipo:** Marketing/Compliance

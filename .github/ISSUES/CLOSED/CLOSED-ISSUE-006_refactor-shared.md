@@ -19,3 +19,12 @@ Target: `/shared`
     - [x] Verify generic utilities exists here (Utils, UI Kit)
 - [x] Enforce clear subdirectories: `ui`, `utils`, `services` (infra)
 - [x] Document usage examples for shared components
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+

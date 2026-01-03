@@ -61,4 +61,12 @@ Garantir que os métodos de Serviço (`BatchScraper`, `HistoryService`) respeite
 
 ---
 
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-type-safety` | **Sprint:** v2.10.0-Quality

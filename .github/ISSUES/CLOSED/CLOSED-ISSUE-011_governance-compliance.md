@@ -17,3 +17,12 @@ Com a evolução rápida do projeto, havia o risco de os ADRs (Architectural Dec
 - 100% de conformidade documental.
 - Repositório de ADRs limpo e padronizado.
 - Base de conhecimento técnica atualizada para onboarding.
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+

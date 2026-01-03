@@ -29,4 +29,12 @@ A issue foi fechada pois o código já está 100% compliant com esta política.
 ---
 
 **Relacionado:** [Remotely Hosted Code](https://developer.chrome.com/docs/extensions/mv3/intro/mv3-migration/#remotely-hosted-code)  
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-mv3-remote-code` | **Tipo:** Security/Compliance

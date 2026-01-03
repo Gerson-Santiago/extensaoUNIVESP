@@ -153,3 +153,12 @@ npm test tests/unit/features/courses/logic/WeekOrdering.test.js
 
 **Etiquetas:** `scraping` `regex` `dom-parsing` `dry-principle`  
 **Data de Conclusão:** 2025-12-30
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+

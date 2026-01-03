@@ -68,4 +68,12 @@ Estrutura obrigatória:
 ---
 
 **Relacionado:** [CWS Privacy Requirements](https://developer.chrome.com/docs/webstore/program-policies/privacy/)  
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-mv3-privacy` | **Tipo:** Legal/Compliance

@@ -77,4 +77,12 @@ Criação de `BackupService.test.js` seguindo o ADR-000-C:
 ---
 
 **Tags:** `//ISSUE-settings-backup` | **Tipo:** Feature/Refactor | **Sprint:** v2.9.6-Quality-Gate
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Relatada por:** IA do Projeto | **Data:** 31/12/2025

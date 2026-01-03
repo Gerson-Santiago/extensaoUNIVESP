@@ -40,4 +40,12 @@ A CWS rejeita extensões que parecem "canivetes suíços". Nossa extensão possu
 ---
 
 **Relacionado:** CWS Policy - [Single Purpose](https://developer.chrome.com/docs/webstore/program-policies/)  
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-mv3-compliance` | **Tipo:** Governance/Compliance

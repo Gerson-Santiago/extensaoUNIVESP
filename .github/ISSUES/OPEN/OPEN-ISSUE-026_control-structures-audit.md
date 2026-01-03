@@ -107,4 +107,12 @@ Contagem aproximada de estruturas de controle no codebase (excluindo libs extern
 ---
 
 **Tags:** `//ISSUE-intentional-code` | **Tipo:** Governance/Standard | **Sprint:** v2.10.0-Governance
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Relatada por:** IA do Projeto | **Data:** 01/01/2026

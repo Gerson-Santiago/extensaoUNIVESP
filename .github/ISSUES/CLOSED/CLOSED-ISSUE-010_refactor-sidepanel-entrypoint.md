@@ -16,3 +16,12 @@ O `sidepanel.js` estava importando e chamando o `CourseRepository` diretamente p
 - Melhor separação de conceitos (SoC).
 - Sidepanel agora atua apenas como orquestrador de serviços.
 - Código mais fácil de testar (mockando o Service em vez do Repository).
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+

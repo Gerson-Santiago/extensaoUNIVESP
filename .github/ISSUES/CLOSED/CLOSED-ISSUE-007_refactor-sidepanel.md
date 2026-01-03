@@ -16,3 +16,12 @@ Target: `/sidepanel`
 - [x] Ensure strict separation from Feature logic
 - [x] Verify css/js organization
 - [x] Document the View Router mechanism if present
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+

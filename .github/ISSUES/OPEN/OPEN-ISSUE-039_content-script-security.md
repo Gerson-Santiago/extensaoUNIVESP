@@ -32,4 +32,12 @@ Auditar `SeiLoginContentScript.js` para garantir segurança de dados sensíveis 
 ---
 
 **Relacionado:** Issue-030 (XSS), Issue-019 (Encryption)
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-content-script-security` | **Tipo:** Security/Audit

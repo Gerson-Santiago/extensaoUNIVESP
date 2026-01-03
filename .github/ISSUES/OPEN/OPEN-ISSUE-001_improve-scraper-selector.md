@@ -273,5 +273,13 @@ Ganho: 83% menos processamento ⚡
 
 ---
 
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-improve-scraper-selector` | **Tipo:** Enhancement | **Versão:** 1.0  
 **Criado:** 2025-12-30 | **Autor:** IA do Projeto

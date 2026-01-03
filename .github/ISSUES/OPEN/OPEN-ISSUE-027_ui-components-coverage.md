@@ -71,4 +71,12 @@ O relatório de coverage de 01/01/2026 apontou fragilidade em componentes visuai
 ---
 
 **Tags:** `//ISSUE-ui-quality` | **Tipo:** Test/Quality | **Sprint:** v2.9.8
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Relatada por:** IA do Projeto | **Data:** 01/01/2026

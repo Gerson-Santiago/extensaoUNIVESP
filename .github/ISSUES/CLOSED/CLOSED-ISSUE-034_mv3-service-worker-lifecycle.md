@@ -54,4 +54,12 @@ setInterval(() => {
 ---
 
 **Relacionado:** [Service Worker Lifecycle](https://developer.chrome.com/docs/extensions/mv3/migrating_to_service_workers/)  
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
 **Tags:** `//ISSUE-mv3-service-worker` | **Tipo:** Architecture/Compliance

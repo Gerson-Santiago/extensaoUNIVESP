@@ -67,4 +67,12 @@ Baixa cobertura nessas áreas significa que mudanças na estrutura da UNIVESP ou
 ---
 
 **Tags:** `//ISSUE-quality-core` | **Tipo:** Refactor/Quality | **Sprint:** v2.9.7-Quality-Stabilization
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Relatada por:** IA do Projeto | **Data:** 01/01/2026

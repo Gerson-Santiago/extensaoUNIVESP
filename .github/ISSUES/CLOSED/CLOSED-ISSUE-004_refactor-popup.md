@@ -17,3 +17,12 @@ Target: `/popup`
 - [x] Update or create `README.md` in the directory
 - [x] Verify if logic can be moved to `features/` or `shared/`
 - [x] Maximize code reusability
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+

@@ -53,4 +53,12 @@ Seguindo a visão de produto maduro, estas não são regras de negócio, mas aju
 
 ---
 **Tags:** `//ISSUE-settings-ux` | **Tipo:** UX / Feature
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A
+- **Link:** Aguardando publicação
+- **Data:** -
+
+---
 **Relatada por:** IA do Projeto | **Data:** 31/12/2025

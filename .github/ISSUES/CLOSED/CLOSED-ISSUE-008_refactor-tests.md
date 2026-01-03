@@ -16,3 +16,12 @@ Target: `/tests`
 - [x] Maintain `tests/` ONLY for E2E or Integration tests that span multiple features
 - [x] Update `jest.config.js` if necessary
 - [x] Clean up any legacy test files
+
+## 🔗 GitHub Issue
+
+- **Status:** N/A  
+- **Link:** Issue local concluída
+- **Data:** -
+
+---
+
