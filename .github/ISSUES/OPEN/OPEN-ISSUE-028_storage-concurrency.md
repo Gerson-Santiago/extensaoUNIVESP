@@ -28,6 +28,28 @@ Como promovemos a extensão como uma "Central de Comando Confiável", essa fragi
 
 ---
 
+## 🚨 Evidência "Brutal" do Código (Audio 03/01/2026)
+
+**Arquivo**: `features/courses/repositories/ActivityRepository.js`
+
+```javascript
+// Linha 23: Blind overwrite (Último a salvar ganha)
+static async save(courseId, contentId, items, method) {
+  // ...
+  const data = {
+    items,
+    method,
+    updatedAt: new Date().toISOString(), // ❌ Nenhuma verificação de versão!
+  };
+  // SOBRESCRITA CEGA: Não verifica se mudou desde o 'get'
+  await chrome.storage.local.set({ [key]: data });
+}
+```
+
+**Veredito**: A Race Condition não é teórica. É garantida se houver concorrência. Testes atuais (`save.test.js`) ignoram isso.
+
+---
+
 ## 🛠️ Solução Proposta: Versionamento Otimista
 
 ### 1. Metadados de Intearidade

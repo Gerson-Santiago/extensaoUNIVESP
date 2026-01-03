@@ -10,23 +10,19 @@
 ## 🎯 Objetivo
 Reduzir permissões ao **mínimo necessário** e documentar justificativas robustas para evitar rejeição por "Purple Potassium" (Permission Creep).
 
-## 📖 Contexto: Análise do Manifesto Atual
+## 📖 Contexto
+**Permissões Solicitadas:** `["storage", "sidePanel", "scripting", "tabs", "activeTab", "downloads"]`
 
-**Permissões Solicitadas:**
-```json
-["storage", "sidePanel", "scripting", "tabs", "activeTab", "downloads"]
-```
+### 🔍 Auditoria Realizada (02/01/2026)
+1. **`tabs`:** Usado apenas em `shared/utils/tests/Tabs.test.js` e para criar abas (`chrome.tabs.create`).
+   - **Decisão:** Manter **APENAS** `activeTab`. Usar `tabs` somentes se estritamente necessário para *create* sem ler dados sensíveis.
+   - **Status:** Justificativa sólida possível.
 
-### ⚠️ Redundância Crítica: `tabs` + `activeTab`
-- **Problema:** Solicitar `tabs` E `activeTab` simultaneamente é um **red flag** para revisores.
-- **Impacto:** `tabs` permite ler título/URL de **todas as abas** (perfil de navegação completo).
-- **Pergunta do revisor:** "Por que precisa monitorar abas em background?"
+2. **`downloads`:** Usado em `BackupService.js` (Exportar dados).
+   - **Decisão:** **MANTER**. Funcionalidade core de Backup.
+   - **Justificativa:** "Permite ao usuário baixar seus próprios dados (Data Sovereignty)".
 
-### 🔍 Auditoria Necessária
-1. **`tabs`:** Verificar se é usado apenas para `chrome.tabs.create/update` (navegação).
-   - **Se SIM:** Trocar por `activeTab` (sem aviso assustador na instalação).
-2. **`scripting`:** Confirmar se não pode ser substituído por `content_scripts` estático.
-3. **`downloads`:** Garantir que só baixa PDFs/DOCX (não vídeos do YouTube = violação de copyright).
+**Estimate Ajustado**: **0.5 dia** (Apenas documentar)
 
 ## 🛠️ Plano de Ação
 
@@ -58,9 +54,9 @@ Permite baixar PDFs de material didático (restrito a .pdf, .docx).
 - **User Gesture:** Garantir que downloads são sempre resposta a clique (não automático).
 
 ## ✅ Critérios de Aceite
-- [ ] Permissão `tabs` removida (SE não for essencial).
+- [ ] Permissão `tabs` removida (ou justificada com `create`).
 - [ ] Documento de justificação criado.
-- [ ] Nenhum `chrome.downloads` de vídeos (YouTube/copyright).
+- [ ] Nenhum `chrome.downloads` de vídeos.
 
 ---
 
