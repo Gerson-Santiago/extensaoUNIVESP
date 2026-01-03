@@ -1,3 +1,7 @@
+---
+description: 
+---
+
 description: Git Flow + Quality Gate
 
 GIT FLOW OBRIGATÓRIO - Proteção de Branches
@@ -103,7 +107,12 @@ npm run test:quick
 Antes de Push dev/main (SOLICITAR usuário):
 npm run verify
 
-IA NUNCA executa verify sem permissão (limite RAM).
++IA NUNCA executa sem permissão (limite RAM):
++- npm run verify
++- npm run test / npm test
++- npm run test:coverage
++- npm run test:debug
++- npm run type-check
 
 Segurança (opcional):
 npm run security:secrets

@@ -1,4 +1,3 @@
-import { Logger } from '../../../../shared/utils/Logger.js';
 import { DOMSafe } from '../../../../shared/utils/DOMSafe.js';
 /**
  * @file ActivityItemFactory.js

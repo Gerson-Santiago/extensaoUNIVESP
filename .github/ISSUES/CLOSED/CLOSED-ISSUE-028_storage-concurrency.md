@@ -1,6 +1,6 @@
 # 🛡️ ISSUE-028: Proteção contra Perda de Dados (Storage Concurrency)
 
-**Status:** 📋 Aberta
+**Status:** ✅ Resolvida
 **Prioridade:** 🔴 CRÍTICA (Integridade de Dados)
 **Componente:** `shared/storage` (Arquitetura)
 **Versão:** v2.9.7+
@@ -83,10 +83,56 @@ e/ou usar `chrome.storage.onChanged` para manter o estado em memória sempre atu
 
 ## ✅ Critérios de Aceite
 
-- [ ] Implementar classe `StorageGuard` ou wrapper sobre `chrome.storage`.
-- [ ] Garantir que toda escrita incremente um contador de versão.
-- [ ] Criar teste de integração simulando concoorrência (Cliente A e B tentando escrever ao mesmo tempo).
-- [ ] A extensão deve ser capaz de detectar conflito e pelo menos *não sobrescrever* os dados remotos (fail-safe).
+- [x] Implementar classe `StorageGuard` ou wrapper sobre `chrome.storage`.
+- [x] Garantir que toda escrita incremente um contador de versão.
+- [x] Criar teste de integração simulando concorrência (Cliente A e B tentando escrever ao mesmo tempo).
+- [x] A extensão deve ser capaz de detectar conflito e pelo menos *não sobrescrever* os dados remotos (fail-safe).
+
+---
+
+## 🎉 Implementação Realizada
+
+**Data de Conclusão:** 03/01/2026
+
+### Arquivos Criados/Modificados
+
+1. **`shared/utils/StorageGuard.js`** (NOVO)
+   - Implementa Optimistic Locking com campo `version`
+   - Método `atomicSave(key, updateFn, maxRetries)` com retry automático
+   - Exponential Backoff (100ms, 200ms, 400ms...)
+   - Double-check antes de escrever para detectar conflitos
+   - Método `get(key, defaultValue)` que desembrulha o wrapper automaticamente
+
+2. **`features/courses/repositories/ActivityRepository.js`** (REFATORADO)
+   - Migrou de `chrome.storage.local.set()` cego para `StorageGuard.atomicSave()`
+   - **Merge Inteligente**: Preserva `completed: true` se já marcado localmente
+   - Previne perda de dados em cenários de concorrência
+   - Mantém compatibilidade com código existente
+
+3. **`features/courses/tests/concurrency/StorageRace.test.js`** (NOVO)
+   - Teste de integração simulando Race Condition
+   - Cenário RED: Dois atores tentando salvar simultaneamente
+   - Valida que o sistema NÃO perde dados (Last Write Wins eliminado)
+
+### Mecanismo de Proteção
+
+```javascript
+// ANTES (INSEGURO):
+await chrome.storage.local.set({ [key]: data }); // ❌ Sobrescreve cegamente
+
+// DEPOIS (SEGURO):
+await StorageGuard.atomicSave(key, (currentState) => {
+  // Merge inteligente preservando dados críticos
+  const merged = mergeLogic(currentState, newData);
+  return merged;
+}); // ✅ Detecta conflito, retenta ou falha graciosamente
+```
+
+### Estratégia de Resolução de Conflitos
+
+- **Preservação de Estado Crítico**: `completed: true` nunca é revertido para `false`
+- **Retry Automático**: Até 3 tentativas com backoff exponencial
+- **Fail-Safe**: Se todas retries falharem, loga erro e não corrompe dados
 
 ---
 

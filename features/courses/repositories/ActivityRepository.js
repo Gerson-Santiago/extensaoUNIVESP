@@ -1,4 +1,5 @@
 import { Logger } from '../../../shared/utils/Logger.js';
+import { StorageGuard } from '../../../shared/utils/StorageGuard.js';
 
 export class ActivityRepository {
   /**
@@ -24,15 +25,34 @@ export class ActivityRepository {
     const key = this.#getKey(courseId, contentId);
     /**#LOG_REPOSITORY*/
     Logger.debug('ActivityRepository', `Salvando dados na chave: ${key} (${items.length} itens)`);
-    const data = {
-      items,
-      method,
-      updatedAt: new Date().toISOString(),
-    };
 
-    // Usar storage.local que tem 5MB de quota vs 100KB do sync por item
-    // e é muito mais rápido, sem afetar o salvamento global de cursos
-    await chrome.storage.local.set({ [key]: data });
+    // ATOMIC SAVE: Usa Optimistic Locking e Retry
+    await StorageGuard.atomicSave(key, (currentState) => {
+      // currentState é o array 'items' (desembrulhado pelo Guard)
+      // Se null, inicializa vazio
+      const currentItems = currentState ? currentState.items : [];
+
+      // LÓGICA DE MERGE INTELIGENTE
+      // Preserva o status 'completed' se já estiver true localmente
+      const mergedItems = items.map((newItem) => {
+        const existingItem = currentItems.find((i) => i.id === newItem.id);
+        if (!existingItem) return newItem;
+
+        return {
+          ...newItem,
+          // Preserva completed: true se já marcado, caso contrário usa o novo
+          completed: existingItem.completed || newItem.completed,
+          // Preserva notas manuais se a nova não existir
+          // (Assumindo que podemos ter outros campos no futuro)
+        };
+      });
+
+      return {
+        items: mergedItems,
+        method,
+        updatedAt: new Date().toISOString(),
+      };
+    });
   }
 
   /**
@@ -45,8 +65,7 @@ export class ActivityRepository {
     const key = this.#getKey(courseId, contentId);
     /**#LOG_REPOSITORY*/
     Logger.debug('ActivityRepository', `Acessando cache para chave: ${key}`);
-    const result = await chrome.storage.local.get([key]);
-    return /** @type {Object<string, any>} */ (result)[key] || null;
+    return await StorageGuard.get(key);
   }
 
   /**
