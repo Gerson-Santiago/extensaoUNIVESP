@@ -1,7 +1,7 @@
 {
   "name": "central-univesp",
   "version": "2.9.7",
-  "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos e Navegação Inteligente no AVA.",
+  "description": "Gestão de atividades semanais e navegação inteligente no AVA da UNIVESP, com autopreenchimento SEI.",
   "main": "popup/popup.js",
   "scripts": {
     "check": "npm run lint && npm run type-check",
