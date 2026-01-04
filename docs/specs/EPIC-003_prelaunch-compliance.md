@@ -18,6 +18,7 @@ Preparar todos os ativos e justificativas não-técnicas para submissão na CWS.
 | **SPEC-034** | Service Worker Lifecycle | 🟢 Baixa | 0.1 dia | 🟢 80% |
 | **SPEC-036** | CWS Metadata (Screenshots) | 🟡 Alta | 1-2 dias | 📋 Aberta |
 | **SPEC-038** | sidePanel UX | 🟡 Alta | 0.5 dia | 📋 Aberta |
+| **ISSUE-030** | Security Hardening (XSS) | 🔴 Crítica | 2 dias | ✅ Fechada |
 
 **Estimativa Total**: 2.6 a 3.6 dias.
 
