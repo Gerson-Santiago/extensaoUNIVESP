@@ -1,3 +1,5 @@
+import { DOMSafe } from '../../utils/DOMSafe.js';
+
 export class TopNav {
   constructor(onNavigate) {
     this.onNavigate = onNavigate;
@@ -5,8 +7,8 @@ export class TopNav {
   }
 
   render() {
-    const nav = document.createElement('nav');
-    nav.className = 'top-nav';
+    const h = DOMSafe.createElement;
+    const nav = h('nav', { className: 'top-nav' });
 
     const tabs = [
       { id: 'home', icon: '🏠', label: 'Início' },
@@ -15,17 +17,22 @@ export class TopNav {
     ];
 
     tabs.forEach((tab) => {
-      const btn = document.createElement('button');
-      btn.className = `nav-item ${this.activeTab === tab.id ? 'active' : ''}`;
-      btn.innerHTML = `
-                <span class="nav-icon">${tab.icon}</span>
-                <span class="nav-label">${tab.label}</span>
-            `;
-      btn.title = `Ir para ${tab.label}`;
-      btn.onclick = () => {
-        this.setActive(tab.id);
-        this.onNavigate(tab.id);
-      };
+      const btn = h(
+        'button',
+        {
+          className: `nav-item ${this.activeTab === tab.id ? 'active' : ''}`,
+          title: `Ir para ${tab.label}`,
+          onclick: () => {
+            this.setActive(tab.id);
+            this.onNavigate(tab.id);
+          },
+        },
+        [
+          h('span', { className: 'nav-icon' }, tab.icon),
+          h('span', { className: 'nav-label' }, tab.label),
+        ]
+      );
+
       nav.appendChild(btn);
     });
 

@@ -18,7 +18,7 @@
 - Side Panel: Interface principal (Shell).
 - features/: Vertical Slices (Courses, Session, Settings).
 - scripts/: Background (Eventos) e Content Scripts (Scraping).
-- shared/: Componentes agnósticos.
+- shared/: Componentes agnósticos (ver `utils/DOMSafe.js`).
 
 ### 4. Camadas (Features)
 - logic/: Regras puras.

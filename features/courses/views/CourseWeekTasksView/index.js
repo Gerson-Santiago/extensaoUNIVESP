@@ -89,11 +89,11 @@ export class CourseWeekTasksView {
 
     // Se não houver itens, não mostra progresso ou mostra 0
     if (total === 0) {
-      container.innerHTML = '';
+      container.replaceChildren();
       return;
     }
 
-    container.innerHTML = ''; // Clear container
+    container.replaceChildren(); // Clear container
 
     const infoDiv = document.createElement('div');
     infoDiv.className = 'progress-info';
@@ -126,7 +126,7 @@ export class CourseWeekTasksView {
       const container = document.getElementById('tasksList');
       if (!container) return;
 
-      container.innerHTML = '';
+      container.replaceChildren();
 
       if (!this.week || !this.week.items || this.week.items.length === 0) {
         const p = document.createElement('p');

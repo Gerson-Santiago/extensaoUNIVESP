@@ -32,7 +32,7 @@ export class WeeksManager {
     const weeksList = this.container.querySelector('#weeksList');
     if (!weeksList) return;
 
-    weeksList.innerHTML = '';
+    weeksList.replaceChildren();
 
     // Carregar configurações de UI
     const result = await chrome.storage.local.get('ui_settings');
@@ -55,8 +55,11 @@ export class WeeksManager {
         weeksList.appendChild(wDiv);
       });
     } else {
-      weeksList.innerHTML =
-        '<div style="padding:15px; text-align:center; color:#999;">Nenhuma semana detectada.</div>';
+      // Mensagem de semanas vazias (seguro - sem innerHTML)
+      const emptyDiv = document.createElement('div');
+      emptyDiv.style.cssText = 'padding:15px; text-align:center; color:#999;';
+      emptyDiv.textContent = 'Nenhuma semana detectada.';
+      weeksList.appendChild(emptyDiv);
     }
   }
 

@@ -75,4 +75,4 @@ Listas
 Validar refs
 Atualizar versão
 
-v2.9.7 | 2026-01-01
+v2.11.0 | 2026-01-04

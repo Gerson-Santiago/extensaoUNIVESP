@@ -127,7 +127,7 @@ export class BatchImportModal extends Modal {
         const errDiv = document.createElement('div');
         Object.assign(errDiv.style, { color: 'red', textAlign: 'center' });
         errDiv.textContent = 'Não foi possível ler os cursos.';
-        termsList.innerHTML = '';
+        termsList.replaceChildren();
         termsList.appendChild(errDiv);
       }
     } catch (e) {
@@ -141,7 +141,7 @@ export class BatchImportModal extends Modal {
   // NOTE: showConfirmationUI removed as it is now handled by LoginWaitModal upstream.
 
   renderTerms(container) {
-    container.innerHTML = '';
+    container.replaceChildren();
 
     // Sort terms: Newest to Oldest (Descending) using centralised parser
     this.foundTerms.sort((a, b) => {

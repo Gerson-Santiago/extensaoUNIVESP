@@ -1,6 +1,7 @@
 import { Tabs } from '../../../shared/utils/Tabs.js';
 
 import { AppLinks } from '../../../shared/constants/AppLinks.js';
+import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
 
 export class HomeView {
   constructor(callbacks) {
@@ -8,40 +9,67 @@ export class HomeView {
   }
 
   render() {
-    const div = document.createElement('div');
-    div.className = 'view-home-dashboard';
-    div.innerHTML = `
-            <!-- Seção de Acesso Rápido (Links) - Topo -->
-            <div class="quick-access-section">
-                <h3>Acesso Rápido</h3>
-                <div class="quick-links-grid">
-                    <a href="${AppLinks.SEI_HOME}" 
-                       data-match-pattern="sei.univesp.br"
-                       class="link-card js-smart-link">
-                        <img src="../assets/icon_sei.png" alt="SEI" class="bb-icon">
-                        Portal SEI
-                    </a>
-                    <a href="${AppLinks.AVA_HOME}" 
-                       data-match-pattern="ultra/course"
-                       class="link-card blackboard-card js-smart-link">
-                        <img src="../assets/icon_blackboard.png" alt="Blackboard" class="bb-icon">
-                        AVA (Cursos)
-                    </a>
-                    <a href="${AppLinks.ALUNO_HOME}" class="link-card js-smart-link">
-                        <img src="../assets/logo_univesp.png" alt="UNIVESP" class="bb-icon univesp-logo">
-                        Área do Aluno
-                    </a>
-                    <a href="${AppLinks.PROVAS_HOME}" class="link-card js-smart-link">
-                        Sistema de Provas
-                    </a>
-                </div>
-            </div>
+    const h = DOMSafe.createElement;
 
-            <div class="footer-info">
-                <span>Desenvolvido por <a href="https://github.com/Gerson-Santiago/extensaoUNIVESP?tab=readme-ov-file#autopreencher-univesp" target="_blank" class="github-link">Gerson Santiago</a></span>
-            </div>
-        `;
-    return div;
+    // Helper for quick links
+    const createLink = (url, pattern, iconSrc, text, isUnivesp) => {
+      const classes = isUnivesp
+        ? 'link-card js-smart-link blackboard-card'
+        : 'link-card js-smart-link';
+      // Apply extra class logic if needed based on text, or stick to params
+      const finalClass = text.includes('AVA') ? 'link-card blackboard-card js-smart-link' : classes;
+
+      const children = [];
+      if (iconSrc) {
+        const imgClass = isUnivesp ? 'bb-icon univesp-logo' : 'bb-icon';
+        children.push(h('img', { src: iconSrc, className: imgClass, alt: text.trim() }));
+        children.push(' ' + text.trim());
+      } else {
+        children.push(text.trim());
+      }
+
+      return h(
+        'a',
+        {
+          href: url,
+          className: finalClass,
+          'data-match-pattern': pattern,
+        },
+        children
+      );
+    };
+
+    const quickAccess = h('div', { className: 'quick-access-section' }, [
+      h('h3', {}, 'Acesso Rápido'),
+      h('div', { className: 'quick-links-grid' }, [
+        createLink(AppLinks.SEI_HOME, 'sei.univesp.br', '../assets/icon_sei.png', 'Portal SEI'),
+        createLink(
+          AppLinks.AVA_HOME,
+          'ultra/course',
+          '../assets/icon_blackboard.png',
+          'AVA (Cursos)'
+        ),
+        createLink(AppLinks.ALUNO_HOME, null, '../assets/logo_univesp.png', 'Área do Aluno', true),
+        createLink(AppLinks.PROVAS_HOME, null, null, 'Sistema de Provas'),
+      ]),
+    ]);
+
+    const footer = h('div', { className: 'footer-info' }, [
+      h('span', {}, [
+        'Desenvolvido por ',
+        h(
+          'a',
+          {
+            href: 'https://github.com/Gerson-Santiago/extensaoUNIVESP',
+            target: '_blank',
+            className: 'github-link',
+          },
+          'Gerson Santiago'
+        ),
+      ]),
+    ]);
+
+    return h('div', { className: 'view-home-dashboard' }, [quickAccess, footer]);
   }
 
   afterRender() {

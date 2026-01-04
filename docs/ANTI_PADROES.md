@@ -15,6 +15,7 @@ Lista de falhas técnicas que travam o Quality Gate:
 - Imports: Remova variáveis não utilizadas (no-unused-vars).
 - Aspas: Sempre aspas simples (quotes rule).
 - RegExp: Justifique fontes dinâmicas com eslint-disable-next-line security.
+- innerHTML: PROIBIDO. Use `DOMSafe.createElement` ou `textContent` (Issue-30).
 
 ### 3. Arquitetura
 - Colocation: Não coloque testes de feature fora da pasta da feature.

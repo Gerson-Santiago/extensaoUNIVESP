@@ -150,7 +150,7 @@ export class PreviewManager {
     } else {
       const preview = document.getElementById('activeWeekPreview');
       if (preview) {
-        preview.innerHTML = '';
+        preview.replaceChildren();
         preview.appendChild(createContent());
         preview.style.display = 'block';
       }

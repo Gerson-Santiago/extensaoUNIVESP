@@ -171,7 +171,7 @@ export class DetailsActivitiesWeekView {
       : null;
     if (!container) return;
 
-    container.innerHTML = '';
+    container.replaceChildren();
     const errorWrapper = document.createElement('div');
     errorWrapper.className = 'state-error';
     Object.assign(errorWrapper.style, {

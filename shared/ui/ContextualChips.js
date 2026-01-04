@@ -49,7 +49,7 @@ export class ContextualChips {
    */
   render(items) {
     // Limpar container
-    this.container.innerHTML = '';
+    this.container.replaceChildren();
 
     // Criar container de scroll se não existir (ou usar o próprio container se for o wrapper)
     // Pela spec, o container principal pode ser o .chips-container

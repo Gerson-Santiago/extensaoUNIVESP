@@ -1,5 +1,6 @@
 import { RaManager } from '../../../features/session/logic/SessionManager.js';
 import { DomainManager } from '../../../features/settings/logic/domainManager.js';
+import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
 
 export class ConfigForm {
   /**
@@ -10,36 +11,60 @@ export class ConfigForm {
   }
 
   render() {
-    return `
-      <div class="settings-content">
-        <h3>Configurar Acesso</h3>
-        <p class="config-desc">Configuração para preenchimento automático (Login).</p>
-        
-        <div class="input-group-row">
-            <input type="text" id="raInput" class="input-field" placeholder="RA">
-            <div class="domain-wrapper">
-                <input type="text" id="domainInput" class="input-field" placeholder="@dominio.com">
-                <button id="resetDomainBtn" class="btn-reset" title="Restaurar Padrão">↺</button>
-            </div>
-        </div>
+    // Helper para reduzir verbosidade
+    const h = DOMSafe.createElement;
 
-        <div style="margin-bottom: 20px;">
-            <button id="saveConfigBtn" class="btn-save">Salvar Credenciais</button>
-            <div id="configFeedback" class="status-msg" style="margin-top: 10px; display: none;"></div>
-        </div>
+    const inputGroup = h('div', { className: 'input-group-row' }, [
+      h('input', { type: 'text', id: 'raInput', className: 'input-field', placeholder: 'RA' }),
+      h('div', { className: 'domain-wrapper' }, [
+        h('input', {
+          type: 'text',
+          id: 'domainInput',
+          className: 'input-field',
+          placeholder: '@dominio.com',
+        }),
+        h(
+          'button',
+          { id: 'resetDomainBtn', className: 'btn-reset', title: 'Restaurar Padrão' },
+          '↺'
+        ),
+      ]),
+    ]);
 
-        <hr class="divider">
+    const saveRow = h('div', { style: { marginBottom: '20px' } }, [
+      h('button', { id: 'saveConfigBtn', className: 'btn-save' }, 'Salvar Credenciais'),
+      h('div', {
+        id: 'configFeedback',
+        className: 'status-msg',
+        style: 'margin-top: 10px; display: none;',
+      }),
+    ]);
 
-        <h3>Comportamento ao Clicar</h3>
-        <p class="config-desc">Escolha o que acontece ao clicar no ícone da extensão.</p>
-        <div style="margin-bottom: 20px;">
-            <label style="display: flex; align-items: center; font-size: 13px; cursor: pointer;">
-                <input type="checkbox" id="popupToggle" style="margin-right: 8px;">
-                <span>Ativar Popup (Desativado por padrão)</span>
-            </label>
-        </div>
-      </div>
-    `;
+    const behaviorRow = h('div', { style: { marginBottom: '20px' } }, [
+      h(
+        'label',
+        { style: 'display: flex; align-items: center; font-size: 13px; cursor: pointer;' },
+        [
+          h('input', { type: 'checkbox', id: 'popupToggle', style: { marginRight: '8px' } }),
+          h('span', {}, 'Ativar Popup (Desativado por padrão)'),
+        ]
+      ),
+    ]);
+
+    return h('div', { className: 'settings-content' }, [
+      h('h3', {}, 'Configurar Acesso'),
+      h('p', { className: 'config-desc' }, 'Configuração para preenchimento automático (Login).'),
+      inputGroup,
+      saveRow,
+      h('hr', { className: 'divider' }),
+      h('h3', {}, 'Comportamento ao Clicar'),
+      h(
+        'p',
+        { className: 'config-desc' },
+        'Escolha o que acontece ao clicar no ícone da extensão.'
+      ),
+      behaviorRow,
+    ]);
   }
 
   attachListeners() {

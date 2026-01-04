@@ -15,6 +15,7 @@ import { createCourseElement } from '../../components/CourseItem.js';
 import { groupCoursesByTerm } from '../../logic/CourseGrouper.js';
 import { ActionMenu } from '../../../../shared/ui/ActionMenu.js';
 import { AutoScrollService } from '../../logic/AutoScrollService.js';
+import { DOMSafe } from '../../../../shared/utils/DOMSafe.js';
 
 export class CoursesView {
   constructor(callbacks) {
@@ -22,28 +23,17 @@ export class CoursesView {
   }
 
   render() {
-    const div = document.createElement('div');
-    div.className = 'view-courses';
+    const h = DOMSafe.createElement;
 
-    // Header Container
-    const headerContainer = document.createElement('div');
-    headerContainer.className = 'courses-header';
-    headerContainer.style.display = 'flex';
-    headerContainer.style.justifyContent = 'space-between';
-    headerContainer.style.alignItems = 'center';
-    headerContainer.style.marginBottom = '10px';
+    const title = h('h2', { style: { margin: '0' } }, 'Minhas Matérias');
 
-    const title = document.createElement('h2');
-    title.textContent = 'Minhas Matérias';
-    title.style.margin = '0';
-
-    // Dropdown Action
+    // Dropdown Action (ActionMenu manages its own DOM, assuming it's safe or will be refactored)
     const dropdown = new ActionMenu({
       title: 'Adicionar Matéria',
       icon: '+',
       actions: [
         {
-          label: 'Carregar Todos',
+          label: 'Carregar Todos' /** ... */,
           icon: '🔄',
           onClick: () => this.handleAutoScroll(),
         },
@@ -64,26 +54,37 @@ export class CoursesView {
         },
       ],
     });
-    const dropdownEl = dropdown.render();
 
-    headerContainer.appendChild(title);
-    headerContainer.appendChild(dropdownEl);
-
-    div.appendChild(headerContainer);
-
-    div.insertAdjacentHTML(
-      'beforeend',
-      `
-            <div class="course-legend">
-                <span class="legend-left">Matéria</span>
-                <span style="text-align: center;">Ver semana</span>
-                <span style="text-align: center;">Remover</span>
-            </div>
-
-            <div id="coursesListContainer" class="courses-list-container"></div>
-        `
+    const headerContainer = h(
+      'div',
+      {
+        className: 'courses-header',
+        style: {
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          marginBottom: '10px',
+        },
+      },
+      [
+        title,
+        dropdown.render(), // ActionMenu returns HTMLElement
+      ]
     );
-    return div;
+
+    const legendDiv = h('div', { className: 'course-legend' }, [
+      h('span', { className: 'legend-left' }, 'Matéria'),
+      h('span', { style: { textAlign: 'center' } }, 'Ver semana'),
+      h('span', { style: { textAlign: 'center' } }, 'Remover'),
+    ]);
+
+    const listContainer = h('div', {
+      id: 'coursesListContainer',
+      className: 'courses-list-container',
+    });
+
+    // Main Container
+    return h('div', { className: 'view-courses' }, [headerContainer, legendDiv, listContainer]);
   }
 
   afterRender() {
@@ -94,11 +95,22 @@ export class CoursesView {
     const container = document.getElementById('coursesListContainer');
     if (!container) return;
 
-    container.innerHTML = '';
+    container.replaceChildren(); // Safe clear
+    const h = DOMSafe.createElement;
+
+    // Load Data
     const courses = await CourseRepository.loadItems();
+
+    // Empty State
     if (courses.length === 0) {
-      container.innerHTML =
-        '<div style="color: #999; text-align: center; padding: 10px;">Nenhuma matéria salva.</div>';
+      const emptyDiv = h(
+        'div',
+        {
+          style: { color: '#999', textAlign: 'center', padding: '10px' },
+        },
+        'Nenhuma matéria salva.'
+      );
+      container.appendChild(emptyDiv);
       return;
     }
 
@@ -106,19 +118,7 @@ export class CoursesView {
     const grouped = groupCoursesByTerm(courses);
 
     grouped.forEach((group) => {
-      // Create Group Container
-      const groupDiv = document.createElement('div');
-      groupDiv.className = 'term-group';
-
-      // Header (Term Name)
-      const header = document.createElement('header');
-      header.className = 'term-header';
-      header.textContent = group.title;
-      groupDiv.appendChild(header);
-
-      // List Container (UL)
-      const ul = document.createElement('ul');
-      ul.className = 'item-list';
+      const ul = h('ul', { className: 'item-list' });
 
       // Render Courses
       group.courses.forEach((course) => {
@@ -133,7 +133,11 @@ export class CoursesView {
         ul.appendChild(li);
       });
 
-      groupDiv.appendChild(ul);
+      const groupDiv = h('div', { className: 'term-group' }, [
+        h('header', { className: 'term-header' }, group.title),
+        ul,
+      ]);
+
       container.appendChild(groupDiv);
     });
   }

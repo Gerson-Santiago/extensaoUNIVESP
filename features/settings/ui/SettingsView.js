@@ -2,6 +2,7 @@ import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
 import { ConfigForm } from '../components/ConfigForm.js';
 import { Logger } from '../../../shared/utils/Logger.js';
 import { SettingsController } from '../logic/SettingsController.js';
+import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {
@@ -18,103 +19,127 @@ export class SettingsView {
   }
 
   render() {
-    const div = document.createElement('div');
-    div.className = 'view-settings';
+    const h = DOMSafe.createElement;
 
-    div.innerHTML = `
-            <h2>Configurações</h2>
-            
-            ${this.configForm.render()}
-            
-            <hr class="divider">
+    // Helper for dividers
+    const divider = () => h('hr', { className: 'divider' });
 
-            <h3>Navegação Contextual (Chips)</h3>
-            <p class="config-desc">Configure a barra de navegação rápida entre semanas.</p>
-            
-            <div class="chips-settings">
-                <label class="setting-item">
-                    <input type="checkbox" id="chipsEnabled">
-                    <span>Exibir chips de navegação</span>
-                </label>
-                
-                <div id="chipsOptions" class="chips-options" style="display: block;">
-                    <label class="setting-item">
-                        <span>Quantidade de chips:</span>
-                        <div class="slider-container">
-                            <input type="range" id="chipsMaxItems" min="1" max="8" value="3" step="1">
-                            <span id="chipsMaxValue" class="slider-value">3</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-            
-            <hr class="divider">
+    // Chips Section
+    const chipsSettings = h('div', { className: 'chips-settings' }, [
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'chipsEnabled' }),
+        h('span', {}, 'Exibir chips de navegação'),
+      ]),
+      h('div', { id: 'chipsOptions', className: 'chips-options', style: { display: 'block' } }, [
+        h('label', { className: 'setting-item' }, [
+          h('span', {}, 'Quantidade de chips:'),
+          h('div', { className: 'slider-container' }, [
+            h('input', {
+              type: 'range',
+              id: 'chipsMaxItems',
+              min: '1',
+              max: '8',
+              value: '3',
+              step: '1',
+            }),
+            h('span', { id: 'chipsMaxValue', className: 'slider-value' }, '3'),
+          ]),
+        ]),
+      ]),
+    ]);
 
-            <h3>Interface & Funcionalidades</h3>
-            <p class="config-desc">Personalize o que você vê na lista de semanas.</p>
-            
-            <div class="ui-settings">
-                <label class="setting-item">
-                    <input type="checkbox" id="showAdvancedButtons" checked>
-                    <span>Botões de Verificação Avançados (Rápido vs Completo)</span>
-                </label>
-                <p class="setting-hint">Se desativado, mostra apenas o botão padrão (Completo).</p>
+    // UI Settings
+    const uiSettings = h('div', { className: 'ui-settings' }, [
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'showAdvancedButtons', checked: true }),
+        h('span', {}, 'Botões de Verificação Avançados (Rápido vs Completo)'),
+      ]),
+      h(
+        'p',
+        { className: 'setting-hint' },
+        'Se desativado, mostra apenas o botão padrão (Completo).'
+      ),
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'showTasksButton', checked: true }),
+        h('span', {}, 'Funcionalidade de Tarefas (Preview)'),
+      ]),
+      h(
+        'p',
+        { className: 'setting-hint' },
+        "Habilita o botão 'Tarefas' para ver o resumo sem abrir."
+      ),
+    ]);
 
-                <label class="setting-item">
-                    <input type="checkbox" id="showTasksButton" checked>
-                    <span>Funcionalidade de Tarefas (Preview)</span>
-                </label>
-                <p class="setting-hint">Habilita o botão 'Tarefas' para ver o resumo sem abrir.</p>
-            </div>
-            
-            <hr class="divider">
+    // Helper for buttons
+    const btn = (id, icon, label, extraStyle = '') =>
+      h('button', { id, className: 'action-card small-action', style: extraStyle }, [
+        h('span', { className: 'icon' }, icon),
+        h('span', { className: 'label' }, label),
+      ]);
 
-            <h3>Privacidade e Dados</h3>
-            <p class="config-desc">Gerencie seus dados locais. A extensão segue a política Local-First.</p>
-            <div class="action-list">
-                <button id="btnExport" class="action-card small-action">
-                    <span class="icon">⬇️</span><span class="label">Baixar Meus Dados (Backup)</span>
-                </button>
-                <button id="btnImport" class="action-card small-action">
-                    <span class="icon">⬆️</span><span class="label">Restaurar Backup</span>
-                </button>
-            </div>
+    // Privacy Section
+    const privacyActions = h('div', { className: 'action-list' }, [
+      btn('btnExport', '⬇️', 'Baixar Meus Dados (Backup)'),
+      btn('btnImport', '⬆️', 'Restaurar Backup'),
+    ]);
 
-            <hr class="divider">
+    // Manage Section
+    const manageActions = h('div', { className: 'action-list' }, [
+      btn('btnManualAdd', '✏️', 'Adicionar Manualmente'),
+      btn('btnAddCurrent', '➕', 'Adicionar Página Atual'),
+      btn('btnBatchImport', '📦', 'Importar em Lote (AVA)'),
+      divider(),
+      btn(
+        'btnClearAll',
+        '🗑️',
+        'Remover Todas as Matérias',
+        'border-color: #ffcccc; color: #d9534f;'
+      ),
+    ]);
 
-            <h3>Gerenciar Matérias</h3>
-            <p class="config-desc">Opções para adicionar ou remover cursos.</p>
+    // Help Section
+    const helpActions = h(
+      'div',
+      { className: 'action-list' },
+      btn('btnFeedback', '📢', 'Enviar Feedback')
+    );
 
-            <div class="action-list">
-                <button id="btnManualAdd" class="action-card small-action">
-                    <span class="icon">✏️</span><span class="label">Adicionar Manualmente</span>
-                </button>
-                <button id="btnAddCurrent" class="action-card small-action">
-                    <span class="icon">➕</span><span class="label">Adicionar Página Atual</span>
-                </button>
-                <button id="btnBatchImport" class="action-card small-action">
-                    <span class="icon">📦</span><span class="label">Importar em Lote (AVA)</span>
-                </button>
-                <hr class="divider">
-                <button id="btnClearAll" class="action-card small-action" style="border-color: #ffcccc; color: #d9534f;">
-                    <span class="icon">🗑️</span><span class="label">Remover Todas as Matérias</span>
-                </button>
-            </div>
+    return h('div', { className: 'view-settings' }, [
+      h('h2', {}, 'Configurações'),
+      this.configForm.render(), // Já retorna HTMLElement via DOMSafe
+      divider(),
 
-            <hr class="divider">
+      h('h3', {}, 'Navegação Contextual (Chips)'),
+      h('p', { className: 'config-desc' }, 'Configure a barra de navegação rápida entre semanas.'),
+      chipsSettings,
+      divider(),
 
-            <h3>Ajuda e Feedback</h3>
-            <p class="config-desc">Encontrou um problema ou tem uma sugestão?</p>
-            <div class="action-list">
-                <button id="btnFeedback" class="action-card small-action">
-                    <span class="icon">📢</span><span class="label">Enviar Feedback</span>
-                </button>
-            </div>
+      h('h3', {}, 'Interface & Funcionalidades'),
+      h('p', { className: 'config-desc' }, 'Personalize o que você vê na lista de semanas.'),
+      uiSettings,
+      divider(),
 
-            <div id="settingsFeedback" class="status-msg"></div>
-            <div class="footer-info"></div>
-        `;
-    return div;
+      h('h3', {}, 'Privacidade e Dados'),
+      h(
+        'p',
+        { className: 'config-desc' },
+        'Gerencie seus dados locais. A extensão segue a política Local-First.'
+      ),
+      privacyActions,
+      divider(),
+
+      h('h3', {}, 'Gerenciar Matérias'),
+      h('p', { className: 'config-desc' }, 'Opções para adicionar ou remover cursos.'),
+      manageActions,
+      divider(),
+
+      h('h3', {}, 'Ajuda e Feedback'),
+      h('p', { className: 'config-desc' }, 'Encontrou um problema ou tem uma sugestão?'),
+      helpActions,
+
+      h('div', { id: 'settingsFeedback', className: 'status-msg' }),
+      h('div', { className: 'footer-info' }),
+    ]);
   }
 
   afterRender() {
