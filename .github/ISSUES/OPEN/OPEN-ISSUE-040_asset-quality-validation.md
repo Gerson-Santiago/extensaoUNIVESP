@@ -1,9 +1,9 @@
 # 🎨 ISSUE-040: Icon & Asset Quality Validation (CWS)
 
-**Status:** 📋 Aberta  
+**Status:** 🏗️ Em Progresso (Manifesto Pronto)  
 **Prioridade:** 🟡 Média (Pre-Launch Quality)  
 **Componente:** `assets/`  
-**Versão:** v2.10.0+
+**Versão:** v2.9.7+
 
 ---
 
@@ -82,7 +82,7 @@ Se os ícones atuais falharem:
 
 ## ✅ Critérios de Aceite
 - [ ] 3 ícones separados (16, 48, 128) criados e validados.
-- [ ] `manifest.json` atualizado para referenciar arquivos corretos.
+- [x] `manifest.json` atualizado para referenciar arquivos corretos.
 - [ ] Screenshots em dimensões exatas (1280x800).
 - [ ] Zero warnings de `pngcheck` ou `identify`.
 

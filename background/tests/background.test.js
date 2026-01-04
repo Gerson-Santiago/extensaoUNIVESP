@@ -16,6 +16,12 @@ const mockChrome = {
   action: /** @type {any} */ ({
     setPopup: jest.fn(),
   }),
+  tabs: /** @type {any} */ ({
+    onUpdated: { addListener: jest.fn() },
+    onActivated: { addListener: jest.fn() },
+    query: jest.fn(),
+    get: jest.fn().mockResolvedValue({ url: 'https://ava.univesp.br' }),
+  }),
 };
 global.chrome = /** @type {any} */ (mockChrome);
 
@@ -114,5 +120,46 @@ describe('Background Script - Panel Behavior', () => {
       openPanelOnActionClick: false,
     });
     expect(global.chrome.action.setPopup).toHaveBeenCalledWith({ popup: 'popup/popup.html' });
+  });
+
+  test('Deve gerenciar disponibilidade do sidePanel baseado na URL (onUpdated)', async () => {
+    // Arrange
+    /** @type {Function} */
+    let updatedCallback;
+    /** @type {any} */ (global.chrome.tabs.onUpdated.addListener).mockImplementation((cb) => {
+      updatedCallback = cb;
+    });
+
+    const mockSetOptions = jest.fn().mockResolvedValue(undefined);
+    /** @type {any} */ (global.chrome.sidePanel.setOptions) = mockSetOptions;
+
+    const mockGetSync = jest.fn().mockResolvedValue({ clickBehavior: 'sidepanel' });
+    /** @type {any} */ (global.chrome.storage.sync.get) = mockGetSync;
+
+    // Act
+    loadScript();
+
+    // Simula aba UNIVESP
+    if (updatedCallback) {
+      await updatedCallback(1, { status: 'complete' }, { url: 'https://ava.univesp.br/courses/1' });
+    }
+
+    // Assert
+    expect(mockSetOptions).toHaveBeenCalledWith({
+      tabId: 1,
+      path: 'sidepanel/sidepanel.html',
+      enabled: true,
+    });
+
+    // Simula aba externa
+    if (updatedCallback) {
+      await updatedCallback(2, { status: 'complete' }, { url: 'https://google.com' });
+    }
+
+    expect(mockSetOptions).toHaveBeenCalledWith({
+      tabId: 2,
+      path: 'sidepanel/sidepanel.html',
+      enabled: false,
+    });
   });
 });

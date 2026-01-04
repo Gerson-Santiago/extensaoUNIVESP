@@ -19,8 +19,10 @@ export class Tabs {
     const targetCourseId = courseMatch ? courseMatch[1] : null;
     const targetContentId = contentMatch ? contentMatch[1] : null;
 
-    // Converte callback antiga para Promise (ou usa await se a API suportar, aqui usando wrapper manual para compatibilidade garantida)
-    const tabs = await new Promise((resolve) => chrome.tabs.query({}, resolve));
+    // Converte callback antiga para Promise com filtro de domínio para maior privacidade
+    const tabs = await new Promise((resolve) =>
+      chrome.tabs.query({ url: ['https://ava.univesp.br/*', 'https://sei.univesp.br/*'] }, resolve)
+    );
 
     let existingTab = null;
 

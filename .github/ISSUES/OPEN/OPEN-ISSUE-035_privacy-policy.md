@@ -70,10 +70,9 @@ Estrutura obrigatória:
 **Relacionado:** [CWS Privacy Requirements](https://developer.chrome.com/docs/webstore/program-policies/privacy/)  
 
 ## 🔗 GitHub Issue
-
-- **Status:** 📋 Published
-- **Link:** [Issue #25](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/25)
-- **Data:** 2026-01-03
+- **Status:** ✅ Vinculada
+- **Link:** [#25](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/25)
+- **Data:** 04/01/2026
 
 ---
 **Tags:** `//ISSUE-mv3-privacy` | **Tipo:** Legal/Compliance

@@ -63,10 +63,9 @@ Permite baixar PDFs de material didático (restrito a .pdf, .docx).
 **Relacionado:** CWS - [Permission Warnings](https://developer.chrome.com/docs/extensions/mv3/permission_warnings/)  
 
 ## 🔗 GitHub Issue
-
-- **Status:** 📋 Published
-- **Link:** [Issue #24](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/24)
-- **Data:** 2026-01-03
+- **Status:** ✅ Vinculada
+- **Link:** [#24](https://github.com/Gerson-Santiago/extensaoUNIVESP/issues/24)
+- **Data:** 04/01/2026
 
 ---
 **Tags:** `//ISSUE-mv3-permissions` | **Tipo:** Compliance/Security
