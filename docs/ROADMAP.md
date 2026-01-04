@@ -1,40 +1,52 @@
-# Master Roadmap: Publicação Chrome Web Store
+# Master Roadmap: Publicação e Evolução (v2.10.0+)
 
-**Versão**: 1.0 (02/01/2026)  
-**Meta**: Publicação MVP Seguro (v2.10.0)
-
-## 📅 Timeline Consolidado
-
-**Caminho Crítico**: EPIC-001 (Security) + EPIC-003 (Compliance) = **8-11 dias**
-
-### Semana 1: Segurança Hardcore (5 dias)
-**Foco**: Eliminar XSS e Race Conditions (EPIC-001)
-
-- ~~**Dia 1-2**: **SPEC-001** (DOM Safe Refactoring)~~ ✅ **CONCLUÍDO (04/01/2026)**
-  - ~~Refatorar 11 arquivos críticos (Modal, Views, Factory).~~
-  - ~~Implementar `DOMSafe.js`.~~
-- ~~**Dia 3-4**: **SPEC-004** (Storage Concurrency)~~ ✅ **CONCLUÍDO (03/01/2026)**
-  - ~~Implementar `StorageGuard.js` e atualizar Repositories.~~ ✅
-  - ~~Testes de concorrência.~~ ✅
-- **Dia 5**: Testes de Segurança + **SPEC-002** (Single Purpose) + **SPEC-003** (Content Scripts).
-
-### Semana 2: Compliance Final (3-6 dias)
-**Foco**: Preparar pacote para CWS (EPIC-003)
-
-- ~~**Dia 6**: **SPEC-033** (Permissions Justification) + **SPEC-035** (Privacy Policy).~~ ✅ **CONCLUÍDO (04/01/2026)**
-- ~~**Dia 7**: **SPEC-034** (Service Worker Polish) + **SPEC-038** (SidePanel UX).~~ ✅ **CONCLUÍDO (04/01/2026)**
-- **Dia 8-11**: **SPEC-036** (Store Assets/Screenshots) + QA Final.
-- **Dia 12**: 🚀 **SUBMISSÃO CWS**
+**Meta**: Publicação na Chrome Web Store e Consolidação da Governança de Dados.
 
 ---
 
-## 🛑 O Que Ficou Fora (v2.11.0)
-- **EPIC-002**: Data Sovereignty / Settings UI Avançada (9 dias).
-- Issue-031: Type Safety Refinement (Já está bom o suficiente).
-- Features "Nice to have" de UI.
+## 📅 Milestones de Lançamento (v2.10.0)
 
-## ✅ Milestones
-- [x] **M1 (Dia 5)**: Codebase Seguro (Zero XSS ✅, Zero Race Conditions ✅).
-- [x] **M2 (Dia 8)**: Compliance Administrativa (Docs prontos ✅).
-- [/] **M3 (Dia 11)**: Pacote Final (Zipado e testado).
-- [ ] **M4 (Dia 12)**: Publicado.
+### [x] M1: Codebase Seguro (Jan/2026)
+Foco em eliminação de XSS e Race Conditions.
+- ~~**SPEC-001**: DOM Safe Refactoring (DOMSafe.js)~~ ✅
+- ~~**SPEC-004**: Storage Guard (Concurrency)~~ ✅
+
+### [x] M2: Compliance Administrativa (Jan/2026)
+Foco em exigências regulatórias da CWS.
+- ~~**SPEC-033/035**: Justificativa de Permissões e Privacy Policy~~ ✅
+- ~~**SPEC-038**: sidePanel Contextual (UX Least Intrusion)~~ ✅
+
+### [/] M3: Lançamento em Produção (Em execução)
+Foco em ativos de loja e empacotamento.
+- **SPEC-036**: Assets da Loja (Ícones e Screenshots).
+- **SPEC-040**: Engenharia de Distribuição (Final Bundle & Zip).
+- **SPEC-021**: Manual do Usuário e Docs de Release.
+
+---
+
+## 🏔️ Futuras EPICs (Roadmap v2.10.x & v2.11.0)
+
+### EPIC-004: Soberania e Personalização (v2.10.0 Target)
+Foco em dar o controle total ao usuário sobre a interface e os dados.
+- **SPEC-020**: Reset de Fábrica (Wipe Total de dados locais).
+- **SPEC-022**: Sistema de Preferências (Tema, comportamento do sidePanel).
+- **SPEC-023**: Dashboard de Diagnóstico e Apoio (Sobre).
+- **SPEC-024**: Controle de Automação (Scraping apenas sob demanda).
+
+### EPIC-005: Excelência Técnica e QA (Contínuo)
+Foco em longevidade do código e performance.
+- **SPEC-001**: Otimização de Scrapers (paletteItem) e Hardening de Tipos.
+- **SPEC-025**: Barreira de 85% de Cobertura (UI e Core Logic).
+
+### EPIC-006: Segurança de Elite (v2.11+)
+- **SPEC-043**: Backup Seguro com Criptografia AES-GCM e Assinatura Digital.
+
+---
+
+## ✅ Resumo de Status
+- [x] **Segurança Hardcore**: Concluída.
+- [x] **Documentação de Governança**: Sincronizada.
+- [ ] **Store Assets**: Pendente.
+- [ ] **Publicação CWS**: Meta Final.
+
+[Voltar para o Índice](README.md)
