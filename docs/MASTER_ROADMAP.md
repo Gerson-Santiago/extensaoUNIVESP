@@ -21,8 +21,8 @@
 ### Semana 2: Compliance Final (3-6 dias)
 **Foco**: Preparar pacote para CWS (EPIC-003)
 
-- **Dia 6**: **SPEC-033** (Permissions Justification) + **SPEC-035** (Privacy Policy).
-- **Dia 7**: **SPEC-034** (Service Worker Polish) + **SPEC-038** (SidePanel UX).
+- ~~**Dia 6**: **SPEC-033** (Permissions Justification) + **SPEC-035** (Privacy Policy).~~ ✅ **CONCLUÍDO (04/01/2026)**
+- ~~**Dia 7**: **SPEC-034** (Service Worker Polish) + **SPEC-038** (SidePanel UX).~~ ✅ **CONCLUÍDO (04/01/2026)**
 - **Dia 8-11**: **SPEC-036** (Store Assets/Screenshots) + QA Final.
 - **Dia 12**: 🚀 **SUBMISSÃO CWS**
 
@@ -34,7 +34,7 @@
 - Features "Nice to have" de UI.
 
 ## ✅ Milestones
-- [/] **M1 (Dia 5)**: Codebase Seguro (~~Zero XSS~~ ✅, ~~Zero Race Conditions~~ ✅).
-- [ ] **M2 (Dia 8)**: Compliance Administrativa (Docs prontos).
-- [ ] **M3 (Dia 11)**: Pacote Final (Zipado e testado).
+- [x] **M1 (Dia 5)**: Codebase Seguro (Zero XSS ✅, Zero Race Conditions ✅).
+- [x] **M2 (Dia 8)**: Compliance Administrativa (Docs prontos ✅).
+- [/] **M3 (Dia 11)**: Pacote Final (Zipado e testado).
 - [ ] **M4 (Dia 12)**: Publicado.

@@ -8,8 +8,10 @@ Trilhas de leitura por perfil:
 ### QA / Tester
 [Templates de Teste](TEST_TEMPLATES.md) | [Regras de Negócio](REGRAS_DE_NEGOCIO.md) | [Exemplo (.js)](TEST_TEMPLATE_EXAMPLE.js.template)
 
-### Produto e Processos
-[Negócio](REGRAS_DE_NEGOCIO.md) | [Privacidade](PRIVACIDADE_E_DADOS.md) | [ADR Index](architecture/)
+### Produto e Governança
+- [Negócio](REGRAS_DE_NEGOCIO.md) | [Privacidade](PRIVACIDADE_E_DADOS.md)
+- [Governança CWS](governance/README.md) (Novo)
+- [Relatório de Conformidade](relatorio.md)
 
 ### IA e Automação
 [Regras IA](REGRAS_CONSOLIDADAS.md) | [Workflows](../.agent/workflows/)

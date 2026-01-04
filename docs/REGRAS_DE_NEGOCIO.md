@@ -19,9 +19,12 @@
 - SafeResult: Funções críticas retornam {success, data, error}. Zero exceptions não tratadas.
 
 ### 5. Navegação e UX
-- Anti-Duplicação: Verifica abas abertas por URL antes de criar novas.
-- Freshness: Containers DOM sempre recriados para evitar elementos órfãos.
 - Scroll: Lógica de retry com MutationObserver para âncoras dinâmicas.
+
+### 6. sidePanel e Contexto (MV3)
+- **Least Intrusion**: O painel lateral só é habilitado em domínios UNIVESP.
+- **Context Awareness**: Ao trocar de aba para um domínio não-UNIVESP, o painel deve resetar seu estado (view "Home") para evitar vazamento de dados.
+- **User Gesture**: A abertura do painel é estritamente vinculada à ação do usuário (clique no ícone da extensão).
 
 ---
 [README](README.md)

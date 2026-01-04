@@ -19,6 +19,7 @@
 - features/: Vertical Slices (Courses, Session, Settings).
 - scripts/: Background (Eventos) e Content Scripts (Scraping).
 - shared/: Componentes agnósticos (ver `utils/DOMSafe.js`).
+- **Segurança**: Trusted Types Policy (`dom-safe-policy`) obrigatória para manipulação de DOM.
 
 ### 4. Camadas (Features)
 - logic/: Regras puras.

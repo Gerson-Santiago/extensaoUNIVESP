@@ -349,3 +349,15 @@ Abre em uma nova janela
 
 dev.to
 Understanding Chrome Extensions: A Developer's Guide to Manifest V3 - DEV Community
+
+---
+
+## 11. Caso Prático: Implementação na Central Univesp (v2.9.7)
+
+A **Central Univesp** aplicou integralmente os princípios deste relatório durante o Milestone M2 (Janeiro/2026):
+
+1.  **Propósito Único**: Foco estrito em "Produtividade Acadêmica UNIVESP", integrando login (SEI), navegação e tarefas.
+2.  **Mínima Intrusão (sidePanel)**: O painel só é habilitado dinamicamente via Service Worker quando o usuário está em `ava.univesp.br` ou `sei.univesp.br`.
+3.  **Auditoria de Permissões**: A permissão `tabs` foi removida em favor de filtragem por URL no `chrome.tabs.query`, reduzindo drasticamente o aviso de instalação.
+4.  **Segurança Hardcore**: Implementação de *Trusted Types* (`dom-safe-policy`) e eliminação total de `innerHTML` nas áreas de scraping e UI.
+5.  **Transparência**: Criação de `PRIVACY_POLICY.md` bilíngue e justificativa técnica detalhada para cada API utilizada.

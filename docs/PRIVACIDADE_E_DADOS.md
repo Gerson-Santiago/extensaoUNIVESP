@@ -10,10 +10,11 @@ A extensão opera sem servidores da aplicação. Todos os dados residem no naveg
 - Logs: Apenas para diagnóstico local. Zero telemetria externa.
 - Senhas: Jamais solicitadas ou armazenadas pela extensão.
 
-### 3. Permissões
-- Host: Restrito a univesp.br e blackboard.com.
+### 3. Permissões (Strict Least Privilege)
+- Host: Restrito a `ava.univesp.br` e `sei.univesp.br`.
 - Storage: Para cache de atividades e configurações.
 
-O aluno é soberano sobre seus dados. O reset de fábrica limpa 100% das informações locais.
+### 4. Conformidade CWS
+A extensão segue rigorosamente as políticas da Chrome Web Store. Para mais detalhes legislativos, consulte nossa [Política de Privacidade Formal](./governance/PRIVACY_POLICY.md) e a [Justificativa de Permissões](./governance/CWS_PERMISSION_JUSTIFICATION.md).
 ---
 [README](README.md)
