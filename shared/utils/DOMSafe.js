@@ -1,7 +1,20 @@
+/**
+ * @file DOMSafe.js
+ * @description Implementação de Factory segura para manipulação do DOM.
+ */
+
+// Importar tipos explicitamente para disponibilidade no JSDoc
+/** @typedef {import('../types/security.js').SafeURL} SafeURL */
+/** @typedef {import('../types/security.js').SafeAttributes} SafeAttributes */
+/** @typedef {import('../types/security.js').SafeChildren} SafeChildren */
+
+/**
+ * Utilitário de segurança para operações DOM.
+ * Previne XSS através de sanitização rigorosa e Whitelisting.
+ */
 export class DOMSafe {
   /**
-   * Sanitiza uma string para uso seguro em HTML (embora devamos evitar innerHTML).
-   * Útil para casos onde textContent não é suficiente.
+   * Sanitiza uma string para uso seguro em HTML.
    * @param {string} str - String potencialmente perigosa.
    * @returns {string} String com caracteres especiais escapados.
    */
@@ -16,29 +29,93 @@ export class DOMSafe {
   }
 
   /**
-   * Sanitiza URLs para evitar execução de script via protocolo (ex: javascript:alert(1))
+   * Lista de atributos HTML seguros (whitelist)
+   */
+  static #SAFE_ATTRIBUTES = new Set([
+    'id',
+    'className',
+    'class',
+    'title',
+    'aria-label',
+    'aria-describedby',
+    'role',
+    'tabindex',
+    'disabled',
+    'readonly',
+    'required',
+    'placeholder',
+    'value',
+    'type',
+    'name',
+    'alt',
+    'for',
+    'width',
+    'height',
+    'target',
+    'rel',
+    // Atributos de Iframe (FeedbackView)
+    'frameborder',
+    'marginwidth',
+    'marginheight',
+    'allowfullscreen',
+    'allow',
+    'loading',
+  ]);
+
+  /**
+   * Lista de atributos perigosos (blacklist)
+   */
+  static #DANGEROUS_ATTRIBUTES = new Set(['srcdoc', 'codebase', 'archive', 'cite']);
+
+  /**
+   * Sanitiza URLs com validação COMPLETA
+   * Bloqueia protocolos perigosos e valida formato de URL
    * @param {string} url - URL para sanitizar
-   * @returns {string} URL segura ou string vazia se inválida
+   * @returns {SafeURL | ""} URL segura ou string vazia se inválida
    */
   static sanitizeUrl(url) {
     if (typeof url !== 'string') return '';
+
     const trimmed = url.trim();
-    // Bloqueia protocolos perigosos (javascript:, vbscript:, data:)
-    if (/^(javascript|vbscript|data):/i.test(trimmed)) {
-      console.error(`[DOMSafe] Blocked unsafe URL protocol: ${trimmed}`);
+
+    // 1. Bloqueia protocolos perigosos
+    const dangerousProtocols = /^(javascript|vbscript|data|file|about):/i;
+    if (dangerousProtocols.test(trimmed)) {
+      console.error(`[DOMSafe] Blocked unsafe protocol: ${trimmed}`);
       return '';
     }
-    return trimmed;
+
+    // 2. Valida formato de URL
+    try {
+      const parsed = new URL(trimmed, window.location.origin);
+
+      // 3. Whitelist de protocolos permitidos
+      const allowedProtocols = ['http:', 'https:', 'chrome-extension:'];
+      if (!allowedProtocols.includes(parsed.protocol)) {
+        console.error(`[DOMSafe] Blocked protocol: ${parsed.protocol}`);
+        return '';
+      }
+
+      return /** @type {SafeURL} */ (parsed.href);
+    } catch {
+      // URL inválida ou relativa - permitir URLs relativas
+      if (trimmed.startsWith('/') || trimmed.startsWith('./') || trimmed.startsWith('../')) {
+        return /** @type {SafeURL} */ (trimmed);
+      }
+      console.error(`[DOMSafe] Invalid URL: ${trimmed}`);
+      return '';
+    }
   }
 
   /**
    * Cria um elemento HTML de forma segura com atributos e filhos.
    * Substitui document.createElement para garantir sanitização centralizada.
    *
-   * @param {string} tagName - Tag do elemento (ex: 'div', 'a').
-   * @param {Object<string, any>} [attributes={}] - Atributos (class, href, onclick, style, etc).
-   * @param {(string|Node|Array<string|Node>)} [children=[]] - Filhos do elemento.
-   * @returns {HTMLElement} O elemento criado e blindado.
+   * @template {keyof HTMLElementTagNameMap} T
+   * @param {T} tagName - Tag do elemento (ex: 'div', 'a').
+   * @param {SafeAttributes} [attributes={}] - Atributos seguros (whitelist).
+   * @param {SafeChildren} [children=[]] - Filhos do elemento.
+   * @returns {HTMLElementTagNameMap[T]} O elemento criado e blindado.
    */
   static createElement(tagName, attributes = {}, children = []) {
     const element = document.createElement(tagName);
@@ -76,16 +153,37 @@ export class DOMSafe {
         return;
       }
 
-      // 5. Atributos de URL (href, src, action) - BLINDAGEM XSS
-      if (['href', 'src', 'action', 'formAction'].includes(key)) {
-        element.setAttribute(key, DOMSafe.sanitizeUrl(String(value)));
+      // 5. Atributos PERIGOSOS - BLOQUEAR
+      if (DOMSafe.#DANGEROUS_ATTRIBUTES.has(key.toLowerCase())) {
+        console.error(`[DOMSafe] Blocked dangerous attribute: ${key}`);
         return;
       }
 
-      // 6. Outros atributos normais
-      if (value !== null && value !== undefined && value !== false) {
-        element.setAttribute(key, String(value));
+      // 6. Atributos de URL (href, src, action) - BLINDAGEM XSS
+      if (['href', 'src', 'action', 'formAction', 'poster', 'background'].includes(key)) {
+        const sanitized = DOMSafe.sanitizeUrl(String(value));
+        if (sanitized) {
+          element.setAttribute(key, sanitized);
+        }
+        return;
       }
+
+      // 7. Atributos seguros da whitelist
+      if (DOMSafe.#SAFE_ATTRIBUTES.has(key.toLowerCase())) {
+        if (value !== null && value !== undefined && value !== false) {
+          element.setAttribute(key, String(value));
+        }
+        return;
+      }
+
+      // 8. Atributos de dados (data-*) e acessibilidade (aria-*)
+      if (key.toLowerCase().startsWith('data-') || key.toLowerCase().startsWith('aria-')) {
+        element.setAttribute(key, String(value));
+        return;
+      }
+
+      // 9. Atributo desconhecido - LOG e BLOQUEAR por segurança
+      console.warn(`[DOMSafe] Unknown attribute blocked: ${key}`);
     });
 
     // Adicionar filhos recursivamente

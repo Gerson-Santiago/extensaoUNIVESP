@@ -197,17 +197,20 @@ const container = h('div', { className: 'modal' }, [
 ### Phase 1: Core Factory (✅ Complete - ISSUE-030)
 - [x] Implement `DOMSafe.createElement` with URL sanitization
 - [x] Add JSDoc typing (`@returns {HTMLElement}`)
-- [x] Refactor 5 critical Views: `SettingsView`, `HomeView`, `CoursesView`, `FeedbackView`, `ConfigForm`
+- [x] Refactor critical Views: `SettingsView`, `HomeView`, `CoursesView`, `FeedbackView`, `ConfigForm`
 
-### Phase 2: Universal Adoption (🔄 In Progress)
-- [ ] Refactor remaining 20+ files:
-  - `CourseItem.js`, `WeekItem.js`, `ActionMenu.js`
-  - `BatchImportModal.js`, `AddManualModal.js`
-  - `ViewTemplate.js`, `ActivityItemFactory.js`
-- [ ] Add ESLint rule: `no-restricted-syntax` for raw `document.createElement` in `features/`
+### Phase 2: Universal Adoption (✅ Complete - 04/01/2026)
+- [x] Refactor 28 arquivos total:
+  - [x] `CourseItem.js`, `WeekItem.js`, `ActionMenu.js`, `ContextualChips.js`
+  - [x] `BatchImportModal.js`, `MainLayout.js`, `TopNav.js`, `SkeletonLoader.js`
+  - [x] `ViewTemplate.js` (CourseWeeksView, DetailsActivitiesWeekView)
+  - [x] `WeeksManager.js`, `PreviewManager.js`, `ActivityRenderer.js`, `ChipsManager.js`
+  - [x] `SkeletonManager.js`, `ConfigForm.js`, `DOMSafe.js`
+- [x] Zero innerHTML violations alcançado ✓
 
 ### Phase 3: Enforcement (📋 Planned)
-- [ ] Pre-commit hook: `rg "document\.createElement" features/ --type js`
+- [ ] Add ESLint rule: `no-restricted-syntax` for raw `document.createElement` in `features/`
+- [ ] Pre-commit hook: `rg "innerHTML\s*=" features/ --type js`
 - [ ] Update `CONTRIBUTING.md` with factory usage guidelines
 
 ---

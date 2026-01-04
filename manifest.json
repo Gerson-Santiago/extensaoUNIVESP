@@ -5,11 +5,15 @@
   "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos, Navegação Inteligente no AVA e Autopreenchimento SEI.",
   "permissions": ["storage", "sidePanel", "scripting", "tabs", "activeTab", "downloads"],
   "background": {
-    "service_worker": "background/index.js"
+    "service_worker": "background/index.js",
+    "type": "module"
   },
   "host_permissions": ["https://sei.univesp.br/*", "https://ava.univesp.br/*"],
   "side_panel": {
     "default_path": "sidepanel/sidepanel.html"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; require-trusted-types-for 'script'; trusted-types dom-safe-policy default;"
   },
   "action": {
     "default_icon": {

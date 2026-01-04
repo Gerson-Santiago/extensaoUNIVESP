@@ -398,17 +398,75 @@ rg "innerHTML\s*=" src/ --type js --glob '!**/*.test.js'
 # Resultado esperado: Zero matches
 ```
 
-Exceção: Arquivos de teste (*.test.js) podem usar innerHTML para setup de fixtures.
+Exceção:# Segurança Contra XSS (Cross-Site Scripting) - Issue 030
 
-----------
+> **Status:** ✅ Implementado (Extreme Security Standard)
+> **Data:** 04/01/2026
+> **Versão:** v2.10.0
 
-### AC-2: ViewTemplates Retornam HTMLElement
+Este documento detalha a estratégia de defesa em profundidade implementada para erradicar vulnerabilidades XSS na extensão.
 
-```javascript
-// Todos os ViewTemplate.render() devem retornar Node
-static render() {
-  return DOMSafe.createElement(...); // Não return string
+## 1. Zero `innerHTML` (Camada 1)
+Eliminamos 100% das chamadas a `innerHTML` e `outerHTML` no código de produção.
+- **Substituição:** `textContent` para textos e `DOMSafe.createElement` para estruturas HTML.
+- **Validação:** `rg "innerHTML"` retorna zero resultados em `features/` e `shared/`.
+
+## 2. DOMSafe Factory (Camada 2)
+A classe `DOMSafe` atua como gatekeeper centralizado para criação de elementos DOM.
+
+### 2.1 Whitelist de Atributos (`SafeAttributes`)
+Apenas atributos explicitamente seguros são permitidos.
+- **Permitidos:** `id`, `class`, `src`, `href`, `aria-*`, `data-*`, entre outros.
+- **Bloqueados:** Atributos de evento (`onclick` string), `srcdoc`, `javascript:` URLs.
+- **Tratamento:** Atributos desconhecidos são rejeitados e logados (`console.warn`).
+
+### 2.2 Sanitização de URL (`SafeURL`)
+Atributos sensíveis (`href`, `src`, `action`) passam por validação rigorosa.
+- **Protocolos Permitidos:** `http:`, `https:`, `chrome-extension:`.
+- **Bloqueados:** `javascript:`, `vbscript:`, `data:`, `file:`.
+- **Normalização:** URLs relativas são resolvidas de forma segura.
+
+## 3. Trusted Types & CSP (Camada 3)
+Implementamos a API **Trusted Types** para blindagem no nível do navegador.
+
+### 3.1 Política `dom-safe-policy`
+Criada em `shared/security/TrustedTypesPolicy.js`.
+- **`createHTML`**: Bloqueia qualquer criação de HTML arbitrário (lança erro).
+- **`createScriptURL`**: Permite apenas scripts da própria origem da extensão.
+- **`createScript`**: Bloqueia scripts inline.
+
+### 3.2 Content Security Policy (CSP)
+No `manifest.json`, endurecemos as regras para exigir Trusted Types.
+```json
+"content_security_policy": {
+  "extension_pages": "script-src 'self'; object-src 'none'; require-trusted-types-for 'script'; trusted-types dom-safe-policy default;"
 }
+```
+Isso garante que, mesmo se um desenvolvedor tentar usar `innerHTML` no futuro, o navegador bloqueará a operação se não passar pela política (que rejeita HTML).
+
+## 4. Linting de Segurança (Camada 4)
+Regras estáticas no `eslint.config.mjs` previnem reintrodução de falhas.
+- **Plugins:** `eslint-plugin-security`, `eslint-plugin-no-unsanitized`.
+- **Regras:**
+  - `no-unsanitized/property`: Erro em `innerHTML`.
+  - `no-implied-eval`: Erro em `setTimeout` com string.
+  - `security/detect-unsafe-regex`: Previne ReDoS.
+
+## 5. Validação Automatizada (Camada 5)
+Criada suite de testes de penetração: `tests/xss-penetration.test.js`.
+- **Vetores:** Payloads da OWASP (scripts, eventos, protocolos obscuros).
+- **Cobertura:** Valida sanitização de input, rejeição de atributos e segurança da Factory.
+- **Status:** ✅ Todos os testes passando.
+
+---
+
+## Conclusão
+A extensão adota agora um modelo de "Segurança por Design". O desenvolvedor não precisa lembrar de sanitizar inputs; ele deve apenas usar as ferramentas padronizadas (`DOMSafe`), e o sistema impedirá o uso de APIs inseguras tanto em tempo de compilação (Lint/Types) quanto em tempo de execução (Trusted Types).
+tes Mantida
+
+```bash
+npm run test:coverage
+# Cobertura deve manter > 85% após refatoração
 ```
 
 ----------

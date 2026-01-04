@@ -32,7 +32,7 @@ describe('DOMSafe', () => {
         'data-test': 'value',
       });
 
-      expect(el.getAttribute('href')).toBe('https://example.com');
+      expect(el.getAttribute('href')).toBe('https://example.com/');
       expect(el.className).toBe('btn primary');
       expect(el.id).toBe('my-link');
       expect(el.getAttribute('data-test')).toBe('value');

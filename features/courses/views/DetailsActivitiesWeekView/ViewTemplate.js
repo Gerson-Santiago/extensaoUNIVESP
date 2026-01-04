@@ -69,18 +69,7 @@ export const ViewTemplate = {
     activitiesContainer.id = 'activitiesContainer';
     activitiesContainer.className = 'activities-container';
 
-    // Assemble Main Container
-    // Note: The original template returned 2 sibling divs.
-    // Ideally we should return a wrapper or a DocumentFragment.
-    // However, existing consumers might append this result to something.
-    // Let's check `DetailsActivitiesWeekView/index.js` usage.
-    // It likely does `this.container.innerHTML = ViewTemplate.render(...)`.
-    // So we will need to update the consumer too.
-    // For now let's return a DocumentFragment or Wrapper.
-    // Since we can't return multiple nodes easily without Fragment.
-
-    // Let's assume consumers will be updated to `appendChild(result)`.
-    // Returning a Fragment is safer.
+    // Retorna fragment com header e container
     const fragment = document.createDocumentFragment();
     fragment.appendChild(header);
     fragment.appendChild(activitiesContainer);

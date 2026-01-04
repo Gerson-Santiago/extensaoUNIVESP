@@ -1,4 +1,8 @@
 // background.js
+import { initTrustedTypes } from '../shared/security/TrustedTypesPolicy.js';
+
+// Inicializar política de segurança imediatamente
+initTrustedTypes();
 
 function updatePanelBehavior(behavior) {
   if (chrome.sidePanel && chrome.sidePanel.setPanelBehavior) {
