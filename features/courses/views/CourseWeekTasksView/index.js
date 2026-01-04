@@ -33,16 +33,29 @@ export class CourseWeekTasksView {
 
     const div = document.createElement('div');
     div.className = 'view-week-tasks';
-    div.innerHTML = `
-            <div class="details-header">
-                <button id="backBtn" class="btn-back">← Voltar</button>
-                <h2>${this.week.name} - Tarefas</h2>
-            </div>
-            <div id="weekProgress" class="week-progress-container">
-                <!-- Progress bar will be injected here -->
-            </div>
-            <div id="tasksList" class="tasks-container"></div>
-        `;
+
+    const header = document.createElement('div');
+    header.className = 'details-header';
+
+    const backBtn = document.createElement('button');
+    backBtn.id = 'backBtn';
+    backBtn.className = 'btn-back';
+    backBtn.textContent = '← Voltar';
+
+    const h2 = document.createElement('h2');
+    h2.textContent = `${this.week.name} - Tarefas`;
+
+    header.append(backBtn, h2);
+
+    const weekProgress = document.createElement('div');
+    weekProgress.id = 'weekProgress';
+    weekProgress.className = 'week-progress-container';
+
+    const tasksList = document.createElement('div');
+    tasksList.id = 'tasksList';
+    tasksList.className = 'tasks-container';
+
+    div.append(header, weekProgress, tasksList);
     return div;
   }
 
@@ -80,15 +93,29 @@ export class CourseWeekTasksView {
       return;
     }
 
-    container.innerHTML = `
-        <div class="progress-info">
-            <span>Progresso: ${percentage}%</span>
-            <span>${completed}/${total} tarefas</span>
-        </div>
-        <div class="progress-bar-bg">
-            <div class="progress-bar-fill" style="width: ${percentage}%"></div>
-        </div>
-    `;
+    container.innerHTML = ''; // Clear container
+
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'progress-info';
+
+    const spanPct = document.createElement('span');
+    spanPct.textContent = `Progresso: ${percentage}%`;
+
+    const spanCount = document.createElement('span');
+    spanCount.textContent = `${completed}/${total} tarefas`;
+
+    infoDiv.append(spanPct, spanCount);
+
+    const bgDiv = document.createElement('div');
+    bgDiv.className = 'progress-bar-bg';
+
+    const fillDiv = document.createElement('div');
+    fillDiv.className = 'progress-bar-fill';
+    fillDiv.style.width = `${percentage}%`;
+
+    bgDiv.appendChild(fillDiv);
+
+    container.append(infoDiv, bgDiv);
   }
 
   /**
@@ -102,7 +129,10 @@ export class CourseWeekTasksView {
       container.innerHTML = '';
 
       if (!this.week || !this.week.items || this.week.items.length === 0) {
-        container.innerHTML = '<p style="color:#999;">Nenhuma tarefa encontrada.</p>';
+        const p = document.createElement('p');
+        p.style.color = '#999';
+        p.textContent = 'Nenhuma tarefa encontrada.';
+        container.appendChild(p);
         return;
       }
 
@@ -129,10 +159,15 @@ export class CourseWeekTasksView {
           taskDiv.classList.add('completed');
         }
 
-        taskDiv.innerHTML = `
-                  <span class="task-status">${statusIcon}</span>
-                  <span class="task-name">${item.name}</span>
-              `;
+        const spanStatus = document.createElement('span');
+        spanStatus.className = 'task-status';
+        spanStatus.textContent = statusIcon;
+
+        const spanName = document.createElement('span');
+        spanName.className = 'task-name';
+        spanName.textContent = item.name;
+
+        taskDiv.append(spanStatus, spanName);
 
         container.appendChild(taskDiv);
       }

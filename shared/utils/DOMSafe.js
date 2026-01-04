@@ -1,16 +1,12 @@
-/**
- * @file DOMSafe.js
- * @description Utilitários para prevenir XSS e garantir manipulação segura do DOM
- */
-
 export class DOMSafe {
   /**
-   * Escapa caracteres HTML perigosos em uma string
-   * @param {string} str - String não confiável
-   * @returns {string} String sanitizada
+   * Sanitiza uma string para uso seguro em HTML (embora devamos evitar innerHTML).
+   * Útil para casos onde textContent não é suficiente.
+   * @param {string} str - String potencialmente perigosa.
+   * @returns {string} String com caracteres especiais escapados.
    */
   static escapeHTML(str) {
-    if (!str) return '';
+    if (typeof str !== 'string') return '';
     return str
       .replace(/&/g, '&amp;')
       .replace(/</g, '&lt;')
@@ -20,30 +16,40 @@ export class DOMSafe {
   }
 
   /**
-   * Limpa todo o conteúdo de um elemento de forma segura e rápida (Modern API)
-   * @param {HTMLElement} element - Elemento a ser limpo
+   * Cria um elemento HTML de forma segura com atributos e filhos.
+   * @param {string} tagName - Tag do elemento (ex: 'div', 'span').
+   * @param {Object} [attributes={}] - Objeto chave-valor para atributos (class, id, href, etc).
+   * @param {(string|HTMLElement|Array<string|HTMLElement>)} [children=[]] - Filhos do elemento.
+   * @returns {HTMLElement} O elemento criado.
    */
-  static clean(element) {
-    if (element && typeof element.replaceChildren === 'function') {
-      element.replaceChildren(); // Modern & Fast
-    } else if (element) {
-      element.innerHTML = ''; // Fallback
-    }
-  }
+  static createElement(tagName, attributes = {}, children = []) {
+    const element = document.createElement(tagName);
 
-  /**
-   * Sanitiza conteúdo HTML permitindo apenas tags seguras (whitelist mínima)
-   * Útil quando precisamos de formatação básica (b, i, p) mas não scripts
-   * @param {string} html - HTML potencialmente perigoso
-   * @returns {string} HTML sanitizado com tags perigosas removidas
-   */
-  static sanitize(html) {
-    // Implementação simples: Remover scripts e event handlers
-    // Para produção robusta, usar DOMPurify. Aqui faremos o básico para o MVP.
-    // Se conter <script> ou on*, escapa tudo por segurança.
-    if (/<script/i.test(html) || /\son\w+=/i.test(html) || /javascript:/i.test(html)) {
-      return DOMSafe.escapeHTML(html);
-    }
-    return html;
+    // Definir atributos
+    Object.entries(attributes).forEach(([key, value]) => {
+      if (key === 'className') {
+        element.className = value;
+      } else if (key === 'dataset' && typeof value === 'object') {
+        Object.entries(value).forEach(([dataKey, dataValue]) => {
+          element.dataset[dataKey] = dataValue;
+        });
+      } else if (key.startsWith('on') && typeof value === 'function') {
+        element.addEventListener(key.substring(2).toLowerCase(), value);
+      } else if (value !== null && value !== undefined && value !== false) {
+        element.setAttribute(key, value);
+      }
+    });
+
+    // Adicionar filhos
+    const childrenArray = Array.isArray(children) ? children : [children];
+    childrenArray.forEach((child) => {
+      if (child instanceof Node) {
+        element.appendChild(child);
+      } else if (child !== null && child !== undefined) {
+        element.appendChild(document.createTextNode(String(child)));
+      }
+    });
+
+    return element;
   }
 }

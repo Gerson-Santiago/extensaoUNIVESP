@@ -1,4 +1,4 @@
-import { DOMSafe } from '../../../../shared/utils/DOMSafe.js';
+// DOMSafe removido pois usamos createElement direto (ADR-012)
 /**
  * @file ActivityItemFactory.js
  * @description Factory para criação de items de atividade
@@ -28,12 +28,24 @@ export class ActivityItemFactory {
 
     const icon = ActivityItemFactory.getTypeIcon(task.type);
 
-    li.innerHTML = `
-      <span class="activity-position">#${DOMSafe.escapeHTML(String(position))}</span>
-      <span class="activity-icon">${icon}</span>
-      <span class="activity-name">${DOMSafe.escapeHTML(task.original.name)}</span>
-      <button class="btn-scroll" data-id="${task.id}">Ir →</button>
-    `;
+    const spanPos = document.createElement('span');
+    spanPos.className = 'activity-position';
+    spanPos.textContent = `#${position}`;
+
+    const spanIcon = document.createElement('span');
+    spanIcon.className = 'activity-icon';
+    spanIcon.textContent = icon;
+
+    const spanName = document.createElement('span');
+    spanName.className = 'activity-name';
+    spanName.textContent = task.original.name;
+
+    const btnScroll = document.createElement('button');
+    btnScroll.className = 'btn-scroll';
+    btnScroll.dataset.id = task.id;
+    btnScroll.textContent = 'Ir →';
+
+    li.append(spanPos, spanIcon, spanName, btnScroll);
 
     // Evento de scroll
     const scrollBtn = li.querySelector('.btn-scroll');

@@ -28,7 +28,10 @@ export class ActionMenu {
     // Botão Principal
     const button = document.createElement('button');
     button.className = 'action-menu-btn';
-    button.innerHTML = `<span class="icon">${this.icon}</span>`;
+    const btnIcon = document.createElement('span');
+    btnIcon.className = 'icon';
+    btnIcon.textContent = this.icon;
+    button.appendChild(btnIcon);
     button.title = this.title;
 
     // Menu Dropdown
@@ -38,10 +41,17 @@ export class ActionMenu {
     this.actions.forEach((action) => {
       const item = document.createElement('div');
       item.className = `action-menu-item ${action.type === 'danger' ? 'danger' : ''}`;
-      item.innerHTML = `
-        <span class="action-icon">${action.icon}</span>
-        <span class="action-label">${action.label}</span>
-      `;
+
+      const actionIcon = document.createElement('span');
+      actionIcon.className = 'action-icon';
+      actionIcon.textContent = action.icon;
+
+      const actionLabel = document.createElement('span');
+      actionLabel.className = 'action-label';
+      actionLabel.textContent = action.label;
+
+      item.appendChild(actionIcon);
+      item.appendChild(actionLabel);
 
       item.onclick = (e) => {
         e.stopPropagation();

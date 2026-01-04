@@ -56,7 +56,8 @@ export class DetailsActivitiesWeekView {
 
     const div = document.createElement('div');
     div.className = 'view-details-activities';
-    div.innerHTML = ViewTemplate.render(this.week.courseName, this.week.name);
+    const content = ViewTemplate.render(this.week.courseName, this.week.name);
+    div.appendChild(content);
 
     this.element = div;
     return div;
@@ -170,16 +171,48 @@ export class DetailsActivitiesWeekView {
       : null;
     if (!container) return;
 
-    container.innerHTML = `
-      <div class="state-error" style="text-align: center; padding: 40px 20px; color: #666;">
-        <div style="font-size: 48px; margin-bottom: 16px;">⚠️</div>
-        <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600; color: #333;">Não foi possível carregar as atividades</h3>
-        <p style="margin: 0; font-size: 14px;">Verifique se a aba da matéria está aberta e carregada corretamente.</p>
-        <div style="margin-top: 20px; font-size: 12px; color: #999;">
-          Erro: ${this.week.error || 'Falha na comunicação'}
-        </div>
-      </div>
-    `;
+    container.innerHTML = '';
+    const errorWrapper = document.createElement('div');
+    errorWrapper.className = 'state-error';
+    Object.assign(errorWrapper.style, {
+      textAlign: 'center',
+      padding: '40px 20px',
+      color: '#666',
+    });
+
+    const iconDiv = document.createElement('div');
+    iconDiv.textContent = '⚠️';
+    Object.assign(iconDiv.style, {
+      fontSize: '48px',
+      marginBottom: '16px',
+    });
+
+    const titleH3 = document.createElement('h3');
+    titleH3.textContent = 'Não foi possível carregar as atividades';
+    Object.assign(titleH3.style, {
+      margin: '0 0 8px 0',
+      fontSize: '16px',
+      fontWeight: '600',
+      color: '#333',
+    });
+
+    const pDesc = document.createElement('p');
+    pDesc.textContent = 'Verifique se a aba da matéria está aberta e carregada corretamente.';
+    Object.assign(pDesc.style, {
+      margin: '0',
+      fontSize: '14px',
+    });
+
+    const debugDiv = document.createElement('div');
+    debugDiv.textContent = `Erro: ${this.week.error || 'Falha na comunicação'}`;
+    Object.assign(debugDiv.style, {
+      marginTop: '20px',
+      fontSize: '12px',
+      color: '#999',
+    });
+
+    errorWrapper.append(iconDiv, titleH3, pDesc, debugDiv);
+    container.appendChild(errorWrapper);
   }
 
   /**
