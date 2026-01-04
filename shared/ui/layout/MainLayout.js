@@ -14,7 +14,7 @@ export class MainLayout {
   }
 
   render() {
-    this.appContainer.innerHTML = '';
+    this.appContainer.replaceChildren();
 
     // Barra de Navegação (Fixa no topo)
     const navElement = this.topNav.render();
@@ -32,7 +32,7 @@ export class MainLayout {
     const contentContainer = document.getElementById('main-content');
 
     if (view && contentContainer) {
-      contentContainer.innerHTML = ''; // Limpa view anterior
+      contentContainer.replaceChildren(); // Limpa view anterior
       contentContainer.appendChild(view.render());
 
       // Se a view tiver lógica de pós-renderização (ex: listeners), chamamos aqui

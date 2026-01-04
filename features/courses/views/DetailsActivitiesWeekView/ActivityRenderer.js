@@ -51,7 +51,7 @@ export class ActivityRenderer {
         list.appendChild(li);
       });
 
-      this.container.innerHTML = '';
+      this.container.replaceChildren();
       this.container.appendChild(list);
     } catch (error) {
       Logger.error('ActivityRenderer', 'Erro ao renderizar atividades:', error); /**#LOG_UI*/
@@ -65,7 +65,7 @@ export class ActivityRenderer {
    */
   clear() {
     if (this.container) {
-      this.container.innerHTML = '';
+      this.container.replaceChildren();
     }
   }
 }

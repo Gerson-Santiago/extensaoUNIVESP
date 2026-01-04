@@ -14,6 +14,10 @@
 // Layout
 import { MainLayout } from '../shared/ui/layout/MainLayout.js';
 
+// Segurança (Trusted Types)
+import { initTrustedTypes } from '../shared/security/TrustedTypesPolicy.js';
+initTrustedTypes();
+
 // Views
 import { HomeView } from '../features/home/ui/HomeView.js';
 import { CoursesView } from '../features/courses/views/CoursesView/index.js';

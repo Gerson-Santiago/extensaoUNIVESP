@@ -13,33 +13,96 @@ export class AddManualModal extends Modal {
   }
 
   open() {
-    const content = `
-            <div class="input-group">
-                <label style="display: block; margin-bottom: 5px; font-size: 12px;">Nome da Matéria</label>
-                <input type="text" id="manualName" class="input-field" style="width: 100%; margin-bottom: 10px; padding: 8px; box-sizing: border-box;">
-                
-                <label style="display: block; margin-bottom: 5px; font-size: 12px;">URL do AVA</label>
-                <input type="text" id="manualUrl" class="input-field" style="width: 100%; margin-bottom: 15px; padding: 8px; box-sizing: border-box;">
-                
-                <label style="display: block; margin-bottom: 5px; font-size: 12px;">Bimestre</label>
-                <div style="display: flex; gap: 10px; margin-bottom: 15px;">
-                    <input type="number" id="manualYear" class="input-field" style="flex: 2" value="${new Date().getFullYear()}">
-                    <select id="manualSemester" class="input-field" style="flex: 1">
-                        <option value="1">S1</option>
-                        <option value="2" selected>S2</option>
-                    </select>
-                    <select id="manualTerm" class="input-field" style="flex: 1">
-                        <option value="1">1º Bim</option>
-                        <option value="2" selected>2º Bim</option>
-                    </select>
-                </div>
-                
-                <button id="btnSaveManual" class="btn-save" style="width: 100%;">Adicionar</button>
-                <div id="manualStatus" style="margin-top: 10px; font-size: 12px; text-align: center;"></div>
-            </div>
-        `;
+    const container = document.createElement('div');
+    container.className = 'input-group';
 
-    const overlay = this.render(content);
+    // Helper para labels
+    const createLabel = (text) => {
+      const lbl = document.createElement('label');
+      lbl.textContent = text;
+      Object.assign(lbl.style, { display: 'block', marginBottom: '5px', fontSize: '12px' });
+      return lbl;
+    };
+
+    // Helper para inputs
+    const createInput = (id, type = 'text', mb = '10px') => {
+      const inp = document.createElement('input');
+      inp.type = type;
+      inp.id = id;
+      inp.className = 'input-field';
+      Object.assign(inp.style, {
+        width: '100%',
+        marginBottom: mb,
+        padding: '8px',
+        boxSizing: 'border-box',
+      });
+      return inp;
+    };
+
+    // Nome
+    container.appendChild(createLabel('Nome da Matéria'));
+    container.appendChild(createInput('manualName', 'text', '10px'));
+
+    // URL
+    container.appendChild(createLabel('URL do AVA'));
+    container.appendChild(createInput('manualUrl', 'text', '15px'));
+
+    // Bimestre
+    container.appendChild(createLabel('Bimestre'));
+
+    const flexDiv = document.createElement('div');
+    Object.assign(flexDiv.style, { display: 'flex', gap: '10px', marginBottom: '15px' });
+
+    const yearInput = createInput('manualYear', 'number', '0');
+    yearInput.style.flex = '2';
+    yearInput.value = String(new Date().getFullYear());
+
+    const semSelect = document.createElement('select');
+    semSelect.id = 'manualSemester';
+    semSelect.className = 'input-field';
+    semSelect.style.flex = '1';
+
+    const optS1 = document.createElement('option');
+    optS1.value = '1';
+    optS1.textContent = 'S1';
+    const optS2 = document.createElement('option');
+    optS2.value = '2';
+    optS2.textContent = 'S2';
+    optS2.selected = true;
+    semSelect.append(optS1, optS2);
+
+    const termSelect = document.createElement('select');
+    termSelect.id = 'manualTerm';
+    termSelect.className = 'input-field';
+    termSelect.style.flex = '1';
+
+    const optB1 = document.createElement('option');
+    optB1.value = '1';
+    optB1.textContent = '1º Bim';
+    const optB2 = document.createElement('option');
+    optB2.value = '2';
+    optB2.textContent = '2º Bim';
+    optB2.selected = true;
+    termSelect.append(optB1, optB2);
+
+    flexDiv.append(yearInput, semSelect, termSelect);
+    container.appendChild(flexDiv);
+
+    // Botão Salvar
+    const btnSave = document.createElement('button');
+    btnSave.id = 'btnSaveManual';
+    btnSave.className = 'btn-save';
+    btnSave.style.width = '100%';
+    btnSave.textContent = 'Adicionar';
+    container.appendChild(btnSave);
+
+    // Status
+    const statusDiv = document.createElement('div');
+    statusDiv.id = 'manualStatus';
+    Object.assign(statusDiv.style, { marginTop: '10px', fontSize: '12px', textAlign: 'center' });
+    container.appendChild(statusDiv);
+
+    const overlay = this.render(container);
     this.setupLogic(overlay);
   }
 

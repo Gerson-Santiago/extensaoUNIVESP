@@ -6,6 +6,8 @@
  * @typedef {import('../models/ActionMenu.js').ActionMenuOptions} ActionMenuOptions
  */
 
+import { DOMSafe } from '../utils/DOMSafe.js';
+
 /**
  * @file ActionMenu.js
  * @description Componente de Menu de Ações (Dropdown).
@@ -22,41 +24,45 @@ export class ActionMenu {
   }
 
   render() {
-    const container = document.createElement('div');
-    container.className = 'action-menu-container';
+    const h = DOMSafe.createElement;
 
-    // Botão Principal
-    const button = document.createElement('button');
-    button.className = 'action-menu-btn';
-    button.innerHTML = `<span class="icon">${this.icon}</span>`;
-    button.title = this.title;
+    // Menu Dropdown with action items
+    const menuItems = this.actions.map((action) =>
+      h(
+        'div',
+        {
+          className: `action-menu-item ${action.type === 'danger' ? 'danger' : ''}`,
+          onclick: (e) => {
+            e.stopPropagation();
+            this.closeMenu(menu);
+            action.onClick?.();
+          },
+        },
+        [
+          h('span', { className: 'action-icon' }, action.icon),
+          h('span', { className: 'action-label' }, action.label),
+        ]
+      )
+    );
 
-    // Menu Dropdown
-    const menu = document.createElement('div');
-    menu.className = 'action-menu-dropdown hidden';
+    const menu = h('div', { className: 'action-menu-dropdown hidden' }, menuItems);
 
-    this.actions.forEach((action) => {
-      const item = document.createElement('div');
-      item.className = `action-menu-item ${action.type === 'danger' ? 'danger' : ''}`;
-      item.innerHTML = `
-        <span class="action-icon">${action.icon}</span>
-        <span class="action-label">${action.label}</span>
-      `;
+    // Main Button
+    const button = h(
+      'button',
+      {
+        className: 'action-menu-btn',
+        title: this.title,
+        onclick: (e) => {
+          e.stopPropagation();
+          this.toggleMenu(menu);
+        },
+      },
+      h('span', { className: 'icon' }, this.icon)
+    );
 
-      item.onclick = (e) => {
-        e.stopPropagation();
-        this.closeMenu(menu);
-        if (action.onClick) action.onClick();
-      };
-
-      menu.appendChild(item);
-    });
-
-    // Toggle logic
-    button.onclick = (e) => {
-      e.stopPropagation();
-      this.toggleMenu(menu);
-    };
+    // Container with outside click handler
+    const container = h('div', { className: 'action-menu-container' }, [button, menu]);
 
     // Close on click outside
     document.addEventListener('click', (e) => {
@@ -65,8 +71,6 @@ export class ActionMenu {
       }
     });
 
-    container.appendChild(button);
-    container.appendChild(menu);
     return container;
   }
 

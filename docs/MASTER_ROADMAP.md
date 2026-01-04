@@ -10,9 +10,9 @@
 ### Semana 1: Segurança Hardcore (5 dias)
 **Foco**: Eliminar XSS e Race Conditions (EPIC-001)
 
-- **Dia 1-2**: **SPEC-001** (DOM Safe Refactoring)
-  - Refatorar 11 arquivos críticos (Modal, Views, Factory).
-  - Implementar `DOMSafe.js`.
+- ~~**Dia 1-2**: **SPEC-001** (DOM Safe Refactoring)~~ ✅ **CONCLUÍDO (04/01/2026)**
+  - ~~Refatorar 11 arquivos críticos (Modal, Views, Factory).~~
+  - ~~Implementar `DOMSafe.js`.~~
 - ~~**Dia 3-4**: **SPEC-004** (Storage Concurrency)~~ ✅ **CONCLUÍDO (03/01/2026)**
   - ~~Implementar `StorageGuard.js` e atualizar Repositories.~~ ✅
   - ~~Testes de concorrência.~~ ✅
@@ -34,7 +34,7 @@
 - Features "Nice to have" de UI.
 
 ## ✅ Milestones
-- [/] **M1 (Dia 5)**: Codebase Seguro (Zero XSS 🏃, ~~Zero Race Conditions~~ ✅).
+- [/] **M1 (Dia 5)**: Codebase Seguro (~~Zero XSS~~ ✅, ~~Zero Race Conditions~~ ✅).
 - [ ] **M2 (Dia 8)**: Compliance Administrativa (Docs prontos).
 - [ ] **M3 (Dia 11)**: Pacote Final (Zipado e testado).
 - [ ] **M4 (Dia 12)**: Publicado.

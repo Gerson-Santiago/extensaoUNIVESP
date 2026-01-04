@@ -18,30 +18,75 @@ export class BatchImportModal extends Modal {
   open(targetTabId) {
     this.targetTabId = targetTabId;
 
-    const content = `
-            <p style="font-size: 13px; color: #666; margin-bottom: 15px;">
-                Identificando bimestres e cursos...
-            </p>
+    // Create container for content
+    const container = document.createElement('div');
 
-            <div id="batch-step-1" style="display: block;">
-                <div id="terms-list" style="max-height: 200px; overflow-y: auto; margin-bottom: 15px; border: 1px solid #eee; padding: 10px;">
-                    <div style="text-align: center; color: #999;">Aguarde, lendo...</div>
-                </div>
-                
-                <div style="display: flex; gap: 10px;">
-                    <button id="btnRunBatch" class="btn-save" style="flex: 1; background-color: #28a745;" disabled>
-                        Importar Selecionados
-                    </button>
-                    <button class="btn-refresh" title="Recarregar Cursos" style="width: 40px; display: flex; align-items: center; justify-content: center; cursor: pointer; border: 1px solid #ccc; background: #fff; border-radius: 4px;">
-                        ↻
-                    </button>
-                </div>
-            </div>
-            
-            <div id="batchStatus" style="margin-top: 15px; font-size: 12px; color: #333; min-height: 20px;"></div>
-        `;
+    const p = document.createElement('p');
+    Object.assign(p.style, { fontSize: '13px', color: '#666', marginBottom: '15px' });
+    p.textContent = 'Identificando bimestres e cursos...';
+    container.appendChild(p);
 
-    const overlay = this.render(content);
+    const step1 = document.createElement('div');
+    step1.id = 'batch-step-1';
+    step1.style.display = 'block';
+
+    const termsList = document.createElement('div');
+    termsList.id = 'terms-list';
+    Object.assign(termsList.style, {
+      maxHeight: '200px',
+      overflowY: 'auto',
+      marginBottom: '15px',
+      border: '1px solid #eee',
+      padding: '10px',
+    });
+
+    const loadingDiv = document.createElement('div');
+    Object.assign(loadingDiv.style, { textAlign: 'center', color: '#999' });
+    loadingDiv.textContent = 'Aguarde, lendo...';
+    termsList.appendChild(loadingDiv);
+
+    step1.appendChild(termsList);
+
+    const actionsDiv = document.createElement('div');
+    Object.assign(actionsDiv.style, { display: 'flex', gap: '10px' });
+
+    const btnRun = document.createElement('button');
+    btnRun.id = 'btnRunBatch';
+    btnRun.className = 'btn-save';
+    Object.assign(btnRun.style, { flex: '1', backgroundColor: '#28a745' });
+    btnRun.disabled = true;
+    btnRun.textContent = 'Importar Selecionados';
+
+    const btnRefresh = document.createElement('button');
+    btnRefresh.className = 'btn-refresh';
+    btnRefresh.title = 'Recarregar Cursos';
+    Object.assign(btnRefresh.style, {
+      width: '40px',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer',
+      border: '1px solid #ccc',
+      background: '#fff',
+      borderRadius: '4px',
+    });
+    btnRefresh.textContent = '↻';
+
+    actionsDiv.append(btnRun, btnRefresh);
+    step1.appendChild(actionsDiv);
+    container.appendChild(step1);
+
+    const statusDiv = document.createElement('div');
+    statusDiv.id = 'batchStatus';
+    Object.assign(statusDiv.style, {
+      marginTop: '15px',
+      fontSize: '12px',
+      color: '#333',
+      minHeight: '20px',
+    });
+    container.appendChild(statusDiv);
+
+    const overlay = this.render(container);
     this.setupLogic(overlay);
     this.loadTerms(overlay);
   }
@@ -79,8 +124,11 @@ export class BatchImportModal extends Modal {
         // Just report error, no smart retry/confirmation here. The Controller handles pre-checks.
         status.textContent = 'Falha ao ler cursos. A página mudou? Tente recarregar a aba.';
         status.style.color = 'orange';
-        termsList.innerHTML =
-          '<div style="color:red; text-align:center;">Não foi possível ler os cursos.</div>';
+        const errDiv = document.createElement('div');
+        Object.assign(errDiv.style, { color: 'red', textAlign: 'center' });
+        errDiv.textContent = 'Não foi possível ler os cursos.';
+        termsList.replaceChildren();
+        termsList.appendChild(errDiv);
       }
     } catch (e) {
       /**#LOG_UI*/
@@ -93,9 +141,8 @@ export class BatchImportModal extends Modal {
   // NOTE: showConfirmationUI removed as it is now handled by LoginWaitModal upstream.
 
   renderTerms(container) {
-    container.innerHTML = '';
+    container.replaceChildren();
 
-    // Sort terms: Newest to Oldest (Descending)
     // Sort terms: Newest to Oldest (Descending) using centralised parser
     this.foundTerms.sort((a, b) => {
       const parsedA = parseTerm(a.name);
@@ -104,7 +151,9 @@ export class BatchImportModal extends Modal {
     });
 
     if (this.foundTerms.length === 0) {
-      container.innerHTML = '<div>Nenhum termo encontrado.</div>';
+      const div = document.createElement('div');
+      div.textContent = 'Nenhum termo encontrado.';
+      container.appendChild(div);
       return;
     }
 

@@ -4,27 +4,76 @@
  */
 export const ViewTemplate = {
   /**
-   * Retorna o HTML estrutural da view
-   * @param {string} courseName
-   * @param {string} weekName
-   * @returns {string}
+   * @param {string} courseName - Nome da matéria
+   * @param {string} weekName - Nome da semana
+   * @returns {DocumentFragment} Fragmento DOM contendo a estrutura inicial da view
    */
-  render(courseName, weekName) {
-    return `
-      <div class="details-header">
-        <button id="backBtn" class="btn-back">← Voltar</button>
-        <div class="details-header-info">
-          <div class="details-breadcrumb"><strong>${courseName || 'Matéria'}</strong></div>
-          <h2 class="details-title">${weekName}</h2>
-        </div>
-        <div class="details-header-actions">
-          <button id="clearBtn" class="btn-clear" title="Limpar cache e voltar">🗑️</button>
-          <button id="refreshBtn" class="btn-refresh" title="Atualizar lista">↻</button>
-        </div>
-        <!-- Contextual Navigation Chips (inside header, bottom) -->
-        <div id="chipsContainer" class="chips-container"></div>
-      </div>
-      <div id="activitiesContainer" class="activities-container"></div>
-    `;
+  render: (courseName, weekName) => {
+    // Header
+    const header = document.createElement('div');
+    header.className = 'details-header';
+
+    // Back Button
+    const backBtn = document.createElement('button');
+    backBtn.id = 'backBtn';
+    backBtn.className = 'btn-back';
+    backBtn.textContent = '← Voltar';
+    header.appendChild(backBtn);
+
+    // Info Section
+    const infoDiv = document.createElement('div');
+    infoDiv.className = 'details-header-info';
+
+    const breadcrumb = document.createElement('div');
+    breadcrumb.className = 'details-breadcrumb';
+    const strong = document.createElement('strong');
+    strong.textContent = courseName || 'Matéria';
+    breadcrumb.appendChild(strong);
+
+    const titleH2 = document.createElement('h2');
+    titleH2.className = 'details-title';
+    titleH2.textContent = weekName;
+
+    infoDiv.appendChild(breadcrumb);
+    infoDiv.appendChild(titleH2);
+    header.appendChild(infoDiv);
+
+    // Actions Section
+    const actionsDiv = document.createElement('div');
+    actionsDiv.className = 'details-header-actions';
+
+    const clearBtn = document.createElement('button');
+    clearBtn.id = 'clearBtn';
+    clearBtn.className = 'btn-clear';
+    clearBtn.title = 'Limpar cache e voltar';
+    clearBtn.textContent = '🗑️';
+
+    const refreshBtn = document.createElement('button');
+    refreshBtn.id = 'refreshBtn';
+    refreshBtn.className = 'btn-refresh';
+    refreshBtn.title = 'Atualizar lista';
+    refreshBtn.textContent = '↻';
+
+    actionsDiv.appendChild(clearBtn);
+    actionsDiv.appendChild(refreshBtn);
+    header.appendChild(actionsDiv);
+
+    // Chips Container
+    const chipsContainer = document.createElement('div');
+    chipsContainer.id = 'chipsContainer';
+    chipsContainer.className = 'chips-container';
+    header.appendChild(chipsContainer);
+
+    // Activities Container
+    const activitiesContainer = document.createElement('div');
+    activitiesContainer.id = 'activitiesContainer';
+    activitiesContainer.className = 'activities-container';
+
+    // Retorna fragment com header e container
+    const fragment = document.createDocumentFragment();
+    fragment.appendChild(header);
+    fragment.appendChild(activitiesContainer);
+
+    return fragment;
   },
 };

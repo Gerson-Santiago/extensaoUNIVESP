@@ -52,6 +52,85 @@ export class PreviewManager {
     const progress = this.calculateProgress(items);
     const doneCount = items.filter((i) => i.status === 'DONE').length;
 
+    // Helper para criar conteúdo estruturado
+    const createContent = () => {
+      const fragment = document.createDocumentFragment();
+
+      const h4 = document.createElement('h4');
+      h4.textContent = `${weekElement ? '📊 ' : ''}${week.name}`;
+
+      if (weekElement) {
+        Object.assign(h4.style, {
+          margin: '0 0 8px 0',
+          fontSize: '13px',
+          color: '#444',
+          fontWeight: '600',
+          textTransform: 'uppercase',
+          letterSpacing: '0.5px',
+        });
+      } else {
+        Object.assign(h4.style, {
+          margin: '0 0 8px 0',
+          fontSize: '14px',
+          color: '#333',
+        });
+      }
+
+      const iconsDiv = document.createElement('div');
+      iconsDiv.textContent = statusIcons;
+      if (weekElement) {
+        Object.assign(iconsDiv.style, {
+          fontSize: '18px',
+          letterSpacing: '3px',
+          margin: '8px 0',
+          lineHeight: '1.2',
+        });
+      } else {
+        iconsDiv.id = 'previewStatus';
+        Object.assign(iconsDiv.style, {
+          fontSize: '20px',
+          letterSpacing: '2px',
+          margin: '8px 0',
+        });
+      }
+
+      const infoDiv = document.createElement('div');
+      if (weekElement) {
+        Object.assign(infoDiv.style, {
+          fontSize: '12px',
+          color: '#777',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+        });
+
+        const progressSpan = document.createElement('span');
+        const strong = document.createElement('strong');
+        strong.textContent = `${progress}%`;
+        progressSpan.append('Progresso: ', strong);
+
+        const countSpan = document.createElement('span');
+        countSpan.textContent = `${doneCount}/${items.length} concluídas`;
+        Object.assign(countSpan.style, {
+          background: '#f0f0f0',
+          padding: '2px 6px',
+          borderRadius: '10px',
+        });
+
+        infoDiv.append(progressSpan, countSpan);
+      } else {
+        infoDiv.id = 'previewProgress';
+        infoDiv.textContent = `Progresso: ${progress}%`;
+        Object.assign(infoDiv.style, {
+          fontSize: '13px',
+          color: '#666',
+        });
+      }
+
+      fragment.append(h4, iconsDiv, infoDiv);
+      return fragment;
+    };
+
     if (weekElement) {
       const previewDiv = document.createElement('div');
       previewDiv.className = 'week-preview-dynamic';
@@ -65,25 +144,14 @@ export class PreviewManager {
                 box-shadow: inset 0 2px 4px rgba(0,0,0,0.02);
                 animation: slideDown 0.2s ease-out;
             `;
-      previewDiv.innerHTML = `
-                <h4 style="margin: 0 0 8px 0; font-size: 13px; color: #444; font-weight: 600; text-transform: uppercase; letter-spacing: 0.5px;">
-                    📊 ${week.name}
-                </h4>
-                <div style="font-size: 18px; letter-spacing: 3px; margin: 8px 0; line-height: 1.2;">${statusIcons}</div>
-                <div style="font-size: 12px; color: #777; display: flex; justify-content: space-between; align-items: center;">
-                    <span>Progresso: <strong>${progress}%</strong></span>
-                    <span style="background: #f0f0f0; padding: 2px 6px; border-radius: 10px;">${doneCount}/${items.length} concluídas</span>
-                </div>
-            `;
+
+      previewDiv.appendChild(createContent());
       weekElement.insertAdjacentElement('afterend', previewDiv);
     } else {
       const preview = document.getElementById('activeWeekPreview');
       if (preview) {
-        preview.innerHTML = `
-                    <h4 style="margin: 0 0 8px 0; font-size: 14px; color: #333;">${week.name}</h4>
-                    <div id="previewStatus" style="font-size: 20px; letter-spacing: 2px; margin: 8px 0;">${statusIcons}</div>
-                    <div id="previewProgress" style="font-size: 13px; color: #666;">Progresso: ${progress}%</div>
-                `;
+        preview.replaceChildren();
+        preview.appendChild(createContent());
         preview.style.display = 'block';
       }
     }
