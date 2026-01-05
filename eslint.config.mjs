@@ -60,6 +60,26 @@ export default [
       'security/detect-pseudoRandomBytes': 'error',
       'security/detect-child-process': 'warn',
       'security/detect-disable-mustache-escape': 'error',
+
+      // ESM Enforcement - BLOQUEAR CommonJS
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector: 'CallExpression[callee.name="require"]',
+          message:
+            '🚫 PROIBIDO: Use `import` (ESM) ao invés de `require()` (CommonJS). Projeto é 100% ESM.',
+        },
+        {
+          selector: 'MemberExpression[object.name="module"][property.name="exports"]',
+          message:
+            '🚫 PROIBIDO: Use `export` (ESM) ao invés de `module.exports` (CommonJS). Projeto é 100% ESM.',
+        },
+        {
+          selector: 'AssignmentExpression[left.object.name="exports"]',
+          message:
+            '🚫 PROIBIDO: Use `export` (ESM) ao invés de `exports` (CommonJS). Projeto é 100% ESM.',
+        },
+      ],
     },
   },
   {
@@ -70,9 +90,10 @@ export default [
       'no-unsanitized/method': 'off',
       'security/detect-non-literal-regexp': 'off',
       'security/detect-non-literal-fs-filename': 'off',
+      'no-console': 'off', // Scripts e testes podem usar console
     },
   },
   {
-    ignores: ['node_modules/', 'coverage/', '.cache/'],
+    ignores: ['node_modules/', 'coverage/', '.cache/', 'dist/'],
   },
 ];
