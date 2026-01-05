@@ -8,6 +8,7 @@
     "tsBuildInfoFile": ".cache/tsc.tsbuildinfo",
     "lib": ["es2024", "dom", "dom.iterable"],
     "types": ["chrome", "jest", "node"],
+    "typeRoots": ["./node_modules/@types", "./types"],
     "baseUrl": ".",
     "paths": {
       "@features/*": ["features/*"],
@@ -19,6 +20,7 @@
     "resolveJsonModule": true
   },
   "include": [
+    "types/**/*",
     "features/**/*",
     "shared/**/*",
     "popup/**/*",
