@@ -3,7 +3,10 @@
   "version": "2.9.7",
   "description": "Gestão de atividades semanais e navegação inteligente no AVA da UNIVESP, com autopreenchimento SEI.",
   "main": "popup/popup.js",
+  "type": "module",
   "scripts": {
+    "build": "node scripts/build-dist.js",
+    "dist": "npm run build",
     "check": "npm run lint && npm run type-check",
     "verify": "npm test && npm run lint && npm run type-check",
     "lint": "eslint . --cache --cache-location .cache/eslintcache --max-warnings=0",
