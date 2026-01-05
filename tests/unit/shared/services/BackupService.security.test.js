@@ -1,18 +1,21 @@
-// @ts-nocheck
-const { BackupService } = require('../../../../shared/services/BackupService');
-const { TextEncoder } = require('util');
+// AAA Pattern Test for BackupService (Security Layer)
+import { BackupService } from '../../../../shared/services/BackupService.js';
+import { TextEncoder } from 'util';
 global.TextEncoder = TextEncoder;
 
 // Mock global chrome object
 global.chrome = {
   storage: {
+    // @ts-expect-error - Partial mock with only needed methods
     local: {
       get: jest.fn(),
       set: jest.fn(),
       clear: jest.fn(),
     },
   },
+  // @ts-expect-error - Partial mock with only needed methods
   downloads: { download: jest.fn() },
+  // @ts-expect-error - Partial mock with only needed methods
   runtime: { getManifest: jest.fn() },
 };
 
@@ -48,7 +51,8 @@ describe('BackupService (Security)', () => {
       // Mock crypto to return a hash that DOES NOT match the payload's checksum
       // Calculated: 010203...
       // Payload has: 'original-hash'
-      global.crypto.subtle.digest.mockResolvedValueOnce(new Uint8Array([1, 2, 3]).buffer);
+      const mockDigest = jest.fn().mockResolvedValueOnce(new Uint8Array([1, 2, 3]).buffer);
+      global.crypto.subtle.digest = mockDigest;
 
       const tamperedPayload = JSON.stringify({
         meta: { version: '2.10.0', schemaVersion: 1, checksum: 'original-hash' },

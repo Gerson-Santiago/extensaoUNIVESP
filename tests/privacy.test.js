@@ -1,5 +1,5 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 // Configuração dos diretórios a serem analisados
 const PROJECT_ROOT = path.resolve(__dirname, '..');

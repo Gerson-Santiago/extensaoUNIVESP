@@ -2,8 +2,8 @@
  * @file csp.test.js
  * @description Teste de validação da configuração de CSP no manifest.json
  */
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 
 describe('Security: CSP Configuration', () => {
   const manifestPath = path.resolve(__dirname, '../manifest.json');

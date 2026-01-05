@@ -1,13 +1,13 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
 // @ts-ignore
-const glob = require('glob');
+import { sync as globSync } from 'glob';
 
 describe('Verificação de Integridade de Links (Anti-Tela Branca)', () => {
   const projectRoot = path.resolve(__dirname, '..');
 
   // Encontra todos os arquivos .js nas pastas relevantes
-  const allJsFiles = glob.sync('**/*.js', {
+  const allJsFiles = globSync('**/*.js', {
     cwd: projectRoot,
     ignore: [
       'node_modules/**',
@@ -55,6 +55,19 @@ describe('Verificação de Integridade de Links (Anti-Tela Branca)', () => {
       if (!exists) {
         throw new Error(
           `LINK QUEBRADO: '${relativeFilePath}' tenta importar '${importPath}', mas o arquivo não existe em '${resolvedPath}'.`
+        );
+      }
+
+      // Verificação 2: ESM exige extensão .js em imports relativos
+      // Exceto: CSS, JSON, ou outros recursos que têm suas próprias extensões
+      if (
+        importPath.startsWith('.') &&
+        !importPath.endsWith('.js') &&
+        !importPath.endsWith('.css') &&
+        !importPath.endsWith('.json')
+      ) {
+        throw new Error(
+          `IMPORT SEM EXTENSÃO: '${relativeFilePath}' importa '${importPath}'. ESM exige extensão .js em imports relativos JavaScript.`
         );
       }
     }

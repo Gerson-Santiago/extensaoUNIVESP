@@ -1,11 +1,11 @@
 import { CompressionUtils } from '../CompressionUtils.js';
 import { Logger } from '../Logger.js';
+import { TextEncoder as NodeTextEncoder, TextDecoder as NodeTextDecoder } from 'util';
 
 // Polyfill para TextEncoder/Decoder se faltar no ambiente JSDOM
 if (typeof global.TextEncoder === 'undefined') {
-  const { TextEncoder, TextDecoder } = require('util');
-  global.TextEncoder = TextEncoder;
-  global.TextDecoder = TextDecoder;
+  global.TextEncoder = NodeTextEncoder;
+  global.TextDecoder = NodeTextDecoder;
 }
 
 // Mock do Logger para não poluir console de teste

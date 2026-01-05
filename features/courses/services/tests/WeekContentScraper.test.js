@@ -6,7 +6,7 @@
 import { jest } from '@jest/globals';
 import fs from 'fs';
 import path from 'path';
-import { WeekContentScraper } from '../WeekContentScraper';
+import { WeekContentScraper } from '../WeekContentScraper.js';
 
 // Mock Chrome API
 global.chrome = /** @type {any} */ ({

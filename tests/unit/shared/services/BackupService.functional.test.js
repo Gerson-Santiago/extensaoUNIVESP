@@ -1,11 +1,12 @@
-// @ts-nocheck
-const { BackupService } = require('../../../../shared/services/BackupService');
-const { TextEncoder } = require('util');
+// AAA Pattern Test for BackupService (Functional Layer)
+import { BackupService } from '../../../../shared/services/BackupService.js';
+import { TextEncoder } from 'util';
 global.TextEncoder = TextEncoder;
 
 // Mock global chrome object
 global.chrome = {
   storage: {
+    // @ts-expect-error - Mock parcial: apenas métodos necessários
     local: {
       get: jest.fn(),
       set: jest.fn(),
@@ -13,9 +14,11 @@ global.chrome = {
     },
   },
   downloads: {
+    // @ts-expect-error - Mock de assinatura de callback não corresponde overloads
     download: jest.fn((options, callback) => callback && callback(123)),
   },
   runtime: {
+    // @ts-expect-error - Mock retorna Manifest parcial
     getManifest: jest.fn(() => ({ version: '2.10.0' })),
   },
 };
@@ -30,11 +33,13 @@ Object.defineProperty(global, 'crypto', {
   writable: true,
 });
 
+// @ts-expect-error - Mock parcial: apenas métodos necessários para teste
 global.URL = {
   createObjectURL: jest.fn(() => 'blob:mock-url'),
   revokeObjectURL: jest.fn(),
 };
 
+// @ts-expect-error - Mock parcial: apenas propriedades necessárias para teste
 global.Blob = class {
   constructor(content, options) {
     this.content = content;
@@ -51,6 +56,7 @@ describe('BackupService (Functional)', () => {
     it('should export all data with metadata', async () => {
       // Arrange
       const mockData = { courses: { 1: { id: 1 } }, settings: { density: 'compact' } };
+      // @ts-expect-error - Jest mock method
       chrome.storage.local.get.mockResolvedValue(mockData);
 
       const realDate = Date.now;
@@ -64,6 +70,7 @@ describe('BackupService (Functional)', () => {
 
       // Verify Blob creation and content
       expect(global.URL.createObjectURL).toHaveBeenCalledTimes(1);
+      // @ts-expect-error - Jest mock internal property
       const blob = global.URL.createObjectURL.mock.calls[0][0];
 
       expect(blob).toBeInstanceOf(global.Blob);
@@ -98,6 +105,7 @@ describe('BackupService (Functional)', () => {
       // We need a valid checksum for the functional test to pass (since security check is always on)
       // But we mock the generation to return X, and put X in the payload.
       const mockHashBuffer = new Uint8Array([0xaa, 0xbb]).buffer;
+      // @ts-expect-error - Jest mock method
       global.crypto.subtle.digest.mockResolvedValue(mockHashBuffer);
       const expectedHash = 'aabb'; // Hex of [0xaa, 0xbb]
 

@@ -1,4 +1,4 @@
-module.exports = {
+export default {
   testEnvironment: 'jsdom',
   coverageProvider: 'v8', // Optimization for Jest 30
   clearMocks: true, // Cleanup mocks automatically between tests
@@ -7,6 +7,15 @@ module.exports = {
   },
   setupFiles: ['jest-webextension-mock'],
   testMatch: ['**/tests/**/*.test.js'],
+  testPathIgnorePatterns: ['/node_modules/', '/dist/', '/build/', '/.cache/', '/coverage/'],
+  coveragePathIgnorePatterns: [
+    '/node_modules/',
+    '/dist/',
+    '/build/',
+    '/.cache/',
+    '/coverage/',
+    '\\.test\\.js$',
+  ],
   verbose: true,
   setupFilesAfterEnv: ['./jest.setup.js'],
   moduleNameMapper: {
