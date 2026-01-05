@@ -34,7 +34,7 @@
     "test:settings": "jest features/settings",
     "test:details-complex": "jest features/courses/tests/views/DetailsActivitiesWeekView.test.js features/courses/tests/services/WeekActivitiesService features/courses/tests/WeekActivitiesCache.test.js",
     "test:shared": "jest shared/",
-    "security:secrets": "secretlint '**/*'",
+    "security:secrets": "secretlint \"**/*\"",
     "security:audit": "npm audit --audit-level=high",
     "security:lint": "eslint . --max-warnings=0",
     "security": "npm run security:secrets && npm run security:audit && npm run security:lint",
