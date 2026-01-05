@@ -10,13 +10,12 @@ let domSafePolicy = null;
  * Deve ser chamado no início da execução (background, popup, content scripts).
  */
 export function initTrustedTypes() {
-  if (domSafePolicy) return; // Já inicializado
+  // Suporte a Service Workers (self) e Janelas (window)
+  const globalContext = typeof self !== 'undefined' ? self : window;
 
-  // @ts-ignore - Window extension
-  if (window.trustedTypes && window.trustedTypes.createPolicy) {
+  if (globalContext.trustedTypes && globalContext.trustedTypes.createPolicy) {
     try {
-      // @ts-ignore
-      domSafePolicy = window.trustedTypes.createPolicy('dom-safe-policy', {
+      domSafePolicy = globalContext.trustedTypes.createPolicy('dom-safe-policy', {
         // 1. createHTML: Validação para innerHTML (evitar se possível)
         createHTML: (input) => {
           // NUNCA permitir HTML arbitrário.
