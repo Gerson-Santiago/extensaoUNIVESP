@@ -9,7 +9,6 @@ import { Logger } from '../../../shared/utils/Logger.js';
 // @ts-check
 /**
  * @typedef {Object} UserPreferences
- * @property {'compact'|'comfortable'} density - Densidade visual
  * @property {boolean} autoPinLastWeek - Lembrar última semana visitada
  * @property {number|null} lastWeekNumber - Número da última semana visitada
  */
@@ -49,7 +48,6 @@ export class UserPreferencesManager {
    */
     static getDefaults() {
         return {
-            density: 'comfortable',  // Mantido para compatibilidade com storage existente
             autoPinLastWeek: false,
             lastWeekNumber: null,
         };

@@ -11,9 +11,9 @@ Este documento centraliza a estratégia de evolução da feature de Settings e G
 | ID | Issue | Componente | Status | Prioridade |
 |----|-------|------------|--------|------------|
 | **019** | [✅ Settings & Backup](../CLOSED/CLOSED-ISSUE-019_settings-backup.md) | `Settings` | ✅ Concluída | 🔼 **Alta** |
-| **020** | [📋 Reset Total de Dados](./OPEN-ISSUE-020_settings-clear-data.md) | `Settings` | 📋 Aberta | ⏺️ **Média** |
+| **020** | [✅ Reset Total de Dados](../CLOSED/CLOSED-ISSUE-020_settings-clear-data.md) | `Settings` | ✅ Concluída | ⏺️ **Média** |
 | **021** | [📝 Release Eng & Docs v2.10.0](./OPEN-ISSUE-021_release-documentation-v2.10.0.md) | `Release` | 📋 Aberta | 🔒 **Blocker** |
-| **022** | [📋 Preferências de UX/Comportamento](./OPEN-ISSUE-022_ux-preferences.md) | `UI/Behavior` | 📋 Aberta | 🔼 **Alta** |
+| **022** | [✅ Preferências de UX/Comportamento](../CLOSED/CLOSED-ISSUE-022_ux-preferences.md) | `UI/Behavior` | ✅ Concluída | 🔼 **Alta** |
 | **023** | [📋 Sobre, Diagnóstico e Suporte](./OPEN-ISSUE-023_settings-about.md) | `Diag/Support` | 📋 Aberta | 🟢 **Baixa** |
 | **024** | [📋 Controle de Automação (Demand)](./OPEN-ISSUE-024_settings-automation.md) | `Automation` | 📋 Aberta | ⏺️ **Média** |
 | **025** | [🧪 Cobertura de Testes (Unificada)](./OPEN-ISSUE-025_test-coverage-enhancement.md) | `Quality` | 📋 Aberta | ⏺️ **Média** |
