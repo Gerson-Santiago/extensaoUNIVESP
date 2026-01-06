@@ -1,7 +1,7 @@
 {
   "manifest_version": 3,
   "name": "Central Univesp",
-  "version": "2.9.7",
+  "version": "2.10.0",
   "description": "Gestão de atividades semanais e navegação inteligente no AVA da UNIVESP, com autopreenchimento SEI.",
   "icons": {
     "16": "assets/icon.png",
@@ -9,12 +9,21 @@
     "48": "assets/icon.png",
     "128": "assets/icon.png"
   },
-  "permissions": ["storage", "sidePanel", "scripting", "activeTab", "downloads"],
+  "permissions": [
+    "storage",
+    "sidePanel",
+    "scripting",
+    "activeTab",
+    "downloads"
+  ],
   "background": {
     "service_worker": "background/index.js",
     "type": "module"
   },
-  "host_permissions": ["https://sei.univesp.br/*", "https://ava.univesp.br/*"],
+  "host_permissions": [
+    "https://sei.univesp.br/*",
+    "https://ava.univesp.br/*"
+  ],
   "side_panel": {
     "default_path": "sidepanel/sidepanel.html"
   },
@@ -31,8 +40,12 @@
   },
   "content_scripts": [
     {
-      "matches": ["https://sei.univesp.br/*"],
-      "js": ["features/session/scripts/SeiLoginContentScript.js"],
+      "matches": [
+        "https://sei.univesp.br/*"
+      ],
+      "js": [
+        "features/session/scripts/SeiLoginContentScript.js"
+      ],
       "run_at": "document_idle"
     }
   ]

@@ -1,6 +1,6 @@
 # EPIC-003: Pre-Launch Compliance & Polish
 
-**Status**: 📋 Planejado  
+**Status**: 🏃 Finalizando (v2.10.0)  
 **Prioridade**: 🔴 Crítica (Blocker CWS)  
 **Tamanho**: S (2.6 - 3.6 dias)
 **Tags**: `compliance`, `assets`, `polish`
@@ -14,10 +14,10 @@ Preparar todos os ativos e justificativas não-técnicas para submissão na CWS.
 |---------|--------|------------|----------|--------|
 | **SPEC-037** | Remote Code Audit | ✅ FECHADA | 0 dia | ✅ Completa |
 | **SPEC-035** | Privacy Policy | 🔴 Crítica | 0.5 dia | 📋 Aberta |
-| **SPEC-033** | Permission Audit | 🟡 Alta | 0.5 dia | 📋 Aberta |
-| **SPEC-034** | Service Worker Lifecycle | 🟢 Baixa | 0.1 dia | 🟢 80% |
+| **SPEC-033** | Permission Audit | 🟡 Alta | 0.5 dia | ✅ Fechada |
+| **SPEC-034** | Service Worker Lifecycle | 🟢 Baixa | 0.1 dia | ✅ Completa |
 | **SPEC-036** | CWS Metadata (Screenshots) | 🟡 Alta | 1-2 dias | 📋 Aberta |
-| **SPEC-038** | sidePanel UX | 🟡 Alta | 0.5 dia | 📋 Aberta |
+| **SPEC-038** | sidePanel UX | 🟡 Alta | 0.5 dia | ✅ Fechada |
 | **ISSUE-030** | Security Hardening (XSS) | 🔴 Crítica | 2 dias | ✅ Fechada |
 
 **Estimativa Total**: 2.6 a 3.6 dias.

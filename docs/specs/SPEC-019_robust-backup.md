@@ -293,7 +293,7 @@ describe('ImportController', () => {
   it('deve migrar backup v2.9.x automaticamente', async () => {
     // Arrange
     const oldBackup = `{
-      "meta": { "version": "2.9.7" },
+      "meta": { "version": "2.10.0" },
       "data": { "courses": [] }
     }`;
     
