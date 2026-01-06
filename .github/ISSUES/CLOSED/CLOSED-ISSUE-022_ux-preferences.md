@@ -1,9 +1,11 @@
 # 📝 ISSUE-022: Preferências de UX e Comportamento Inteligente
 
-**Status:** 📋 Aberta
+**Status:** ✅ Concluída
 **Prioridade:** Alta
 **Componente:** `features/settings` | `shared/ui`
 **Versão:** v2.10.0
+**Data de Conclusão:** 2026-01-05
+**Branch:** `feat/issue-022-ux-preferences`
 
 ---
 
@@ -38,9 +40,21 @@ Seguindo a visão de produto maduro, estas não são regras de negócio, mas aju
 
 ## ✅ Critérios de Aceite
 
-- [ ] Usuário pode alternar entre modo "Compacto" e "Confortável".
-- [ ] Usuário pode ativar/desativar a lembrança da última semana visitada.
-- [ ] Todas as novas chaves residem no `chrome.storage.local` sob o namespace `user_preferences`.
+- [x] Usuário pode alternar entre modo "Compacto" e "Confortável".
+- [x] Usuário pode ativar/desativar a lembrança da última semana visitada.
+- [x] Todas as novas chaves residem no `chrome.storage.local` sob o namespace `user_preferences`.
+
+## 🎯 Implementação Realizada
+
+**Arquivos Modificados:**
+- `features/settings/ui/SettingsView.js`: Toggles de preferências e método `initUserPreferences()`
+- CSS dinâmico aplicado via classe `.is-compact` no body
+
+**Funcionalidades:**
+- Toggle de Densidade Visual (Compacto/Confortável)
+- Toggle de Auto-Pin (Lembrar Última Semana Visitada)
+- Persistência em `chrome.storage.local` sob `user_preferences`
+- Aplicação imediata de mudanças visuais
 
 ---
 

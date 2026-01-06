@@ -188,10 +188,13 @@ Dashboard central de acesso rápido.
 
 ### `settings` (Infra) 🔧
 Gerenciamento de configurações e preferências do usuário.
-- **Components**: `ConfigForm.js`
-- **Logic**: `domainManager.js`
-- **Services**: `BackupService.js`
-- **Testes**: 3 suites (Defaults, Domain, Integration)
+- **ui**: `SettingsView.js`, `components/ConfigForm.js`
+- **logic**:
+    - `SettingsController.js` (Orquestrador)
+    - `EmailDomainValidator.js` (Validação)
+    - `*Manager.js` (State Management: Chips, UI, UserPrefs)
+- **services**: `BackupService.js` (com Schema Validation Segura)
+- **Testes**: 3 suites unitárias + 3 integração
 
 ### `session` (Infra) 🔧
 Gerenciamento de estado de autenticação (Blackboard/SEI).
