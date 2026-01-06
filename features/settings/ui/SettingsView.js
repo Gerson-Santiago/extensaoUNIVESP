@@ -163,6 +163,30 @@ export class SettingsView {
       h('h3', {}, 'Ajuda e Feedback'),
       h('p', { className: 'config-desc' }, 'Encontrou um problema ou tem uma sugestão?'),
       helpActions,
+      divider(),
+
+      // Danger Zone Section (ISSUE-020)
+      h('div', { className: 'danger-zone' }, [
+        h('h3', { style: { color: '#d9534f' } }, '⚠️ Zona de Perigo'),
+        h(
+          'p',
+          { className: 'config-desc', style: { color: '#666' } },
+          'Ações irreversíveis que apagam todos os seus dados permanentemente.'
+        ),
+        h('div', { className: 'action-list' }, [
+          btn(
+            'btnFactoryReset',
+            '🔥',
+            'Reset de Fábrica',
+            'background: #fff; border: 2px solid #d9534f; color: #d9534f; font-weight: bold;'
+          ),
+        ]),
+        h(
+          'p',
+          { className: 'setting-hint', style: { color: '#d9534f', fontSize: '0.85em' } },
+          '⚠️ Esta ação apaga TODOS os cursos, atividades, anotações e configurações. É impossível desfazer.'
+        ),
+      ]),
 
       h('div', { id: 'settingsFeedback', className: 'status-msg' }),
       h('div', { className: 'footer-info' }),
@@ -218,6 +242,10 @@ export class SettingsView {
 
     if (btnExport) btnExport.onclick = () => this.controller.handleExport();
     if (btnImport) btnImport.onclick = () => this.triggerImport();
+
+    // Factory Reset Listener (ISSUE-020)
+    const btnFactoryReset = document.getElementById('btnFactoryReset');
+    if (btnFactoryReset) btnFactoryReset.onclick = () => this.controller.handleReset();
   }
 
   async handleClearAll() {
@@ -381,7 +409,7 @@ export class SettingsView {
       await chrome.storage.local.set({ user_preferences: preferences });
 
       // Apply density change immediately
-      this.applyDensity(/** @type {'compact'|'comfortable'} */ (preferences.density));
+      this.applyDensity(/** @type {'compact'|'comfortable'} */(preferences.density));
 
       Logger.info('SettingsView', 'User preferences saved:', preferences);
     };
