@@ -1,9 +1,11 @@
 # 📝 ISSUE-020: Implementação de Reset Total (Limpar Todos os Dados)
 
-**Status:** 📋 Aberta
+**Status:** ✅ Concluída
 **Prioridade:** Média
 **Componente:** `features/settings`
 **Versão:** v2.10.0
+**Data de Conclusão:** 2026-01-06
+**Branch:** `feat/issue-020-factory-reset`
 
 ---
 
@@ -36,10 +38,23 @@ O usuário precisa de uma forma soberana de limpar seu rastro e preferências na
 
 ## ✅ Critérios de Aceite
 
-- [ ] O botão "Reset de Fábrica" está isolado dentro de um container "Danger Zone" com borda vermelha e aviso explícito.
-- [ ] Implementação de **Barreira de Segurança**: A ação de Reset deve exigir que o usuário marque um checkbox de confirmação ou confirme em um modal específico, impedindo cliques acidentais.
-- [ ] Após a confirmação, o `chrome.storage.local` é esvaziado completamente.
-- [ ] A extensão recarrega e volta ao estado inicial de instalação.
+- [x] O botão "Reset de Fábrica" está isolado dentro de um container "Danger Zone" com borda vermelha e aviso explícito.
+- [x] Implementação de **Barreira de Segurança**: A ação de Reset usa modal customizado com checkbox obrigatório "Entendo que esta ação é irreversível" e botão desabilitado até marcar.
+- [x] Após a confirmação, o `chrome.storage.local` é esvaziado completamente.
+- [x] A extensão recarrega e volta ao estado inicial de instalação.
+
+## 🎯 Implementação Realizada
+
+**Arquivos Modificados:**
+- `features/settings/ui/SettingsView.js`: Seção "Danger Zone" visual
+- `features/settings/logic/SettingsController.js`: Modal customizado com confirmação dupla
+
+**Melhorias além dos requisitos:**
+- Substituído `window.confirm()` por modal customizado usando `Modal.js` existente
+- Checkbox obrigatório antes de habilitar botão de confirmação
+- Feedback visual (opacidade, cursor) indicando estado do botão
+- Dynamic import para evitar dependência circular
+- Testes: 42/42 passando
 
 ---
 
