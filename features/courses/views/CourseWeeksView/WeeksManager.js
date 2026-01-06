@@ -34,11 +34,17 @@ export class WeeksManager {
 
     weeksList.replaceChildren();
 
-    // Carregar configurações de UI
-    const result = await chrome.storage.local.get('ui_settings');
+    // Carregar configurações de UI e Preferências do Usuário (ISSUE-022)
+    const storage = await chrome.storage.local.get(['ui_settings', 'user_preferences']);
     const flags = /** @type {{ showAdvancedButtons: boolean, showTasksButton: boolean }} */ (
-      result.ui_settings || { showAdvancedButtons: true, showTasksButton: true }
+      storage.ui_settings || { showAdvancedButtons: true, showTasksButton: true }
     );
+    const storagePrefs = /** @type {any} */ (storage.user_preferences);
+    /** @type {import('../../../../types/UserPreferences.js').UserPreferences} */
+    const prefs =
+      storagePrefs && storagePrefs.density
+        ? storagePrefs
+        : { density: 'comfortable', autoPinLastWeek: false };
 
     if (this.course.weeks && this.course.weeks.length > 0) {
       this.course.weeks.forEach((week) => {
@@ -53,6 +59,12 @@ export class WeeksManager {
           flags
         ); // Pass flags
         weeksList.appendChild(wDiv);
+
+        // Auto-Pin logic: Se esta é a última semana visitada e o recurso está ativo
+        if (prefs.autoPinLastWeek && week.number === prefs.lastWeekNumber) {
+          // Pequeno delay para garantir que o DOM está pronto e evitar conflitos de renderização
+          setTimeout(() => this.showPreview(week, wDiv), 100);
+        }
       });
     } else {
       // Mensagem de semanas vazias (seguro - sem innerHTML)
@@ -90,6 +102,30 @@ export class WeeksManager {
 
     if (weekElement && weekElement.classList) {
       weekElement.classList.add('week-item-active');
+    }
+
+    // Persistir última semana se Auto-Pin estiver ativo (ISSUE-022)
+    this.persistLastWeek(week.number);
+  }
+
+  /**
+   * Salva o número da última semana no storage se o Auto-Pin estiver ativo.
+   * @param {number} weekNumber
+   */
+  async persistLastWeek(weekNumber) {
+    const result = await chrome.storage.local.get('user_preferences');
+    const storagePrefs = /** @type {any} */ (result.user_preferences);
+    /** @type {import('../../../../types/UserPreferences.js').UserPreferences} */
+    const prefs =
+      storagePrefs && storagePrefs.density
+        ? storagePrefs
+        : { density: 'comfortable', autoPinLastWeek: false };
+
+    if (prefs && prefs.autoPinLastWeek) {
+      prefs.lastWeekNumber = weekNumber;
+      await chrome.storage.local.set({ user_preferences: prefs });
+      /**#LOG_REPOSITORY*/
+      Logger.info('WeeksManager', 'Última semana persistida para Auto-Pin:', weekNumber);
     }
   }
 

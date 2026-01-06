@@ -104,8 +104,12 @@ npm run check
 Antes de Commit:
 npm run test:quick
 
-Antes de Push dev/main (SOLICITAR usuário):
+Antes de Push dev/main (SOLICITAR usuário nunca EXECUTAR npm):
 npm run verify
+
+
+
+NUNCA EXECUTAR NPM 
 
 +IA NUNCA executa sem permissão (limite RAM):
 +- npm run verify

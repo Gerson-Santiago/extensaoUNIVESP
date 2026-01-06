@@ -357,32 +357,31 @@ export class SettingsView {
 
     // Load saved preferences
     const defaults = {
-      densityCompact: false,
+      density: 'comfortable',
       autoPinLastWeek: false,
       lastWeekNumber: null,
     };
-    const saved =
-      /** @type {{densityCompact: boolean, autoPinLastWeek: boolean, lastWeekNumber: number|null}} */ (
-        (await chrome.storage.local.get('user_preferences')).user_preferences || defaults
-      );
+    const saved = /** @type {import('../../../types/UserPreferences.js').UserPreferences} */ (
+      (await chrome.storage.local.get('user_preferences')).user_preferences || defaults
+    );
 
-    densityCheckbox.checked = saved.densityCompact;
+    densityCheckbox.checked = saved.density === 'compact';
     autoPinCheckbox.checked = saved.autoPinLastWeek;
 
     // Apply density class immediately on load
-    this.applyDensity(saved.densityCompact);
+    this.applyDensity(saved.density);
 
     // Listeners
     const save = async () => {
       const preferences = {
-        densityCompact: densityCheckbox.checked,
+        density: densityCheckbox.checked ? 'compact' : 'comfortable',
         autoPinLastWeek: autoPinCheckbox.checked,
         lastWeekNumber: saved.lastWeekNumber, // Preserve existing value
       };
       await chrome.storage.local.set({ user_preferences: preferences });
 
       // Apply density change immediately
-      this.applyDensity(preferences.densityCompact);
+      this.applyDensity(/** @type {'compact'|'comfortable'} */ (preferences.density));
 
       Logger.info('SettingsView', 'User preferences saved:', preferences);
     };
@@ -393,11 +392,11 @@ export class SettingsView {
 
   /**
    * Applies or removes compact density class on body.
-   * @param {boolean} isCompact - Whether to apply compact density
+   * @param {'compact'|'comfortable'} density - The density to apply
    */
-  applyDensity(isCompact) {
+  applyDensity(density) {
     const body = document.body;
-    if (isCompact) {
+    if (density === 'compact') {
       body.classList.add('is-compact');
     } else {
       body.classList.remove('is-compact');
