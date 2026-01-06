@@ -14,7 +14,7 @@ A Central Univesp é um **Assistente Acadêmico Integrado**. Todas as suas funci
 
 ---
 
-## ⚖️ 2. Regras de Negócio (v2.9.7)
+## ⚖️ 2. Regras de Negócio (v2.10.0)
 
 ### Organização de Cursos
 - **Agrupamento**: Cursos são agrupados por período acadêmico (Ano/Semestre - Bimestre).

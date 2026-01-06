@@ -42,7 +42,7 @@ RESULT=$(gh issue create \
 NUM=$(extract_number "$RESULT")
 ISSUE_MAP["028"]=$NUM
 echo "   ✅ Criada: #$NUM"
-gh issue close $NUM --reason "completed" --comment "Issue resolvida em v2.9.7 com implementação de StorageGuard"
+gh issue close $NUM --reason "completed" --comment "Issue resolvida em v2.10.0 com implementação de StorageGuard"
 echo "   🔒 Fechada"
 echo ""
 

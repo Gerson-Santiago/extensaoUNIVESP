@@ -1,6 +1,6 @@
 {
   "name": "central-univesp",
-  "version": "2.9.7",
+  "version": "2.10.0",
   "description": "Gestão de atividades semanais e navegação inteligente no AVA da UNIVESP, com autopreenchimento SEI.",
   "main": "popup/popup.js",
   "type": "module",

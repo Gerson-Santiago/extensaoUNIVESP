@@ -352,7 +352,7 @@ Understanding Chrome Extensions: A Developer's Guide to Manifest V3 - DEV Commun
 
 ---
 
-## 11. Caso Prático: Implementação na Central Univesp (v2.9.7)
+## 11. Caso Prático: Implementação na Central Univesp (v2.10.0)
 
 A **Central Univesp** aplicou integralmente os princípios deste relatório durante o Milestone M2 (Janeiro/2026):
 

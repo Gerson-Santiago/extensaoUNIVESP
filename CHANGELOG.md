@@ -5,7 +5,29 @@ Todas as mudanças notáveis neste projeto serão documentadas aqui.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [2.9.7] - Unreleased
+## [2.10.0] - 2026-01-06
+
+### 🎉 Novidades
+- **ISSUE-020**: Factory Reset com confirmação dupla para segurança de dados.
+- **ISSUE-022**: Sistema de Preferências de UX (Auto-Pin, Comportamento de navegação).
+- **ISSUE-050**: Dashboard de Engenharia 2.0 com suporte a Linux/WSL e métricas de Dívida Técnica.
+
+### 🛡️ Segurança (Hotfix ISSUE-045)
+- **Trusted Types**: Implementação de `DOMSafe.parseHTML` para conformidade rigorosa com CSP do Chrome.
+- **XSS Hardening**: Whitelist dinâmica para atributos de input e eliminação de riscos em injetores.
+- **Vulnerabilidade**: Proteção contra injeção de TrustedHTML em scrapers e visualizadores.
+
+### 🏗️ Qualidade & Integridade (ISSUE-046)
+- **Broken Links**: Validação automatizada de integridade de referências em JS, CSS e HTML.
+- **Orphan Code**: Saneamento de código morto e arquivos obsoletos.
+- **Limpeza**: Remoção de rascunhos de ADR e especificações legadas em `.github/ISSUES/30/`.
+
+### 🔧 Melhorias & Tooling
+- **Performance**: Otimização do `dashboard.sh` usando `find -prune` para grandes codebases.
+- **ADR 002**: Contexto automático do design do `BatchScraper` integrado ao dashboard.
+- **Estabilidade**: Correção de line-endings (CRLF -> LF) para compatibilidade cross-platform.
+
+## [2.9.7] - 2026-01-05
 
 ### 🧪 Quality & Tests (v2.9.x Maintenance)
 - **ISSUE-025**: Expansão de cobertura para `CompressionUtils` (100%), `DomUtils` (100%) e `BatchScraper` (refatorado com funções puras testáveis).

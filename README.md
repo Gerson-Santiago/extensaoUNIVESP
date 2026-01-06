@@ -2,7 +2,7 @@
 > **Sua central de comando para a faculdade.** 
 > Uma nova forma de navegar na UNIVESP.
 
-![Version](https://img.shields.io/badge/version-2.9.7-blue)
+![Version](https://img.shields.io/badge/vVersão: v2.10.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 
