@@ -54,7 +54,32 @@ O usuário precisa de uma forma soberana de limpar seu rastro e preferências na
 - Checkbox obrigatório antes de habilitar botão de confirmação
 - Feedback visual (opacidade, cursor) indicando estado do botão
 - Dynamic import para evitar dependência circular
-- Testes: 42/42 passando
+- Testes: 35/35 passando (após limpeza de testes obsoletos)
+
+### 🚀 Bônus Técnico & Limpeza (Tech Debt Payoff)
+
+Além do objetivo principal, realizamos uma grande manutenção na feature Settings:
+
+1.  **Limpeza de Features Obsoletas:**
+    - Removida funcionalidade de "Densidade Visual" (Compact vs Comfortable) que não agregava valor.
+    - Removido arquivo CSS `compact.css` e lógica morta associada (~200 linhas de código deletadas).
+
+2.  **Padronização de UI (Visual Consistency):**
+    - Criado helper `section()` para renderizar todos os blocos de configuração.
+    - Aplicada classe CSS `settings-content` em TODAS as seções para visual de card unificado.
+
+3.  **Experiência do Usuário (UX):**
+    - Simplificada terminologia: "Botões Avançados" → "Ativar Botão Rápido".
+    - Movido toggle "Ativar Popup" para "Preferências do Usuário" (agrupamento lógico melhor).
+
+4.  **Refatoração Arquitetural (Screaming Architecture):**
+    - Alinhamento de pastas com padrão do projeto: `managers/` → `logic/`, `components/` → `ui/`.
+    - Renomeação de arquivos para clareza (`domainManager` → `EmailDomainValidator`).
+    - Habilitado `// @ts-check` e validação de schema robusta no `BackupService`.
+
+5.  **Correção de Regressões Visuais Críticas (Quality Assurance):**
+    - Corrigido bug onde CSS inline vazava como texto no botão de Factory Reset.
+    - Corrigido renderização de HTML cru (escapado) no `LoginWaitModal`, migrando para `DOMSafe.createElement`.
 
 ---
 

@@ -1,3 +1,4 @@
+// @ts-check
 import { BackupService } from '../../../shared/services/BackupService.js';
 
 /**
