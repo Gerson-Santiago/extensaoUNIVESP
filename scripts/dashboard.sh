@@ -123,13 +123,13 @@ else
 fi
 echo ""
 
-# 4. Top 10 Gigantes
-echo -e "${RED}4. ARQUIVOS MAIS COMPLEXOS (Top 10)${NC}"
+# 4. Top 30 Gigantes
+echo -e "${RED}4. ARQUIVOS MAIS COMPLEXOS (Top 30)${NC}"
 echo "----------------------------------------------"
 
 if [ -n "$FILES" ]; then
-    # Captura output do Top 10
-    TOP_OUTPUT=$(echo "$FILES" | xargs wc -l 2>/dev/null | sort -nr | head -n 10)
+    # Captura output do Top 30
+    TOP_OUTPUT=$(echo "$FILES" | xargs wc -l 2>/dev/null | sort -nr | head -n 30)
     
     # Imprime tabela formatada (removendo path excessivo se quiser, mas aqui mantemos full)
     echo "$TOP_OUTPUT" | awk '{printf "%-6s %s\n", $1, $2}'
@@ -148,8 +148,9 @@ echo ""
 # 5. Dívida Técnica
 echo -e "${YELLOW}5. DÍVIDA TÉCNICA${NC}"
 echo "----------------------------------------------"
-# Exclui pastas pesadas para grep também
-GREP_EXCLUDE="--exclude-dir={node_modules,dist,.git,coverage,build,.vscode,.idea,.husky,.agent}"
+# Exclui pastas pesadas para grep também. 
+# Nota: Usamos multiplos flags para evitar problemas de expansão de chaves em diferentes shells.
+GREP_EXCLUDE="--exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git --exclude-dir=coverage --exclude-dir=build --exclude-dir=.vscode --exclude-dir=.idea --exclude-dir=.husky --exclude-dir=.agent"
 TOTAL_TODOS=$(grep -r "TODO" . $GREP_EXCLUDE 2>/dev/null | wc -l)
 TOTAL_FIXMES=$(grep -r "FIXME" . $GREP_EXCLUDE 2>/dev/null | wc -l)
 echo -e "TODOs: \t\t$TOTAL_TODOS"
