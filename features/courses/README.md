@@ -5,7 +5,9 @@
 > **Responsabilidade**: Gerenciar matérias, semanas, tarefas e atividades (Core Domain).
 > **Arquitetura**: Screaming Architecture + Vertical Slices.
 
----
+> [!IMPORTANT]
+> **Source of Truth:** A implementação de referência está em `features/courses/`.
+
 
 ## 📂 Estrutura (Atualizada)
 
@@ -84,9 +86,9 @@ Checklist simples para controle manual de tarefas.
 
 ---
 
-## 🛠️ Status da Feature (v2.9.2)
+## 🛠️ Status da Feature (v2.10.0)
 
-- ✅ **Navegação**: 100% Funcional (Robust Scroll Navigation v2.9.2).
+- ✅ **Navegação**: 100% Funcional (Robust Scroll Navigation v2.10.0).
 - ✅ **Persistência**: Auto-save implementado em todas as etapas.
 - ✅ **Modularização**: Views complexas refatoradas.
 - ✅ **Error Handling**: SafeResult pattern em WeekActivitiesService.
@@ -94,7 +96,7 @@ Checklist simples para controle manual de tarefas.
 - ✅ **Renderização**: Container Freshness fix (DOM Zumbi eliminado).
 - ✅ **Testes**: 455 testes passando (100% Green).
 
-**Destaques v2.9.2:**
+**Destaques v2.10.0:**
 - 🕵️ **Observabilidade**: Logging estruturado com tags semânticas em toda a feature.
 - 🚀 **Resiliência**: Navegação de scroll com `MutationObserver` (adeus timeouts arbitrários).
 - 🛡️ **Segurança**: Regex de tarefas otimizada contra ataques de negação de serviço (ReDoS).
