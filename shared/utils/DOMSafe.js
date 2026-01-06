@@ -60,6 +60,13 @@ export class DOMSafe {
     'allowfullscreen',
     'allow',
     'loading',
+    'min',
+    'max',
+    'step',
+    'checked',
+    'selected',
+    'colspan',
+    'rowspan',
   ]);
 
   /**
@@ -198,5 +205,44 @@ export class DOMSafe {
     });
 
     return element;
+  }
+
+  /**
+   * Cache da política TrustedTypes
+   * @type {TrustedTypePolicy|null}
+   */
+  static #policy = null;
+
+  /**
+   * Realiza parse seguro de HTML lidando com TrustedTypes.
+   * Essencial para o Scraper funcionar em ambientes com CSP estrita.
+   * @param {string} html - String HTML bruta.
+   * @returns {Document} Documento parseado.
+   */
+  static parseHTML(html) {
+    const parser = new DOMParser();
+
+    // Se TrustedTypes não estiver disponível, parse normal
+    if (!window.trustedTypes) {
+      return parser.parseFromString(html, 'text/html');
+    }
+
+    // Criar ou recuperar política
+    if (!DOMSafe.#policy) {
+      try {
+        DOMSafe.#policy = window.trustedTypes.createPolicy('dom-safe-parser', {
+          createHTML: (string) => string, // Pass-through intencional para parsing
+        });
+      } catch (e) {
+        // Fallback se política já existir com mesmo nome (raro em extensão, comum em testes)
+        console.warn('[DOMSafe] Falha ao criar política TrustedTypes:', e);
+      }
+    }
+
+    const finalHtml = DOMSafe.#policy
+      ? DOMSafe.#policy.createHTML(html)
+      : html;
+
+    return parser.parseFromString(finalHtml, 'text/html');
   }
 }

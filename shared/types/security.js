@@ -47,7 +47,10 @@
  * @property {string|number} [max] - Valor máximo
  * @property {string|number} [step] - Passo do input
  * @property {boolean|string} [checked] - Checkbox marcado
- * @property {string} [loading] - Lazy loading
+ * @property {boolean} [selected] - Option selecionado
+ * @property {string} [loading] - Lazy loading de imagens/iframes
+ * @property {string|number} [colspan] - Table layout
+ * @property {string|number} [rowspan] - Table layout
  * @property {string|number} [frameborder] - Borda de Iframe
  * @property {string|number} [frameBorder] - Alias para frameborder
  * @property {string|number} [marginwidth] - Margem Iframe
@@ -79,4 +82,4 @@
  * @typedef {string | Node | TrustedHTML | Array<string|Node|TrustedHTML>} SafeChildren
  */
 
-export {};
+export { };
