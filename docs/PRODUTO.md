@@ -1,6 +1,9 @@
 # Produto e Negócio - Central Univesp
 
-Este documento detalha o propósito da extensão, as regras de negócio acadêmicas e a filosofia de proteção de dados.
+Este dDocumento Mestre de Produto (PRD) - Especificações, Regras de Negócio e Casos de Uso.
+
+> [!IMPORTANT]
+> **Source of Truth:** As regras de negócio aqui descritas são implementadas nos **Services** e validadas por **testes unitários**. Em caso de dúvida, consulte `features/*/services/*.js`.
 
 ---
 

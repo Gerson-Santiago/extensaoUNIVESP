@@ -200,6 +200,12 @@ Refinamento de UX: Garanta que ações invasivas (abrir painel, baixar arquivos)
 
 Transparência: Criptografe dados, forneça uma Política de Privacidade clara e use imagens reais na loja.
 
+Relatório de conformidade da Central Univesp com a Chrome Web Store e regulamentações de privacidade.
+
+> [!IMPORTANT]
+> **Live Compliance:** Este relatório reflete a auditoria realizada antes do release. A conformidade contínua é garantida pelos pipelines de **CI/CD** e **testes de segurança** no repositório.
+
+---
 Seguindo estas diretrizes, o desenvolvedor navega com segurança pelo campo minado das políticas da Chrome Web Store, transformando riscos de rejeição em uma arquitetura robusta e em conformidade.
 
 Tabela de Referência: Códigos de Violação e Ações Corretivas

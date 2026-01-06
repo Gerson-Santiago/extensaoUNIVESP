@@ -1,52 +1,63 @@
-# Master Roadmap: Publicação e Evolução (v2.10.0+)
+# Roadmap de Produto & Estratégia (Source of Truth)
 
-**Meta**: Publicação na Chrome Web Store e Consolidação da Governança de Dados.
+Este documento consolida a visão de longo prazo, princípios estratégicos e o plano tático de releases da Central Univesp.
 
----
-
-## 📅 Milestones de Lançamento (v2.10.0)
-
-### [x] M1: Codebase Seguro (Jan/2026)
-Foco em eliminação de XSS e Race Conditions.
-- ~~**SPEC-001**: DOM Safe Refactoring (DOMSafe.js)~~ ✅
-- ~~**SPEC-004**: Storage Guard (Concurrency)~~ ✅
-
-### [x] M2: Compliance Administrativa (Jan/2026)
-Foco em exigências regulatórias da CWS.
-- ~~**SPEC-033/035**: Justificativa de Permissões e Privacy Policy~~ ✅
-- ~~**SPEC-038**: sidePanel Contextual (UX Least Intrusion)~~ ✅
-
-### [/] M3: Lançamento em Produção (Em execução)
-Foco em ativos de loja e empacotamento.
-- **SPEC-036**: Assets da Loja (Ícones e Screenshots).
-- **SPEC-040**: Engenharia de Distribuição (Final Bundle & Zip).
-- **SPEC-021**: Manual do Usuário e Docs de Release.
+> [!IMPORTANT]
+> **Source of Truth (SoT):** Este roadmap reflete a intenção estratégica e o planejamento. A autoridade final sobre o que está implementado reside no **código-fonte** e nos **testes**.
 
 ---
 
-## 🏔️ Futuras EPICs (Roadmap v2.10.x & v2.11.0)
+## 🎯 1. Visão de Produto
 
-### EPIC-004: Soberania e Personalização (v2.10.0 Target)
-Foco em dar o controle total ao usuário sobre a interface e os dados.
-- **SPEC-020**: Reset de Fábrica (Wipe Total de dados locais).
-- **SPEC-022**: Sistema de Preferências (Tema, comportamento do sidePanel).
-- **SPEC-023**: Dashboard de Diagnóstico e Apoio (Sobre).
-- **SPEC-024**: Controle de Automação (Scraping apenas sob demanda).
+**Missão**: Transformar a extensão UNIVESP em um **ecossistema completo de gestão acadêmica**, permitindo ao aluno organizar, monitorar e otimizar sua jornada universitária.
 
-### EPIC-005: Excelência Técnica e QA (Contínuo)
-Foco em longevidade do código e performance.
-- **SPEC-001**: Otimização de Scrapers (paletteItem) e Hardening de Tipos.
-- **SPEC-025**: Barreira de 85% de Cobertura (UI e Core Logic).
-
-### EPIC-006: Segurança de Elite (v2.11+)
-- **SPEC-043**: Backup Seguro com Criptografia AES-GCM e Assinatura Digital.
+**Princípios**:
+- **Local-First**: Dados do aluno permanecem privados e locais.
+- **Zero Fricção**: Funciona sem configuração complexa.
+- **Screaming Architecture**: O código comunica a intenção do negócio.
 
 ---
 
-## ✅ Resumo de Status
-- [x] **Segurança Hardcore**: Concluída.
-- [x] **Documentação de Governança**: Sincronizada.
-- [ ] **Store Assets**: Pendente.
-- [ ] **Publicação CWS**: Meta Final.
+## 📅 2. Horizonte Tático: Release v2.10.0 (Contextual Chips)
+
+**Status**: 🚀 Lançamento / Estabilização (Jan/2026)
+
+### [x] M1: Codebase Seguro & Compliance
+- **Segurança**: Eliminação de XSS (DOMSafe) e Race Conditions (StorageGuard).
+- **Compliance**: Adequação total às políticas da Chrome Web Store (Privacidade, Permissões).
+
+### [/] M2: Experiência do Usuário (UX)
+- **Contextualidade**: Chips de navegação bidirecionais.
+- **Preferências**: Sistema de configuração (`SettingsView`) reimaginado.
+- **Reset**: Funcionalidade de Factory Reset para soberania de dados.
+
+### [ ] M3: Engenharia de Distribuição
+- Assets de loja profissionais (Screenshots, Ícones).
+- Pipeline de build e empacotamento otimizado.
+
+---
+
+## 🏔️ 3. Futuro Próximo (v2.11.0+)
+
+### EPIC-004: Soberania e Personalização
+- **Painel de Diagnóstico**: Ferramentas de auto-reparo e análise de integridade.
+- **Controle Fino**: Opções para ativar/desativar scrapers específicos.
+
+### EPIC-006: Segurança de Elite
+- **Criptografia**: Backup com AES-GCM.
+- **Assinatura Digital**: Verificação de integridade de dados importados.
+
+---
+
+## 🔭 4. Longo Prazo (2027+)
+
+### Visão Aspiracional
+1.  **Integração Comunitária**: Fórum, grupos de estudo e compartilhamento (opt-in).
+2.  **Análise Preditiva**: Sugestões baseadas em desempenho e padrões de estudo.
+3.  **Multiplataforma**: Possível expansão para Mobile ou PWA.
+
+> **Nota**: Itens de longo prazo são exploratórios e dependem de viabilidade técnica e demanda da comunidade.
+
+---
 
 [Voltar para o Índice](README.md)

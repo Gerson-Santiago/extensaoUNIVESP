@@ -2,6 +2,9 @@
 
 Este documento consolida os padrões de código, arquitetura de software, fluxos de engenharia e guias de estilo do projeto.
 
+> [!IMPORTANT]
+> **Source of Truth (SoT):** Este documento descreve as decisões de design e padrões arquiteturais desejados. A implementação real no **código-fonte** e a validação via **testes automatizados** são a autoridade final.
+
 ---
 
 ## 🏗️ 1. Pilares Arquitetônicos
@@ -49,6 +52,7 @@ O projeto utiliza **Jest** com o padrão **AAA (Arrange, Act, Assert)**.
 ## 🚦 4. Fluxos de Trabalho
 
 ### Git e Commits
+- **Idioma**: Português Brasileiro (PT-BR) obrigatório em todas as mensagens.
 - **Conventional Commits**: `<tipo>(<escopo>): <descrição>` (Ex: `feat(cursos): ...`).
 - **Issues**: Referencie sempre `Refs: ISSUE-XXX` ou `Closes #XX`.
 - **Branches**: Trabalhe sempre em `feat/`, `fix/` ou `refactor/`. Nunca direto na `dev` ou `main`.

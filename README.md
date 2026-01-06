@@ -2,7 +2,10 @@
 > **Sua central de comando para a faculdade.** 
 > Uma nova forma de navegar na UNIVESP.
 
-![Version](https://img.shields.io/badge/vVersão: v2.10.0-blue)
+> [!IMPORTANT]
+> **Source of Truth (SoT):** A documentação fornece o contexto arquitetural e intencionalidade. A Fonte Única da Verdade é o **código-fonte** e os **testes automatizados**. Em caso de divergência, o código prevalece.
+
+![Version](https://img.shields.io/badge/Versão-v2.10.0-blue)
 ![License](https://img.shields.io/badge/license-MIT-green)
 ![Status](https://img.shields.io/badge/status-stable-success)
 
