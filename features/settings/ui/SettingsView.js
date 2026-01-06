@@ -70,6 +70,28 @@ export class SettingsView {
       ),
     ]);
 
+    // User Preferences (NEW - ISSUE-022)
+    const userPreferences = h('div', { className: 'user-preferences' }, [
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'densityCompact' }),
+        h('span', {}, 'Densidade Visual Compacta'),
+      ]),
+      h(
+        'p',
+        { className: 'setting-hint' },
+        'Reduz margens e espaçamentos para mostrar mais conteúdo na tela.'
+      ),
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'autoPinLastWeek' }),
+        h('span', {}, 'Lembrar Última Semana Visitada'),
+      ]),
+      h(
+        'p',
+        { className: 'setting-hint' },
+        'Reabre automaticamente a última semana que você estava visualizando.'
+      ),
+    ]);
+
     // Helper for buttons
     const btn = (id, icon, label, extraStyle = '') =>
       h('button', { id, className: 'action-card small-action', style: extraStyle }, [
@@ -119,6 +141,11 @@ export class SettingsView {
       uiSettings,
       divider(),
 
+      h('h3', {}, 'Preferências do Usuário'),
+      h('p', { className: 'config-desc' }, 'Adapte a interface ao seu estilo de uso.'),
+      userPreferences,
+      divider(),
+
       h('h3', {}, 'Privacidade e Dados'),
       h(
         'p',
@@ -151,6 +178,9 @@ export class SettingsView {
 
     // Initialize UI Settings
     this.initUISettings();
+
+    // Initialize User Preferences (ISSUE-022)
+    this.initUserPreferences();
 
     // Attach Action Buttons listeners
     const btnManual = document.getElementById('btnManualAdd');
@@ -309,5 +339,68 @@ export class SettingsView {
     await chrome.storage.local.set({ chips_settings: settings });
     /**#LOG_UI*/
     Logger.warn('SettingsView', 'Chips settings saved:', settings);
+  }
+
+  /**
+   * Initializes User Preferences toggles (ISSUE-022).
+   * Manages Density and Auto-Pin settings.
+   */
+  async initUserPreferences() {
+    const densityCheckbox = /** @type {HTMLInputElement|null} */ (
+      document.getElementById('densityCompact')
+    );
+    const autoPinCheckbox = /** @type {HTMLInputElement|null} */ (
+      document.getElementById('autoPinLastWeek')
+    );
+
+    if (!densityCheckbox || !autoPinCheckbox) return;
+
+    // Load saved preferences
+    const defaults = {
+      densityCompact: false,
+      autoPinLastWeek: false,
+      lastWeekNumber: null,
+    };
+    const saved =
+      /** @type {{densityCompact: boolean, autoPinLastWeek: boolean, lastWeekNumber: number|null}} */ (
+        (await chrome.storage.local.get('user_preferences')).user_preferences || defaults
+      );
+
+    densityCheckbox.checked = saved.densityCompact;
+    autoPinCheckbox.checked = saved.autoPinLastWeek;
+
+    // Apply density class immediately on load
+    this.applyDensity(saved.densityCompact);
+
+    // Listeners
+    const save = async () => {
+      const preferences = {
+        densityCompact: densityCheckbox.checked,
+        autoPinLastWeek: autoPinCheckbox.checked,
+        lastWeekNumber: saved.lastWeekNumber, // Preserve existing value
+      };
+      await chrome.storage.local.set({ user_preferences: preferences });
+
+      // Apply density change immediately
+      this.applyDensity(preferences.densityCompact);
+
+      Logger.info('SettingsView', 'User preferences saved:', preferences);
+    };
+
+    densityCheckbox.addEventListener('change', save);
+    autoPinCheckbox.addEventListener('change', save);
+  }
+
+  /**
+   * Applies or removes compact density class on body.
+   * @param {boolean} isCompact - Whether to apply compact density
+   */
+  applyDensity(isCompact) {
+    const body = document.body;
+    if (isCompact) {
+      body.classList.add('is-compact');
+    } else {
+      body.classList.remove('is-compact');
+    }
   }
 }
