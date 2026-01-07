@@ -17,7 +17,7 @@ describe('QuickLinksScraper Service', () => {
       `;
 
             // Act
-            const items = QuickLinksScraper.extractFromModal(domMock);
+            const items = QuickLinksScraper.extractFromModal(/** @type {Document} */(/** @type {unknown} */ (domMock)));
 
             // Assert
             expect(items).toHaveLength(2);
@@ -142,7 +142,7 @@ describe('QuickLinksScraper Service', () => {
       `;
 
             const closeBtn = document.querySelector('a.lbAction');
-            const clickSpy = jest.spyOn(closeBtn, 'click');
+            const clickSpy = jest.spyOn(/** @type {HTMLElement} */(closeBtn), 'click');
 
             await DOM_scrapeQuickLinks_Injected();
 
