@@ -16,6 +16,12 @@ const mockChrome = {
   action: /** @type {any} */ ({
     setPopup: jest.fn(),
   }),
+  tabs: /** @type {any} */ ({
+    onUpdated: { addListener: jest.fn() },
+    onActivated: { addListener: jest.fn() },
+    query: jest.fn(),
+    get: jest.fn().mockResolvedValue({ url: 'https://ava.univesp.br' }),
+  }),
 };
 global.chrome = /** @type {any} */ (mockChrome);
 
@@ -41,14 +47,14 @@ describe('Background Script - Panel Behavior', () => {
   });
 
   // Helper to load the script (simulating execution)
-  const loadScript = () => {
-    jest.isolateModules(() => {
+  const loadScript = async () => {
+    await jest.isolateModulesAsync(async () => {
       // @ts-ignore
-      require('../index.js');
+      await import('../index.js');
     });
   };
 
-  test('Deve configurar sidepanel como padrão na instalação se storage estiver vazio', () => {
+  test('Deve configurar sidepanel como padrão na instalação se storage estiver vazio', async () => {
     // Arrange
     const mockGet = jest.fn((keys, cb) => cb({})); // Empty storage
     /** @type {jest.Mock} */ (global.chrome.storage.sync.get) = mockGet;
@@ -61,7 +67,7 @@ describe('Background Script - Panel Behavior', () => {
     });
 
     // Act
-    loadScript();
+    await loadScript();
     if (installCallback) installCallback();
 
     // Assert
@@ -71,7 +77,7 @@ describe('Background Script - Panel Behavior', () => {
     expect(global.chrome.action.setPopup).toHaveBeenCalledWith({ popup: '' }); // Disable popup
   });
 
-  test('Deve habilitar popup se clickBehavior for "popup" na instalação', () => {
+  test('Deve habilitar popup se clickBehavior for "popup" na instalação', async () => {
     // Arrange
     const mockGet = jest.fn((keys, cb) => cb({ clickBehavior: 'popup' }));
     /** @type {jest.Mock} */ (global.chrome.storage.sync.get) = mockGet;
@@ -83,7 +89,7 @@ describe('Background Script - Panel Behavior', () => {
     });
 
     // Act
-    loadScript();
+    await loadScript();
     if (installCallback) installCallback();
 
     // Assert
@@ -93,7 +99,7 @@ describe('Background Script - Panel Behavior', () => {
     expect(global.chrome.action.setPopup).toHaveBeenCalledWith({ popup: 'popup/popup.html' });
   });
 
-  test('Deve atualizar comportamento quando storage mudar (onChanged)', () => {
+  test('Deve atualizar comportamento quando storage mudar (onChanged)', async () => {
     // Arrange
     /** @type {Function} */
     let changeCallback;
@@ -102,7 +108,7 @@ describe('Background Script - Panel Behavior', () => {
     });
 
     // Act
-    loadScript(); // Register listeners
+    await loadScript(); // Register listeners
 
     // Simulate change to 'popup'
     if (changeCallback) {
@@ -114,5 +120,46 @@ describe('Background Script - Panel Behavior', () => {
       openPanelOnActionClick: false,
     });
     expect(global.chrome.action.setPopup).toHaveBeenCalledWith({ popup: 'popup/popup.html' });
+  });
+
+  test('Deve gerenciar disponibilidade do sidePanel baseado na URL (onUpdated)', async () => {
+    // Arrange
+    /** @type {Function} */
+    let updatedCallback;
+    /** @type {any} */ (global.chrome.tabs.onUpdated.addListener).mockImplementation((cb) => {
+      updatedCallback = cb;
+    });
+
+    const mockSetOptions = jest.fn().mockResolvedValue(undefined);
+    /** @type {any} */ (global.chrome.sidePanel.setOptions) = mockSetOptions;
+
+    const mockGetSync = jest.fn().mockResolvedValue({ clickBehavior: 'sidepanel' });
+    /** @type {any} */ (global.chrome.storage.sync.get) = mockGetSync;
+
+    // Act
+    await loadScript();
+
+    // Simula aba UNIVESP
+    if (updatedCallback) {
+      await updatedCallback(1, { status: 'complete' }, { url: 'https://ava.univesp.br/courses/1' });
+    }
+
+    // Assert
+    expect(mockSetOptions).toHaveBeenCalledWith({
+      tabId: 1,
+      path: 'sidepanel/sidepanel.html',
+      enabled: true,
+    });
+
+    // Simula aba externa
+    if (updatedCallback) {
+      await updatedCallback(2, { status: 'complete' }, { url: 'https://google.com' });
+    }
+
+    expect(mockSetOptions).toHaveBeenCalledWith({
+      tabId: 2,
+      path: 'sidepanel/sidepanel.html',
+      enabled: false,
+    });
   });
 });

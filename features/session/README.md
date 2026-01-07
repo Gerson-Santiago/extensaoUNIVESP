@@ -1,7 +1,10 @@
 # 🔐 Features/Session - Autenticação & Identidade
 
-**Status**: Produção (v2.9.2)  
+**Status**: Produção (v2.10.0)  
 **Responsabilidade**: Gerenciar a validação de identidade do aluno e o estado de acesso ao AVA.
+
+> [!IMPORTANT]
+> **Source of Truth:** A implementação de referência está em `features/session/`.
 
 ---
 

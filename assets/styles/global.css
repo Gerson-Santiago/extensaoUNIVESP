@@ -1,8 +1,11 @@
-/* 
+/*
  * ARQUIVO: Global Styles
  * QUEM USA: Todo o projeto (via sidepanel.html)
  * O QUE FAZ: Define variáveis de cores (Design System) e reset básico.
  */
+
+/* Density Modes (ISSUE-022) */
+
 /* Variáveis e Reset */
 :root {
   /* Cores Principais - Usadas em Buttons, Headers e Links */

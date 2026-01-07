@@ -1,9 +1,12 @@
 {
-  "name": "univesp-extension",
-  "version": "2.9.7",
-  "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos e Navegação Inteligente no AVA.",
+  "name": "central-univesp",
+  "version": "2.10.0",
+  "description": "Gestão de atividades semanais e navegação inteligente no AVA da UNIVESP, com autopreenchimento SEI.",
   "main": "popup/popup.js",
+  "type": "module",
   "scripts": {
+    "build": "node scripts/build-dist.js",
+    "dist": "npm run build",
     "check": "npm run lint && npm run type-check",
     "verify": "npm test && npm run lint && npm run type-check",
     "lint": "eslint . --cache --cache-location .cache/eslintcache --max-warnings=0",
@@ -31,14 +34,14 @@
     "test:settings": "jest features/settings",
     "test:details-complex": "jest features/courses/tests/views/DetailsActivitiesWeekView.test.js features/courses/tests/services/WeekActivitiesService features/courses/tests/WeekActivitiesCache.test.js",
     "test:shared": "jest shared/",
-    "security:secrets": "secretlint '**/*'",
+    "security:secrets": "secretlint \"**/*\"",
     "security:audit": "npm audit --audit-level=high",
     "security:lint": "eslint . --max-warnings=0",
     "security": "npm run security:secrets && npm run security:audit && npm run security:lint",
     "precommit": "npm run security:secrets && lint-staged"
   },
   "author": "Gerson Santiago",
-  "license": "ISC",
+  "license": "MIT",
   "engines": {
     "node": "24.12.0",
     "npm": "11.6.4"
@@ -57,14 +60,17 @@
     "@types/node": "^25.0.3",
     "babel-jest": "^30.2.0",
     "eslint": "^9.39.1",
+    "eslint-plugin-no-unsanitized": "^4.1.4",
     "eslint-plugin-security": "^3.0.1",
     "globals": "^16.5.0",
     "husky": "^9.1.7",
+    "image-size": "^2.0.2",
     "jest": "^30.0.0",
     "jest-environment-jsdom": "^30.0.0",
     "jest-webextension-mock": "^4.0.0",
     "lint-staged": "^16.2.7",
     "prettier": "^3.7.4",
+    "sharp": "^0.34.5",
     "typescript": "^5.9.3"
   },
   "babel": {
@@ -84,7 +90,7 @@
     "*.{js,mjs}": [
       "eslint --fix",
       "prettier --write",
-      "jest --bail --findRelatedTests",
+      "jest --bail --findRelatedTests --passWithNoTests",
       "bash -c \"npm run type-check\" --"
     ],
     "*.{json,css,md}": [

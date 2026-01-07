@@ -19,7 +19,7 @@ export class SkeletonManager {
     if (!container) return;
 
     // Mostra skeleton imediatamente
-    container.innerHTML = SkeletonLoader.renderActivitiesSkeleton(count);
+    container.replaceChildren(SkeletonLoader.renderActivitiesSkeleton(count));
   }
 
   /**
@@ -28,6 +28,6 @@ export class SkeletonManager {
    */
   static clearSkeleton(container) {
     if (!container) return;
-    container.innerHTML = '';
+    container.replaceChildren();
   }
 }

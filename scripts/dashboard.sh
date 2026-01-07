@@ -9,39 +9,48 @@ CYAN='\033[0;36m'
 NC='\033[0m'
 
 echo -e "\n${BLUE}==============================================${NC}"
-echo -e "${BLUE}   📊  ANALYTICS 2.0 (Deep Dive)   ${NC}"
+echo -e "${BLUE}   📊  ANALYTICS 2.1 (Optimized)   ${NC}"
 echo -e "${BLUE}==============================================${NC}\n"
 
-# 0. Configuração Centralizada de Exclusões
-# (Facilita manutenção e reuso nos comandos find)
-EXCLUDE_PARAMS=(-type f 
-    -not -path '*/node_modules/*' 
-    -not -path '*/.git/*' 
-    -not -path '*/.husky/*' 
-    -not -path '*/dist/*' 
-    -not -path '*/build/*' 
-    -not -path '*/coverage/*' 
-    -not -path '*/.vscode/*' 
-    -not -path '*/.idea/*' 
-    -not -name 'package-lock.json' 
-    -not -name 'yarn.lock' 
-    -not -name '*.png' 
-    -not -name '*.jpg' 
-    -not -name '*.jpeg' 
-    -not -name '*.ico' 
-    -not -name '*.svg' 
-    -not -name '*.woff2')
+# Função centralizada de busca com PRUNE para performance
+# Ignora recursivamente .git, node_modules, etc.
+find_smart() {
+    local search_path="$1"
+    shift
+    
+    find "$search_path" \
+        -type d \( -name .git -o -name node_modules -o -name dist -o -name build -o -name coverage -o -name .vscode -o -name .idea -o -name .husky -o -name .agent \) -prune \
+        -o -type f \
+        \( \
+           -not -name 'package-lock.json' \
+           -not -name 'yarn.lock' \
+           -not -name '*.png' \
+           -not -name '*.jpg' \
+           -not -name '*.jpeg' \
+           -not -name '*.ico' \
+           -not -name '*.svg' \
+           -not -name '*.woff2' \
+           -not -name '*.mp4' \
+           -not -name '*.webm' \
+        \) \
+        "$@" -print
+}
 
 # 1. Visão Geral
-FILES=$(find . "${EXCLUDE_PARAMS[@]}")
-TOTAL_LOC=$(echo "$FILES" | xargs wc -l | tail -n 1 | awk '{print $1}')
+FILES=$(find_smart .)
 TOTAL_FILES=$(echo "$FILES" | wc -l)
+# wc -l pode falhar se lista vazia, mas FILES nunca deve ser vazio num projeto real
+if [ -n "$FILES" ]; then
+    TOTAL_LOC=$(echo "$FILES" | xargs wc -l 2>/dev/null | tail -n 1 | awk '{print $1}')
+else
+    TOTAL_LOC=0
+fi
 
 echo -e "${GREEN}1. VISÃO GERAL${NC}"
 echo "----------------------------------------------"
 echo -e "Total de Arquivos Reais: \t$TOTAL_FILES"
 echo -e "Total de Linhas (LOC):   \t$TOTAL_LOC"
-if [ "$TOTAL_FILES" -gt 0 ]; then
+if [ "$TOTAL_FILES" -gt 0 ] && [ "$TOTAL_LOC" -gt 0 ]; then
     AVG=$(awk "BEGIN {printf \"%.2f\", $TOTAL_LOC/$TOTAL_FILES}")
     echo -e "Média Linhas/Arquivo:    \t$AVG"
 fi
@@ -51,19 +60,21 @@ echo ""
 echo -e "${GREEN}2. RAIO-X JAVASCRIPT (.js)${NC}"
 echo "----------------------------------------------"
 # Busca todos os JS
-ALL_JS=$(find . "${EXCLUDE_PARAMS[@]}" -name "*.js")
+ALL_JS=$(find_smart . -name "*.js")
 
-# Filtra o que termina em .test.js
-TEST_FILES=$(echo "$ALL_JS" | grep "\.test\.js$")
-# Filtra o que NÃO termina em .test.js (Inverte o grep com -v)
-PROD_FILES=$(echo "$ALL_JS" | grep -v "\.test\.js$")
+if [ -n "$ALL_JS" ]; then
+    TEST_FILES=$(echo "$ALL_JS" | grep "\.test\.js$")
+    PROD_FILES=$(echo "$ALL_JS" | grep -v "\.test\.js$")
+else
+    TEST_FILES=""
+    PROD_FILES=""
+fi
 
-# Contagens
-count_loc() {
-    if [ -z "$1" ]; then echo 0; else echo "$1" | xargs wc -l | tail -n 1 | awk '{print $1}'; fi
-}
 count_files() {
     if [ -z "$1" ]; then echo 0; else echo "$1" | wc -l; fi
+}
+count_loc() {
+    if [ -z "$1" ]; then echo 0; else echo "$1" | xargs wc -l 2>/dev/null | tail -n 1 | awk '{print $1}'; fi
 }
 
 NUM_TESTS=$(count_files "$TEST_FILES")
@@ -77,7 +88,7 @@ echo "----------------------------------------------"
 printf "%-20s %-10s %-10s\n" "Produção (Logic)" "$NUM_PROD" "$LOC_PROD"
 printf "%-20s %-10s %-10s\n" "Testes (.test.js)" "$NUM_TESTS" "$LOC_TESTS"
 echo "----------------------------------------------"
-# Cálculo simples de proporção
+
 if [ "$LOC_PROD" -gt 0 ]; then
     RATIO=$(awk "BEGIN {printf \"%.2f\", $LOC_TESTS/$LOC_PROD}")
     echo -e "Ratio Teste/Código:      \t${YELLOW}${RATIO}:1${NC} (Ideal > 0.5)"
@@ -95,12 +106,12 @@ if [ -d "features" ]; then
         if [ -d "$dir" ]; then
             FEATURE_NAME=$(basename "$dir")
             
-            # Busca arquivos APENAS dentro dessa feature específica
-            FEAT_FILES=$(find "$dir" "${EXCLUDE_PARAMS[@]}")
+            # Busca arquivos dentro da feature
+            FEAT_FILES=$(find_smart "$dir")
             
             if [ -n "$FEAT_FILES" ]; then
                 F_COUNT=$(echo "$FEAT_FILES" | wc -l)
-                F_LOC=$(echo "$FEAT_FILES" | xargs wc -l | tail -n 1 | awk '{print $1}')
+                F_LOC=$(echo "$FEAT_FILES" | xargs wc -l 2>/dev/null | tail -n 1 | awk '{print $1}')
                 printf "%-25s %-10s %-10s\n" "$FEATURE_NAME" "$F_COUNT" "$F_LOC"
             else
                 printf "%-25s %-10s %-10s\n" "$FEATURE_NAME" "0" "0"
@@ -112,25 +123,44 @@ else
 fi
 echo ""
 
-# 4. Top 10 Gigantes
-echo -e "${RED}4. ARQUIVOS MAIS COMPLEXOS (Top 10)${NC}"
+# 4. Top 30 Gigantes
+echo -e "${RED}4. ARQUIVOS MAIS COMPLEXOS (Top 30)${NC}"
 echo "----------------------------------------------"
-echo "$FILES" | xargs wc -l | sort -nr | head -n 10 | awk '{printf "%-6s %s\n", $1, $2}'
+
+if [ -n "$FILES" ]; then
+    # Captura output do Top 30
+    TOP_OUTPUT=$(echo "$FILES" | xargs wc -l 2>/dev/null | sort -nr | head -n 30)
+    
+    # Imprime tabela formatada (removendo path excessivo se quiser, mas aqui mantemos full)
+    echo "$TOP_OUTPUT" | awk '{printf "%-6s %s\n", $1, $2}'
+    
+    # Check especial para BatchScraper (ADR-002)
+    if echo "$TOP_OUTPUT" | grep -q "BatchScraper"; then
+        echo -e "\n${CYAN}ℹ️  CONTEXTO:${NC} O ${YELLOW}BatchScraper${NC} aparece listado como arquivo grande."
+        echo -e "   ↳ Motivo: Design 'Monolito Funcional' para compatibilidade com Chrome Manifest V3 (Content Script)."
+        echo -e "   ↳ ADR: ${BLUE}docs/architecture/ADR_002_BATCHSCRAPER_ARCHITECTURE.md${NC}"
+    fi
+else
+    echo "Nenhum arquivo encontrado."
+fi
 echo ""
 
 # 5. Dívida Técnica
 echo -e "${YELLOW}5. DÍVIDA TÉCNICA${NC}"
 echo "----------------------------------------------"
-TOTAL_TODOS=$(grep -r "TODO" . --exclude-dir={node_modules,dist,.git,coverage,build} | wc -l)
-TOTAL_FIXMES=$(grep -r "FIXME" . --exclude-dir={node_modules,dist,.git,coverage,build} | wc -l)
+# Exclui pastas pesadas para grep também. 
+# Nota: Usamos multiplos flags para evitar problemas de expansão de chaves em diferentes shells.
+GREP_EXCLUDE="--exclude-dir=node_modules --exclude-dir=dist --exclude-dir=.git --exclude-dir=coverage --exclude-dir=build --exclude-dir=.vscode --exclude-dir=.idea --exclude-dir=.husky --exclude-dir=.agent"
+TOTAL_TODOS=$(grep -r "TODO" . $GREP_EXCLUDE 2>/dev/null | wc -l)
+TOTAL_FIXMES=$(grep -r "FIXME" . $GREP_EXCLUDE 2>/dev/null | wc -l)
 echo -e "TODOs: \t\t$TOTAL_TODOS"
 echo -e "FIXMEs: \t$TOTAL_FIXMES"
 echo ""
 
-# 6. Relatório CLOC (Opcional, mas mantido)
+# 6. Relatório CLOC
 if command -v cloc &> /dev/null; then
     echo -e "${BLUE}6. RELATÓRIO OFICIAL (CLOC)${NC}"
     echo "----------------------------------------------"
-    cloc . --exclude-dir=node_modules,dist,.git,build,coverage,.husky,.vscode,.idea --not-match-f='package-lock.json|yarn.lock'
+    cloc . --exclude-dir=node_modules,dist,.git,build,coverage,.husky,.vscode,.idea,.agent --not-match-f='package-lock.json|yarn.lock'
 fi
 echo ""

@@ -21,20 +21,25 @@ describe('Componente Modal', () => {
   test('deve renderizar o modal corretamente', () => {
     // Agir (Act)
     modal = new Modal(modalId, modalTitle);
-    modal.render(modalContent);
+
+    const p = document.createElement('p');
+    p.textContent = 'Conteúdo de Teste';
+    modal.render(p);
 
     // Verificar (Assert)
     const overlay = document.getElementById(modalId);
     expect(overlay).not.toBeNull();
     expect(overlay.querySelector('.modal-card')).not.toBeNull();
     expect(overlay.querySelector('h3').textContent).toBe(modalTitle);
-    expect(overlay.querySelector('.modal-body').innerHTML).toBe(modalContent);
+
+    // Check innerHTML to verify the <p> was appended correctly
+    expect(overlay.querySelector('.modal-body').innerHTML).toBe('<p>Conteúdo de Teste</p>');
   });
 
   test('deve remover modal existente com mesmo id antes de renderizar', () => {
     // Preparar (Arrange) - Primeiro modal
     const firstModal = new Modal(modalId, 'Primeiro');
-    firstModal.render('Primeiro Conteúdo');
+    firstModal.render('Primeiro Conteúdo'); // String works as text
 
     // Agir (Act) - Segundo modal com mesmo ID
     modal = new Modal(modalId, 'Segundo');
@@ -49,7 +54,7 @@ describe('Componente Modal', () => {
   test('deve fechar o modal quando close() for chamado', () => {
     // Preparar (Arrange)
     modal = new Modal(modalId, modalTitle);
-    modal.render(modalContent);
+    modal.render(modalContent); // String check
 
     // Agir (Act)
     modal.close();
@@ -90,7 +95,7 @@ describe('Componente Modal', () => {
   test('NÃO deve fechar o modal ao clicar dentro do card', () => {
     // Preparar (Arrange)
     modal = new Modal(modalId, modalTitle);
-    modal.render(modalContent);
+    modal.render(modalContent); // String
     const card = /** @type {HTMLElement} */ (document.querySelector('.modal-card'));
 
     // Agir (Act) - Clique dentro do card

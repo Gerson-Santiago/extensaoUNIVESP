@@ -2,61 +2,56 @@
  * @file features/courses/components/CourseItem.js
  * @description Componente de Item de Curso
  */
+import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
+
 export function createCourseElement(course, callbacks) {
-  const li = document.createElement('li');
-  li.className = 'item';
+  const h = DOMSafe.createElement;
 
   // Info Container (clicável para abrir)
-  const info = document.createElement('div');
-  info.className = 'item-info';
-  info.title = 'Abrir página da matéria no AVA';
-  info.onclick = () => {
-    if (callbacks.onClick) callbacks.onClick(course.url);
-  };
-
-  const nameSpan = document.createElement('span');
-  nameSpan.className = 'item-name';
-  nameSpan.textContent = course.name;
-
-  const urlSpan = document.createElement('span');
-  urlSpan.className = 'item-url';
-  urlSpan.textContent = course.url;
-
-  info.appendChild(nameSpan);
-  info.appendChild(urlSpan);
-
-  li.appendChild(info);
+  const info = h(
+    'div',
+    {
+      className: 'item-info',
+      title: 'Abrir página da matéria no AVA',
+      onclick: () => callbacks.onClick?.(course.url),
+    },
+    [
+      h('span', { className: 'item-name' }, course.name),
+      h('span', { className: 'item-url' }, course.url),
+    ]
+  );
 
   // Botão Detalhes (Semanas) - Coluna 2
-  if (callbacks.onViewDetails) {
-    const btnDetails = document.createElement('button');
-    btnDetails.textContent = 'Ver Semanas'; // Texto explícito
-    btnDetails.title = 'Visualizar semanas e conteúdo';
-    btnDetails.className = 'btn-grid-action'; // Nova classe para estilizar
-
-    btnDetails.onclick = (e) => {
-      e.stopPropagation();
-      callbacks.onViewDetails(course);
-    };
-    li.appendChild(btnDetails);
-  } else {
-    // Placeholder vazio se não houver botão, para manter grid
-    const placeholder = document.createElement('div');
-    li.appendChild(placeholder);
-  }
+  const detailsButton = callbacks.onViewDetails
+    ? h(
+        'button',
+        {
+          className: 'btn-grid-action',
+          title: 'Visualizar semanas e conteúdo',
+          onclick: (e) => {
+            e.stopPropagation();
+            callbacks.onViewDetails(course);
+          },
+        },
+        'Ver Semanas'
+      )
+    : h('div'); // Placeholder vazio para manter grid
 
   // Botão Excluir - Coluna 3
-  const btnDel = document.createElement('button');
-  btnDel.className = 'btn-delete';
-  btnDel.innerHTML = '&times;';
-  btnDel.title = 'Remover matéria da lista';
-  btnDel.onclick = (e) => {
-    e.stopPropagation();
-    if (confirm(`Remover "${course.name}"?`)) {
-      if (callbacks.onDelete) callbacks.onDelete(course.id);
-    }
-  };
-  li.appendChild(btnDel);
+  const deleteButton = h(
+    'button',
+    {
+      className: 'btn-delete',
+      title: 'Remover matéria da lista',
+      onclick: (e) => {
+        e.stopPropagation();
+        if (confirm(`Remover "${course.name}"?`)) {
+          callbacks.onDelete?.(course.id);
+        }
+      },
+    },
+    '×'
+  ); // Using safe text node instead of innerHTML
 
-  return li;
+  return h('li', { className: 'item' }, [info, detailsButton, deleteButton]);
 }

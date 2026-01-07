@@ -1,18 +1,15 @@
-# AutoPreencher UNIVESP - Documentação
+# Central Univesp - Documentação
 
-Trilhas de leitura por perfil:
+Bem-vindo à base de conhecimento da Central Univesp. A documentação foi consolidada em pilares fundamentais para facilitar a manutenção e o onboarding.
 
-### Novo Desenvolvedor
-[Arquitetura](TECNOLOGIAS_E_ARQUITETURA.md) | [Fluxos](FLUXOS_DE_TRABALHO.md) | [Padrões](PADROES.md) | [Anti-Padrões](ANTI_PADROES.md)
+## 📚 Estrutura Consolidada
 
-### QA / Tester
-[Templates de Teste](TEST_TEMPLATES.md) | [Regras de Negócio](REGRAS_DE_NEGOCIO.md) | [Exemplo (.js)](TEST_TEMPLATE_EXAMPLE.js.template)
-
-### Produto e Processos
-[Negócio](REGRAS_DE_NEGOCIO.md) | [Privacidade](PRIVACIDADE_E_DADOS.md) | [ADR Index](architecture/)
-
-### IA e Automação
-[Regras IA](REGRAS_CONSOLIDADAS.md) | [Workflows](../.agent/workflows/)
+1.  🛠️ **[Engenharia](ENGENHARIA.md)**: Padrões, Arquitetura, Estilo de Código e Fluxos de Desenvolvimento.
+2.  🎯 **[Produto](PRODUTO.md)**: Regras de Negócio, Propósito Único e Filosofia de Privacidade.
+3.  🚀 **[Roadmap](ROADMAP.md)**: Timeline de Lançamento e Milestones de Evolução.
+4.  🛡️ **[Conformidade](CONFORMIDADE.md)**: Relatório Manifest V3 e Conformidade com a Chrome Web Store.
+5.  🔍 **[Reviews Técnicos](REVIEWS_TECNICOS.md)**: Histórico de investigações, Análises de DOM e Ferramentas de Debug.
+6.  🤖 **[Regras IA](REGRAS_IA.md)**: Protocolos e instruções para agentes de Inteligência Artificial.
 
 ---
 [Início do Projeto](../README.md)

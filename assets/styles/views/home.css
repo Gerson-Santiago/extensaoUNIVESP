@@ -47,3 +47,9 @@
   display: block;
   margin-bottom: 5px;
 }
+
+.univesp-logo {
+  width: auto;
+  max-width: 80%;
+  object-fit: contain;
+}

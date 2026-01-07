@@ -2,6 +2,7 @@ import { formatEmail, extractRa, resolveDomain, CONSTANTS } from '../shared/util
 import { BrowserUtils } from '../shared/utils/BrowserUtils.js';
 import { Tabs } from '../shared/utils/Tabs.js';
 import { Logger } from '../shared/utils/Logger.js';
+import { AppLinks } from '../shared/constants/AppLinks.js';
 
 document.addEventListener('DOMContentLoaded', () => {
   /** @type {HTMLInputElement | null} */
@@ -12,6 +13,26 @@ document.addEventListener('DOMContentLoaded', () => {
   const saveBtn = document.getElementById('saveBtn');
   const status = document.getElementById('status');
   const openSidePanelBtn = document.getElementById('openSidePanelBtn');
+
+  // Itera sobre os links do popup e atualiza href se encontrar
+  // (Note que precisamos adicionar IDs ou selecionar por href antigo no HTML)
+  // Como não temos IDs no HTML, vamos usar querySelector específico.
+  const linkMap = [
+    { text: 'Portal SEI', url: AppLinks.SEI_HOME },
+    { text: 'AVA (Cursos)', url: AppLinks.AVA_HOME },
+    { text: 'Área do Aluno', url: AppLinks.ALUNO_HOME },
+    { text: 'Sistema de Provas', url: AppLinks.PROVAS_HOME },
+  ];
+
+  linkMap.forEach((item) => {
+    // Procura links que contenham o texto (abordagem robusta sem IDs)
+    const linkEl = Array.from(document.querySelectorAll('a')).find((a) =>
+      a.textContent.includes(item.text)
+    );
+    if (linkEl) {
+      linkEl.href = item.url;
+    }
+  });
 
   if (!raInput || !domainInput || !saveBtn || !status) return;
 

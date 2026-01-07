@@ -1,116 +1,216 @@
-// Courses imports removed - Event-Driven Decoupling
-// Events emitted: 'request:add-manual-course', 'request:scrape-current-tab'
+// @ts-check
 import { Toaster } from '../../../shared/ui/feedback/Toaster.js';
-import { ConfigForm } from '../components/ConfigForm.js';
+import { ConfigForm } from './components/ConfigForm.js';
 import { Logger } from '../../../shared/utils/Logger.js';
+import { SettingsController } from '../logic/SettingsController.js';
+import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
+import { ChipsSettingsManager } from '../logic/ChipsSettingsManager.js';
+import { UISettingsManager } from '../logic/UISettingsManager.js';
+import { UserPreferencesManager } from '../logic/UserPreferencesManager.js';
 
 export class SettingsView {
   constructor(callbacks = {}) {
     this.onNavigate = callbacks.onNavigate;
-    this.onImportBatch = callbacks.onImportBatch; // Callback for Batch Import
+    this.onImportBatch = callbacks.onImportBatch;
     this.feedback = new Toaster('settingsFeedback');
     this.configForm = new ConfigForm(new Toaster('configFeedback'));
-    // Removed: CourseService, AddManualModal - delegated via events
+
+    // Initialize Controller with dependencies
+    this.controller = new SettingsController({
+      toaster: this.feedback,
+      logger: Logger,
+    });
+
+    // Initialize Settings Managers
+    this.chipsManager = new ChipsSettingsManager();
+    this.uiManager = new UISettingsManager();
+    this.preferencesManager = new UserPreferencesManager();
   }
 
   render() {
-    const div = document.createElement('div');
-    div.className = 'view-settings';
+    const h = DOMSafe.createElement;
 
-    div.innerHTML = `
-            <h2>Configurações</h2>
-            
-            ${this.configForm.render()}
-            
-            <hr class="divider">
+    // Helper for dividers
+    const divider = () => h('hr', { className: 'divider' });
 
-            <h3>Navegação Contextual (Chips)</h3>
-            <p class="config-desc">Configure a barra de navegação rápida entre semanas.</p>
-            
-            <div class="chips-settings">
-                <label class="setting-item">
-                    <input type="checkbox" id="chipsEnabled">
-                    <span>Exibir chips de navegação</span>
-                </label>
-                
-                <div id="chipsOptions" class="chips-options" style="display: block;">
-                    <label class="setting-item">
-                        <span>Quantidade de chips:</span>
-                        <div class="slider-container">
-                            <input type="range" id="chipsMaxItems" min="1" max="8" value="3" step="1">
-                            <span id="chipsMaxValue" class="slider-value">3</span>
-                        </div>
-                    </label>
-                </div>
-            </div>
-            
-            <hr class="divider">
+    // Helper for section wrapper (visual padronizado)
+    const section = (title, description, content) =>
+      h('div', { className: 'settings-content' }, [
+        h('h3', {}, title),
+        h('p', { className: 'config-desc' }, description),
+        content,
+      ]);
 
-            <h3>Interface & Funcionalidades</h3>
-            <p class="config-desc">Personalize o que você vê na lista de semanas.</p>
-            
-            <div class="ui-settings">
-                <label class="setting-item">
-                    <input type="checkbox" id="showAdvancedButtons" checked>
-                    <span>Botões de Verificação Avançados (Rápido vs Completo)</span>
-                </label>
-                <p class="setting-hint">Se desativado, mostra apenas o botão padrão (Completo).</p>
+    // Chips Section
+    const chipsSettings = h('div', { className: 'chips-settings' }, [
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'chipsEnabled' }),
+        h('span', {}, 'Exibir chips de navegação'),
+      ]),
+      h('div', { id: 'chipsOptions', className: 'chips-options', style: { display: 'block' } }, [
+        h('label', { className: 'setting-item' }, [
+          h('span', {}, 'Quantidade de chips:'),
+          h('div', { className: 'slider-container' }, [
+            h('input', {
+              type: 'range',
+              id: 'chipsMaxItems',
+              min: '1',
+              max: '8',
+              value: '3',
+              step: '1',
+            }),
+            h('span', { id: 'chipsMaxValue', className: 'slider-value' }, '3'),
+          ]),
+        ]),
+      ]),
+    ]);
 
-                <label class="setting-item">
-                    <input type="checkbox" id="showTasksButton" checked>
-                    <span>Funcionalidade de Tarefas (Preview)</span>
-                </label>
-                <p class="setting-hint">Habilita o botão 'Tarefas' para ver o resumo sem abrir.</p>
-            </div>
-            
-            <hr class="divider">
+    // UI Settings
+    const uiSettings = h('div', { className: 'ui-settings' }, [
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'showAdvancedButtons', checked: false }),
+        h('span', {}, 'Ativar Botão Rápido'),
+      ]),
+      h(
+        'p',
+        { className: 'setting-hint' },
+        'Mostra botão de verificação rápida além do botão padrão (Completo).'
+      ),
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'showTasksButton', checked: true }),
+        h('span', {}, 'Ativar Botão de Tarefas (Preview)'),
+      ]),
+      h(
+        'p',
+        { className: 'setting-hint' },
+        "Habilita o botão 'Tarefas' para ver o resumo sem abrir."
+      ),
+    ]);
 
-            <h3>Privacidade e Dados</h3>
-            <p class="config-desc">Gerencie seus dados locais. A extensão segue a política Local-First.</p>
-            <div class="action-list">
-                <button id="btnExport" class="action-card small-action">
-                    <span class="icon">⬇️</span><span class="label">Baixar Meus Dados (Backup)</span>
-                </button>
-                <button id="btnImport" class="action-card small-action">
-                    <span class="icon">⬆️</span><span class="label">Restaurar Backup</span>
-                </button>
-            </div>
+    // User Preferences Section - AGORA COM POPUP TOGGLE
+    const userPrefsContent = h('div', {}, [
+      // Auto-Pin
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'autoPinLastWeek' }),
+        h('span', {}, 'Lembrar Última Semana Visitada'),
+      ]),
+      h(
+        'p',
+        { className: 'setting-hint' },
+        'Reabre automaticamente a última semana que você estava visualizando.'
+      ),
+      divider(),
+      // Popup Toggle (movido de ConfigForm)
+      h('label', { className: 'setting-item' }, [
+        h('input', { type: 'checkbox', id: 'popupToggle' }),
+        h('span', {}, 'Ativar Popup (Desativado por padrão)'),
+      ]),
+      h(
+        'p',
+        { className: 'setting-hint' },
+        'Escolha o que acontece ao clicar no ícone da extensão: Popup ou Sidepanel.'
+      ),
+    ]);
 
-            <hr class="divider">
+    // Helper for buttons
+    const btn = (id, icon, label, extraStyle = '') =>
+      h('button', { id, className: 'action-card small-action', style: extraStyle }, [
+        h('span', { className: 'icon' }, icon),
+        h('span', { className: 'label' }, label),
+      ]);
 
-            <h3>Gerenciar Matérias</h3>
-            <p class="config-desc">Opções para adicionar ou remover cursos.</p>
+    // Privacy Section
+    const privacyActions = h('div', { className: 'action-list' }, [
+      btn('btnExport', '⬇️', 'Baixar Meus Dados (Backup)'),
+      btn('btnImport', '⬆️', 'Restaurar Backup'),
+    ]);
 
-            <div class="action-list">
-                <button id="btnManualAdd" class="action-card small-action">
-                    <span class="icon">✏️</span><span class="label">Adicionar Manualmente</span>
-                </button>
-                <button id="btnAddCurrent" class="action-card small-action">
-                    <span class="icon">➕</span><span class="label">Adicionar Página Atual</span>
-                </button>
-                <button id="btnBatchImport" class="action-card small-action">
-                    <span class="icon">📦</span><span class="label">Importar em Lote (AVA)</span>
-                </button>
-                <hr class="divider">
-                <button id="btnClearAll" class="action-card small-action" style="border-color: #ffcccc; color: #d9534f;">
-                    <span class="icon">🗑️</span><span class="label">Remover Todas as Matérias</span>
-                </button>
-            </div>
+    // Manage Section
+    const manageActions = h('div', { className: 'action-list' }, [
+      btn('btnManualAdd', '✏️', 'Adicionar Manualmente'),
+      btn('btnAddCurrent', '➕', 'Adicionar Página Atual'),
+      btn('btnBatchImport', '📦', 'Importar em Lote (AVA)'),
+      divider(),
+      btn(
+        'btnClearAll',
+        '🗑️',
+        'Remover Todas as Matérias',
+        'border-color: #ffcccc; color: #d9534f;'
+      ),
+    ]);
 
-            <hr class="divider">
+    // Help Section
+    const helpActions = h(
+      'div',
+      { className: 'action-list' },
+      btn('btnFeedback', '📢', 'Enviar Feedback')
+    );
 
-            <h3>Ajuda e Feedback</h3>
-            <p class="config-desc">Encontrou um problema ou tem uma sugestão?</p>
-            <div class="action-list">
-                <button id="btnFeedback" class="action-card small-action">
-                    <span class="icon">📢</span><span class="label">Enviar Feedback</span>
-                </button>
-            </div>
+    return h('div', { className: 'view-settings' }, [
+      h('h2', {}, 'Configurações'),
+      this.configForm.render(), // ConfigForm já tem settings-content
+      divider(),
 
-            <div id="settingsFeedback" class="status-msg"></div>
-            <div class="footer-info"></div>
-        `;
-    return div;
+      section(
+        'Navegação Contextual (Chips)',
+        'Configure a barra de navegação rápida entre semanas.',
+        chipsSettings
+      ),
+      divider(),
+
+      section(
+        'Interface & Funcionalidades',
+        'Personalize o que você vê na lista de semanas.',
+        uiSettings
+      ),
+      divider(),
+
+      section(
+        'Preferências do Usuário',
+        'Adapte a interface ao seu estilo de uso.',
+        userPrefsContent
+      ),
+      divider(),
+
+      section(
+        'Privacidade e Dados',
+        'Gerencie seus dados locais. A extensão segue a política Local-First.',
+        privacyActions
+      ),
+      divider(),
+
+      section('Gerenciar Matérias', 'Opções para adicionar ou remover cursos.', manageActions),
+      divider(),
+
+      section('Ajuda e Feedback', 'Encontrou um problema ou tem uma sugestão?', helpActions),
+      divider(),
+
+      // Danger Zone Section (ISSUE-020) - com visual padronizado
+      h('div', { className: 'settings-content' }, [
+        h('h3', { style: { color: '#d9534f' } }, '⚠️ Zona de Perigo'),
+        h(
+          'p',
+          { className: 'config-desc' },
+          'Ações irreversíveis que apagam todos os seus dados permanentemente.'
+        ),
+        h('div', { className: 'action-list' }, [
+          btn(
+            'btnFactoryReset',
+            '⚠️',
+            'Reset de Fábrica',
+            'background: #fff; border: 2px solid #d9534f; color: #d9534f; font-weight: bold;'
+          ),
+        ]),
+        h(
+          'p',
+          { className: 'setting-hint', style: { color: '#d9534f', fontSize: '0.85em' } },
+          '⚠️ Esta ação apaga TODOS os cursos, atividades, anotações e configurações. É impossível desfazer.'
+        ),
+      ]),
+
+      h('div', { id: 'settingsFeedback', className: 'status-msg' }),
+      h('div', { className: 'footer-info' }),
+    ]);
   }
 
   afterRender() {
@@ -123,6 +223,9 @@ export class SettingsView {
     // Initialize UI Settings
     this.initUISettings();
 
+    // Initialize User Preferences (ISSUE-022)
+    this.initUserPreferences();
+
     // Attach Action Buttons listeners
     const btnManual = document.getElementById('btnManualAdd');
     const btnCurrent = document.getElementById('btnAddCurrent');
@@ -132,7 +235,6 @@ export class SettingsView {
 
     if (btnManual) {
       btnManual.onclick = () => {
-        // Emit event instead of opening modal directly
         window.dispatchEvent(
           new CustomEvent('request:add-manual-course', {
             detail: { source: 'settings' },
@@ -158,24 +260,46 @@ export class SettingsView {
     const btnExport = document.getElementById('btnExport');
     const btnImport = document.getElementById('btnImport');
 
-    if (btnExport) btnExport.onclick = () => this.handleExport();
-    if (btnImport) btnImport.onclick = () => this.handleImport();
+    if (btnExport) btnExport.onclick = () => this.controller.handleExport();
+    if (btnImport) btnImport.onclick = () => this.triggerImport();
+
+    // Factory Reset Listener (ISSUE-020)
+    const btnFactoryReset = document.getElementById('btnFactoryReset');
+    if (btnFactoryReset) btnFactoryReset.onclick = () => this.controller.handleReset();
   }
 
   async handleClearAll() {
-    if (
-      confirm(
-        'Tem certeza que deseja remover TODAS as matérias salvas? Essa ação não pode ser desfeita.'
-      )
-    ) {
-      window.dispatchEvent(new CustomEvent('request:clear-all-courses'));
-      // Feedback will be handled by the orchestrator (sidepanel)
-      // or we can expect a global reload.
-    }
+    window.dispatchEvent(
+      new CustomEvent('request:clear-all-courses', {
+        detail: { source: 'settings' },
+      })
+    );
+  }
+
+  /**
+   * Triggers the file selection dialog for Import.
+   */
+  triggerImport() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = '.json';
+    input.style.display = 'none';
+
+    input.onchange = (e) => {
+      const file = /** @type {HTMLInputElement} */ (e.target).files?.[0];
+      if (file) {
+        this.controller.handleImport(file);
+      }
+    };
+
+    document.body.appendChild(input);
+    input.click();
+
+    // Clean up
+    setTimeout(() => document.body.removeChild(input), 1000);
   }
 
   handleAddCurrent() {
-    // Emit event instead of calling CourseService directly
     window.dispatchEvent(
       new CustomEvent('request:scrape-current-tab', {
         detail: { source: 'settings' },
@@ -183,92 +307,15 @@ export class SettingsView {
     );
   }
 
-  async handleExport() {
-    try {
-      const { BackupService } = await import('../services/BackupService.js');
-      await BackupService.exportData();
-      this.feedback.show('Backup iniciado! Verifique seus downloads.', 'success');
-    } catch {
-      this.feedback.show('Erro ao criar backup.', 'error');
-    }
-  }
-
-  async handleImport() {
-    try {
-      const { BackupService } = await import('../services/BackupService.js');
-
-      const file = await BackupService.triggerFileUpload();
-      const reader = new FileReader();
-
-      reader.onload = async (e) => {
-        try {
-          const json = /** @type {string} */ (e.target.result);
-          const result = await BackupService.importData(json);
-          this.feedback.show(`Dados restaurados! (${result.keyCount} registros)`, 'success');
-
-          // Recarregar app após 2s
-          setTimeout(() => window.location.reload(), 2000);
-        } catch (err) {
-          /**#LOG_UI*/
-          Logger.error('SettingsView', 'Erro na leitura do backup:', err);
-          this.feedback.show('Arquivo de backup inválido.', 'error');
-        }
-      };
-
-      reader.readAsText(file);
-    } catch {
-      // Cancelado pelo usuário
-    }
-  }
-
-  /**
-   * Initialize chips settings UI and listeners
-   */
-  /**
-   * Initialize chips settings UI and listeners
-   */
-  /**
-   * Initialize chips settings UI and listeners
-   */
   async initChipsSettings() {
     const checkbox = /** @type {HTMLInputElement|null} */ (document.getElementById('chipsEnabled'));
     const slider = /** @type {HTMLInputElement|null} */ (document.getElementById('chipsMaxItems'));
     const valueDisplay = document.getElementById('chipsMaxValue');
     const options = document.getElementById('chipsOptions');
 
-    if (!checkbox || !slider || !valueDisplay || !options) return;
-
-    // Load
-    const settings = await this.loadChipsSettings();
-    checkbox.checked = settings.enabled;
-    slider.value = String(settings.maxItems);
-    valueDisplay.textContent = String(settings.maxItems);
-
-    // Toggle visibility of slider based on checkbox
-    options.style.display = settings.enabled ? 'block' : 'none';
-
-    // Listeners
-    checkbox.addEventListener('change', async () => {
-      const enabled = checkbox.checked;
-      options.style.display = enabled ? 'block' : 'none';
-      await this.saveChipsSettings({ enabled, maxItems: parseInt(slider.value) });
-    });
-
-    slider.addEventListener('input', () => {
-      valueDisplay.textContent = slider.value;
-    });
-
-    slider.addEventListener('change', async () => {
-      await this.saveChipsSettings({
-        enabled: checkbox.checked,
-        maxItems: parseInt(slider.value),
-      });
-    });
+    await this.chipsManager.attachListeners(checkbox, slider, valueDisplay, options);
   }
 
-  /**
-   * Initialize UI feature flags settings
-   */
   async initUISettings() {
     const advBtn = /** @type {HTMLInputElement|null} */ (
       document.getElementById('showAdvancedButtons')
@@ -277,48 +324,42 @@ export class SettingsView {
       document.getElementById('showTasksButton')
     );
 
-    if (!advBtn || !tasksBtn) return;
+    await this.uiManager.attachListeners(advBtn, tasksBtn);
+  }
 
-    // Default values
-    const defaults = { showAdvancedButtons: true, showTasksButton: true };
-    const saved = /** @type {{showAdvancedButtons: boolean, showTasksButton: boolean}} */ (
-      (await chrome.storage.local.get('ui_settings')).ui_settings || defaults
+  async initUserPreferences() {
+    const autoPinCheckbox = /** @type {HTMLInputElement|null} */ (
+      document.getElementById('autoPinLastWeek')
+    );
+    const popupToggle = /** @type {HTMLInputElement|null} */ (
+      document.getElementById('popupToggle')
     );
 
-    advBtn.checked = saved.showAdvancedButtons;
-    tasksBtn.checked = saved.showTasksButton;
+    if (!autoPinCheckbox) return;
 
-    // Listeners
-    const save = async () => {
-      await chrome.storage.local.set({
-        ui_settings: {
-          showAdvancedButtons: advBtn.checked,
-          showTasksButton: tasksBtn.checked,
-        },
+    // Load preferences
+    const prefs = await this.preferencesManager.load();
+    autoPinCheckbox.checked = prefs.autoPinLastWeek;
+
+    // Save on change - Auto-Pin
+    autoPinCheckbox.addEventListener('change', async () => {
+      await this.preferencesManager.save({
+        ...prefs,
+        autoPinLastWeek: autoPinCheckbox.checked,
       });
-    };
+    });
 
-    advBtn.addEventListener('change', save);
-    tasksBtn.addEventListener('change', save);
-  }
+    // Load and save Popup Toggle (clickBehavior)
+    if (popupToggle) {
+      chrome.storage.sync.get(['clickBehavior'], (result) => {
+        const savedBehavior = result.clickBehavior || 'sidepanel';
+        popupToggle.checked = savedBehavior === 'popup';
+      });
 
-  /**
-   * Load chips settings from storage
-   * @returns {Promise<{enabled: boolean, maxItems: number}>}
-   */
-  async loadChipsSettings() {
-    const result = await chrome.storage.local.get('chips_settings');
-    return /** @type {{enabled: boolean, maxItems: number}} */ (
-      result.chips_settings || { enabled: true, maxItems: 3 }
-    );
-  }
-
-  /**
-   * Save chips settings to storage
-   */
-  async saveChipsSettings(settings) {
-    await chrome.storage.local.set({ chips_settings: settings });
-    /**#LOG_UI*/
-    Logger.warn('SettingsView', 'Chips settings saved:', settings);
+      popupToggle.addEventListener('change', () => {
+        const behavior = popupToggle.checked ? 'popup' : 'sidepanel';
+        chrome.storage.sync.set({ clickBehavior: behavior });
+      });
+    }
   }
 }

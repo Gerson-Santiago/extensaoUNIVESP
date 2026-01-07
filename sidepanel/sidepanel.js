@@ -14,6 +14,10 @@
 // Layout
 import { MainLayout } from '../shared/ui/layout/MainLayout.js';
 
+// Segurança (Trusted Types)
+import { initTrustedTypes } from '../shared/security/TrustedTypesPolicy.js';
+initTrustedTypes();
+
 // Views
 import { HomeView } from '../features/home/ui/HomeView.js';
 import { CoursesView } from '../features/courses/views/CoursesView/index.js';
@@ -209,13 +213,26 @@ document.addEventListener('DOMContentLoaded', () => {
       await courseService.clearAll();
       // Atualizar views afetadas
       coursesView.loadCourses();
-      // Feedback simples (pode ser melhorado com Toaster Global)
-      // Como estamos no Orchestrator, o contexto de onde veio o clique pode ser Settings.
-      // Recarregamos a view ativa se necessário?
-      // Por simplicidade, alert por enquanto, ou apenas reload.
     } catch (err) {
       /**#LOG_UI*/
       Logger.error('SidePanel', 'Erro ao limpar cursos:', err);
     }
   });
+
+  // 4. Context Awareness (MV3 Compliance)
+  // Listener do Chrome para detectar troca de abas e resetar estado se necessário
+  if (typeof chrome !== 'undefined' && chrome.tabs && chrome.tabs.onActivated) {
+    chrome.tabs.onActivated.addListener(async (activeInfo) => {
+      try {
+        const tab = await chrome.tabs.get(activeInfo.tabId);
+        if (tab.url && !tab.url.includes('ava.univesp.br') && !tab.url.includes('sei.univesp.br')) {
+          // Se saiu do domínio UNIVESP, volta para Home para evitar "vazamento" de contexto
+          layout.topNav.setActive('home');
+          layout.navigateTo('home');
+        }
+      } catch {
+        // Silencioso se a aba não puder ser acessada ou se o contexto da extensão foi invalidado
+      }
+    });
+  }
 });

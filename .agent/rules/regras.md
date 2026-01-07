@@ -12,6 +12,10 @@ npm run test:coverage | npm run test:debug
 ```
 Motivo: Limite de RAM. Usuário executa no terminal.
 
+PROIBIDO Git Direto
+Não executar `git add` ou `git commit` sem aprovação prévia.
+Deve sempre fornecer os comandos textualmente para o usuário aprovar.
+
 PERMITIDO Executar
 ```bash
 npm run check        # Lint + types (< 1s)

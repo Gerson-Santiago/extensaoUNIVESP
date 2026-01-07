@@ -1,3 +1,21 @@
+/**
+ * Helper de log local para Content Scripts
+ * Segue o padrão ADR-005 (Observabilidade)
+ */
+const Logger = {
+  warn: (msg, data = null) => {
+    try {
+      if (localStorage.getItem('UNIVESP_DEBUG') === 'true') {
+        const prefix = '[Extension:SeiLogin]';
+        if (data) console.warn(prefix, msg, data);
+        else console.warn(prefix, msg);
+      }
+    } catch {
+      // Silencioso em caso de erro no localStorage (ex: restrições do browser)
+    }
+  },
+};
+
 function preencherEmail() {
   // 1. Busca o email salvo nas configurações da extensão
   chrome.storage.sync.get(['userEmail'], (result) => {
@@ -6,7 +24,7 @@ function preencherEmail() {
     // Só executa se o usuário tiver configurado um email válido
     if (typeof emailSalvo !== 'string' || !emailSalvo) {
       /**#LOG_CONTENT*/
-      console.warn('Extensão UNIVESP: Nenhum e-mail configurado na extensão.');
+      Logger.warn('Nenhum e-mail configurado na extensão.');
       return;
     }
 
@@ -25,7 +43,7 @@ function preencherEmail() {
       // Pinta de amarelo suave para confirmar
       campoEmail.style.backgroundColor = '#ffffd0';
       /**#LOG_CONTENT*/
-      console.warn('Extensão UNIVESP: Email preenchido automaticamente.');
+      Logger.warn('Email preenchido automaticamente.');
     }
   });
 }

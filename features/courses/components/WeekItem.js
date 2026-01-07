@@ -1,4 +1,5 @@
 import { Logger } from '../../../shared/utils/Logger.js';
+import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
 
 /**
  * @file WeekItem.js
@@ -9,111 +10,130 @@ export function createWeekElement(
   callbacks,
   flags = { showAdvancedButtons: true, showTasksButton: true }
 ) {
-  const div = document.createElement('div');
-  div.className = 'week-item';
-  div.addEventListener('click', () => {
-    if (callbacks.onClick) callbacks.onClick(week.url);
-  });
+  const h = DOMSafe.createElement;
 
-  const nameSpan = document.createElement('span');
-  nameSpan.className = 'week-name';
-  nameSpan.textContent = week.name;
+  // Name with optional status chip
+  const nameChildren = [week.name];
 
-  // 🆕 Status Chip (Mini Chip)
   if (week.items && week.items.length > 0) {
     const done = week.items.filter((i) => i.status === 'DONE').length;
     const total = week.items.length;
+    const isComplete = done === total;
 
-    const chip = document.createElement('span');
-    chip.className = 'status-chip';
-    chip.textContent = `${done}/${total}`;
-    chip.title = `${done} concluídas de ${total}`;
+    const chip = h(
+      'span',
+      {
+        className: 'status-chip',
+        title: `${done} concluídas de ${total}`,
+        style: {
+          fontSize: '11px',
+          fontWeight: 'bold',
+          background: isComplete ? '#d4edda' : '#f0f0f0',
+          color: isComplete ? '#155724' : '#555',
+          padding: '2px 8px',
+          borderRadius: '12px',
+          marginLeft: '8px',
+          verticalAlign: 'middle',
+          border: `1px solid ${isComplete ? '#c3e6cb' : '#ddd'}`,
+        },
+      },
+      `${done}/${total}`
+    );
 
-    // Estilo inline para garantir visibilidade imediata (mover para CSS depois)
-    chip.style.cssText = `
-      font-size: 11px;
-      font-weight: bold;
-      background: ${done === total ? '#d4edda' : '#f0f0f0'};
-      color: ${done === total ? '#155724' : '#555'};
-      padding: 2px 8px;
-      border-radius: 12px;
-      margin-left: 8px;
-      vertical-align: middle;
-      border: 1px solid ${done === total ? '#c3e6cb' : '#ddd'};
-    `;
-
-    nameSpan.appendChild(chip);
+    nameChildren.push(chip);
   }
 
-  div.appendChild(nameSpan);
+  const nameSpan = h('span', { className: 'week-name' }, nameChildren);
 
-  // Botão de Tarefas (Condicional)
+  // Buttons array (conditional rendering)
+  const buttons = [];
+
+  // Tasks Button (Conditional)
   if (flags.showTasksButton) {
-    const tasksBtn = document.createElement('button');
-    tasksBtn.className = 'btn-grid-action';
-    tasksBtn.textContent = '📋 Tarefas';
-    tasksBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      if (callbacks.onViewTasks) callbacks.onViewTasks(week);
-    });
-    div.appendChild(tasksBtn);
+    buttons.push(
+      h(
+        'button',
+        {
+          className: 'btn-grid-action',
+          onclick: (e) => {
+            e.stopPropagation();
+            callbacks.onViewTasks?.(week);
+          },
+        },
+        '📋 Tarefas'
+      )
+    );
   }
 
-  // Botão de Atividades RÁPIDO (Condicional)
+  // Quick Activities Button (Conditional)
   if (flags.showAdvancedButtons) {
-    const activitiesQuickBtn = document.createElement('button');
-    activitiesQuickBtn.className = 'btn-grid-action btn-activities-quick';
-    activitiesQuickBtn.textContent = '⚡ Rápido';
-    activitiesQuickBtn.title = 'Atividades via QuickLinks';
-    activitiesQuickBtn.addEventListener('click', async (e) => {
-      e.stopPropagation();
-      if (activitiesQuickBtn.disabled) return;
-      // ... logic ...
-      try {
-        if (callbacks.onViewQuickLinks) await callbacks.onViewQuickLinks(week);
-      } catch (err) {
-        /**#LOG_UI*/
-        Logger.error('WeekItem', err);
-      }
-    });
-    div.appendChild(activitiesQuickBtn);
+    buttons.push(
+      h(
+        'button',
+        {
+          className: 'btn-grid-action btn-activities-quick',
+          title: 'Atividades via QuickLinks',
+          onclick: async (e) => {
+            e.stopPropagation();
+            if (e.target.disabled) return;
+            try {
+              if (callbacks.onViewQuickLinks) await callbacks.onViewQuickLinks(week);
+            } catch (err) {
+              /**#LOG_UI*/
+              Logger.error('WeekItem', err);
+            }
+          },
+        },
+        '⚡ Rápido'
+      )
+    );
   }
 
-  // Botão de Atividades COMPLETO (Sempre visível, mas adapta texto se simplificado?)
-  const activitiesDomBtn = document.createElement('button');
-  activitiesDomBtn.className = 'btn-grid-action btn-activities-dom';
-  activitiesDomBtn.textContent = flags.showAdvancedButtons ? '🔍 Completo' : 'Ver Atividades';
-  activitiesDomBtn.title = 'Carregar atividades da semana';
-  activitiesDomBtn.addEventListener('click', async (e) => {
-    e.stopPropagation();
+  // Full Activities Button (Always visible)
+  const activitiesBtn = h(
+    'button',
+    {
+      className: 'btn-grid-action btn-activities-dom',
+      title: 'Carregar atividades da semana',
+      onclick: async (e) => {
+        e.stopPropagation();
 
-    if (activitiesDomBtn.disabled) return;
+        const btn = e.target;
+        if (btn.disabled) return;
 
-    const originalText = activitiesDomBtn.textContent;
-    activitiesDomBtn.disabled = true;
-    activitiesDomBtn.textContent = '⏳';
-    activitiesDomBtn.style.opacity = '0.6';
+        const originalText = btn.textContent;
+        btn.disabled = true;
+        btn.textContent = '⏳';
+        btn.style.opacity = '0.6';
 
-    try {
-      if (callbacks.onViewActivities) {
-        await callbacks.onViewActivities(week);
-      }
-    } catch (error) {
-      /**#LOG_UI*/
-      Logger.error('WeekItem', 'Erro ao carregar atividades (DOM):', error);
-    } finally {
-      activitiesDomBtn.disabled = false;
-      activitiesDomBtn.textContent = originalText;
-      activitiesDomBtn.style.opacity = '1';
-    }
-  });
-  div.appendChild(activitiesDomBtn);
+        try {
+          if (callbacks.onViewActivities) {
+            await callbacks.onViewActivities(week);
+          }
+        } catch (error) {
+          /**#LOG_UI*/
+          Logger.error('WeekItem', 'Erro ao carregar atividades (DOM):', error);
+        } finally {
+          btn.disabled = false;
+          btn.textContent = originalText;
+          btn.style.opacity = '1';
+        }
+      },
+    },
+    flags.showAdvancedButtons ? '🔍 Completo' : 'Ver Atividades'
+  );
 
-  const arrow = document.createElement('span');
-  arrow.className = 'week-arrow';
-  arrow.innerHTML = '&rsaquo;';
+  buttons.push(activitiesBtn);
 
-  div.appendChild(arrow);
+  // Arrow
+  const arrow = h('span', { className: 'week-arrow' }, '›'); // Safe text instead of innerHTML
 
-  return div;
+  return h(
+    'div',
+    {
+      className: 'week-item',
+      onclick: () => callbacks.onClick?.(week.url),
+    },
+    [nameSpan, ...buttons, arrow]
+  );
 }

@@ -1,21 +1,32 @@
 {
   "manifest_version": 3,
-  "name": "AutoPreencher UNIVESP",
-  "version": "2.9.7",
-  "description": "Ferramentas de produtividade para alunos UNIVESP: Gestão de Cursos, Navegação Inteligente no AVA e Autopreenchimento SEI.",
-  "permissions": ["storage", "sidePanel", "scripting", "tabs", "activeTab", "downloads"],
+  "name": "Central Univesp",
+  "version": "2.10.0",
+  "description": "Gestão de atividades semanais e navegação inteligente no AVA da UNIVESP, com autopreenchimento SEI.",
+  "icons": {
+    "16": "assets/icons/icon-16.png",
+    "32": "assets/icons/icon-32.png",
+    "48": "assets/icons/icon-48.png",
+    "128": "assets/icons/icon-128.png"
+  },
+  "permissions": ["storage", "sidePanel", "scripting", "activeTab", "downloads"],
   "background": {
-    "service_worker": "background/index.js"
+    "service_worker": "background/index.js",
+    "type": "module"
   },
   "host_permissions": ["https://sei.univesp.br/*", "https://ava.univesp.br/*"],
   "side_panel": {
     "default_path": "sidepanel/sidepanel.html"
   },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'none'; require-trusted-types-for 'script'; trusted-types dom-safe-policy default;"
+  },
   "action": {
     "default_icon": {
-      "16": "assets/icon.png",
-      "48": "assets/icon.png",
-      "128": "assets/icon.png"
+      "16": "assets/icons/icon-16.png",
+      "32": "assets/icons/icon-32.png",
+      "48": "assets/icons/icon-48.png",
+      "128": "assets/icons/icon-128.png"
     }
   },
   "content_scripts": [

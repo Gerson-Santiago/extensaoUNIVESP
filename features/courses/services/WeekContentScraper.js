@@ -4,6 +4,7 @@
 
 import { Logger } from '../../../shared/utils/Logger.js';
 import { StrategyRegistry } from './WeekContentScraper/StrategyRegistry.js';
+import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
 
 export class WeekContentScraper {
   /**
@@ -150,8 +151,8 @@ export class WeekContentScraper {
 
       if (htmlContent) {
         // Parse no lado da extensão
-        const parser = new DOMParser();
-        const doc = parser.parseFromString(htmlContent, 'text/html');
+        // Parse no lado da extensão com TrustedTypes (via DOMSafe)
+        const doc = DOMSafe.parseHTML(htmlContent);
         items = WeekContentScraper.extractItemsFromDOM(doc);
       }
 
@@ -188,6 +189,12 @@ export class WeekContentScraper {
           if (strategy) {
             const item = strategy.extract(/** @type {HTMLElement} */ (li));
             if (item) {
+              // Auditoria de Atributos: Sanitização rigorosa contra protocolos perigosos (XSS)
+              if (item.url) {
+                const sanitizedUrl = DOMSafe.sanitizeUrl(item.url);
+                if (!sanitizedUrl) return; // Pula item com URL perigosa
+                item.url = sanitizedUrl;
+              }
               items.push(item);
             }
           }

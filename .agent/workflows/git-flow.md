@@ -1,3 +1,7 @@
+---
+description: 
+---
+
 description: Git Flow + Quality Gate
 
 GIT FLOW OBRIGATÓRIO - Proteção de Branches
@@ -8,10 +12,13 @@ NUNCA trabalhar diretamente nas branches:
 - dev (integração)
 
 WORKFLOW CORRETO:
+em PORTUGUES
 
 1. Antes de Qualquer Trabalho
 git branch --show-current
 Se em dev ou main → PARAR e criar feature branch
+
+commit em PORTUGUES
 
 2. Criar Feature Branch
 git switch dev
@@ -26,7 +33,7 @@ git switch -c refactor/cleanup-imports
 3. Trabalhar na Feature Branch
 git branch --show-current
 git add .
-git commit -m "feat: implementa feature X"
+git commit -m "feat: implementa feature X que faz Y e que também é"
 
 4. Integrar na Dev
 git switch dev
@@ -100,10 +107,19 @@ npm run check
 Antes de Commit:
 npm run test:quick
 
-Antes de Push dev/main (SOLICITAR usuário):
+Antes de Push dev/main (SOLICITAR usuário nunca EXECUTAR npm):
 npm run verify
 
-IA NUNCA executa verify sem permissão (limite RAM).
+
+
+NUNCA EXECUTAR NPM 
+
++IA NUNCA executa sem permissão (limite RAM):
++- npm run verify
++- npm run test / npm test
++- npm run test:coverage
++- npm run test:debug
++- npm run type-check
 
 Segurança (opcional):
 npm run security:secrets

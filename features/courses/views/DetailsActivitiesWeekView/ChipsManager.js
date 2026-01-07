@@ -43,7 +43,7 @@ export class ChipsManager {
 
     // Skip if disabled
     if (!settings.enabled) {
-      this.container.innerHTML = '';
+      this.container.replaceChildren();
       return;
     }
 

@@ -1,19 +1,38 @@
 # ADR Index (Decisões de Arquitetura)
 
-Fundamentos: [Manifesto](VIS_MANIFESTO.md) | [Logs](OBSERVABILITY_PLAN.md) | [Compliance](ADR_COMPLIANCE_REPORT.md)
+**Fundamentos**: [Manifesto](VIS_MANIFESTO.md)
 
-ADRs:
-- 000-A [Screaming Architecture](ADR_000_A_SCREAMING_ARCHITECTURE.md)
-- 000-B [JSDoc Typing](ADR_000_B_JSDOC_TYPING.md)
-- 000-C [AAA Testing](ADR_000_C_AAA_TESTING_PATTERN.md)
-- 001 [Higiene Documental](ADR_001_DOCS_CLEANUP.md)
-- 002 [BatchScraper](ADR_002_BATCHSCRAPER_ARCHITECTURE.md)
-- 003 [SafeResult](ADR_003_SAFERESULT_PATTERN.md)
-- 004 [Freshness DOM](ADR_004_CONTAINER_FRESHNESS.md)
-- 005 [Observability](ADR_005_OBSERVABILITY_LOGGER.md)
-- 006 [Robust Scroll](ADR_006_ROBUST_SCROLL_NAVIGATION.md)
-- 007 [Nav Hierarchy](ADR_007_NAVIGATION_HIERARCHY.md)
-- 008 [Repo Unify](ADR_008_REPOSITORY_UNIFICATION.md)
-- 009 [Integration Tests](ADR_009_TEST_STRATEGY_REFRESHER.md)
-- 010 [Sync/Local Config](ADR_010_FUTURE_PROOF_CONFIGURATION.md)
-- 011 [Settings UI](ADR_011_SETTINGS_PRODUCT_VISION.md)
+---
+
+## ADRs Fundamentais
+- [ADR-000: Fundamentos](ADR_000_FUNDAMENTALS.md) - Screaming Architecture, JSDoc Typing, AAA Testing
+
+## Arquitetura & Padrões
+- [ADR-001: BatchScraper](ADR_001_BATCHSCRAPER_ARCHITECTURE.md) - Monolito funcional MV3
+- [ADR-002: SafeResult](ADR_002_SAFERESULT_PATTERN.md) - Error handling normalizado
+- [ADR-003: Container Freshness](ADR_003_CONTAINER_FRESHNESS.md) - Always fresh containers
+- [ADR-004: Observability](ADR_004_OBSERVABILITY_LOGGER.md) - Logger centralizado
+- [ADR-005: Navigation Hierarchy](ADR_005_NAVIGATION_HIERARCHY.md) - Chips contextuais
+
+## Testes & Qualidade
+- [ADR-006: Integration Tests](ADR_006_TEST_STRATEGY_REFRESHER.md) - Testes híbridos
+- [ADR-013: Jest Isolate](ADR_013_JEST_ISOLATE_MODULES.md) - isolateModulesAsync pattern
+
+## Configuração
+- [ADR-007: Storage Strategy](ADR_007_FUTURE_PROOF_CONFIGURATION.md) - Sync vs Local
+- [ADR-008: Settings Vision](ADR_008_SETTINGS_PRODUCT_VISION.md) - 4 blocos hierárquicos
+
+## Segurança & Compliance
+- [ADR-009: Security First](ADR_009_SECURITY_FIRST.md) - Security-First rules & checklist
+- [ADR-010: Manifest V3](ADR_010_MANIFEST_V3_STRATEGY.md) - MV3 compliance strategy
+
+## Processo
+- [ADR-011: Git Flow](ADR_011_PROTECTED_BRANCHES.md) - Protected branches
+- [ADR-012: Definition of Done](ADR_012_DEFINITION_OF_DONE.md) - Checklist de PR obrigatório
+
+---
+
+**Total**: 11 ADRs | **Última atualização**: 2026-01-06
+
+
+

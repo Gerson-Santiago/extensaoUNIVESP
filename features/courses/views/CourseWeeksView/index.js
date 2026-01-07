@@ -46,11 +46,10 @@ export class CourseWeeksView {
   render() {
     if (!this.course) return document.createElement('div');
 
-    const div = document.createElement('div');
-    div.innerHTML = ViewTemplate.render(this.course.name);
+    const templateElement = ViewTemplate.render(this.course.name);
 
-    // O template retorna um container .view-details dentro da div
-    return div.firstElementChild || div;
+    // ViewTemplate returns HTMLElement, not string
+    return templateElement;
   }
 
   afterRender() {

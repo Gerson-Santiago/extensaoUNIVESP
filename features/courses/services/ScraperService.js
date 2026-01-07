@@ -1,4 +1,5 @@
 import { WEEK_IDENTIFIER_REGEX, sortWeeks } from '../logic/CourseStructure.js';
+import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
 
 /**
  * Serviço de Scraping via Mensageria / Injeção.
@@ -46,9 +47,12 @@ export class ScraperService {
       }
 
       if (match && href) {
+        // Auditoria de Atributos: Sanitização rigorosa contra protocolos perigosos (XSS)
+        const sanitizedUrl = DOMSafe.sanitizeUrl(href);
+        if (!sanitizedUrl) return;
+
         // Se for semana numerada, valida intervalo 1-15
-        // Se for "Revisão", não tem número mas também é válido
-        const weekNum = match[2] ? parseInt(match[2], 10) : null; // match[2] é o número capturado
+        const weekNum = match[2] ? parseInt(match[2], 10) : null;
 
         const isValidWeek = weekNum === null || (weekNum >= 1 && weekNum <= 15);
 

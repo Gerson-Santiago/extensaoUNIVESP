@@ -1,4 +1,4 @@
-import { DomainManager } from '../logic/domainManager.js';
+import { DomainManager } from '../logic/EmailDomainValidator.js';
 import { CONSTANTS } from '../../../shared/utils/settings.js';
 
 describe('DomainManager', () => {

@@ -1,4 +1,4 @@
-import { ConfigForm } from '../components/ConfigForm.js';
+import { ConfigForm } from '../ui/components/ConfigForm.js';
 
 // Mock chrome global
 const mockChrome = {
@@ -30,52 +30,26 @@ describe('ConfigForm - Default Behavior', () => {
 
     // Setup minimal DOM
     document.body.innerHTML = `
-      <input type="checkbox" id="popupToggle">
+      <input type="text" id="raInput">
+      <input type="text" id="domainInput">
     `;
   });
 
-  test('Deve inicializar desativado (unchecked) se storage retornar undefined para clickBehavior', () => {
+  test('Deve inicializar campos vazios se storage retornar undefined', () => {
     // Arrange
     /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({}); // Empty object = undefined/null properties
+      callback({}); // Empty object
     });
 
     // Act
     configForm.setupLoadData();
 
     // Assert
-    const popupToggle = document.getElementById('popupToggle');
+    const raInput = document.getElementById('raInput');
+    const domainInput = document.getElementById('domainInput');
     // @ts-ignore
-    expect(popupToggle.checked).toBe(false); // Default should be 'sidepanel' which means unchecked
-  });
-
-  test('Deve inicializar ativado (checked) se storage retornar "popup"', () => {
-    // Arrange
-    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ clickBehavior: 'popup' });
-    });
-
-    // Act
-    configForm.setupLoadData();
-
-    // Assert
-    const popupToggle = document.getElementById('popupToggle');
-    // @ts-ignore
-    expect(popupToggle.checked).toBe(true);
-  });
-
-  test('Deve inicializar desativado (unchecked) se storage retornar "sidepanel"', () => {
-    // Arrange
-    /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-      callback({ clickBehavior: 'sidepanel' });
-    });
-
-    // Act
-    configForm.setupLoadData();
-
-    // Assert
-    const popupToggle = document.getElementById('popupToggle');
-    // @ts-ignore
-    expect(popupToggle.checked).toBe(false);
+    expect(raInput.value).toBe('');
+    // @ts-ignore - domain deve ter valor padrão do DomainManager
+    expect(domainInput.value).toBeTruthy();
   });
 });
