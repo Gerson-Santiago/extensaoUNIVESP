@@ -128,9 +128,7 @@ export async function DOM_scrapeQuickLinks_Injected() {
     if (onclick) {
       // Tenta capturar o segundo argumento de activateElement
       // Exemplo: quickLinks.messageHelper.activateElement("2641727", "anonymous_element_9", ...)
-      const match = onclick.match(
-        /activateElement\s*\(\s*["'][^"']+["']\s*,\s*["']([^"']+)["']/
-      );
+      const match = onclick.match(/activateElement\s*\(\s*["'][^"']+["']\s*,\s*["']([^"']+)["']/);
       if (match && match[1]) {
         id = match[1];
       }

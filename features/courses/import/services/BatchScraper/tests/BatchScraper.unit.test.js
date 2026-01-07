@@ -72,7 +72,10 @@ describe('BatchScraper Logic', () => {
     });
 
     it('deve retornar erro quando não há cursos na página', async () => {
-      const mockLocation = { href: 'https://ava.univesp.br/ultra/course', origin: 'https://ava.univesp.br' };
+      const mockLocation = {
+        href: 'https://ava.univesp.br/ultra/course',
+        origin: 'https://ava.univesp.br',
+      };
 
       // Página com estrutura correta mas sem cursos
       document.body.innerHTML = `
@@ -100,7 +103,10 @@ describe('BatchScraper Logic', () => {
     it('deve extrair semanas corretamente quando encontrar link de Página Inicial', async () => {
       // Arrange
       const coursesToScrape = [{ courseId: '_123_1', name: 'Curso Teste', url: 'original_url' }];
-      const mockLocation = { href: 'https://ava.univesp.br/ultra/course', origin: 'https://ava.univesp.br' };
+      const mockLocation = {
+        href: 'https://ava.univesp.br/ultra/course',
+        origin: 'https://ava.univesp.br',
+      };
 
       const mockLauncherHTML = `
         <html>
@@ -130,7 +136,11 @@ describe('BatchScraper Logic', () => {
         });
 
       // @ts-ignore
-      const results = await DOM_deepScrapeSelected_Injected(coursesToScrape, mockRegex, mockLocation);
+      const results = await DOM_deepScrapeSelected_Injected(
+        coursesToScrape,
+        mockRegex,
+        mockLocation
+      );
 
       expect(results).toHaveLength(1);
       expect(results[0].weeks).toHaveLength(2);
@@ -141,15 +151,22 @@ describe('BatchScraper Logic', () => {
 
     it('deve lidar com erro no fetch graciosamente', async () => {
       const coursesToScrape = [{ courseId: '_999_1', name: 'Curso Falha', url: 'original' }];
-      const mockLocation = { href: 'https://ava.univesp.br/ultra/course', origin: 'https://ava.univesp.br' };
+      const mockLocation = {
+        href: 'https://ava.univesp.br/ultra/course',
+        origin: 'https://ava.univesp.br',
+      };
 
       // @ts-ignore
       fetch.mockRejectedValue(new Error('Network Error'));
 
-      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
       // @ts-ignore
-      const results = await DOM_deepScrapeSelected_Injected(coursesToScrape, mockRegex, mockLocation);
+      const results = await DOM_deepScrapeSelected_Injected(
+        coursesToScrape,
+        mockRegex,
+        mockLocation
+      );
 
       expect(results).toHaveLength(0);
 
@@ -158,7 +175,10 @@ describe('BatchScraper Logic', () => {
 
     it('deve retornar semanas vazio se não encontrar link de Página Inicial', async () => {
       const coursesToScrape = [{ courseId: '_888_1', name: 'Curso Sem Link', url: 'original' }];
-      const mockLocation = { href: 'https://ava.univesp.br/ultra/course', origin: 'https://ava.univesp.br' };
+      const mockLocation = {
+        href: 'https://ava.univesp.br/ultra/course',
+        origin: 'https://ava.univesp.br',
+      };
 
       const mockNoLinkHTML = `
         <html><body><span>Apenas texto</span></body></html>
@@ -170,7 +190,11 @@ describe('BatchScraper Logic', () => {
       });
 
       // @ts-ignore
-      const results = await DOM_deepScrapeSelected_Injected(coursesToScrape, mockRegex, mockLocation);
+      const results = await DOM_deepScrapeSelected_Injected(
+        coursesToScrape,
+        mockRegex,
+        mockLocation
+      );
 
       expect(results).toHaveLength(1);
       expect(results[0].weeks).toHaveLength(0);

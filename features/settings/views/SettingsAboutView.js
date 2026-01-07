@@ -1,31 +1,31 @@
 import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
 
 export class SettingsAboutView {
-    /**
-     * @param {Object} props
-     * @param {string} props.version - App version from manifest
-     * @param {boolean} props.diagnosticEnabled - Current state of diagnostic mode
-     * @param {Function} props.onToggleDiagnostic - Callback for toggle change
-     */
-    constructor({ version, diagnosticEnabled, onToggleDiagnostic }) {
-        this.version = version;
-        this.diagnosticEnabled = diagnosticEnabled;
-        this.onToggleDiagnostic = onToggleDiagnostic;
-        this.element = this._createElement();
-    }
+  /**
+   * @param {Object} props
+   * @param {string} props.version - App version from manifest
+   * @param {boolean} props.diagnosticEnabled - Current state of diagnostic mode
+   * @param {Function} props.onToggleDiagnostic - Callback for toggle change
+   */
+  constructor({ version, diagnosticEnabled, onToggleDiagnostic }) {
+    this.version = version;
+    this.diagnosticEnabled = diagnosticEnabled;
+    this.onToggleDiagnostic = onToggleDiagnostic;
+    this.element = this._createElement();
+  }
 
-    _createElement() {
-        const container = document.createElement('div');
-        container.className = 'settings-section settings-about';
+  _createElement() {
+    const container = document.createElement('div');
+    container.className = 'settings-section settings-about';
 
-        const title = document.createElement('h3');
-        title.textContent = 'Sobre & Suporte';
-        container.appendChild(title);
+    const title = document.createElement('h3');
+    title.textContent = 'Sobre & Suporte';
+    container.appendChild(title);
 
-        const content = document.createElement('div');
-        content.className = 'settings-card';
-        // Using DOMSafe for trusted HTML construction
-        const doc = DOMSafe.parseHTML(`
+    const content = document.createElement('div');
+    content.className = 'settings-card';
+    // Using DOMSafe for trusted HTML construction
+    const doc = DOMSafe.parseHTML(`
             <div class="about-header">
                 <div class="app-logo">🎓</div>
                 <div class="app-info">
@@ -57,22 +57,22 @@ export class SettingsAboutView {
             </div>
         `);
 
-        Array.from(doc.body.childNodes).forEach(node => content.appendChild(node));
+    Array.from(doc.body.childNodes).forEach((node) => content.appendChild(node));
 
-        // Attach event listener safely
-        const toggle = content.querySelector('#diagnostic-toggle');
-        if (toggle) {
-            toggle.addEventListener('change', (e) => {
-                const target = /** @type {HTMLInputElement} */ (e.target);
-                this.onToggleDiagnostic(target.checked);
-            });
-        }
-
-        container.appendChild(content);
-        return container;
+    // Attach event listener safely
+    const toggle = content.querySelector('#diagnostic-toggle');
+    if (toggle) {
+      toggle.addEventListener('change', (e) => {
+        const target = /** @type {HTMLInputElement} */ (e.target);
+        this.onToggleDiagnostic(target.checked);
+      });
     }
 
-    render(parentElement) {
-        parentElement.appendChild(this.element);
-    }
+    container.appendChild(content);
+    return container;
+  }
+
+  render(parentElement) {
+    parentElement.appendChild(this.element);
+  }
 }
