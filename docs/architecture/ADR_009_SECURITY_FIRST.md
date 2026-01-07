@@ -1,4 +1,4 @@
-# ADR 012: Security-First Development
+# ADR 009: Security-First Development
 Status: Aceito | Data: 2026-01-02
 
 ## Contexto

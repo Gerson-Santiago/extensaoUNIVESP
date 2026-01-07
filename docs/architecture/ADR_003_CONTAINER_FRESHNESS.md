@@ -1,4 +1,4 @@
-# ADR 004: Container Freshness
+# ADR 003: Container Freshness
 Status: Aceito | Data: 2025-12-30
 
 ## Contexto

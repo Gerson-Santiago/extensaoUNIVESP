@@ -1,4 +1,4 @@
-# ADR 015: Protected Branches & Git Flow
+# ADR 011: Protected Branches & Git Flow
 Status: Aceito | Data: 2026-01-02
 
 ## Contexto

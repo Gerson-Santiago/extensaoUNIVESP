@@ -1,4 +1,4 @@
-# ADR 002: BatchScraper Architecture
+# ADR 001: BatchScraper Architecture
 Status: Aceito (v2.8.x) | Data: 2025-12-27
 
 ## Contexto

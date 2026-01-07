@@ -1,4 +1,4 @@
-# ADR 016: Definition of Done
+# ADR 012: Definition of Done
 Status: Aceito | Data: 2026-01-02
 
 ## Contexto

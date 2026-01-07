@@ -1,4 +1,4 @@
-# ADR 017: Jest isolateModulesAsync Pattern
+# ADR 013: Jest isolateModulesAsync Pattern
 Status: Aceito (v2.9.7) | Data: 2026-01-05
 
 ## Contexto

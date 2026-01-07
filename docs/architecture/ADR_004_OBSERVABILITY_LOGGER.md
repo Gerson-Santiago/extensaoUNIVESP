@@ -1,4 +1,4 @@
-# ADR 005: Observability Logger
+# ADR 004: Observability Logger
 Status: Aceito | Data: 2025-12-30
 
 ## Contexto

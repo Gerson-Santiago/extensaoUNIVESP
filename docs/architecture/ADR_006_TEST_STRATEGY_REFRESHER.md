@@ -1,4 +1,4 @@
-# ADR 009: Hybrid Integration Testing
+# ADR 006: Hybrid Integration Testing
 Status: Aceito | Data: 2025-12-31
 
 ## Contexto

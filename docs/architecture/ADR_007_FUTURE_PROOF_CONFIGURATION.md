@@ -1,4 +1,4 @@
-# ADR 010: Future Proof Configuration
+# ADR 007: Future Proof Configuration
 Status: Aceito | Data: 2025-12-31
 
 ## Contexto

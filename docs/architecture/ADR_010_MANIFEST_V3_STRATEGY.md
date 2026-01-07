@@ -1,4 +1,4 @@
-# ADR 013: Manifest V3 Migration Strategy
+# ADR 010: Manifest V3 Migration Strategy
 Status: Aceito | Data: 2026-01-02
 
 ## Contexto

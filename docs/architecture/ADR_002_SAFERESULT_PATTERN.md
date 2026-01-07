@@ -1,4 +1,4 @@
-# ADR 003: SafeResult Pattern
+# ADR 002: SafeResult Pattern
 Status: Aceito | Data: 2025-12-29
 
 ## Contexto

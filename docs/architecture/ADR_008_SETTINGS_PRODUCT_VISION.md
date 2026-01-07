@@ -1,4 +1,4 @@
-# ADR 011: Settings Product Vision
+# ADR 008: Settings Product Vision
 Status: Aceito (v2.10.x) | Data: 2025-12-31
 
 ## Contexto

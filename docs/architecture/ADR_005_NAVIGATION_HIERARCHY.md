@@ -1,4 +1,4 @@
-# ADR 007: Navigation Hierarchy
+# ADR 005: Navigation Hierarchy
 Status: Aceito | Data: 2025-12-30
 
 ## Contexto
