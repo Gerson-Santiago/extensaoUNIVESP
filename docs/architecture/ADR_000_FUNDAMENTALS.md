@@ -36,6 +36,8 @@ Três pilares fundamentais obrigatórios:
 - [VIS_MANIFESTO.md](VIS_MANIFESTO.md) - Pilares "Domínio" e "CCP"
 - [ADR-002](ADR_002_SAFERESULT_PATTERN.md) - SafeResult facilita contratos explícitos
 - [ADR-006](ADR_006_TEST_STRATEGY_REFRESHER.md) - AAA + Integration Tests
-- [ADR-009](ADR_009_SECURITY_COMPLIANCE.md) - Tipos explícitos previnem bugs de segurança
+- [ADR-009](ADR_009_SECURITY_FIRST.md) - Tipos explícitos previnem bugs de segurança
 - `jsconfig.json` - Configuração TypeScript
+- `docs/TEST_TEMPLATES.md` - Templates AAA exemplares
+
 - `docs/TEST_TEMPLATES.md` - Templates AAA exemplares
