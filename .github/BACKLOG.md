@@ -6,11 +6,11 @@ Este documento é o repositório central de todo o trabalho potencial, servindo 
 
 ## 🏗️ 1. Preferências do Usuário (Ergonomia Visual)
 *Ajustes que melhoram o conforto sem alterar a lógica do sistema.*
-- **[ ] Densidade Visual**: Toggle `Compacto` vs `Confortável` (Redução de paddings para usuários com muitas matérias).
+- **[x] Densidade Visual**: Toggle `Compacto` vs `Confortável` (Redução de paddings para usuários com muitas matérias). ✅ ISSUE-022
 
 ## 🏗️ 2. Comportamento da Aplicação (Ajustes de Fluxo)
 *Ajustes de "como funciona", focados na redução de fricção.*
-- **[ ] Auto-Pin (Última Semana)**:
+- **[x] Auto-Pin (Última Semana)**: ✅ ISSUE-022
   - Ao carregar um curso, verificar no `storage` qual foi o último `weekNumber` expandido.
   - Se ativado, acionar o evento de expansão automaticamente.
 - **[ ] Automação Sob Demanda**: Opção para desativar a execução automática ao carregar a página (rodar apenas ao clicar em Refresh).
@@ -18,12 +18,12 @@ Este documento é o repositório central de todo o trabalho potencial, servindo 
 
 ## 🏗️ 3. Permissões e Privacidade (Governança de Dados)
 *Obrigatório para transparência e controle soberano do usuário.*
-- **[ ] Sistema de Backup**:
+- **[x] Sistema de Backup**: ✅ ISSUE-019
   - Exportar / Importar o estado acadêmico com integridade.
   - **Meta-Informação:** Incluir no JSON a data e versão da extensão.
   - **Restauração Segura:** Garantir que o `chrome.storage.local.clear()` seguido de `set()` não deixe o sistema em estado inconsistente em caso de erro.
   - **Feedback:** Notificar conclusão da exportação/importação via Toaster simples.
-- **[ ] Reset de Fábrica (Danger Zone)**: Botão para deletar absolutamente todos os dados locais.
+- **[x] Reset de Fábrica (Danger Zone)**: Botão para deletar absolutamente todos os dados locais. ✅ ISSUE-020
 - **[ ] Painel de Transparência**: Texto explicando que os dados são 100% locais (Local-First).
 
 ## 🏗️ 4. Sobre / Diagnóstico (Suporte e Identidade)
@@ -62,4 +62,4 @@ Itens removidos das issues ativas por serem considerados "invenções de moda" o
 - **[ ] Créditos Detalhados**: Manter apenas versão e links por enquanto.
 
 ---
-**Última Revisão**: 01/01/2026 | **Status**: Baseline v2.10.0 Pronta
+**Última Revisão**: 06/01/2026 | **Status**: Baseline v2.10.0 Implementada

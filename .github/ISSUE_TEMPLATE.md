@@ -1,4 +1,4 @@
-# ISSUE-XXX: [Title]
+# OPEN-ISSUE-XXX_slug-descritivo.md
 
 Status: Open
 Priority: Critical | High | Medium | Low
@@ -50,5 +50,14 @@ Risks: [If any]
 
 ----------
 
-Tags: //tag
+🔗 GITHUB ISSUE
+
+- **Status**: Não criada | Criada
+- **Link**: [#XX](https://github.com/USER/REPO/issues/XX)
+- **Milestone**: vX.X.X
+- **Data**: YYYY-MM-DD
+
+----------
+
+Tags: #tag
 Estimate: X days

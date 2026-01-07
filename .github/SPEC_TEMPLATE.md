@@ -60,5 +60,13 @@ Related: ADR-XXX, ISSUE-XXX
 
 ----------
 
-Tags: //tag
+ARCHITECTURAL DECISIONS
+
+- [ ] Requer novo ADR? (Se sim, qual número e título?)
+- [ ] Atualiza ADR existente? (Qual: ADR-XXX)
+- [ ] Impacta VIS_MANIFESTO.md?
+
+----------
+
+Tags: #tag
 Owner: [name]
