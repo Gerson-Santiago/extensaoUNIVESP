@@ -1,0 +1,8 @@
+Coverage Report generated at 07/01/2026, 13:49:35
+command: npm run test:coverage
+--------------------------------------------------------------------------------
+
+
+> central-univesp@2.10.0 test:coverage
+> jest --coverage
+
