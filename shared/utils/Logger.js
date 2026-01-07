@@ -32,6 +32,7 @@ export class Logger {
    */
   static isEnabled() {
     try {
+      // Check localStorage (set by SettingsController)
       return localStorage.getItem('UNIVESP_DEBUG') === 'true';
     } catch {
       return false;
