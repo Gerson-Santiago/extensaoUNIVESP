@@ -18,30 +18,30 @@ Este documento consolida a visão de longo prazo, princípios estratégicos e o 
 
 ---
 
-## 📅 2. Horizonte Tático: Release v2.10.0 (Contextual Chips)
+## 📅 2. Horizonte Tático: Release v2.11.0 (Refinement)
 
-**Status**: 🚀 Lançamento / Estabilização (Jan/2026)
+**Status:** 🚧 Planejamento (Fev/2026)
 
-### [x] M1: Codebase Seguro & Compliance
-- **Segurança**: Eliminação de XSS (DOMSafe) e Race Conditions (StorageGuard).
-- **Compliance**: Adequação total às políticas da Chrome Web Store (Privacidade, Permissões).
+### [ ] M1: Ferramentas de Diagnóstico (Issue-023)
+- **Painel Sobre:** Informações detalhadas de versão e ambiente.
+- **Diagnóstico:** Auto-teste de conexões e permissões.
 
-### [/] M2: Experiência do Usuário (UX)
-- **Contextualidade**: Chips de navegação bidirecionais.
-- **Preferências**: Sistema de configuração (`SettingsView`) reimaginado.
-- **Reset**: Funcionalidade de Factory Reset para soberania de dados.
-
-### [ ] M3: Engenharia de Distribuição
-- Assets de loja profissionais (Screenshots, Ícones).
-- Pipeline de build e empacotamento otimizado.
+### [ ] M2: Controle de Automação (Issue-024)
+- **Granularidade:** Ativar/Desativar scrapers por tipo (Notas, Fórum, Vídeos).
+- **Agendamento:** Definição de intervalos de atualização.
 
 ---
 
-## 🏔️ 3. Futuro Próximo (v2.11.0+)
+## ✅ 3. Releases Concluídas
 
-### EPIC-004: Soberania e Personalização
-- **Painel de Diagnóstico**: Ferramentas de auto-reparo e análise de integridade.
-- **Controle Fino**: Opções para ativar/desativar scrapers específicos.
+### v2.10.0 (Sovereignty & UX) - Jan/2026
+- **[x] M1: Codebase Seguro & Compliance**: Eliminação de XSS, DOMSafe, conformidade CWS.
+- **[x] M2: Experiência do Usuário (UX)**: Settings 2.0, Backup/Restore, Factory Reset, Contextual Chips.
+- **[x] M3: Engenharia de Distribuição**: Assets profissionais, changelog automatizado, pipeline de build.
+
+---
+
+## 🏔️ 4. Futuro Próximo (v2.12.0+)
 
 ### EPIC-006: Segurança de Elite
 - **Criptografia**: Backup com AES-GCM.
