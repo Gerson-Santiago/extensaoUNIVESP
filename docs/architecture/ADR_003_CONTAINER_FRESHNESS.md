@@ -1,10 +1,10 @@
-# ADR 003: Container Freshness
-Status: Aceito | Data: 2025-12-30
+# ADR-003: Container Freshness
+**Status**: Aceito | **Data**: 2025-12-30
 
-## Contexto
+## Problema
 Bug crítico: atividades carregadas com sucesso (logs confirmavam 19 atividades) mas UI exibia skeleton vazio. `ActivityRenderer` renderizava em elemento DOM órfão após re-render da view, gerando "Zombie DOM".
 
-## Decisão
+## Solução
 **Always Fresh Container**: Views sempre criam renderers com containers atuais:
 ```javascript
 // ❌ Errado: cachear referência
@@ -15,14 +15,14 @@ const container = this.element.querySelector('#container');
 const renderer = new ActivityRenderer(container);
 ```
 
-Regra: Proibido cachear referências a elementos DOM em propriedades de instância de views.
+**Regra**: Proibido cachear referências a elementos DOM em propriedades de instância de views.
 
-## Consequências
-- **Positivo**: Elimina categoria crítica de bugs (DOM órfão)
-- **Positivo**: Facilita debugging (container sempre existe quando usado)
-- **Negativo**: Ligeira sobrecarga de `querySelector` em cada render
-- **Mitigação**: Operação é O(1) em árvore DOM pequena (Side Panel)
+## Trade-offs
+- ✅ **Benefícios**: Elimina categoria crítica de bugs (DOM órfão), facilita debugging (container sempre existe quando usado)
+- ⚠️ **Riscos**: Ligeira sobrecarga de `querySelector` (mitigado por operação O(1) em árvore DOM pequena do Side Panel)
 
-## Relacionado
+## Refs
+- [ADR-005](ADR_005_NAVIGATION_HIERARCHY.md) - Navegação depende de containers frescos
 - `features/courses/views/DetailsActivitiesWeekView/index.js`
-- `features/courses/tests/views/DetailsActivitiesWeekView/rendering-regression.test.js` (5 testes de regressão)
+- `features/courses/tests/views/DetailsActivitiesWeekView/rendering-regression.test.js` (5 testes)
+

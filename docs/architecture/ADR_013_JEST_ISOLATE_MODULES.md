@@ -1,27 +1,22 @@
-# ADR 013: Jest isolateModulesAsync Pattern
-Status: Aceito (v2.9.7) | Data: 2026-01-05
-
-## Contexto
-Módulos ES com variáveis de estado (`let domSafePolicy = null`) persistem entre testes, causando vazamento de estado, falsos positivos/negativos e necessidade de `.skip()`.
+# ADR-013: Jest isolateModulesAsync Pattern
+**Status**: Aceito (v2.9.7) | **Data**: 2026-01-05
 
 ## Problema
+Módulos ES com variáveis de estado (`let domSafePolicy = null`) persistem entre testes, causando vazamento de estado, falsos positivos/negativos e necessidade de `.skip()`.
+
+Exemplo do problema:
 ```javascript
 // TrustedTypesPolicy.js
 let domSafePolicy = null;  // ← Persiste entre testes
 
-export function initTrustedTypes() {
-  domSafePolicy = trustedTypes.createPolicy(...);
-}
-
-// ❌ TESTE FALHA
+// ❌ Teste falha se teste anterior chamou init
 it('deve retornar null antes de init', () => {
-  const policy = getTrustedTypesPolicy();
-  expect(policy).toBeNull();  // Falha se teste anterior chamou init
+  expect(getTrustedTypesPolicy()).toBeNull();  // Falha!
 });
 ```
 
-## Decisão
-Adotar **`jest.isolateModulesAsync()`** como padrão para módulos com estado, conforme implementação em `background/tests/background.test.js`.
+## Solução
+Adotar **`jest.isolateModulesAsync()`** como padrão para módulos com estado:
 
 ### Padrão Aprovado
 ```javascript
@@ -56,37 +51,12 @@ describe('Módulo com Estado', () => {
 - Módulo stateless (apenas funções puras)
 - Testes de integração que QUEREM estado compartilhado
 
-## Consequências
-- **Positivo**: Isolamento perfeito, sem `.skip()`
-- **Positivo**: Testes independentes da ordem de execução
-- **Positivo**: Padrão já existente no projeto (`background.test.js`)
-- **Negativo**: Performance (~10-20ms extra por teste)
-- **Negativo**: Verbosidade (async/await + import dinâmico)
-- **Limitação**: `typeof self` sempre `'object'` em Node.js (window context não testável)
+## Trade-offs
+- ✅ **Benefícios**: Isolamento perfeito (sem `.skip()`), testes independentes da ordem, padrão já existente no projeto (`background.test.js`)
+- ⚠️ **Riscos**: Performance (~10-20ms extra/teste), verbosidade (async/await + import dinâmico), limitação (`typeof self` sempre `'object'` em Node.js)
 
-## Exemplos
+## Refs
+- [Jest isolateModulesAsync Docs](https://jestjs.io/docs/jest-object#jestisolateModulesAsync)
+- `background/tests/background.test.js` - Implementação de referência
+- ISSUE-025 - TrustedTypesPolicy test refactoring
 
-### TrustedTypesPolicy.test.js
-```javascript
-it('deve retornar null antes de init', async () => {
-  await jest.isolateModulesAsync(async () => {
-    const { getTrustedTypesPolicy } = await import('../TrustedTypesPolicy.js');
-    expect(getTrustedTypesPolicy()).toBeNull();  // ✅ PASSA sempre
-  });
-});
-```
-
-### background.test.js (Referência)
-```javascript
-const loadScript = async () => {
-  await jest.isolateModulesAsync(async () => {
-    await import('../index.js');
-  });
-};
-```
-
-## Relacionado
-- [Jest - isolateModulesAsync Docs](https://jestjs.io/docs/jest-object#jestisolateModulesAsync)
-- Implementação: `background/tests/background.test.js`
-- ISSUE-025: TrustedTypesPolicy test refactoring
-- Thread #272-306: Por que `.skip()` não é aceitável

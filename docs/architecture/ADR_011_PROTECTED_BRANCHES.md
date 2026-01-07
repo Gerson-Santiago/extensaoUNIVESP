@@ -1,79 +1,50 @@
-# ADR 011: Protected Branches & Git Flow
-Status: Aceito | Data: 2026-01-02
+# ADR-011: Protected Branches & Git Flow
+**Status**: Aceito | **Data**: 2026-01-02
 
-## Contexto
-Commits diretos em `main` ou `dev` podem introduzir bugs em produção sem revisão. VIS_MANIFESTO.md define "Zero Broken Windows" (branch sempre verde) mas o workflow não estava formalizado em ADR.
+## Problema
+Commits diretos em `main` ou `dev` podem introduzir bugs em produção sem revisão. VIS_MANIFESTO.md define "Zero Broken Windows" mas o workflow não estava formalizado em ADR. Workflow `/git-flow` existe mas decisão arquitetural não documentada.
 
-Workflow `/git-flow` existe mas decisão arquitetural não estava documentada.
-
-## Decisão
+## Solução
 **Git Flow obrigatório** com proteção de branches principais:
 
-### Estrutura de Branches
+### Estrutura: `main` ← (`dev` ← `feature/*`)
 
+**Branch `main`** (produção):
+- PR-only de `dev`
+- Requer `npm run verify` passing + tag `v2.x.x`
+- Commits diretos **PROIBIDOS**
+
+**Branch `dev`** (staging):
+- PR-only de feature branches
+- Requer `npm test` passing
+- Commits diretos **PROIBIDOS** (exceto hotfixes emergenciais)
+
+**Feature Branches**:
+- Nomenclatura: `feat/`, `fix/`, `refactor/`, `docs/` + `slug-descritivo`
+- Baseadas em `dev`, merged via PR, deletadas após merge
+
+### Conventional Commits (obrigatório)
 ```
-main (produção)
-  ↑
-  PR only
-  ↑
-dev (staging)
-  ↑
-  PR only
-  ↑
-feature/* | fix/* | refactor/* | docs/*
-```
-
-### Regras de Proteção
-
-**1. Branch `main`**
-- ✅ Apenas via Pull Request de `dev`
-- ✅ Requer `npm run verify` passing (lint + type-check + tests)
-- ✅ Requer tag de versão (`v2.x.x`)
-- ❌ Commits diretos: **PROIBIDOS**
-
-**2. Branch `dev`**
-- ✅ Apenas via Pull Request de feature branches
-- ✅ Requer testes passando (`npm test`)
-- ❌ Commits diretos: **PROIBIDOS** (exceto hotfixes emergenciais)
-
-**3. Feature Branches**
-- Nomenclatura: `tipo/slug-descritivo`
-  - `feat/settings-backup`
-  - `fix/zombie-dom`
-  - `refactor/repositories`
-  - `docs/adr-security`
-- Baseadas em `dev`, merged de volta via PR
-- Deletadas após merge
-
-### Conventional Commits
-Formato obrigatório (já documentado em `PADROES.md`):
-```
-<tipo>(<escopo>): <descrição>
+<tipo>(escopo): descrição
 
 feat(cursos): adiciona filtro de semestre
 fix(navegação): corrige scroll em abas lentas
-docs(adr): adiciona ADR-013 sobre Manifest V3
 ```
-
 Tipos: `feat`, `fix`, `refactor`, `docs`, `test`, `chore`
 
 ### Workflow de Release
-1. Criar branch `release/v2.x.x` de `dev`
+1. Criar `release/v2.x.x` de `dev`
 2. Atualizar `CHANGELOG.md`, `package.json`, `manifest.json`
-3. PR para `main` + criar tag `v2.x.x`
-4. Merge back para `dev`
+3. PR para `main` + tag `v2.x.x`
+4 Merge back para `dev`
 
-## Consequências
-- **Positivo**: Histórico limpo e rastreável (cada feature é um PR)
-- **Positivo**: Rollback fácil (revert de merge commit)
-- **Positivo**: Code review obrigatório (detecta bugs antes de merge)
-- **Positivo**: CI/CD pode rodar em PRs (validação automática)
-- **Negativo**: Overhead para mudanças triviais (typos em docs)
-- **Negativo**: Requer disciplina da equipe
-- **Mitigação**: Permitir fast-forward em `docs/` para correções mínimas (typos)
+## Trade-offs
+- ✅ **Benefícios**: Histórico limpo e rastreável, rollback fácil (revert merge commit), code review obrigatório, CI/CD valida PRs
+- ⚠️ **Riscos**: Overhead para mudanças triviais, requer disciplina (mitigados por permitir fast-forward em docs/ para typos)
 
-## Relacionado
-- VIS_MANIFESTO.md (pilar "Zero Broken Windows")
-- `PADROES.md` (Conventional Commits)
-- `.agent/workflows/git-flow.md` (workflow executável)
-- `.agent/workflows/release-prod.md` (processo de release)
+## Refs
+- [VIS_MANIFESTO.md](VIS_MANIFESTO.md) - "Zero Broken Windows"
+- `PADROES.md` - Conventional Commits
+- `.agent/workflows/git-flow.md` - Workflow executável
+- `.agent/workflows/release-prod.md` - Processo de release
+

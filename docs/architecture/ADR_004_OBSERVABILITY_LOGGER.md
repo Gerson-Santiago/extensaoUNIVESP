@@ -1,26 +1,30 @@
-# ADR 004: Observability Logger
-Status: Aceito | Data: 2025-12-30
+# ADR-004: Observability Logger
+**Status**: Aceito | **Data**: 2025-12-30
 
-## Contexto
+## Problema
 `console.log` disperso poluía produção e dificultava auditoria. Não havia forma de desabilitar logs sem rebuild ou identificar origem de mensagens.
 
-## Decisão
-Centralizar logging em `shared/utils/Logger.js`:
-- Métodos estruturados: `info()`, `warn()`, `error()`
-- Namespaces semânticos via tags JSDoc (`#LOG_UI`, `#LOG_SYSTEM`, `#LOG_DATA`)
-- Controle via flag: `localStorage.setItem('UNIVESP_DEBUG', 'true')`
+## Solução
+Logger centralizado em `shared/utils/Logger.js`:
+- **Métodos estruturados**: `info()`, `warn()`, `error()`
+- **Namespaces semânticos**: `#LOG_UI`, `#LOG_SYSTEM`, `#LOG_DATA` (via tags JSDoc)
+- **Controle**: `localStorage.setItem('UNIVESP_DEBUG', 'true')`
 - **Regra**: Proibido `console.*` direto em código de produção
+- **Scripts injetados**: Recebem flag `isDebugEnabled` + log local com prefixo `[Extension]`
+- **Helper**: `Logger.create(namespace)` para instâncias
 
-Scripts injetados (BatchScraper) recebem flag `isDebugEnabled` e fazem log local com prefixo `[Extension]`.
+### Implementação (v2.9.7+)
+- **Centralizador**: `Logger.js`
+- **Acesso**: `localStorage` flag
+- **Saída**: Zero console.log em bundle produção
+- **Roadmap**: Centralizar via `sendMessage`, exportar para suporte
 
-## Consequências
-- **Positivo**: Logs estruturados facilitam debugging
-- **Positivo**: Produção limpa por padrão
-- **Positivo**: Auditoria via namespace
-- **Negativo**: Verbosidade em setup de Logger
-- **Mitigação**: Helper `Logger.create(namespace)` para instâncias
+## Trade-offs
+- ✅ **Benefícios**: Logs estruturados facilitam debugging, produção limpa por padrão, auditoria via namespace
+- ⚠️ **Riscos**: Verbosidade em setup (mitigado por `Logger.create(namespace)` helper)
 
-## Relacionado
-- `shared/utils/Logger.js`
-- `docs/architecture/OBSERVABILITY_PLAN.md`
-- ADR-012 (Debug mode sem expor dados sensíveis)
+## Refs
+- [ADR-009](ADR_009_SECURITY_COMPLIANCE.md) - Debug mode sem expor dados sensíveis
+- [ADR-012](ADR_012_DEFINITION_OF_DONE.md) - DoD inclui logging estruturado
+- `shared/utils/Logger.js` - Implementação
+

@@ -1,38 +1,24 @@
-# ADR 008: Settings Product Vision
-Status: Aceito (v2.10.x) | Data: 2025-12-31
+# ADR-008: Settings Product Vision
+**Status**: Aceito (v2.10.x) | **Data**: 2025-12-31
 
-## Contexto
+## Problema
 Necessidade de hierarquia profissional nas configurações da extensão, organizando funcionalidades de forma intuitiva e segura para os usuários.
 
-## Decisão
+## Solução
 Estrutura de configurações organizada em **4 blocos principais**:
 
-1. **Preferências**: Customizações visuais e comportamentais não-destrutivas
-   - Tema (claro/escuro)
-   - Idioma da interface
-   - Notificações
+1. **Preferências**: Customizações visuais não-destrutivas (tema, idioma, notificações)
+2. **Comportamento**: Configurações funcionais (auto-refresh, intervalo de sincronização, cache)
+3. **Privacidade**: Controles de dados e segurança (telemetria opt-in, compartilhamento de dados anônimos, logs de debug)
+4. **Sobre**: Informações e ações administrativas (versão, créditos, licenças, ações destrutivas como limpar cache/reset)
 
-2. **Comportamento**: Configurações funcionais que afetam a operação da extensão
-   - Auto-refresh de atividades
-   - Intervalo de sincronização
-   - Cache de dados
+Isolamento de ações destrutivas na seção "Sobre" para evitar cliques acidentais.
 
-3. **Privacidade**: Controles relacionados a dados e segurança
-   - Coleta de telemetria (opt-in)
-   - Compartilhamento de dados anônimos
-   - Logs de debug
+## Trade-offs
+- ✅ **Benefícios**: UX previsível com agrupamento lógico, isolamento de ações destrutivas, facilita expansão futura sem poluir interface
+- ⚠️ **Riscos**: Requer mais navegação para acessar configurações específicas (mitigado por implementar busca/filtro dentro das configurações)
 
-4. **Sobre**: Informações e ações administrativas
-   - Versão da extensão
-   - Créditos e licenças
-   - Ações destrutivas (limpar cache, reset completo)
+## Refs
+- [ADR-000](ADR_000_FUNDAMENTALS.md) - Screaming Architecture (features gritam propósito)
+- Issues: v2.10.x relacionadas a Settings UI
 
-## Consequências
-- **Positivo**: UX previsível com agrupamento lógico de funcionalidades
-- **Positivo**: Isolamento de ações destrutivas na seção "Sobre"
-- **Positivo**: Facilita expansão futura sem poluir interface
-- **Negativo**: Requer mais navegação para acessar configurações específicas
-- **Mitigação**: Implementar busca/filtro dentro das configurações
-
-## Relacionado
-Issues de v2.10.x relacionadas a Settings UI
