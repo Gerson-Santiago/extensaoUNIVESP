@@ -184,6 +184,44 @@ export class SettingsController {
       });
     });
   }
+  /* New Methods for About & Diagnostics (Issue-023) */
+
+  /**
+   * Toggles the diagnostic mode.
+   * @param {boolean} enabled
+   */
+  async handleToggleDiagnostic(enabled) {
+    try {
+      if (enabled) {
+        localStorage.setItem('UNIVESP_DEBUG', 'true');
+        this.logger.info('Diagnostic Mode ENABLED by user.');
+        this.toaster.show('Modo de Diagnóstico ativado. Logs serão exibidos no console.', 'info');
+      } else {
+        localStorage.removeItem('UNIVESP_DEBUG');
+        this.logger.info('Diagnostic Mode DISABLED by user.');
+        this.toaster.show('Modo de Diagnóstico desativado.', 'info');
+      }
+    } catch (error) {
+      this.logger.error('Failed to toggle diagnostic mode', error);
+      this.toaster.show('Erro ao alterar configuração.', 'error');
+    }
+  }
+
+  /**
+   * Gets the current diagnostic state.
+   * @returns {boolean}
+   */
+  getDiagnosticState() {
+    return localStorage.getItem('UNIVESP_DEBUG') === 'true';
+  }
+
+  /**
+   * Gets the app version from manifest.
+   * @returns {string}
+   */
+  getAppVersion() {
+    return chrome.runtime.getManifest().version;
+  }
 }
 
 if (typeof module !== 'undefined') {

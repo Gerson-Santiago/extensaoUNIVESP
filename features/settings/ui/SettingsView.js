@@ -7,6 +7,7 @@ import { DOMSafe } from '../../../shared/utils/DOMSafe.js';
 import { ChipsSettingsManager } from '../logic/ChipsSettingsManager.js';
 import { UISettingsManager } from '../logic/UISettingsManager.js';
 import { UserPreferencesManager } from '../logic/UserPreferencesManager.js';
+import { SettingsAboutView } from '../views/SettingsAboutView.js'; // Issue-023
 
 export class SettingsView {
   constructor(callbacks = {}) {
@@ -183,6 +184,18 @@ export class SettingsView {
       divider(),
 
       section('Ajuda e Feedback', 'Encontrou um problema ou tem uma sugestão?', helpActions),
+      divider(),
+
+      // About & Diagnostics Section (ISSUE-023)
+      (() => {
+        const aboutView = new SettingsAboutView({
+          version: this.controller.getAppVersion(),
+          diagnosticEnabled: this.controller.getDiagnosticState(),
+          onToggleDiagnostic: (enabled) => this.controller.handleToggleDiagnostic(enabled),
+        });
+        return aboutView.element; // Directly returning element as section helper expects content
+      })(),
+
       divider(),
 
       // Danger Zone Section (ISSUE-020) - com visual padronizado

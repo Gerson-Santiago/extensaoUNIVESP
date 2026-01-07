@@ -1,6 +1,6 @@
 # 📝 ISSUE-023: Interface de Sobre, Diagnóstico e Suporte
 
-**Status:** 📋 Aberta
+**Status:** ✅ Fechada
 **Prioridade:** Baixa
 **Componente:** `features/settings`
 **Versão:** v2.10.0
