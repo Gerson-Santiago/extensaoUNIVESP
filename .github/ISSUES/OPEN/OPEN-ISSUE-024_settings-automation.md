@@ -7,6 +7,10 @@
 
 ---
 
+não acho que precisa ser feito isso 
+
+vamos parar e cancelar essa issue vamos?
+
 ## 🎯 Objetivo
 
 Dar ao usuário o controle de *quando* a extensão deve atuar. Atualmente os scrapers e o `CourseRefresher` rodam ao carregar a página. O objetivo é permitir que o usuário escolha rodar apenas quando ele clicar nos botões de atualização.
