@@ -39,5 +39,3 @@ Três pilares fundamentais obrigatórios:
 - [ADR-009](ADR_009_SECURITY_FIRST.md) - Tipos explícitos previnem bugs de segurança
 - `jsconfig.json` - Configuração TypeScript
 - `docs/TEST_TEMPLATES.md` - Templates AAA exemplares
-
-- `docs/TEST_TEMPLATES.md` - Templates AAA exemplares
