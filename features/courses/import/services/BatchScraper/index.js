@@ -138,7 +138,7 @@ export function extractWeeksFromHTML(doc, baseUrl, weekRegexSource) {
 }
 
 // -- FUNÇÃO INJETADA PARA LER BIMESTRES E CURSOS --
-export async function DOM_scanTermsAndCourses_Injected() {
+export async function DOM_scanTermsAndCourses_Injected(locationContext = window.location) {
   const results = {
     success: false,
     terms: [],
@@ -147,8 +147,8 @@ export async function DOM_scanTermsAndCourses_Injected() {
 
   // 1. Verificação de URL e Login
   if (
-    !window.location.href.includes('/ultra/course') &&
-    !window.location.href.includes('bb_router')
+    !locationContext.href.includes('/ultra/course') &&
+    !locationContext.href.includes('bb_router')
   ) {
     if (!document.getElementById('courses-overview-content')) {
       results.message = 'Por favor, acesse a página de Cursos do AVA e faça login.';
@@ -316,7 +316,11 @@ export async function DOM_scanTermsAndCourses_Injected() {
 }
 
 // -- FUNÇÃO INJETADA PARA PROCESSAR LISTA --
-export async function DOM_deepScrapeSelected_Injected(coursesToScrape, weekRegexSource) {
+export async function DOM_deepScrapeSelected_Injected(
+  coursesToScrape,
+  weekRegexSource,
+  locationContext = window.location
+) {
   const results = [];
 
   // Redundante para o contexto injetado
@@ -324,7 +328,7 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape, weekRegex
     const weeks = [];
     const links = doc.querySelectorAll('a');
     links.forEach((a) => {
-      const text = (a.innerText || '').trim();
+      const text = (a.textContent || '').trim();
       const title = (a.title || '').trim();
       let href = a.href;
       if (a.getAttribute('href')) {
@@ -377,7 +381,7 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape, weekRegex
   for (const course of coursesToScrape) {
     try {
       const fetchUrl =
-        window.location.origin +
+        locationContext.origin +
         `/webapps/blackboard/execute/launcher?type=Course&id=${course.courseId}&url=`;
       const response = await fetch(fetchUrl);
       const text = await response.text();
@@ -387,7 +391,7 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape, weekRegex
       const spans = Array.from(doc.querySelectorAll('span'));
       const targetSpan = spans.find((s) => {
         const title = (s.getAttribute('title') || '').toLowerCase();
-        const content = s.innerText.toLowerCase();
+        const content = s.textContent.toLowerCase();
         return (
           title.includes('página inicial') ||
           content.includes('página inicial') ||
@@ -401,14 +405,14 @@ export async function DOM_deepScrapeSelected_Injected(coursesToScrape, weekRegex
         const parentLink = targetSpan.closest('a');
         if (parentLink) {
           const href = parentLink.getAttribute('href');
-          if (href && href.includes('listContent.jsp')) finalUrl = window.location.origin + href;
+          if (href && href.includes('listContent.jsp')) finalUrl = locationContext.origin + href;
         }
       }
       if (finalUrl && finalUrl.includes('listContent.jsp')) {
         const resp2 = await fetch(finalUrl);
         const text2 = await resp2.text();
         const doc2 = parser.parseFromString(text2, 'text/html');
-        weeks = extractWeeksInternal(doc2, window.location.origin);
+        weeks = extractWeeksInternal(doc2, locationContext.origin);
       }
       results.push({ name: course.name, url: finalUrl, weeks: weeks, original: course });
     } catch (e) {

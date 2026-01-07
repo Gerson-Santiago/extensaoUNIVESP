@@ -2,12 +2,18 @@ import {
   parseCourseTerm,
   extractWeeksFromHTML,
   DOM_scanTermsAndCourses_Injected,
+  DOM_deepScrapeSelected_Injected,
 } from '../index.js';
 import { WEEK_IDENTIFIER_REGEX } from '@features/courses/logic/CourseStructure.js';
 
 describe('BatchScraper Logic', () => {
   const mockRegex = WEEK_IDENTIFIER_REGEX.source;
   const baseUrl = 'https://ava.univesp.br';
+
+  beforeAll(() => {
+    // Mock global para JSDOM que não implementa scrollTo
+    Object.defineProperty(window, 'scrollTo', { value: jest.fn(), writable: true });
+  });
 
   describe('parseCourseTerm', () => {
     it('deve parsear corretamente bimestres do primeiro semestre', () => {
@@ -57,24 +63,16 @@ describe('BatchScraper Logic', () => {
 
   describe('DOM_scanTermsAndCourses_Injected', () => {
     it('deve retornar mensagem de erro se não estiver na página correta', async () => {
-      // @ts-ignore - Mock para teste
-      delete window.location;
-      // @ts-ignore - Mock para teste
-      window.location = { href: 'https://google.com' };
-      const result = await DOM_scanTermsAndCourses_Injected();
+      const mockLocation = { href: 'https://google.com', origin: 'https://google.com' };
+
+      // @ts-ignore
+      const result = await DOM_scanTermsAndCourses_Injected(mockLocation);
       expect(result.success).toBe(false);
       expect(result.message).toContain('acesse a página de Cursos');
     });
 
     it('deve retornar erro quando não há cursos na página', async () => {
-      // Arrange
-      // @ts-ignore - Mock para teste
-      delete window.location;
-      // @ts-ignore - Mock para teste
-      window.location = {
-        href: 'https://ava.univesp.br/ultra/course',
-        origin: 'https://ava.univesp.br',
-      };
+      const mockLocation = { href: 'https://ava.univesp.br/ultra/course', origin: 'https://ava.univesp.br' };
 
       // Página com estrutura correta mas sem cursos
       document.body.innerHTML = `
@@ -83,12 +81,100 @@ describe('BatchScraper Logic', () => {
                 </div>
             `;
 
-      // Act
-      const result = await DOM_scanTermsAndCourses_Injected();
+      // @ts-ignore
+      const result = await DOM_scanTermsAndCourses_Injected(mockLocation);
 
-      // Assert
       expect(result.success).toBe(false);
       expect(result.message).toContain('Nenhum curso encontrado');
+    });
+  });
+
+  describe('DOM_deepScrapeSelected_Injected', () => {
+    // Mock do fetch global
+    global.fetch = jest.fn();
+
+    beforeEach(() => {
+      jest.clearAllMocks();
+    });
+
+    it('deve extrair semanas corretamente quando encontrar link de Página Inicial', async () => {
+      // Arrange
+      const coursesToScrape = [{ courseId: '_123_1', name: 'Curso Teste', url: 'original_url' }];
+      const mockLocation = { href: 'https://ava.univesp.br/ultra/course', origin: 'https://ava.univesp.br' };
+
+      const mockLauncherHTML = `
+        <html>
+          <body>
+            <a href="/webapps/blackboard/content/listContent.jsp?course_id=_123_1&content_id=_456_1">
+              <span title="Página Inicial">Página Inicial</span>
+            </a>
+          </body>
+        </html>
+      `;
+
+      const mockContentHTML = `
+        <html>
+          <body>
+            <a href="/content/_week1">Semana 1</a>
+            <a href="/content/_week2">Semana 2</a>
+          </body>
+        </html>
+      `;
+
+      /** @type {any} */ (fetch)
+        .mockResolvedValueOnce({
+          text: () => Promise.resolve(mockLauncherHTML),
+        })
+        .mockResolvedValueOnce({
+          text: () => Promise.resolve(mockContentHTML),
+        });
+
+      // @ts-ignore
+      const results = await DOM_deepScrapeSelected_Injected(coursesToScrape, mockRegex, mockLocation);
+
+      expect(results).toHaveLength(1);
+      expect(results[0].weeks).toHaveLength(2);
+      expect(results[0].weeks[0].name).toBe('Semana 1');
+      expect(results[0].weeks[1].name).toBe('Semana 2');
+      expect(results[0].url).toContain('listContent.jsp');
+    });
+
+    it('deve lidar com erro no fetch graciosamente', async () => {
+      const coursesToScrape = [{ courseId: '_999_1', name: 'Curso Falha', url: 'original' }];
+      const mockLocation = { href: 'https://ava.univesp.br/ultra/course', origin: 'https://ava.univesp.br' };
+
+      // @ts-ignore
+      fetch.mockRejectedValue(new Error('Network Error'));
+
+      const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => { });
+
+      // @ts-ignore
+      const results = await DOM_deepScrapeSelected_Injected(coursesToScrape, mockRegex, mockLocation);
+
+      expect(results).toHaveLength(0);
+
+      consoleSpy.mockRestore();
+    });
+
+    it('deve retornar semanas vazio se não encontrar link de Página Inicial', async () => {
+      const coursesToScrape = [{ courseId: '_888_1', name: 'Curso Sem Link', url: 'original' }];
+      const mockLocation = { href: 'https://ava.univesp.br/ultra/course', origin: 'https://ava.univesp.br' };
+
+      const mockNoLinkHTML = `
+        <html><body><span>Apenas texto</span></body></html>
+      `;
+
+      // @ts-ignore
+      fetch.mockResolvedValueOnce({
+        text: () => Promise.resolve(mockNoLinkHTML),
+      });
+
+      // @ts-ignore
+      const results = await DOM_deepScrapeSelected_Injected(coursesToScrape, mockRegex, mockLocation);
+
+      expect(results).toHaveLength(1);
+      expect(results[0].weeks).toHaveLength(0);
+      expect(results[0].url).toBe('original');
     });
   });
 });
