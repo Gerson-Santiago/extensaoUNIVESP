@@ -22,7 +22,8 @@ Serviços recebem configuração de storage via injeção de dependência.
 - ⚠️ **Riscos**: Complexidade de gerenciar 2 storages (mitigado por abstração futura em `StorageService`)
 
 ## Refs
-- [ADR-009](ADR_009_SECURITY_COMPLIANCE.md) - Restrições de quota MV3
+- [ADR-010](ADR_010_MANIFEST_V3_STRATEGY.md) - Restrições de quota MV3
 - `shared/services/StorageService.js` (abstração planejada)
 - [Chrome Storage Quotas](https://developer.chrome.com/docs/extensions/reference/storage/)
+
 
