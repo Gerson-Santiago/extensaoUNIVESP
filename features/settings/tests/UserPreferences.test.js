@@ -69,7 +69,6 @@ describe('User Preferences (ISSUE-022)', () => {
     document.body.innerHTML = '';
   });
 
-
   describe('Auto-Pin Toggle', () => {
     test('deve carregar preferência de Auto-Pin salva ao inicializar', async () => {
       // Arrange

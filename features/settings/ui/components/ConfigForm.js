@@ -102,7 +102,6 @@ export class ConfigForm {
     }
   }
 
-
   setupResetDomain() {
     const resetDomainBtn = document.getElementById('resetDomainBtn');
     const domainInput = /** @type {HTMLInputElement} */ (document.getElementById('domainInput'));

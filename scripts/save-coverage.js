@@ -35,7 +35,7 @@ const child = spawn('npm', ARGS, {
   cwd: path.resolve(__dirname, '..'),
   env: { ...process.env, FORCE_COLOR: '0' }, // Disable color for text file readability
   stdio: ['inherit', 'pipe', 'pipe'],
-  shell: true
+  shell: true,
 });
 
 // Pipe output to file and console
@@ -74,7 +74,6 @@ child.on('close', (code) => {
       console.log('🚀 Pushing to remote...');
       execSync(`git push origin ${branch}`);
       console.log('✅ Changes pushed successfully!');
-
     } catch (error) {
       console.error('\n❌ Git automation failed:', error.message);
       // Don't exit with error code if just git failed, as tests passed

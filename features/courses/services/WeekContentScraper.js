@@ -185,9 +185,9 @@ export class WeekContentScraper {
 
       listItems.forEach((li) => {
         try {
-          const strategy = registry.getStrategy(/** @type {HTMLElement} */(li));
+          const strategy = registry.getStrategy(/** @type {HTMLElement} */ (li));
           if (strategy) {
-            const item = strategy.extract(/** @type {HTMLElement} */(li));
+            const item = strategy.extract(/** @type {HTMLElement} */ (li));
             if (item) {
               // Auditoria de Atributos: Sanitização rigorosa contra protocolos perigosos (XSS)
               if (item.url) {

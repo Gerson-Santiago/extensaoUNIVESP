@@ -82,4 +82,4 @@
  * @typedef {string | Node | TrustedHTML | Array<string|Node|TrustedHTML>} SafeChildren
  */
 
-export { };
+export {};

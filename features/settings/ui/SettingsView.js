@@ -151,16 +151,32 @@ export class SettingsView {
       this.configForm.render(), // ConfigForm já tem settings-content
       divider(),
 
-      section('Navegação Contextual (Chips)', 'Configure a barra de navegação rápida entre semanas.', chipsSettings),
+      section(
+        'Navegação Contextual (Chips)',
+        'Configure a barra de navegação rápida entre semanas.',
+        chipsSettings
+      ),
       divider(),
 
-      section('Interface & Funcionalidades', 'Personalize o que você vê na lista de semanas.', uiSettings),
+      section(
+        'Interface & Funcionalidades',
+        'Personalize o que você vê na lista de semanas.',
+        uiSettings
+      ),
       divider(),
 
-      section('Preferências do Usuário', 'Adapte a interface ao seu estilo de uso.', userPrefsContent),
+      section(
+        'Preferências do Usuário',
+        'Adapte a interface ao seu estilo de uso.',
+        userPrefsContent
+      ),
       divider(),
 
-      section('Privacidade e Dados', 'Gerencie seus dados locais. A extensão segue a política Local-First.', privacyActions),
+      section(
+        'Privacidade e Dados',
+        'Gerencie seus dados locais. A extensão segue a política Local-First.',
+        privacyActions
+      ),
       divider(),
 
       section('Gerenciar Matérias', 'Opções para adicionar ou remover cursos.', manageActions),
@@ -168,7 +184,6 @@ export class SettingsView {
 
       section('Ajuda e Feedback', 'Encontrou um problema ou tem uma sugestão?', helpActions),
       divider(),
-
 
       // Danger Zone Section (ISSUE-020) - com visual padronizado
       h('div', { className: 'settings-content' }, [
@@ -330,7 +345,7 @@ export class SettingsView {
     autoPinCheckbox.addEventListener('change', async () => {
       await this.preferencesManager.save({
         ...prefs,
-        autoPinLastWeek: autoPinCheckbox.checked
+        autoPinLastWeek: autoPinCheckbox.checked,
       });
     });
 

@@ -38,8 +38,8 @@ describe('ConfigForm - Default Behavior', () => {
   test('Deve inicializar campos vazios se storage retornar undefined', () => {
     // Arrange
     /** @type {jest.Mock} */ (chrome.storage.sync.get).mockImplementation((keys, callback) => {
-    callback({}); // Empty object
-  });
+      callback({}); // Empty object
+    });
 
     // Act
     configForm.setupLoadData();

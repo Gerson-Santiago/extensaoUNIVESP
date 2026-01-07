@@ -239,9 +239,7 @@ export class DOMSafe {
       }
     }
 
-    const finalHtml = DOMSafe.#policy
-      ? DOMSafe.#policy.createHTML(html)
-      : html;
+    const finalHtml = DOMSafe.#policy ? DOMSafe.#policy.createHTML(html) : html;
 
     return parser.parseFromString(finalHtml, 'text/html');
   }
