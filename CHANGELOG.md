@@ -5,7 +5,7 @@ Todas as mudanças notáveis neste projeto serão documentadas aqui.
 O formato é baseado em [Keep a Changelog](https://keepachangelog.com/pt-BR/1.0.0/),
 e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR/).
 
-## [2.10.0] - 2026-01-06
+## [2.10.0] - 2026-01-07
 
 ### 🎉 Novidades
 - **ISSUE-019**: Sistema completo de Backup/Restore com compressão inteligente e validação de integridade.
@@ -18,11 +18,11 @@ e este projeto adere ao [Versionamento Semântico](https://semver.org/lang/pt-BR
 - **XSS Hardening**: Whitelist dinâmica para atributos de input e eliminação de riscos em injetores.
 - **URL Sanitization**: `DOMSafe.sanitizeUrl` bloqueando `javascript:` URLs em scrapers e views.
 
-### 🏗️ Qualidade & Integridade (ISSUE-046)
+### 🏗️ Qualidade & Integridade (ISSUE-046 & ISSUE-025)
 - **Broken Links**: Validação automatizada de integridade de referências em JS, CSS e HTML.
 - **Orphan Code**: Saneamento de código morto e arquivos obsoletos.
 - **Test Organization**: Renomeação de testes duplicados para `.unit.test.js`, `.integration.test.js`, `.utils.test.js`.
-- **Test Coverage**: Mantidos 653/653 testes passando (100% de cobertura preservada).
+- **Test Coverage**: Cobertura global atingiu **89.2%**, com blindagem total em `SettingsController`, `ChunkedStorage` e Scrapers.
 
 ### 📦 Engenharia de Distribuição (M3)
 - **Icons**: Geração automatizada de ícones em 4 tamanhos (16/32/48/128px) usando `sharp`.
