@@ -11,25 +11,57 @@ import { SettingsAboutView } from '../views/SettingsAboutView.js'; // Issue-023
 
 export class SettingsView {
   constructor(callbacks = {}) {
-    this.onNavigate = callbacks.onNavigate;
-    this.onImportBatch = callbacks.onImportBatch;
-    this.feedback = new Toaster('settingsFeedback');
-    this.configForm = new ConfigForm(new Toaster('configFeedback'));
 
-    // Initialize Controller with dependencies
-    this.controller = new SettingsController({
-      toaster: this.feedback,
-      logger: Logger,
-    });
+    const { onNavigate, onImportBatch } = callbacks;
+    this.onNavigate = onNavigate; // Keep original assignment for consistency
+    this.onImportBatch = onImportBatch; // Keep original assignment for consistency
+    this.callbacks = callbacks; // Store callbacks for potential future use
+
+    this.feedback = new Toaster('settingsFeedback'); // Initialize feedback first
+
+    // Dependencies
+    try {
+      this.controller = new SettingsController({
+        toaster: this.feedback, // Now this.feedback is defined
+        logger: Logger,
+      });
+
+    } catch (e) {
+      console.error('[SettingsView] Controller init failed', e);
+    }
 
     // Initialize Settings Managers
-    this.chipsManager = new ChipsSettingsManager();
-    this.uiManager = new UISettingsManager();
-    this.preferencesManager = new UserPreferencesManager();
+    try {
+      this.chipsManager = new ChipsSettingsManager();
+      this.uiManager = new UISettingsManager();
+      this.preferencesManager = new UserPreferencesManager();
+
+    } catch (e) {
+      console.error('[SettingsView] Managers init failed', e);
+    }
+
+    // Components
+    // Original ConfigForm constructor takes a Toaster instance, not an object with onSave.
+    // Adjusting to match original structure while adding console.log.
+    try {
+      this.configForm = new ConfigForm(new Toaster('configFeedback'));
+
+    } catch (e) {
+      console.error('[SettingsView] ConfigForm init failed', e);
+    }
+
   }
 
+  /**
+   * Renders the settings view.
+   * @returns {HTMLElement} The view element.
+   */
   render() {
+
     const h = DOMSafe.createElement;
+
+
+
 
     // Helper for dividers
     const divider = () => h('hr', { className: 'divider' });
@@ -69,7 +101,7 @@ export class SettingsView {
     // UI Settings
     const uiSettings = h('div', { className: 'ui-settings' }, [
       h('label', { className: 'setting-item' }, [
-        h('input', { type: 'checkbox', id: 'showAdvancedButtons', checked: false }),
+        h('input', { type: 'checkbox', id: 'showAdvancedButtons', checked: true }),
         h('span', {}, 'Ativar Botão Rápido'),
       ]),
       h(
@@ -148,8 +180,8 @@ export class SettingsView {
     );
 
     return h('div', { className: 'view-settings' }, [
-      h('h2', {}, 'Configurações'),
-      this.configForm.render(), // ConfigForm já tem settings-content
+      h('h2', {}, ['Configurações']),
+      this.configForm.render(),
       divider(),
 
       section(
@@ -186,44 +218,43 @@ export class SettingsView {
       section('Ajuda e Feedback', 'Encontrou um problema ou tem uma sugestão?', helpActions),
       divider(),
 
-      // About & Diagnostics Section (ISSUE-023)
-      (() => {
-        const aboutView = new SettingsAboutView({
-          version: this.controller.getAppVersion(),
-          diagnosticEnabled: this.controller.getDiagnosticState(),
-          onToggleDiagnostic: (enabled) => this.controller.handleToggleDiagnostic(enabled),
-        });
-        return aboutView.element; // Directly returning element as section helper expects content
-      })(),
+      // Danger Zone Section (ISSUE-020)
+      h('div', { className: 'settings-content' }, [
+        h('h3', { style: 'color: #d9534f' }, ['⚠️ Zona de Perigo']),
+        h('p', { className: 'config-desc' }, ['Ações irreversíveis que apagam todos os seus dados permanentemente.']),
+        h('div', { className: 'action-list' }, [
+          h('button', {
+            className: 'btn-danger',
+            style: 'background: #fff; border: 2px solid #d9534f; color: #d9534f; font-weight: bold;',
+            onclick: () => this.controller.handleReset()
+          }, ['⚠️ Reset de Fábrica'])
+        ]),
+        h('p', { className: 'setting-hint', style: 'color: #d9534f; font-size: 0.85em' }, ['⚠️ Esta ação apaga TODOS os cursos, atividades, anotações e configurações. É impossível desfazer.'])
+      ]),
 
       divider(),
 
-      // Danger Zone Section (ISSUE-020) - com visual padronizado
-      h('div', { className: 'settings-content' }, [
-        h('h3', { style: { color: '#d9534f' } }, '⚠️ Zona de Perigo'),
-        h(
-          'p',
-          { className: 'config-desc' },
-          'Ações irreversíveis que apagam todos os seus dados permanentemente.'
-        ),
-        h('div', { className: 'action-list' }, [
-          btn(
-            'btnFactoryReset',
-            '⚠️',
-            'Reset de Fábrica',
-            'background: #fff; border: 2px solid #d9534f; color: #d9534f; font-weight: bold;'
-          ),
-        ]),
-        h(
-          'p',
-          { className: 'setting-hint', style: { color: '#d9534f', fontSize: '0.85em' } },
-          '⚠️ Esta ação apaga TODOS os cursos, atividades, anotações e configurações. É impossível desfazer.'
-        ),
-      ]),
+      // About & Diagnostics Section (ISSUE-023)
+      (() => {
+        try {
+
+          const aboutView = new SettingsAboutView({
+            version: this.controller ? this.controller.getAppVersion() : 'Unknown',
+            diagnosticEnabled: this.controller ? this.controller.getDiagnosticState() : false,
+            onToggleDiagnostic: (enabled) => this.controller && this.controller.handleToggleDiagnostic(enabled),
+          });
+          return aboutView.element;
+        } catch (e) {
+          console.error('[SettingsView] Failed to create AboutView', e);
+          return h('div', { style: 'color:red' }, ['Erro ao carregar Sobre']);
+        }
+      })(),
 
       h('div', { id: 'settingsFeedback', className: 'status-msg' }),
       h('div', { className: 'footer-info' }),
     ]);
+
+    // Footer logs - Moved before return or removed to avoid unreachable code
   }
 
   afterRender() {

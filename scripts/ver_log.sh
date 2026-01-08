@@ -7,6 +7,8 @@ grep -RIn \
   --exclude-dir=build \
   --exclude-dir=.vscode \
   --exclude-dir=.husky \
+  --exclude-dir=.cache \
+  --exclude-dir=.agent \
   --exclude-dir=docs \
   --exclude-dir=tests \
   --exclude-dir=__tests__ \

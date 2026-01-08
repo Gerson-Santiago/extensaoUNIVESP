@@ -6,7 +6,7 @@ echo "=========================================="
 echo ""
 
 find "$(git rev-parse --show-toplevel)" -type f -print0 | \
-grep -z -vE "node_modules|coverage|/\.git/|\.agent|\.(png|jpg|jpeg|gif|svg|ico|webp)$" | \
+grep -z -vE "node_modules|coverage|/\.git/|\.agent|dist/|\.cache|package-lock\.json|\.zip$|\.tar\.gz$|\.(png|jpg|jpeg|gif|svg|ico|webp)$" | \
 xargs -0 wc -l | \
 grep -v " total$" | \
 sort -n

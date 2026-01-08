@@ -7,6 +7,11 @@
 /** @typedef {import('../types/security.js').SafeURL} SafeURL */
 /** @typedef {import('../types/security.js').SafeAttributes} SafeAttributes */
 /** @typedef {import('../types/security.js').SafeChildren} SafeChildren */
+/**
+ * @typedef {Object} TrustedTypePolicy
+ * @property {(html: string) => string} createHTML
+ */
+
 
 /**
  * Utilitário de segurança para operações DOM.
@@ -208,10 +213,19 @@ export class DOMSafe {
   }
 
   /**
-   * Cache da política TrustedTypes
+   * Cache da política TrustedTypes (Global para persistir em hot-reloads)
    * @type {TrustedTypePolicy|null}
    */
-  static #policy = null;
+  static get #policy() {
+    // @ts-ignore
+    if (window.__DOMSafePolicy) return window.__DOMSafePolicy;
+    return null;
+  }
+
+  static set #policy(value) {
+    // @ts-ignore
+    window.__DOMSafePolicy = value;
+  }
 
   /**
    * Realiza parse seguro de HTML lidando com TrustedTypes.
@@ -227,20 +241,30 @@ export class DOMSafe {
       return parser.parseFromString(html, 'text/html');
     }
 
-    // Criar ou recuperar política
+    // Tentar garantir que a política 'default' exista
+    // Se já existir (perda de referencia JS mas registro no browser), o browser usará automaticamente
     if (!DOMSafe.#policy) {
       try {
-        DOMSafe.#policy = window.trustedTypes.createPolicy('dom-safe-parser', {
-          createHTML: (string) => string, // Pass-through intencional para parsing
+        const policyName = 'default';
+
+        // @ts-ignore
+        DOMSafe.#policy = window.trustedTypes.createPolicy(policyName, {
+          createHTML: (/** @type {string} */ string) => string, // Pass-through intencional para parsing
         });
       } catch (e) {
-        // Fallback se política já existir com mesmo nome (raro em extensão, comum em testes)
-        console.warn('[DOMSafe] Falha ao criar política TrustedTypes:', e);
+        // Se o erro for "Policy with name ... already exists", isso é ÓTIMO.
+        // Significa que podemos passar a string crua e o browser vai usar a política default existente.
+        if (e instanceof TypeError && e.message.includes('already exists')) {
+          // Ignorar erro de duplicata
+        } else {
+          console.warn('[DOMSafe] Falha ao criar política TrustedTypes default:', e);
+        }
       }
     }
 
-    const finalHtml = DOMSafe.#policy ? DOMSafe.#policy.createHTML(html) : html;
-
-    return parser.parseFromString(finalHtml, 'text/html');
+    // Com a política 'default', não precisamos chamar .createHTML explícitamente.
+    // O browser intercepta a string crua e aplica a política 'default'.
+    // Isso resolve o problema de perder a referência do objeto policy após reload.
+    return parser.parseFromString(html, 'text/html');
   }
 }

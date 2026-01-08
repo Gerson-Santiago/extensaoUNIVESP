@@ -19,11 +19,13 @@ find_smart() {
     shift
     
     find "$search_path" \
-        -type d \( -name .git -o -name node_modules -o -name dist -o -name build -o -name coverage -o -name .vscode -o -name .idea -o -name .husky -o -name .agent \) -prune \
+        -type d \( -name .git -o -name node_modules -o -name dist -o -name build -o -name coverage -o -name .vscode -o -name .idea -o -name .husky -o -name .agent -o -name .cache -o -name history_coverage \) -prune \
         -o -type f \
         \( \
            -not -name 'package-lock.json' \
            -not -name 'yarn.lock' \
+           -not -name '*.zip' \
+           -not -name '*.tar.gz' \
            -not -name '*.png' \
            -not -name '*.jpg' \
            -not -name '*.jpeg' \
