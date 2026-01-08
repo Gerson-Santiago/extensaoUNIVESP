@@ -1,5 +1,15 @@
 # [ISSUE-050] Tooling Fix: Dashboard Analytics (Seção 5)
 
+---
+**Type:** 🐛 Bug  
+**Priority:** 🟡 Medium  
+**Status:** 📋 Open  
+**Component:** Scripts/Tooling  
+**Effort:** 1-2 days  
+**Labels:** `bug` `tooling` `dashboard`
+---
+
+
 ## Contexto
 O script de monitoramento `scripts/dashboard.sh` apresenta um erro na **Seção 5: Dívida Técnica**. O comando `grep` utilizado para contar TODOs e FIXMEs falha ao expandir corretamente a lista de exclusões, resultando em saída vazia ou incorreta dependendo do ambiente (Bash vs Zsh vs WSL).
 

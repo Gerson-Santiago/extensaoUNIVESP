@@ -1,15 +1,17 @@
 # 📝 ISSUE-024: Controle de Automação e Contexto (Sob Demanda)
 
-**Status:** 📋 Aberta
-**Prioridade:** Média
-**Componente:** `features/courses/logic` | `features/settings`
-**Versão:** v2.10.0+
+**Status:** 🗄️ BACKLOG (Adiada)  
+**Prioridade:** Baixa  
+**Componente:** `features/courses/logic` | `features/settings`  
+**Versão:** v2.11.0+ (se necessário)
 
 ---
 
-não acho que precisa ser feito isso 
+> [!NOTE]
+> **Motivo do Adiamento:** Issue questionada internamente ("não acho que precisa ser feito isso").
+> Funcionalidade atual (scrapers sob demanda via botões) já atende necessidade.
+> Movida para BACKLOG: pode ser útil futuramente, mas não é prioritária.
 
-vamos parar e cancelar essa issue vamos?
 
 ## 🎯 Objetivo
 

@@ -1,9 +1,13 @@
 # 🛡️ ISSUE-036: Chrome Web Store Metadata & Asset Preparation
 
-**Status:** 📋 Aberta  
-**Prioridade:** 🟡 Média (Pre-Launch)  
-**Componente:** `Marketing`, `assets/`  
-**Versão:** v2.10.0+
+---
+**Type:** 🛠️ Maintenance  
+**Priority:** 🟡 Medium  
+**Status:** 📋 Open  
+**Component:** Release/CWS/Assets  
+**Effort:** 2-3 days  
+**Labels:** `maintenance` `cws` `release`
+---
 
 ---
 

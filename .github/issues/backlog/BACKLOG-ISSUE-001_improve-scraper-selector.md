@@ -1,9 +1,18 @@
 # 🔧 TECH DEBT: Improve ScraperService CSS Selector Strategy
 
-**Status:** 📋 Planejado (Implementar APÓS [ISSUE-missing-revision-week](./ISSUE-missing-revision-week.md))  
-**Prioridade:** Baixa (Enhancement/Optimization)  
+**Status:** 🗄️ BACKLOG (Adiada - Sem impacto real na performance)  
+**Prioridade:** Baixíssima (Otimização Prematura)  
 **Componentes:** `ScraperService`, `DOM_extractWeeks_Injected`  
 **Tipo:** Performance + Precisão
+
+> [!NOTE]
+> **Motivo do Adiamento:** Análise técnica concluída em 2026-01-08 mostrou que:
+> - Scraper executa apenas sob demanda (1-2x/mês)
+> - Diferença de performance: < 1ms (imperceptível)
+> - Não resolve lentidão geral da extensão
+> - Foco redirecionado para otimizações de UI/rendering com impacto real
+
+
 
 ---
 

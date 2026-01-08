@@ -1,8 +1,14 @@
-# 🔧 ISSUE-001: Dívida Técnica: Otimização de Scraper e Hardening de Tipos
+# 🔧 ISSUE-056: Dívida Técnica Unificada (Scraper + Tipos + Scripts)
 
-**Status:** 📋 Aberta
-**Prioridade:** 🟡 Média (Pós-Lançamento v2.10)
-**Componentes:** `ScraperService`, `SharedLogic`, `TypeScript`
+---
+**Type:** 🔧 Tech Debt  
+**Priority:** 🟡 Medium  
+**Status:** 📋 Open  
+**Component:** Multiple (Scraper/Types/Scripts)  
+**Effort:** 5-7 days  
+**Labels:** `tech-debt` `scraper` `types` `scripts`
+---
+
 
 ---
 

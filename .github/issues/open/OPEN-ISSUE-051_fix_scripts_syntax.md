@@ -1,5 +1,15 @@
 # [ISSUE-051] Fix Scripts Syntax and Line Endings
 
+---
+**Type:** 🐛 Bug  
+**Priority:** 🟡 Medium  
+**Status:** 📋 Open  
+**Component:** Build/Scripts  
+**Effort:** 1 day  
+**Labels:** `bug` `build` `scripts`
+---
+
+
 ## Contexto
 Os scripts `fix-publish.sh` e `publish-issues-github.sh` estão falhando devido a caracteres de fim de linha do Windows (CRLF) e erros de sintaxe Bash (octal base error).
 

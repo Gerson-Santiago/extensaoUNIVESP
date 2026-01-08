@@ -1,5 +1,15 @@
 # [ISSUE-048] Manutenção: Limpeza de Rascunhos de ADR
 
+---
+**Type:** 🛠️ Maintenance  
+**Priority:** 🟢 Low  
+**Status:** 📋 Open  
+**Component:** Docs/ADR  
+**Effort:** 1 day  
+**Labels:** `maintenance` `docs` `cleanup`
+---
+
+
 ## Contexto
 A análise do Dashboard revelou que a pasta `.github/ISSUES/30/` contém arquivos Markdown grandes que parecem ser versões de rascunho de ADRs arquivadas ou duplicadas (ex: `ADR_017_DOM_FACTORY_PATTERN.md`). Isso polui as métricas de complexidade e confunde a busca por documentação oficial.
 

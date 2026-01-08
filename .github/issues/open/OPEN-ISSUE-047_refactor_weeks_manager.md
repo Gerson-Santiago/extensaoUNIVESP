@@ -1,5 +1,15 @@
 # [ISSUE-047] Refatoração Arquitetural: WeeksManager.js
 
+---
+**Type:** ♻️ Refactor  
+**Priority:** 🟢 Low  
+**Status:** 📋 Open  
+**Component:** Architecture/WeeksManager  
+**Effort:** 3-5 days  
+**Labels:** `refactor` `architecture` `tech-debt`
+---
+
+
 ## Contexto
 O arquivo `WeeksManager.js` tornou-se um ponto de alta complexidade no sistema (Code Bloat). Atualmente, ele viola o Princípio de Responsabilidade Única (SRP) ao acumular múltiplas responsabilidades distintas.
 

@@ -1,8 +1,13 @@
-# 🛡️ ISSUE-036: Segurança de Dados - Criptografia e Assinatura
+# 🛡️ ISSUE-043: Segurança de Dados - Criptografia e Assinatura
 
-**Status:** 📋 Aberta
-**Prioridade:** 🟡 Média (Roadmap v2.11+)
-**Componente:** `Security`, `Backup`
+---
+**Type:** 📦 Feature  
+**Priority:** 🟡 Medium  
+**Status:** 📋 Open  
+**Component:** Security/Backup/Encryption  
+**Effort:** 7-10 days  
+**Labels:** `feature` `security` `encryption`
+---
 
 ---
 

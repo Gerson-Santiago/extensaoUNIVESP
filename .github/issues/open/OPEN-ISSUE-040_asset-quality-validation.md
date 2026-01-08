@@ -1,9 +1,13 @@
 # 🎨 ISSUE-040: Icon & Asset Quality Validation (CWS)
 
-**Status:** 🏗️ Em Progresso (Manifesto Pronto)  
-**Prioridade:** 🟡 Média (Pre-Launch Quality)  
-**Componente:** `assets/`  
-**Versão:** v2.9.7+
+---
+**Type:** 🛠️ Maintenance  
+**Priority:** 🟡 Medium  
+**Status:** 🏗️ In Progress  
+**Component:** Assets/Icons/CWS  
+**Effort:** 1-2 days  
+**Labels:** `maintenance` `assets` `icons` `cws`
+---
 
 ---
 

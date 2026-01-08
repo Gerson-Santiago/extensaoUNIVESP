@@ -1,9 +1,13 @@
 # 🔷 ISSUE-044: Type Safety Enhancement - Tipagem TypeScript/JSDoc
 
-**Status:** 📋 Aberta  
-**Prioridade:** 🔵 Alta  
-**Componentes:** `Core`, `Types`, `DX`, `Quality`  
-**GitHub Issue:** _(a ser criado)_
+---
+**Type:** 🔧 Tech Debt  
+**Priority:** 🔴 High  
+**Status:** 📋 Open  
+**Component:** TypeScript/JSDoc/Core  
+**Effort:** 5-7 days  
+**Labels:** `tech-debt` `typescript` `type-safety` `dx`
+---
 
 ---
 
