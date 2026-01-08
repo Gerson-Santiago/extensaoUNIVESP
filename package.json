@@ -38,7 +38,8 @@
     "security:audit": "npm audit --audit-level=high",
     "security:lint": "eslint . --max-warnings=0",
     "security": "npm run security:secrets && npm run security:audit && npm run security:lint",
-    "precommit": "npm run security:secrets && lint-staged"
+    "precommit": "npm run security:secrets && lint-staged",
+    "legenda": "bash scripts/git-legenda.sh"
   },
   "author": "Gerson Santiago",
   "license": "MIT",
