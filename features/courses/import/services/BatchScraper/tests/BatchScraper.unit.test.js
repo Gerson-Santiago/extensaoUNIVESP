@@ -135,10 +135,10 @@ describe('BatchScraper Logic', () => {
           text: () => Promise.resolve(mockContentHTML),
         });
 
-      // @ts-ignore
       const results = await DOM_deepScrapeSelected_Injected(
         coursesToScrape,
         mockRegex,
+        // @ts-expect-error - Mock parcial de Location (apenas href e origin necessários)
         mockLocation
       );
 
@@ -156,15 +156,15 @@ describe('BatchScraper Logic', () => {
         origin: 'https://ava.univesp.br',
       };
 
-      // @ts-ignore
+      // @ts-expect-error - Mock de fetch
       fetch.mockRejectedValue(new Error('Network Error'));
 
       const consoleSpy = jest.spyOn(console, 'error').mockImplementation(() => {});
 
-      // @ts-ignore
       const results = await DOM_deepScrapeSelected_Injected(
         coursesToScrape,
         mockRegex,
+        // @ts-expect-error - Mock parcial de Location (apenas href e origin necessários)
         mockLocation
       );
 
@@ -184,15 +184,15 @@ describe('BatchScraper Logic', () => {
         <html><body><span>Apenas texto</span></body></html>
       `;
 
-      // @ts-ignore
+      // @ts-expect-error - Mock de fetch
       fetch.mockResolvedValueOnce({
         text: () => Promise.resolve(mockNoLinkHTML),
       });
 
-      // @ts-ignore
       const results = await DOM_deepScrapeSelected_Injected(
         coursesToScrape,
         mockRegex,
+        // @ts-expect-error - Mock parcial de Location (apenas href e origin necessários)
         mockLocation
       );
 
